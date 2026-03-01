@@ -15,6 +15,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import { Colors } from '../../constants/Colors';
 
 
 WebBrowser.maybeCompleteAuthSession();
@@ -201,16 +202,16 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     forgotPasswordText: {
-        color: '#10B981',
+        color: Colors.PRIMARY,
         fontWeight: '500',
     },
     signInButton: {
-        backgroundColor: '#10B981',
+        backgroundColor: Colors.PRIMARY,
         borderRadius: 12,
         height: 56,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#10B981',
+        shadowColor: Colors.PRIMARY,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
@@ -263,7 +264,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     signUpText: {
-        color: '#10B981',
+        color: Colors.PRIMARY,
         fontSize: 15,
         fontWeight: '600',
     },
