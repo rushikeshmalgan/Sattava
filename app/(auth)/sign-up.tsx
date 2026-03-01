@@ -15,6 +15,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import { Colors } from '../../constants/Colors';
 
 
 WebBrowser.maybeCompleteAuthSession();
@@ -94,7 +95,7 @@ export default function SignUp() {
         return (
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
                 <View style={styles.headerContainer}>
-                    <Ionicons name="mail-open-outline" size={80} color="#10B981" style={styles.iconSpaced} />
+                    <Ionicons name="mail-open-outline" size={80} color={Colors.PRIMARY} style={styles.iconSpaced} />
                     <Text style={styles.title}>Check your email</Text>
                     <Text style={styles.subtitle}>We sent a verification code to {emailAddress}</Text>
                 </View>
@@ -267,12 +268,12 @@ const styles = StyleSheet.create({
         color: '#111827',
     },
     primaryButton: {
-        backgroundColor: '#10B981',
+        backgroundColor: Colors.PRIMARY,
         borderRadius: 12,
         height: 56,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#10B981',
+        shadowColor: Colors.PRIMARY,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
@@ -326,7 +327,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     signInText: {
-        color: '#10B981',
+        color: Colors.PRIMARY,
         fontSize: 15,
         fontWeight: '600',
     },
