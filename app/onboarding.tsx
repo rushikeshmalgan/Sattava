@@ -62,42 +62,47 @@ export default function Onboarding() {
     };
 
     const completeOnboarding = async () => {
-    if (!user?.id) return;
+        if (!user?.id) return;
 
-    const profileData: UserProfileData = {
-        gender,
-        goal,
-        activityLevel,
-        birthdate: {
-            day: birthDay,
-            month: birthMonth,
-            year: birthYear,
-        },
-        heightFeet,
-        heightInches,
-        weightKg,
-    };
-
-    try {
-        await setDoc(
-            doc(db, 'users', user.id),
-            {
-                onboardingCompleted: true,
-                physicalProfile: profileData,
-                updatedAt: new Date(),
+        const profileData: UserProfileData = {
+            gender,
+            goal,
+            activityLevel,
+            birthdate: {
+                day: birthDay,
+                month: birthMonth,
+                year: birthYear,
             },
-            { merge: true }
-        );
+            heightFeet,
+            heightInches,
+            weightKg,
+        };
 
-        router.replace({
-            pathname: '/generating-profile',
-            params: { data: JSON.stringify(profileData) },
-        });
-    } catch (error) {
-        console.error('Failed to save onboarding data:', error);
-        Alert.alert('Error', 'Failed to save your profile. Please try again.');
-    }
-};
+        try {
+            await setDoc(
+                doc(db, 'users', user.id),
+                {
+                    physicalProfile: profileData,
+                    updatedAt: new Date(),
+                },
+                { merge: true }
+            );
+
+            // ❗ DO NOT mark onboarding complete here
+            router.replace({
+                pathname: '/generating-profile',
+                params: { data: JSON.stringify(profileData) },
+            });
+
+            router.replace({
+                pathname: '/generating-profile',
+                params: { data: JSON.stringify(profileData) },
+            });
+        } catch (error) {
+            console.error('Failed to save onboarding data:', error);
+            Alert.alert('Error', 'Failed to save your profile. Please try again.');
+        }
+    };
 
     const renderProgressBar = () => {
         const progress = (currentStep / TOTAL_STEPS) * 100;
@@ -221,7 +226,8 @@ export default function Onboarding() {
                                     style={styles.dateInput}
                                     keyboardType="number-pad"
                                     maxLength={2}
-                                    placeholder="01"
+                                    placeholder="DD"
+                                    placeholderTextColor={Colors.TEXT_MUTED}
                                     value={birthDay}
                                     onChangeText={setBirthDay}
                                 />
@@ -232,7 +238,8 @@ export default function Onboarding() {
                                     style={styles.dateInput}
                                     keyboardType="number-pad"
                                     maxLength={2}
-                                    placeholder="12"
+                                    placeholder="MM"
+                                    placeholderTextColor={Colors.TEXT_MUTED}
                                     value={birthMonth}
                                     onChangeText={setBirthMonth}
                                 />
@@ -243,7 +250,8 @@ export default function Onboarding() {
                                     style={styles.dateInput}
                                     keyboardType="number-pad"
                                     maxLength={4}
-                                    placeholder="1995"
+                                    placeholder="YYYY"
+                                    placeholderTextColor={Colors.TEXT_MUTED}
                                     value={birthYear}
                                     onChangeText={setBirthYear}
                                 />
@@ -267,7 +275,8 @@ export default function Onboarding() {
                                         style={styles.dateInput}
                                         keyboardType="number-pad"
                                         maxLength={1}
-                                        placeholder="5"
+                                        placeholder="Ft"
+                                        placeholderTextColor={Colors.TEXT_MUTED}
                                         value={heightFeet}
                                         onChangeText={setHeightFeet}
                                     />
@@ -278,7 +287,8 @@ export default function Onboarding() {
                                         style={styles.dateInput}
                                         keyboardType="number-pad"
                                         maxLength={2}
-                                        placeholder="10"
+                                        placeholder="In"
+                                        placeholderTextColor={Colors.TEXT_MUTED}
                                         value={heightInches}
                                         onChangeText={setHeightInches}
                                     />
@@ -299,7 +309,8 @@ export default function Onboarding() {
                                         style={[styles.dateInput, { flex: 1, backgroundColor: 'transparent', height: '100%', marginBottom: 0 }]}
                                         keyboardType="number-pad"
                                         maxLength={3}
-                                        placeholder="75"
+                                        placeholder="Kg"
+                                        placeholderTextColor={Colors.TEXT_MUTED}
                                         value={weightKg}
                                         onChangeText={setWeightKg}
                                     />

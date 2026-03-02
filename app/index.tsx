@@ -1,59 +1,78 @@
-import { useAuth, useUser } from "@clerk/clerk-expo";
+import { useUser } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Colors } from '../constants/Colors';
-import { doc, getDoc } from "firebase/firestore";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { Colors } from "../constants/Colors";
 import { db } from "../firebaseConfig";
 
 export default function Index() {
-  const { signOut } = useAuth();
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-  const checkOnboarding = async () => {
-    if (!user?.id) return;
+    if (!isLoaded) return;
 
-    try {
-      const userDoc = await getDoc(doc(db, "users", user.id));
+    const checkOnboardingStatus = async () => {
+      try {
+        if (!user?.id) {
+          setIsChecking(false);
+          return;
+        }
 
-      const completed =
-        userDoc.exists() && userDoc.data()?.onboardingCompleted === true;
+        const userRef = doc(db, "users", user.id);
 
-      if (!completed) {
+        // ✅ HARD GUARANTEE USER DOCUMENT EXISTS
+        await setDoc(
+          userRef,
+          {
+            clerkUserId: user.id,
+            createdAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+
+          const hasOnboardingData = !!(
+            data.onboardingCompleted === true ||
+            data.isSetupCompleted === true ||
+            data.physicalProfile ||
+            data.generatedPlan
+          );
+
+          if (hasOnboardingData) {
+            router.replace("/home");
+          } else {
+            router.replace("/onboarding");
+          }
+        } else {
+          router.replace("/onboarding");
+        }
+      } catch (error) {
+        console.error("[Index] Error:", error);
         router.replace("/onboarding");
-      } else {
+      } finally {
         setIsChecking(false);
       }
-    } catch (error) {
-      console.error("Failed to check onboarding:", error);
-      setIsChecking(false);
-    }
-  };
+    };
 
-  checkOnboarding();
-}, [user?.id]);
+    checkOnboardingStatus();
+  }, [isLoaded, user?.id]);
 
-  if (isChecking) {
+  if (isChecking || !isLoaded) {
     return (
-      <View style={[styles.container, { justifyContent: 'center' }]}>
+      <View style={styles.container}>
         <ActivityIndicator size="large" color={Colors.PRIMARY} />
       </View>
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hello, {user?.firstName || 'User'}!</Text>
-      <Text style={styles.subtitle}>Welcome to your AI Calories Tracker.</Text>
-
-      <TouchableOpacity style={styles.button} onPress={() => signOut()}>
-        <Text style={styles.buttonText}>Sign Out</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  return null;
 }
 
 const styles = StyleSheet.create({
@@ -62,29 +81,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Colors.BACKGROUND,
-    padding: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: Colors.TEXT_MAIN,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: Colors.TEXT_MUTED,
-    marginBottom: 32,
-    textAlign: 'center',
-  },
-  button: {
-    backgroundColor: Colors.ERROR,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 16,
-  }
 });
