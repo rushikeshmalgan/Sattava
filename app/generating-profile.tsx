@@ -36,7 +36,6 @@ export default function GeneratingProfile() {
     { id: 5, label: 'Finalizing nutrition targets', status: 'pending' as StepStatus },
   ]);
 
-  /* 🔐 SAFETY GUARD */
   useEffect(() => {
     if (!data) {
       router.replace('/home');
@@ -50,7 +49,6 @@ export default function GeneratingProfile() {
     generateProfile(parsed);
   }, [data]);
 
-  /* 🔄 Loader rotation */
   const startRotation = () => {
     Animated.loop(
       Animated.timing(rotateAnim, {
@@ -75,22 +73,16 @@ export default function GeneratingProfile() {
     );
   };
 
-  /* ⏱ Fake step timing (UX only) */
   const startStepTimers = () => {
+    updateStep(1, 'loading');
     setTimeout(() => {
       updateStep(1, 'completed');
       updateStep(2, 'loading');
-    }, 1500);
-
-    setTimeout(() => {
-      updateStep(2, 'completed');
-      updateStep(3, 'loading');
-    }, 3500);
-
-    setTimeout(() => {
-      updateStep(3, 'completed');
-      updateStep(4, 'loading');
-    }, 5500);
+      setTimeout(() => {
+        updateStep(2, 'completed');
+        updateStep(3, 'loading');
+      }, 400);
+    }, 400);
   };
 
   const animateProgress = (toValue: number, duration: number) => {
@@ -102,7 +94,6 @@ export default function GeneratingProfile() {
     }).start();
   };
 
-  /* 🧠 AI + SAVE */
   const generateProfile = async (profileData: UserProfileData) => {
     try {
       animateProgress(0.2, 600);
@@ -137,7 +128,9 @@ Return ONLY valid JSON:
       const cleanJson = text.replace(/```json|```/g, '').trim();
       const aiData = JSON.parse(cleanJson);
 
-      animateProgress(0.7, 1200);
+      updateStep(3, 'completed');
+      updateStep(4, 'loading');
+      animateProgress(0.8, 400);
 
       const finalProfile: UserProfileData = {
         ...profileData,
@@ -156,11 +149,9 @@ Return ONLY valid JSON:
         await setDoc(
           doc(db, 'users', user.id),
           {
-            // ✅ DEFINITIVE FLAGS
             onboardingCompleted: true,
             isSetupCompleted: true,
 
-            // ✅ DATA
             generatedPlan: finalProfile.generatedPlan,
             physicalProfile: {
               gender: profileData.gender,
@@ -172,7 +163,6 @@ Return ONLY valid JSON:
               weightKg: profileData.weightKg,
             },
 
-            // ✅ METADATA
             imageUrl: user.imageUrl || '',
             onboardingCompletedAt: new Date(),
             lastUpdated: new Date(),
@@ -183,12 +173,12 @@ Return ONLY valid JSON:
 
       updateStep(4, 'completed');
       updateStep(5, 'loading');
-      animateProgress(1, 600);
+      animateProgress(1, 300);
 
       setTimeout(() => {
         updateStep(5, 'completed');
-        setTimeout(() => router.replace('/home'), 600);
-      }, 1000);
+        router.replace('/home');
+      }, 300);
     } catch (err) {
       console.error('Profile generation failed:', err);
       router.replace('/home');
@@ -241,7 +231,6 @@ Return ONLY valid JSON:
   );
 }
 
-/* 🎨 STYLES */
 const styles = StyleSheet.create({
   container: {
     flex: 1,

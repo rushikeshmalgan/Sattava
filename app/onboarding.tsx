@@ -26,7 +26,6 @@ export default function Onboarding() {
     const { user } = useUser();
     const [currentStep, setCurrentStep] = useState(1);
 
-    // Form State
     const [gender, setGender] = useState('');
     const [goal, setGoal] = useState('');
     const [activityLevel, setActivityLevel] = useState('');
@@ -38,7 +37,6 @@ export default function Onboarding() {
     const [weightKg, setWeightKg] = useState('');
 
     const handleNext = async () => {
-        // Validation
         if (currentStep === 1 && !gender) return Alert.alert("Required", "Please select a gender");
         if (currentStep === 2 && !goal) return Alert.alert("Required", "Please select a goal");
         if (currentStep === 3 && !activityLevel) return Alert.alert("Required", "Please select an activity level");
@@ -47,7 +45,6 @@ export default function Onboarding() {
         if (currentStep < TOTAL_STEPS) {
             setCurrentStep(currentStep + 1);
         } else {
-            // Final Step Validation & Save
             if (!heightFeet || !heightInches || !weightKg) {
                 return Alert.alert("Required", "Please enter your fully height and weight");
             }
@@ -88,7 +85,6 @@ export default function Onboarding() {
                 { merge: true }
             );
 
-            // ❗ DO NOT mark onboarding complete here
             router.replace({
                 pathname: '/generating-profile',
                 params: { data: JSON.stringify(profileData) },
@@ -329,7 +325,6 @@ export default function Onboarding() {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.container}
             >
-                {/* Header */}
                 <View style={styles.header}>
                     <TouchableOpacity onPress={handleBack} style={styles.backButton}>
                         {currentStep > 1 && <Ionicons name="arrow-back" size={28} color={Colors.TEXT_MAIN} />}
@@ -436,7 +431,7 @@ const styles = StyleSheet.create({
         borderColor: 'transparent',
     },
     selectedCard: {
-        backgroundColor: `${Colors.PRIMARY}15`, // Light primary background
+        backgroundColor: `${Colors.PRIMARY}15`, 
         borderColor: Colors.PRIMARY,
     },
     genderText: {

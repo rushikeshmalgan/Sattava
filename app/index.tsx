@@ -23,7 +23,6 @@ export default function Index() {
 
         const userRef = doc(db, "users", user.id);
 
-        // ✅ HARD GUARANTEE USER DOCUMENT EXISTS
         await setDoc(
           userRef,
           {
