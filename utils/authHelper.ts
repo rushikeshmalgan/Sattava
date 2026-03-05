@@ -16,14 +16,12 @@ export const saveUserToFirestore = async (userId: string, email: string, name?: 
         console.log(`[Firebase Debug] Document exists? ${userDoc.exists()}`);
 
         if (userDoc.exists()) {
-            // User already exists, update last login or merge new info
             await updateDoc(userRef, {
                 lastLoginAt: new Date(),
                 ...(name ? { name } : {}),
             });
             console.log('User document updated in Firestore!');
         } else {
-            // Create new user document
             await setDoc(userRef, {
                 email,
                 name: name || '',

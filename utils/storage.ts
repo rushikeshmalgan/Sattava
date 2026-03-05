@@ -12,7 +12,6 @@ export interface UserProfileData {
     heightFeet: string;
     heightInches: string;
     weightKg: string;
-    // AI Recommended Nutrition
     generatedPlan?: {
         dailyCalories: number;
         macros: {

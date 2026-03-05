@@ -1,0 +1,147 @@
+import { arrayUnion, doc, increment, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
+
+/**
+ * Updates the daily nutritional targets for a user in Firestore.
+ */
+export const updateUserTargets = async (
+    userId: string,
+    targets: {
+        calories: number;
+        macros: {
+            protein: string;
+            fats: string;
+            carbs: string;
+        };
+        waterIntake: string;
+    }
+) => {
+    try {
+        const userDocRef = doc(db, 'users', userId);
+        await updateDoc(userDocRef, {
+            'generatedPlan.dailyCalories': targets.calories,
+            'generatedPlan.macros.protein': targets.macros.protein,
+            'generatedPlan.macros.fats': targets.macros.fats,
+            'generatedPlan.macros.carbs': targets.macros.carbs,
+            'generatedPlan.waterIntake': targets.waterIntake,
+            lastUpdated: new Date(),
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating user targets:", error);
+        throw error;
+    }
+};
+
+/**
+ * Updates the consumed values for a specific date in Firestore.
+ */
+export const logConsumption = async (
+    userId: string,
+    dateString: string,
+    values: {
+        calories?: number;
+        carbs?: number;
+        protein?: number;
+        fat?: number;
+        water?: number;
+    }
+) => {
+    try {
+        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
+        await setDoc(logDocRef, {
+            totalCalories: values.calories ?? 0,
+            totalCarbs: values.carbs ?? 0,
+            totalProtein: values.protein ?? 0,
+            totalFat: values.fat ?? 0,
+            totalWater: values.water ?? 0,
+            lastUpdated: new Date(),
+        }, { merge: true });
+        return { success: true };
+    } catch (error) {
+        console.error("Error logging consumption:", error);
+        throw error;
+    }
+};
+
+/**
+ * Increments the consumed values for a specific date.
+ */
+export const incrementConsumption = async (
+    userId: string,
+    dateString: string,
+    increments: {
+        calories?: number;
+        carbs?: number;
+        protein?: number;
+        fat?: number;
+        water?: number;
+    }
+) => {
+    try {
+        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
+        const updateData: any = {
+            lastUpdated: new Date(),
+        };
+        if (increments.calories) updateData.totalCalories = increment(increments.calories);
+        if (increments.carbs) updateData.totalCarbs = increment(increments.carbs);
+        if (increments.protein) updateData.totalProtein = increment(increments.protein);
+        if (increments.fat) updateData.totalFat = increment(increments.fat);
+        if (increments.water) updateData.totalWater = increment(increments.water);
+
+        await setDoc(logDocRef, updateData, { merge: true });
+        return { success: true };
+    } catch (error) {
+        console.error("Error incrementing consumption:", error);
+        throw error;
+    }
+};
+
+
+export const addActivityLog = async (
+    userId: string,
+    dateString: string,
+    activity: {
+        id: string;
+        name: string;
+        calories: number;
+        time: string;
+        type: 'food' | 'exercise' | 'water';
+        amount?: string;
+        macros?: {
+            carbs?: number;
+            protein?: number;
+            fat?: number;
+        };
+    }
+) => {
+    try {
+        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
+
+        const updateData: any = {
+            logs: arrayUnion(activity),
+            lastUpdated: new Date()
+        };
+
+               if (activity.type === 'exercise') {
+            updateData.totalCalories = increment(-activity.calories);
+        } else if (activity.type === 'food') {
+            updateData.totalCalories = increment(activity.calories);
+
+            if (activity.macros) {
+                if (activity.macros.carbs) updateData.totalCarbs = increment(activity.macros.carbs);
+                if (activity.macros.protein) updateData.totalProtein = increment(activity.macros.protein);
+                if (activity.macros.fat) updateData.totalFat = increment(activity.macros.fat);
+            }
+        } else if (activity.type === 'water') {
+            const waterAmount = activity.amount ? parseFloat(activity.amount) : 0.25;
+            updateData.totalWater = increment(waterAmount);
+        }
+
+        await setDoc(logDocRef, updateData, { merge: true });
+        return { success: true };
+    } catch (error) {
+        console.error("Error adding activity log:", error);
+        throw error;
+    }
+};
