@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors } from '../constants/Colors';
+import { Colors } from '../../constants/Colors';
 
 const LogExerciseScreen = () => {
     const router = useRouter();
@@ -11,10 +11,10 @@ const LogExerciseScreen = () => {
 
     const options = [
         {
-            id: 'run',
-            title: 'Run',
-            description: 'Running, Walking, Cycling etc',
-            icon: 'walk-outline',
+            id: 'cardio',
+            title: 'Cardio',
+            description: 'Cardio, Walking, Cycling etc',
+            icon: 'walk',
             color: '#3B82F6'
         },
         {
@@ -28,19 +28,19 @@ const LogExerciseScreen = () => {
             id: 'manual',
             title: 'Manual',
             description: 'Enter calories Burn Manually',
-            icon: 'create-outline',
+            icon: 'fitness',
             color: '#10B981'
         }
     ];
 
     const handleOptionPress = (option: typeof options[0]) => {
         if (option.id === 'manual') {
-            router.push('/manual-log');
+            router.push('/log/manual-exercise');
             return;
         }
 
         router.push({
-            pathname: '/workout-details',
+            pathname: '/log/exercise-details',
             params: {
                 title: option.title,
                 description: option.description,

@@ -16,9 +16,9 @@ import { useRouter } from 'expo-router';
 const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
     const router = useRouter();
     const options = [
-        { id: 'exercise', title: 'Log Exercise', icon: 'fitness-outline', color: '#DC2626' },
-        { id: 'water', title: 'Add 250ml Water', icon: 'water-outline', color: '#0284C7' },
-        { id: 'food', title: 'Log Food', icon: 'search-outline', color: '#EA580C' },
+        { id: 'exercise', title: 'Log Exercise', icon: 'walk', color: '#DC2626' },
+        { id: 'water', title: 'Add Water Intake', icon: 'water-outline', color: '#0284C7' },
+        { id: 'food', title: 'Log Food', icon: 'restaurant', color: '#EA580C' },
         { id: 'scan', title: 'Scan Food', icon: 'scan-outline', color: '#10B981', isPremium: true },
     ];
 
@@ -36,28 +36,16 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
             alert("Scan Food is a Premium Feature!");
         } else if (id === 'exercise') {
             onClose();
-            router.push('/log-exercise');
+            router.push('/log');
             return;
         } else if (id === 'food') {
             onClose();
-            router.push('/manual-food-log');
+            router.push('/log/manual-calories');
             return;
         } else if (id === 'water') {
-            try {
-                // Now using addActivityLog so it shows up in Recent Activity
-                await addActivityLog(userId, dateString, {
-                    id: Date.now().toString(),
-                    name: 'Water Intake',
-                    calories: 0,
-                    time: timeString,
-                    type: 'water',
-                    amount: '0.25'
-                });
-                alert("Added 250ml Water!");
-            } catch (error) {
-                console.error("Failed to log water:", error);
-                alert("Failed to log water.");
-            }
+            onClose();
+            router.push('/log/water-intake');
+            return;
         } else {
             console.log(`Selected option: ${id}`);
         }

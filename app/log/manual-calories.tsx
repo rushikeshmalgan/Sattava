@@ -14,8 +14,8 @@ import {
     View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors } from '../constants/Colors';
-import { addActivityLog } from '../services/userService';
+import { Colors } from '../../constants/Colors';
+import { addActivityLog } from '../../services/userService';
 
 const ManualFoodLogScreen = () => {
     const { user } = useUser();
@@ -82,14 +82,14 @@ const ManualFoodLogScreen = () => {
                     <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
                         <Ionicons name="arrow-back" size={24} color={Colors.TEXT_MAIN} />
                     </TouchableOpacity>
-                    <Text style={styles.headerTitle}>Manual Food Log</Text>
+                    <Text style={styles.headerTitle}>Manual Calories</Text>
                 </View>
 
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     <View style={styles.card}>
                         <Text style={styles.label}>Food Name</Text>
                         <View style={styles.inputWrapper}>
-                            <Ionicons name="nutrition-outline" size={20} color={Colors.PRIMARY} style={styles.inputIcon} />
+                            <Ionicons name="restaurant" size={20} color={Colors.PRIMARY} style={styles.inputIcon} />
                             <TextInput
                                 style={styles.input}
                                 placeholder="e.g. Chicken Salad"
@@ -99,7 +99,7 @@ const ManualFoodLogScreen = () => {
                             />
                         </View>
 
-                        <Text style={styles.label}>Calories (kcal)</Text>
+                        <Text style={styles.label}>Calories</Text>
                         <View style={styles.inputWrapper}>
                             <Ionicons name="flame-outline" size={20} color="#FF6347" style={styles.inputIcon} />
                             <TextInput

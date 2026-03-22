@@ -37,7 +37,8 @@ export default function Home() {
     });
 
     const [consumed, setConsumed] = useState({
-        calories: 0,
+        calories: 0, // This is consumed calories
+        caloriesBurned: 0,
         carbs: 0,
         protein: 0,
         fat: 0,
@@ -85,22 +86,28 @@ export default function Home() {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 setConsumed({
-                    calories: data.totalCalories || 0,
+                    calories: data.consumedCalories || data.totalCalories || 0,
+                    caloriesBurned: data.caloriesBurned || 0,
                     carbs: data.totalCarbs || 0,
                     protein: data.totalProtein || 0,
                     fat: data.totalFat || 0,
-                    water: data.totalWater || 0,
+                    water: data.waterIntake || data.totalWater || 0,
                 });
-                setActivities(data.logs || []);
+                const logs = data.logs || [];
+                // Sort by createdAt (newest first) or fallback to reverse order of insertion
+                const sortedLogs = [...logs].reverse();
+                setActivities(sortedLogs);
             } else {
                 // If log doesn't exist, create it with default values
                 try {
                     await setDoc(logDocRef, {
-                        totalCalories: 0,
+                        consumedCalories: 0,
+                        caloriesBurned: 0,
                         totalCarbs: 0,
                         totalProtein: 0,
                         totalFat: 0,
                         totalWater: 0,
+                        waterIntake: 0,
                         logs: [],
                         createdAt: new Date(),
                     });
@@ -123,7 +130,7 @@ export default function Home() {
             carbs: targets.carbs.toString(),
             protein: targets.protein.toString(),
             fat: targets.fat.toString(),
-            water: targets.water.toString()
+            water: (targets.water * 1000).toString()
         });
         setIsEditModalVisible(true);
     };
@@ -151,7 +158,7 @@ export default function Home() {
                     protein: `${editableTargets.protein}g`,
                     fats: `${editableTargets.fat}g`
                 },
-                waterIntake: `${editableTargets.water}L`
+                waterIntake: `${parseFloat(editableTargets.water) / 1000}L`
             });
 
             setIsEditModalVisible(false);
@@ -176,7 +183,7 @@ export default function Home() {
                 calories: 0,
                 time: timeString,
                 type: 'water',
-                amount: '0.25'
+                amount: '250ml'
             });
         } catch (error) {
             console.error("Failed to quickly add water:", error);
@@ -206,10 +213,10 @@ export default function Home() {
                     selectedDate={selectedDate}
                     onDateSelect={(date) => setSelectedDate(date)}
                 />
-
                 <View style={styles.content}>
                     <CaloriesCard
                         consumed={consumed.calories}
+                        burned={consumed.caloriesBurned}
                         target={targets.calories}
                         onEdit={handleEditPress}
                         macros={{
@@ -218,14 +225,12 @@ export default function Home() {
                             fat: Math.max(targets.fat - consumed.fat, 0)
                         }}
                     />
-
                     <WaterIntakeCard
-                        drunkLitres={consumed.water}
-                        targetLitres={targets.water}
+                        drunkMl={consumed.water}
+                        targetMl={targets.water * 1000}
                         onEdit={handleEditPress}
                         onAddWater={handleAddWater}
                     />
-
                     <RecentActivity activities={activities} />
                 </View>
             </ScrollView>
@@ -267,7 +272,7 @@ export default function Home() {
                                     </View>
 
                                     <View style={styles.inputContainer}>
-                                        <Text style={styles.inputLabel}>Daily Water Goal (Liters)</Text>
+                                        <Text style={styles.inputLabel}>Daily Water Goal (ml)</Text>
                                         <View style={styles.inputWrapper}>
                                             <Ionicons name="water-outline" size={20} color="#0284C7" style={styles.inputIcon} />
                                             <TextInput
@@ -275,7 +280,7 @@ export default function Home() {
                                                 value={editableTargets.water}
                                                 onChangeText={(text) => setEditableTargets({ ...editableTargets, water: text })}
                                                 keyboardType="numeric"
-                                                placeholder="e.g. 2.5"
+                                                placeholder="e.g. 2000"
                                             />
                                         </View>
                                     </View>

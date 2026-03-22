@@ -13,10 +13,10 @@ import {
     View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors } from '../constants/Colors';
-import { addActivityLog } from '../services/userService';
+import { Colors } from '../../constants/Colors';
+import { addExerciseLog } from '../../services/logService';
 
-const ManualLogScreen = () => {
+const ManualCaloriesScreen = () => {
     const { user } = useUser();
     const router = useRouter();
     const insets = useSafeAreaInsets();
@@ -34,20 +34,20 @@ const ManualLogScreen = () => {
         setIsLogging(true);
         try {
             const dateString = new Date().toISOString().split('T')[0];
-            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            await addActivityLog(user.id, dateString, {
+            await addExerciseLog(user.id, dateString, {
                 id: Date.now().toString(),
+                type: 'manual',
                 name: 'Manual Exercise',
+                duration: 0, // Manual entry might not have duration
                 calories: Number(calories),
-                time: timeString,
-                type: 'exercise'
+                intensity: 'N/A'
             });
 
-            // Navigate back to home tab
+            // Redirect home
             router.replace('/(tabs)/home');
         } catch (error) {
-            console.error('Failed to log calories:', error);
+            console.error('Failed to log exercise:', error);
             alert('Failed to save log. Please try again.');
         } finally {
             setIsLogging(false);
@@ -66,7 +66,7 @@ const ManualLogScreen = () => {
                     <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
                         <Ionicons name="arrow-back" size={24} color={Colors.TEXT_MAIN} />
                     </TouchableOpacity>
-                    <Text style={styles.headerTitle}>Manual Log</Text>
+                    <Text style={styles.headerTitle}>Manual Entry</Text>
                 </View>
 
                 <View style={styles.container}>
@@ -87,12 +87,8 @@ const ManualLogScreen = () => {
                                 autoFocus={true}
                                 placeholderTextColor={Colors.TEXT_MUTED}
                             />
-                            <Text style={styles.unitText}>kcal</Text>
+                            <Text style={styles.unitText}>Calories</Text>
                         </View>
-
-                        <Text style={styles.infoText}>
-                            Enter the estimated calories you've burned during your activity.
-                        </Text>
                     </View>
 
                     <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
@@ -104,7 +100,7 @@ const ManualLogScreen = () => {
                             {isLogging ? (
                                 <ActivityIndicator color="white" />
                             ) : (
-                                <Text style={styles.logButtonText}>Log Calories</Text>
+                                <Text style={styles.logButtonText}>Log Workout</Text>
                             )}
                         </TouchableOpacity>
                     </View>
@@ -116,14 +112,10 @@ const ManualLogScreen = () => {
     );
 };
 
-export default ManualLogScreen;
+export default ManualCaloriesScreen;
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1,
-        backgroundColor: Colors.BACKGROUND,
-    },
-    safeArea: {
         flex: 1,
         backgroundColor: Colors.BACKGROUND,
     },
@@ -134,7 +126,17 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
     },
     backButton: {
-        padding: 5,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
         marginRight: 15,
     },
     headerTitle: {
@@ -155,11 +157,11 @@ const styles = StyleSheet.create({
     fireIconContainer: {
         width: 100,
         height: 100,
-        borderRadius: 70,
+        borderRadius: 50,
         backgroundColor: '#FFF5F2',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom:30,
+        marginBottom: 30,
     },
     label: {
         fontSize: 17,
@@ -188,34 +190,23 @@ const styles = StyleSheet.create({
         color: Colors.TEXT_MUTED,
         marginLeft: 10,
     },
-    infoText: {
-        fontSize: 14,
-        color: Colors.TEXT_MUTED,
-        textAlign: 'center',
-        lineHeight: 20,
-    },
     footer: {
         padding: 20,
     },
-    systemMask: {
-        width: '100%',
-        backgroundColor: Colors.BACKGROUND,
-    },
     logButton: {
         backgroundColor: Colors.PRIMARY,
-        height: 56,
-        borderRadius: 16,
+        height: 60,
+        borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: Colors.PRIMARY,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 8,
-        elevation: 5,
     },
     logButtonText: {
         color: 'white',
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    systemMask: {
+        width: '100%',
+        backgroundColor: Colors.BACKGROUND,
     },
 });

@@ -8,8 +8,10 @@ export interface Activity {
     name: string;
     calories: number;
     time: string;
-    type: 'food' | 'exercise' | 'water';
+    type: 'food' | 'exercise' | 'water' | 'cardio' | 'weight' | 'manual';
     amount?: string;
+    intensity?: string;
+    duration?: number;
 }
 
 interface RecentActivityProps {
@@ -17,6 +19,24 @@ interface RecentActivityProps {
 }
 
 const RecentActivity = ({ activities }: RecentActivityProps) => {
+    const getActivityIcon = (activity: Activity) => {
+        if (activity.type === 'water') return 'water';
+        if (activity.type === 'food' || activity.type === 'manual') return 'restaurant';
+        const name = (activity.name || '').toLowerCase();
+        if (activity.type === 'cardio' || name.includes('cardio')) return 'walk';
+        if (activity.type === 'weight' || name.includes('weight')) return 'barbell';
+        return 'fitness';
+    };
+
+    const getActivityColor = (activity: Activity) => {
+        if (activity.type === 'water') return '#0284C7';
+        if (activity.type === 'food' || activity.type === 'manual') return '#10B981';
+        const name = (activity.name || '').toLowerCase();
+        if (activity.type === 'cardio' || name.includes('cardio')) return '#3B82F6';
+        if (activity.type === 'weight' || name.includes('weight')) return '#EF4444';
+        return Colors.PRIMARY;
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Recent Activity</Text>
@@ -31,31 +51,64 @@ const RecentActivity = ({ activities }: RecentActivityProps) => {
                 </View>
             ) : (
                 <View style={styles.activityList}>
-                    {activities.map((activity) => (
-                        <View key={activity.id} style={styles.activityItem}>
-                            <View style={[styles.iconContainer,
-                            activity.type === 'food' ? styles.foodIcon :
-                                activity.type === 'exercise' ? styles.exerciseIcon : styles.waterIcon]}>
-                                <Ionicons
-                                    name={activity.type === 'food' ? 'restaurant' :
-                                        activity.type === 'exercise' ? 'fitness' : 'water'}
-                                    size={20}
-                                    color="white"
-                                />
+                    {activities.map((activity) => {
+                        const isExercise = ['cardio', 'weight', 'manual', 'exercise'].includes(activity.type);
+                        const icon = getActivityIcon(activity);
+                        const color = getActivityColor(activity);
+                        if (isExercise) {
+                            return (
+                                <View key={activity.id} style={styles.activityCard}>
+                                    <View style={[styles.bigIconContainer, { backgroundColor: `${color}15` }]}>
+                                        <Ionicons
+                                            name={icon as any}
+                                            size={32}
+                                            color={color}
+                                        />
+                                    </View>
+                                    <View style={styles.activityContent}>
+                                        <View style={styles.exerciseHeader}>
+                                            <Text style={styles.activityName}>{activity.name || ''}</Text>
+                                            <Text style={styles.logTimeTopRight}>{activity.time || ''}</Text>
+                                        </View>
+                                        <View style={styles.caloriesRow}>
+                                            <Ionicons name="flame" size={16} color="#FF6347" />
+                                            <Text style={styles.caloriesValueText}>
+                                                {activity.calories || 0} Calories
+                                            </Text>
+                                        </View>
+                                        <View style={styles.verticalStats}>
+                                            {activity.intensity ? (
+                                                <Text style={styles.statsText}>Intensity: {activity.intensity}</Text>
+                                            ) : null}
+                                            {activity.duration ? (
+                                                <Text style={styles.statsText}>Duration: {activity.duration} min</Text>
+                                            ) : null}
+                                        </View>
+                                    </View>
+                                </View>
+                            );
+                        }
+                        return (
+                            <View key={activity.id} style={styles.activityCard}>
+                                <View style={[styles.iconContainer, { backgroundColor: `${color}15` }]}>
+                                    <Ionicons
+                                        name={icon as any}
+                                        size={24}
+                                        color={color}
+                                    />
+                                </View>
+                                <View style={styles.activityContent}>
+                                    <View style={styles.activityHeader}>
+                                        <Text style={styles.activityName}>{activity.name || ''}</Text>
+                                        <Text style={styles.activityTime}>{activity.time || ''}</Text>
+                                    </View>
+                                    <Text style={styles.caloriesText}>
+                                        {activity.type === 'water' ? (activity.amount || '') : `${activity.calories || 0} Calories`}
+                                    </Text>
+                                </View>
                             </View>
-                            <View style={styles.activityDetails}>
-                                <Text style={styles.activityName}>{activity.name}</Text>
-                                <Text style={styles.activityTime}>{activity.time}</Text>
-                            </View>
-                            <View style={styles.activityAmount}>
-                                <Text style={styles.caloriesText}>
-                                    {activity.type === 'food' ? `+${activity.calories} kcal` :
-                                        activity.type === 'exercise' ? `-${activity.calories} kcal` :
-                                            activity.amount}
-                                </Text>
-                            </View>
-                        </View>
-                    ))}
+                        );
+                    })}
                 </View>
             )}
         </View>
@@ -83,7 +136,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 1,
         borderColor: '#f0f0f0',
-        // Shadow
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.05,
@@ -112,47 +164,106 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     activityList: {
+        gap: 12,
+    },
+    activityCard: {
+        flexDirection: 'row',
+        padding: 16,
         backgroundColor: '#FFFFFF',
-        borderRadius: 20,
-        padding: 15,
+        borderRadius: 24,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 15,
+        elevation: 2,
+        borderWidth: 1,
+        borderColor: '#f5f5f5',
     },
     activityItem: {
         flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: '#f5f5f5',
+        padding: 16,
+        borderRadius: 16,
+        marginBottom: 8,
     },
     iconContainer: {
-        width: 40,
-        height: 40,
+        width: 48,
+        height: 48,
+        borderRadius: 14,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 16,
+    },
+    bigIconContainer: {
+        width: 64,
+        height: 64,
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 15,
+        marginRight: 16,
     },
-    foodIcon: { backgroundColor: '#EA580C' },
-    exerciseIcon: { backgroundColor: '#DC2626' },
-    waterIcon: { backgroundColor: '#0284C7' },
-    activityDetails: {
+    activityContent: {
         flex: 1,
+        justifyContent: 'center',
+    },
+    activityHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 2,
+    },
+    exerciseHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        marginBottom: 4,
     },
     activityName: {
-        fontSize: 15,
-        fontWeight: '600',
+        fontSize: 16,
+        fontWeight: '700',
         color: Colors.TEXT_MAIN,
     },
     activityTime: {
         fontSize: 12,
         color: Colors.TEXT_MUTED,
-        marginTop: 2,
     },
-    activityAmount: {
-        alignItems: 'flex-end',
+    logTimeTopRight: {
+        fontSize: 12,
+        color: Colors.TEXT_MUTED,
+        fontWeight: '500',
     },
-    caloriesText: {
+    caloriesRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 4,
+        gap: 6,
+    },
+    caloriesValueText: {
         fontSize: 14,
         fontWeight: '700',
         color: Colors.TEXT_MAIN,
+    },
+    verticalStats: {
+        gap: 2,
+    },
+    statsText: {
+        fontSize: 12,
+        color: Colors.TEXT_MUTED,
+        fontWeight: '500',
+    },
+    statsLine: {
+        fontSize: 12,
+        color: Colors.TEXT_MUTED,
+        fontWeight: '500',
+    },
+    caloriesText: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: Colors.TEXT_MUTED,
+        marginBottom: 2,
+    },
+    extraInfo: {
+        fontSize: 12,
+        color: Colors.TEXT_MUTED,
+        fontWeight: '500',
     },
 });
