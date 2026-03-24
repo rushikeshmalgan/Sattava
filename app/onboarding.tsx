@@ -330,7 +330,7 @@ export default function Onboarding() {
                         {currentStep > 1 && <Ionicons name="arrow-back" size={28} color={Colors.TEXT_MAIN} />}
                     </TouchableOpacity>
                     <Text style={styles.headerText}>Step {currentStep} of {TOTAL_STEPS}</Text>
-                    <View style={{ width: 44 }} /> {/* Balancing Spacer */}
+                    <View style={{ width: 44 }} />
                 </View>
 
                 {renderProgressBar()}

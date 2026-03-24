@@ -86,12 +86,12 @@ export default function Home() {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 setConsumed({
-                    calories: data.consumedCalories || data.totalCalories || 0,
+                    calories: data.consumedCalories || 0,   // ✅ FIXED
                     caloriesBurned: data.caloriesBurned || 0,
                     carbs: data.totalCarbs || 0,
                     protein: data.totalProtein || 0,
                     fat: data.totalFat || 0,
-                    water: data.waterIntake || data.totalWater || 0,
+                    water: data.totalWater || 0,
                 });
                 const logs = data.logs || [];
                 // Sort by createdAt (newest first) or fallback to reverse order of insertion

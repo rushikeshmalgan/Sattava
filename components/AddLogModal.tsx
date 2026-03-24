@@ -18,7 +18,7 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
     const options = [
         { id: 'exercise', title: 'Log Exercise', icon: 'walk', color: '#DC2626' },
         { id: 'water', title: 'Add Water Intake', icon: 'water-outline', color: '#0284C7' },
-        { id: 'food', title: 'Log Food', icon: 'restaurant', color: '#EA580C' },
+        { id: 'food', title: 'Add Food', icon: 'restaurant', color: '#EA580C' },
         { id: 'scan', title: 'Scan Food', icon: 'scan-outline', color: '#10B981', isPremium: true },
     ];
 
@@ -40,7 +40,7 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
             return;
         } else if (id === 'food') {
             onClose();
-            router.push('/log/manual-calories');
+            router.push('/food-search');
             return;
         } else if (id === 'water') {
             onClose();

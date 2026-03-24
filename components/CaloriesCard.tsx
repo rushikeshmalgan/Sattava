@@ -22,15 +22,17 @@ const CaloriesCard = ({
     onEdit,
     macros
 }: CaloriesCardProps) => {
+
     // Net consumed is what's actually taken in minus what was burned
     const netConsumed = consumed - burned;
-    const progress =
-        target > 0
-            ? Math.min(Math.max(consumed / target, 0), 1)
-            : 0;
-    
+    // const progress =
+    //     target > 0
+    //         ? Math.min(Math.max(consumed / target, 0), 1)
+    //         : 0;
+    const remaining = target - consumed + burned;
+    const progress = consumed / target;
     // Remaining = Target - Consumed + Burned
-    const remaining = Math.max(target - consumed + burned, 0);
+    // const remaining = Math.max(target - consumed + burned, 0);
     return (
         <View style={styles.card}>
             <View style={styles.header}>
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 24,
         marginVertical: 5,
-    
+
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.1,
