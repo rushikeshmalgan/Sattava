@@ -83,11 +83,14 @@ export const incrementConsumption = async (
         const updateData: any = {
             lastUpdated: new Date(),
         };
-        if (increments.calories) updateData.totalCalories = increment(increments.calories);
+        if (increments.calories) updateData.consumedCalories = increment(increments.calories);
         if (increments.carbs) updateData.totalCarbs = increment(increments.carbs);
         if (increments.protein) updateData.totalProtein = increment(increments.protein);
         if (increments.fat) updateData.totalFat = increment(increments.fat);
-        if (increments.water) updateData.totalWater = increment(increments.water);
+        if (increments.water) {
+            updateData.totalWater = increment(increments.water);
+            updateData.waterIntake = increment(increments.water);
+        }
 
         await setDoc(logDocRef, updateData, { merge: true });
         return { success: true };
@@ -113,20 +116,27 @@ export const addActivityLog = async (
             protein?: number;
             fat?: number;
         };
+        intensity?: string;
+        duration?: number;
+        createdAt?: Date;
     }
 ) => {
     try {
         const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
+        const timestamp = activity.createdAt || new Date();
 
         const updateData: any = {
-            logs: arrayUnion(activity),
-            lastUpdated: new Date()
+            logs: arrayUnion({
+                ...activity,
+                createdAt: timestamp
+            }),
+            lastUpdated: timestamp
         };
 
-               if (activity.type === 'exercise') {
-            updateData.totalCalories = increment(-activity.calories);
+        if (activity.type === 'exercise') {
+            updateData.caloriesBurned = increment(activity.calories);
         } else if (activity.type === 'food') {
-            updateData.totalCalories = increment(activity.calories);
+            updateData.consumedCalories = increment(activity.calories);
 
             if (activity.macros) {
                 if (activity.macros.carbs) updateData.totalCarbs = increment(activity.macros.carbs);
@@ -134,8 +144,19 @@ export const addActivityLog = async (
                 if (activity.macros.fat) updateData.totalFat = increment(activity.macros.fat);
             }
         } else if (activity.type === 'water') {
-            const waterAmount = activity.amount ? parseFloat(activity.amount) : 0.25;
+            let waterAmount = 0;
+            if (activity.amount) {
+                const amountStr = activity.amount.toLowerCase();
+                if (amountStr.endsWith('l') && !amountStr.endsWith('ml')) {
+                    waterAmount = parseFloat(amountStr) * 1000;
+                } else {
+                    waterAmount = parseFloat(amountStr);
+                }
+            } else {
+                waterAmount = 250; // Default to 250ml
+            }
             updateData.totalWater = increment(waterAmount);
+            updateData.waterIntake = increment(waterAmount); 
         }
 
         await setDoc(logDocRef, updateData, { merge: true });

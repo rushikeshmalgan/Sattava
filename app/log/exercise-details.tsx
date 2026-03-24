@@ -1,6 +1,7 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { doc, getDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
@@ -14,16 +15,17 @@ import {
     View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors } from '../constants/Colors';
-import { addActivityLog } from '../services/userService';
+import { Colors } from '../../constants/Colors';
+import { db } from '../../firebaseConfig';
 
-const CALORIE_RATES = {
-    Low: 5,
-    Medium: 8,
-    High: 12
+import { Animated } from 'react-native';
+
+const MET_VALUES: any = {
+    cardio: { Low: 5, Medium: 8, High: 11 },
+    weight: { Low: 3, Medium: 5, High: 7 }
 };
 
-const WorkoutDetailsScreen = () => {
+const ExerciseDetailsScreen = () => {
     const { user } = useUser();
     const router = useRouter();
     const insets = useSafeAreaInsets();
@@ -33,8 +35,29 @@ const WorkoutDetailsScreen = () => {
     const [duration, setDuration] = useState('30');
     const [manualDuration, setManualDuration] = useState('');
     const [isSaving, setIsSaving] = useState(false);
+    
+    const [containerWidth, setContainerWidth] = useState(0);
+    const animatedLeft = React.useRef(new Animated.Value(0)).current;
 
     const durationOptions = ['15', '30', '60', '90'];
+
+    // Update animated value whenever intensity changes
+    React.useEffect(() => {
+        if (containerWidth > 0) {
+            const segmentWidth = containerWidth / 3;
+            let target = 0;
+            if (intensity === 'Low') target = 0;
+            if (intensity === 'Medium') target = segmentWidth;
+            if (intensity === 'High') target = segmentWidth * 2;
+            
+            Animated.spring(animatedLeft, {
+                toValue: target,
+                useNativeDriver: false,
+                tension: 50,
+                friction: 8
+            }).start();
+        }
+    }, [intensity, containerWidth]);
 
     const handleContinue = async () => {
         if (!user?.id) return;
@@ -45,51 +68,43 @@ const WorkoutDetailsScreen = () => {
             return;
         }
 
-        const caloriesBurned = Math.round(finalDuration * CALORIE_RATES[intensity]);
-
         setIsSaving(true);
         try {
-            const dateString = new Date().toISOString().split('T')[0];
-            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            // 1. Fetch User Profile for Weight
+            const userDoc = await getDoc(doc(db, 'users', user.id));
+            if (!userDoc.exists()) {
+                throw new Error("User profile not found");
+            }
 
-            await addActivityLog(user.id, dateString, {
-                id: Date.now().toString(),
-                name: `${title} (${intensity})`,
-                calories: caloriesBurned,
-                time: timeString,
-                type: 'exercise',
-                amount: `${finalDuration} min`
+            const profile = userDoc.data().physicalProfile;
+            const weight = Number(profile?.weightKg) || 70; // Default to 70kg if not set
+
+            // 2. Determine MET value
+            const workoutType = (type as string) === 'cardio' ? 'cardio' : 'weight';
+            const met = MET_VALUES[workoutType][intensity];
+
+            // 3. New Formula: Calories = Duration * (MET * 3.5 * Weight) / 200
+            const caloriesBurned = Math.round(finalDuration * (met * 3.5 * weight) / 200);
+
+            // 4. Navigate to Summary Screen
+            router.push({
+                pathname: '/log/exercise-summary',
+                params: {
+                    calories: caloriesBurned,
+                    title,
+                    type: workoutType,
+                    intensity,
+                    duration: finalDuration
+                }
             });
-
-            router.replace('/(tabs)/home');
         } catch (error) {
-            console.error('Failed to log workout:', error);
-            alert('Failed to save workout. Please try again.');
+            console.error('Failed to calculate workout:', error);
+            alert('Something went wrong. Please try again.');
         } finally {
             setIsSaving(false);
         }
     };
 
-    const renderIntensityOption = (label: 'Low' | 'Medium' | 'High') => {
-        const isSelected = intensity === label;
-        return (
-            <TouchableOpacity
-                key={label}
-                onPress={() => setIntensity(label)}
-                style={[
-                    styles.intensityOption,
-                    isSelected && styles.intensityOptionSelected
-                ]}
-            >
-                <Text style={[
-                    styles.intensityText,
-                    isSelected && styles.intensityTextSelected
-                ]}>
-                    {label}
-                </Text>
-            </TouchableOpacity>
-        );
-    };
 
     return (
         <View style={styles.mainContainer}>
@@ -113,18 +128,50 @@ const WorkoutDetailsScreen = () => {
 
                     <View style={styles.card}>
                         <Text style={styles.cardTitle}>Intensity of Workout</Text>
-                        <View style={styles.intensityContainer}>
-                            {renderIntensityOption('Low')}
-                            {renderIntensityOption('Medium')}
-                            {renderIntensityOption('High')}
-                        </View>
-                        <View style={styles.sliderTrack}>
-                            <View style={[
-                                styles.sliderThumb,
-                                intensity === 'Low' && { left: '10%' },
-                                intensity === 'Medium' && { left: '46%' },
-                                intensity === 'High' && { left: '82%' },
+                        <View 
+                            style={styles.segmentedControl}
+                            onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+                        >
+                            <Animated.View style={[
+                                styles.activeSegmentBackground,
+                                {
+                                    width: containerWidth / 3,
+                                    left: animatedLeft
+                                }
                             ]} />
+                            
+                            <TouchableOpacity 
+                                style={styles.segment} 
+                                onPress={() => setIntensity('Low')}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={[
+                                    styles.segmentText,
+                                    intensity === 'Low' && styles.segmentTextSelected
+                                ]}>Low</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity 
+                                style={styles.segment} 
+                                onPress={() => setIntensity('Medium')}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={[
+                                    styles.segmentText,
+                                    intensity === 'Medium' && styles.segmentTextSelected
+                                ]}>Medium</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity 
+                                style={styles.segment} 
+                                onPress={() => setIntensity('High')}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={[
+                                    styles.segmentText,
+                                    intensity === 'High' && styles.segmentTextSelected
+                                ]}>High</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
 
@@ -190,14 +237,10 @@ const WorkoutDetailsScreen = () => {
     );
 };
 
-export default WorkoutDetailsScreen;
+export default ExerciseDetailsScreen;
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1,
-        backgroundColor: Colors.BACKGROUND,
-    },
-    safeArea: {
         flex: 1,
         backgroundColor: Colors.BACKGROUND,
     },
@@ -252,47 +295,40 @@ const styles = StyleSheet.create({
         color: Colors.TEXT_MAIN,
         marginBottom: 20,
     },
-    intensityContainer: {
+    segmentedControl: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 15,
-    },
-    intensityOption: {
-        paddingVertical: 8,
-        paddingHorizontal: 15,
-    },
-    intensityOptionSelected: {
-    },
-    intensityText: {
-        fontSize: 16,
-        color: Colors.TEXT_MUTED,
-        fontWeight: '600',
-    },
-    intensityTextSelected: {
-        color: Colors.PRIMARY,
-        fontWeight: 'bold',
-    },
-    sliderTrack: {
-        height: 8,
+        height: 50,
         backgroundColor: '#F3F4F6',
-        borderRadius: 4,
+        borderRadius: 14,
         position: 'relative',
-        marginHorizontal: 10,
+        padding: 4,
     },
-    sliderThumb: {
+    activeSegmentBackground: {
         position: 'absolute',
-        top: -6,
-        width: 20,
-        height: 20,
+        top: 4,
+        bottom: 4,
+        backgroundColor: '#FFFFFF',
         borderRadius: 10,
-        backgroundColor: Colors.PRIMARY,
-        borderWidth: 3,
-        borderColor: '#fff',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        elevation: 4,
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    segment: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
+    },
+    segmentText: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: Colors.TEXT_MUTED,
+    },
+    segmentTextSelected: {
+        color: Colors.PRIMARY,
+        fontWeight: '700',
     },
     chipsRow: {
         flexDirection: 'row',

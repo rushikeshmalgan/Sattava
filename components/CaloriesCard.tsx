@@ -6,8 +6,8 @@ import { SegmentedHalfCircleProgress } from './SegmentedHalfCircleProgress';
 
 interface CaloriesCardProps {
     consumed: number;
+    burned: number;
     target: number;
-
     onEdit: () => void;
     macros: {
         carbs: number;
@@ -18,14 +18,21 @@ interface CaloriesCardProps {
 const CaloriesCard = ({
     target,
     consumed,
+    burned,
     onEdit,
     macros
 }: CaloriesCardProps) => {
-    const progress =
-        target > 0
-            ? Math.min(consumed / target, 1)
-            : 0;
-    const remaining = Math.max(target - consumed, 0);
+
+    // Net consumed is what's actually taken in minus what was burned
+    const netConsumed = consumed - burned;
+    // const progress =
+    //     target > 0
+    //         ? Math.min(Math.max(consumed / target, 0), 1)
+    //         : 0;
+    const remaining = target - consumed + burned;
+    const progress = consumed / target;
+    // Remaining = Target - Consumed + Burned
+    // const remaining = Math.max(target - consumed + burned, 0);
     return (
         <View style={styles.card}>
             <View style={styles.header}>
@@ -35,7 +42,8 @@ const CaloriesCard = ({
                         name="pencil"
                         size={18}
                         color={Colors.PRIMARY}
-                    />                </TouchableOpacity>
+                    />
+                </TouchableOpacity>
             </View>
 
             <View style={styles.progressContainer}>
@@ -50,9 +58,21 @@ const CaloriesCard = ({
                 />
             </View>
 
+            <View style={styles.statsRow}>
+                <View style={styles.statItem}>
+                    <Text style={styles.statLabel}>Consumed</Text>
+                    <Text style={styles.statValue}>{consumed}</Text>
+                </View>
+                <View style={styles.divider} />
+                <View style={styles.statItem}>
+                    <Text style={styles.statLabel}>Burned</Text>
+                    <Text style={[styles.statValue, { color: '#FF6347' }]}>{burned}</Text>
+                </View>
+            </View>
+
             <View style={styles.macrosContainer}>
                 <View style={styles.macroCard}>
-                    <Ionicons name="nutrition-outline" size={24} color="#EA580C" />
+                    <Ionicons name="restaurant-outline" size={24} color="#EA580C" />
                     <Text style={styles.macroValue}>{macros.carbs}g</Text>
                     <Text style={styles.macroLabel}>Carbs Left</Text>
                 </View>
@@ -81,7 +101,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 24,
         marginVertical: 5,
-    
+
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.1,
@@ -109,6 +129,33 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 5,
+    },
+    statsRow: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        gap: 20,
+    },
+    statItem: {
+        alignItems: 'center',
+    },
+    statLabel: {
+        fontSize: 12,
+        color: Colors.TEXT_MUTED,
+        fontWeight: '600',
+        textTransform: 'uppercase',
+        marginBottom: 2,
+    },
+    statValue: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: Colors.TEXT_MAIN,
+    },
+    divider: {
+        width: 1,
+        height: 30,
+        backgroundColor: '#f0f0f0',
     },
     macrosContainer: {
         flexDirection: 'row',

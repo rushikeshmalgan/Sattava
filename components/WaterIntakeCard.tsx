@@ -4,23 +4,23 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/Colors';
 
 interface WaterIntakeCardProps {
-    drunkLitres: number;
-    targetLitres: number;
+    drunkMl: number;
+    targetMl: number;
     onEdit: () => void;
     onAddWater: () => void;
 }
 
 const WaterIntakeCard = ({
-    drunkLitres,
-    targetLitres,
+    drunkMl,
+    targetMl,
     onEdit,
     onAddWater
 }: WaterIntakeCardProps) => {
-    const LITRES_PER_GLASS = 0.25;
+    const ML_PER_GLASS = 250;
     const maxGlasses = 9;
 
-    const targetGlasses = Math.min(Math.ceil(targetLitres / LITRES_PER_GLASS), maxGlasses);
-    const currentGlassesFloat = drunkLitres / LITRES_PER_GLASS;
+    const targetGlasses = Math.min(Math.ceil(targetMl / ML_PER_GLASS), maxGlasses);
+    const currentGlassesFloat = drunkMl / ML_PER_GLASS;
     const fullGlasses = Math.floor(currentGlassesFloat);
     const partialAmount = currentGlassesFloat - fullGlasses;
     const hasHalfGlass = partialAmount >= 0.2 && partialAmount <= 0.8; 
@@ -42,7 +42,7 @@ const WaterIntakeCard = ({
         }
     }
 
-    const glassesLeft = Math.max(Math.ceil((targetLitres - drunkLitres) / LITRES_PER_GLASS), 0);
+    const glassesLeft = Math.max(Math.ceil((targetMl - drunkMl) / ML_PER_GLASS), 0);
 
     return (
         <View style={styles.card}>
@@ -83,7 +83,7 @@ const WaterIntakeCard = ({
 
             <View style={styles.footer}>
                 <Text style={styles.statsText}>
-                    {drunkLitres.toFixed(1)}L / {targetLitres.toFixed(1)}L
+                    {Math.round(drunkMl)}ml / {Math.round(targetMl)}ml
                 </Text>
                 <Text style={styles.leftText}>
                     {glassesLeft > 0 ? `${glassesLeft} ${glassesLeft === 1 ? 'glass' : 'glasses'} left` : 'Target reached! 🎉'}
