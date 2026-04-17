@@ -23,12 +23,8 @@ const CaloriesCard = ({
     macros
 }: CaloriesCardProps) => {
 
-    // Net consumed is what's actually taken in minus what was burned
-    const netConsumed = consumed - burned;
-    // const progress =
-    //     target > 0
-    //         ? Math.min(Math.max(consumed / target, 0), 1)
-    //         : 0;
+    // Progress is calculated based on consumed calories only (not net of burned)
+    // This accounts for the full dietary intake regardless of exercise
     const remaining = target - consumed + burned;
     const progress = consumed / target;
     // Remaining = Target - Consumed + Burned
