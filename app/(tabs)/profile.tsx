@@ -1,6 +1,6 @@
 import { useAuth, useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -37,22 +37,29 @@ export default function Profile() {
     const isPlanStale = Boolean(userPlan?.generatedPlanStale);
 
     useEffect(() => {
-        const fetchUserPlan = async () => {
-            if (!user?.id) return;
-            try {
-                const docRef = doc(db, 'users', user.id);
-                const docSnap = await getDoc(docRef);
+        if (!user?.id) {
+            setLoading(false);
+            return;
+        }
+
+        const docRef = doc(db, 'users', user.id);
+        const unsubscribe = onSnapshot(
+            docRef,
+            (docSnap) => {
                 if (docSnap.exists()) {
                     setUserPlan(docSnap.data());
+                } else {
+                    setUserPlan(null);
                 }
-            } catch (error) {
-                console.error("Error fetching user plan:", error);
-            } finally {
+                setLoading(false);
+            },
+            (error) => {
+                console.error('Error fetching user plan:', error);
                 setLoading(false);
             }
-        };
+        );
 
-        fetchUserPlan();
+        return () => unsubscribe();
     }, [user?.id]);
 
     const handleSaveGoal = async () => {

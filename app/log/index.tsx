@@ -95,10 +95,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.BACKGROUND,
     },
-    safeArea: {
-        flex: 1,
-        backgroundColor: Colors.BACKGROUND,
-    },
     header: {
         flexDirection: 'row',
         alignItems: 'center',

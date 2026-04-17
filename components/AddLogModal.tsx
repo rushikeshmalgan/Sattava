@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,8 +11,6 @@ interface AddLogModalProps {
     userId: string | undefined;
 }
 
-import { useRouter } from 'expo-router';
-
 const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
     const insets = useSafeAreaInsets();
     const router = useRouter();
@@ -19,7 +18,7 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
         { id: 'exercise', title: 'Log Exercise', icon: 'walk', color: '#DC2626' },
         { id: 'water', title: 'Add Water Intake', icon: 'water-outline', color: '#0284C7' },
         { id: 'food', title: 'Add Food', icon: 'restaurant', color: '#EA580C' },
-        { id: 'scan', title: 'Scan Food', icon: 'scan-outline', color: '#10B981', isPremium: true },
+        { id: 'scan', title: 'Scan Food', icon: 'scan-outline', color: '#10B981' },
     ];
 
     const handleOptionPress = async (id: string) => {
@@ -29,11 +28,10 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
             return;
         }
 
-        const dateString = new Date().toISOString().split('T')[0];
-        const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
         if (id === 'scan') {
-            alert("Scan Food is a Premium Feature!");
+            onClose();
+            router.push('/log/scan-food' as any);
+            return;
         } else if (id === 'exercise') {
             onClose();
             router.push('/log');

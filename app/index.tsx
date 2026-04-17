@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { Colors } from "../constants/Colors";
@@ -22,15 +22,6 @@ export default function Index() {
         }
 
         const userRef = doc(db, "users", user.id);
-
-        await setDoc(
-          userRef,
-          {
-            clerkUserId: user.id,
-            createdAt: serverTimestamp(),
-          },
-          { merge: true }
-        );
 
         const userDoc = await getDoc(userRef);
 

@@ -28,6 +28,7 @@ export default function SignIn() {
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isSendingReset, setIsSendingReset] = useState(false);
     const [secureText, setSecureText] = useState(true);
 
     // Email/Password Sign in
@@ -43,9 +44,32 @@ export default function SignIn() {
             await setActive({ session: completeSignIn.createdSessionId });
 
         } catch (err: any) {
-            alert(err.errors[0]?.message || 'Sign in failed');
+            alert(err?.errors?.[0]?.message || err?.message || 'Sign in failed');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const onForgotPasswordPress = async () => {
+        if (!isLoaded) return;
+
+        if (!emailAddress.trim()) {
+            alert('Please enter your email first to reset password.');
+            return;
+        }
+
+        setIsSendingReset(true);
+        try {
+            await signIn.create({
+                strategy: 'reset_password_email_code',
+                identifier: emailAddress.trim(),
+            } as any);
+
+            alert('Password reset code sent to your email. Please follow the reset flow in Clerk.');
+        } catch (err: any) {
+            alert(err?.errors?.[0]?.message || err?.message || 'Failed to send password reset code');
+        } finally {
+            setIsSendingReset(false);
         }
     };
 
@@ -110,8 +134,10 @@ export default function SignIn() {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.forgotPassword}>
-                    <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+                <TouchableOpacity style={styles.forgotPassword} onPress={onForgotPasswordPress} disabled={isSendingReset}>
+                    <Text style={styles.forgotPasswordText}>
+                        {isSendingReset ? 'Sending reset code...' : 'Forgot Password?'}
+                    </Text>
                 </TouchableOpacity>
 
                 {/* Sign In Button */}
