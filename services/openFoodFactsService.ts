@@ -1,7 +1,6 @@
 import { FoodData } from './logService';
 
 const OPEN_FOOD_FACTS_BASE_URL = 'https://world.openfoodfacts.org';
-const OPEN_FOOD_FACTS_TIMEOUT_MS = 10000;
 const OFF_FIELDS = [
   'product_name',
   'generic_name',
@@ -61,46 +60,6 @@ const scaleNutrition = (per100gValue: number, servingGrams: number): number => {
   return Math.max(0, Math.round((per100gValue * servingGrams) / 100));
 };
 
-const withTimeoutSignal = (timeoutMs: number): { signal: AbortSignal; cleanup: () => void } => {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-  return {
-    signal: controller.signal,
-    cleanup: () => clearTimeout(timeoutId),
-  };
-};
-
-const resolveNutrientForServing = (
-  nutriments: Record<string, unknown>,
-  key100g: string,
-  keyGeneral: string,
-  keyServing: string,
-  servingGrams: number,
-  source: 'barcode' | 'search'
-): number => {
-  const value100g = parseNumber(nutriments[key100g]);
-  const valueGeneral = parseNumber(nutriments[keyGeneral]);
-  const valueServing = parseNumber(nutriments[keyServing]);
-
-  if (source === 'barcode') {
-    if (value100g > 0) {
-      return scaleNutrition(value100g, servingGrams);
-    }
-    if (valueGeneral > 0) {
-      return scaleNutrition(valueGeneral, servingGrams);
-    }
-    return Math.round(valueServing);
-  }
-
-  if (value100g > 0) {
-    return Math.round(value100g);
-  }
-  if (valueGeneral > 0) {
-    return Math.round(valueGeneral);
-  }
-  return Math.round(valueServing);
-};
-
 const normalizeProduct = (
   product: any,
   source: 'barcode' | 'search',
@@ -115,48 +74,32 @@ const normalizeProduct = (
   const servingGrams = parseServingSizeGrams(product?.serving_size, product?.quantity);
   const nutriments = product?.nutriments || {};
 
-  const calories = resolveNutrientForServing(
-    nutriments,
-    'energy-kcal_100g',
-    'energy-kcal',
-    'energy-kcal_serving',
-    servingGrams,
-    source
-  );
-  const carbs = resolveNutrientForServing(
-    nutriments,
-    'carbohydrates_100g',
-    'carbohydrates',
-    'carbohydrates_serving',
-    servingGrams,
-    source
-  );
-  const protein = resolveNutrientForServing(
-    nutriments,
-    'proteins_100g',
-    'proteins',
-    'proteins_serving',
-    servingGrams,
-    source
-  );
-  const fat = resolveNutrientForServing(
-    nutriments,
-    'fat_100g',
-    'fat',
-    'fat_serving',
-    servingGrams,
-    source
-  );
+  const caloriesPer100g =
+    parseNumber(nutriments['energy-kcal_100g']) ||
+    parseNumber(nutriments['energy-kcal']) ||
+    parseNumber(nutriments['energy-kcal_serving']);
+  const carbsPer100g =
+    parseNumber(nutriments['carbohydrates_100g']) ||
+    parseNumber(nutriments['carbohydrates']) ||
+    parseNumber(nutriments['carbohydrates_serving']);
+  const proteinPer100g =
+    parseNumber(nutriments['proteins_100g']) ||
+    parseNumber(nutriments['proteins']) ||
+    parseNumber(nutriments['proteins_serving']);
+  const fatPer100g =
+    parseNumber(nutriments['fat_100g']) ||
+    parseNumber(nutriments['fat']) ||
+    parseNumber(nutriments['fat_serving']);
 
   return {
     id: String(product?.code || name),
     name: String(name).trim(),
     brandName: product?.brands || undefined,
     servingSize,
-    calories,
-    carbs,
-    protein,
-    fat,
+    calories: source === 'barcode' ? scaleNutrition(caloriesPer100g, servingGrams) : Math.round(caloriesPer100g),
+    carbs: source === 'barcode' ? scaleNutrition(carbsPer100g, servingGrams) : Math.round(carbsPer100g),
+    protein: source === 'barcode' ? scaleNutrition(proteinPer100g, servingGrams) : Math.round(proteinPer100g),
+    fat: source === 'barcode' ? scaleNutrition(fatPer100g, servingGrams) : Math.round(fatPer100g),
     barcode: product?.code || undefined,
     imageUrl: product?.image_front_url || undefined,
     productUrl: product?.url || undefined,
@@ -181,11 +124,9 @@ export const lookupBarcodeFood = async (barcode: string): Promise<OpenFoodFactsM
     return null;
   }
 
-  const { signal, cleanup } = withTimeoutSignal(OPEN_FOOD_FACTS_TIMEOUT_MS);
   const response = await fetch(
-    `${OPEN_FOOD_FACTS_BASE_URL}/api/v2/product/${encodeURIComponent(trimmedBarcode)}?fields=${encodeURIComponent(OFF_FIELDS)}`,
-    { signal }
-  ).finally(cleanup);
+    `${OPEN_FOOD_FACTS_BASE_URL}/api/v2/product/${encodeURIComponent(trimmedBarcode)}?fields=${encodeURIComponent(OFF_FIELDS)}`
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch barcode product.');
@@ -205,11 +146,9 @@ export const searchFoodsByText = async (query: string, limit = 5): Promise<OpenF
     return [];
   }
 
-  const { signal, cleanup } = withTimeoutSignal(OPEN_FOOD_FACTS_TIMEOUT_MS);
   const response = await fetch(
-    `${OPEN_FOOD_FACTS_BASE_URL}/cgi/search.pl?search_terms=${encodeURIComponent(trimmedQuery)}&search_simple=1&action=process&json=1&page_size=${limit}&fields=${encodeURIComponent(OFF_FIELDS)}`,
-    { signal }
-  ).finally(cleanup);
+    `${OPEN_FOOD_FACTS_BASE_URL}/cgi/search.pl?search_terms=${encodeURIComponent(trimmedQuery)}&search_simple=1&action=process&json=1&page_size=${limit}&fields=${encodeURIComponent(OFF_FIELDS)}`
+  );
 
   if (!response.ok) {
     throw new Error('Failed to search Open Food Facts.');
