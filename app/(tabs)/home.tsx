@@ -1,6 +1,6 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
@@ -82,7 +82,7 @@ export default function Home() {
         // Listen for consumption for selected date
         const dateString = selectedDate.toISOString().split('T')[0];
         const logDocRef = doc(db, 'users', user.id, 'dailyLogs', dateString);
-        const unsubscribeLogs = onSnapshot(logDocRef, async (docSnap) => {
+        const unsubscribeLogs = onSnapshot(logDocRef, (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 setConsumed({
@@ -98,23 +98,16 @@ export default function Home() {
                 const sortedLogs = [...logs].reverse();
                 setActivities(sortedLogs);
             } else {
-                // If log doesn't exist, create it with default values
-                try {
-                    await setDoc(logDocRef, {
-                        consumedCalories: 0,
-                        caloriesBurned: 0,
-                        totalCarbs: 0,
-                        totalProtein: 0,
-                        totalFat: 0,
-                        totalWater: 0,
-                        waterIntake: 0,
-                        logs: [],
-                        createdAt: new Date(),
-                    });
-                    // Note: onSnapshot will fire again once the document is created
-                } catch (error) {
-                    console.error("Error creating default daily log:", error);
-                }
+                // Keep UI defaults without creating empty Firestore documents.
+                setConsumed({
+                    calories: 0,
+                    caloriesBurned: 0,
+                    carbs: 0,
+                    protein: 0,
+                    fat: 0,
+                    water: 0,
+                });
+                setActivities([]);
             }
         });
 

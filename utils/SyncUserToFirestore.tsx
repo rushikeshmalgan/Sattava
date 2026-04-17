@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-expo";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useEffect } from "react";
 import { db } from "../firebaseConfig";
 
@@ -11,17 +11,25 @@ export function SyncUserToFirestore() {
 
         const syncUser = async () => {
             try {
+                const userRef = doc(db, "users", user.id);
+                const existing = await getDoc(userRef);
+
+                const baseData: any = {
+                    id: user.id,
+                    email: user.primaryEmailAddress?.emailAddress ?? "",
+                    name: `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim(),
+                    photo: user.imageUrl ?? "",
+                    provider: user.externalAccounts[0]?.provider ?? "email",
+                    lastLoginAt: serverTimestamp(),
+                };
+
+                if (!existing.exists()) {
+                    baseData.createdAt = serverTimestamp();
+                }
+
                 await setDoc(
-                    doc(db, "users", user.id),
-                    {
-                        id: user.id,
-                        email: user.primaryEmailAddress?.emailAddress ?? "",
-                        name: `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim(),
-                        photo: user.imageUrl ?? "",
-                        provider: user.externalAccounts[0]?.provider ?? "email",
-                        createdAt: serverTimestamp(),
-                        lastLoginAt: serverTimestamp(),
-                    },
+                    userRef,
+                    baseData,
                     { merge: true }
                 );
 

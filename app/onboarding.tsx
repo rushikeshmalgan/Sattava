@@ -36,17 +36,42 @@ export default function Onboarding() {
     const [heightInches, setHeightInches] = useState('');
     const [weightKg, setWeightKg] = useState('');
 
+    const isValidBirthdate = (): boolean => {
+        const day = Number(birthDay);
+        const month = Number(birthMonth);
+        const year = Number(birthYear);
+        const currentYear = new Date().getFullYear();
+
+        if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) {
+            return false;
+        }
+
+        if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > currentYear) {
+            return false;
+        }
+
+        const date = new Date(year, month - 1, day);
+        return (
+            date.getFullYear() === year &&
+            date.getMonth() === month - 1 &&
+            date.getDate() === day
+        );
+    };
+
     const handleNext = async () => {
         if (currentStep === 1 && !gender) return Alert.alert("Required", "Please select a gender");
         if (currentStep === 2 && !goal) return Alert.alert("Required", "Please select a goal");
         if (currentStep === 3 && !activityLevel) return Alert.alert("Required", "Please select an activity level");
         if (currentStep === 4 && (!birthDay || !birthMonth || !birthYear)) return Alert.alert("Required", "Please enter your full birthdate");
+        if (currentStep === 4 && !isValidBirthdate()) {
+            return Alert.alert("Invalid Date", "Please enter a valid birthdate (DD/MM/YYYY).");
+        }
 
         if (currentStep < TOTAL_STEPS) {
             setCurrentStep(currentStep + 1);
         } else {
             if (!heightFeet || !heightInches || !weightKg) {
-                return Alert.alert("Required", "Please enter your fully height and weight");
+                return Alert.alert("Required", "Please enter your full height and weight");
             }
             await completeOnboarding();
         }
