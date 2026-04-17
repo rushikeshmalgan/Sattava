@@ -1,6 +1,6 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -84,11 +84,6 @@ export default function Onboarding() {
                 },
                 { merge: true }
             );
-
-            router.replace({
-                pathname: '/generating-profile',
-                params: { data: JSON.stringify(profileData) },
-            });
 
             router.replace({
                 pathname: '/generating-profile',

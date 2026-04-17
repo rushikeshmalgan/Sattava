@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AddLogModal from '../../components/AddLogModal';
 import { Colors } from '../../constants/Colors';
@@ -42,30 +42,43 @@ function CustomTabBar({ state, descriptors, navigation, onAddPress }: any) {
                         };
 
                         let iconName: any;
+                        let label = '';
                         if (route.name === 'home') iconName = isFocused ? 'home' : 'home-outline';
                         else if (route.name === 'analytics') iconName = isFocused ? 'stats-chart' : 'stats-chart-outline';
                         else if (route.name === 'profile') iconName = isFocused ? 'person' : 'person-outline';
 
+                        if (route.name === 'home') label = 'Home';
+                        else if (route.name === 'analytics') label = 'Analytics';
+                        else if (route.name === 'profile') label = 'Profile';
+
                         return (
-                            <TouchableOpacity
+                            <Pressable
                                 key={route.key}
                                 onPress={onPress}
-                                style={styles.tabItem}
+                                style={({ pressed }) => [styles.tabItem, pressed && styles.tabItemPressed]}
                             >
                                 <Ionicons
                                     name={iconName}
                                     size={24}
                                     color={isFocused ? Colors.PRIMARY : Colors.TEXT_MUTED}
                                 />
-                            </TouchableOpacity>
+                                <Text
+                                    style={[
+                                        styles.tabLabel,
+                                        { color: isFocused ? Colors.PRIMARY : Colors.TEXT_MUTED },
+                                    ]}
+                                >
+                                    {label}
+                                </Text>
+                            </Pressable>
                         );
                     })}
-                    <TouchableOpacity
-                        style={styles.fabButton}
+                    <Pressable
+                        style={({ pressed }) => [styles.fabButton, pressed && styles.fabPressed]}
                         onPress={onAddPress}
                     >
                         <Ionicons name="add" size={30} color="white" />
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
             </View>
 
@@ -175,6 +188,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: '100%',
+        gap: 2,
+    },
+    tabItemPressed: {
+        opacity: 0.8,
+    },
+    tabLabel: {
+        fontSize: 11,
+        fontWeight: '600',
     },
     fabButton: {
         width: 50,
@@ -191,5 +212,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 5,
         elevation: 8,
+    },
+    fabPressed: {
+        transform: [{ scale: 0.94 }],
     },
 });

@@ -50,7 +50,7 @@ export const logConsumption = async (
     try {
         const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
         await setDoc(logDocRef, {
-            totalCalories: values.calories ?? 0,
+            consumedCalories: values.calories ?? 0,
             totalCarbs: values.carbs ?? 0,
             totalProtein: values.protein ?? 0,
             totalFat: values.fat ?? 0,

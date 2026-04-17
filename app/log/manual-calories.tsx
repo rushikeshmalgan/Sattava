@@ -43,6 +43,20 @@ const ManualFoodLogScreen = () => {
             return;
         }
 
+        // Validate optional macro fields - only allow empty or valid numbers
+        if (protein && isNaN(Number(protein))) {
+            alert("Please enter a valid number for protein");
+            return;
+        }
+        if (carbs && isNaN(Number(carbs))) {
+            alert("Please enter a valid number for carbs");
+            return;
+        }
+        if (fat && isNaN(Number(fat))) {
+            alert("Please enter a valid number for fat");
+            return;
+        }
+
         setIsLogging(true);
         try {
             const dateString = new Date().toISOString().split('T')[0];

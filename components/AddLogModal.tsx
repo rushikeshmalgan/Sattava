@@ -1,9 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../constants/Colors';
-
-import { addActivityLog } from '../services/userService';
 
 interface AddLogModalProps {
     isVisible: boolean;
@@ -14,6 +13,7 @@ interface AddLogModalProps {
 import { useRouter } from 'expo-router';
 
 const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
+    const insets = useSafeAreaInsets();
     const router = useRouter();
     const options = [
         { id: 'exercise', title: 'Log Exercise', icon: 'walk', color: '#DC2626' },
@@ -60,12 +60,17 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
             onRequestClose={onClose}
         >
             <Pressable style={styles.overlay} onPress={onClose}>
-                <View style={styles.modalContainer}>
+                <View style={[styles.modalContainer, { paddingBottom: insets.bottom + 90 }]}>
+                    <View style={styles.handle} />
+                    <Text style={styles.modalTitle}>Quick Actions</Text>
                     <View style={styles.grid}>
                         {options.map((option) => (
-                            <TouchableOpacity
+                            <Pressable
                                 key={option.id}
-                                style={styles.optionCard}
+                                style={({ pressed }) => [
+                                    styles.optionCard,
+                                    pressed && styles.optionCardPressed,
+                                ]}
                                 onPress={() => handleOptionPress(option.id)}
                             >
                                 <View style={[styles.iconCircle, { backgroundColor: `${option.color}15` }]}>
@@ -78,7 +83,7 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
                                 </View>
                                 <Text style={styles.optionTitle}>{option.title}</Text>
                                 {option.isPremium && <Text style={styles.premiumLabel}>Premium</Text>}
-                            </TouchableOpacity>
+                            </Pressable>
                         ))}
                     </View>
                 </View>
@@ -97,7 +102,24 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         padding: 24,
-        paddingBottom: 130, 
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        backgroundColor: '#FFFFFF',
+    },
+    handle: {
+        width: 42,
+        height: 5,
+        borderRadius: 3,
+        backgroundColor: '#D1D5DB',
+        alignSelf: 'center',
+        marginBottom: 10,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: Colors.TEXT_MAIN,
+        textAlign: 'center',
+        marginBottom: 16,
     },
     grid: {
         flexDirection: 'row',
@@ -105,7 +127,9 @@ const styles = StyleSheet.create({
         gap: 16,
     },
     optionCard: {
-        width: '47.5%', 
+        flexBasis: '47%',
+        flexGrow: 1,
+        maxWidth: '48%',
         backgroundColor: '#FFFFFF',
         borderRadius: 20,
         padding: 20,
@@ -119,6 +143,9 @@ const styles = StyleSheet.create({
         elevation: 2,
         borderWidth: 1,
         borderColor: '#f5f5f5',
+    },
+    optionCardPressed: {
+        transform: [{ scale: 0.97 }],
     },
     iconCircle: {
         width: 60,

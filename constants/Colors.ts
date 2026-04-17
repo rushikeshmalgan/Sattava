@@ -11,7 +11,8 @@ export const Colors = {
     TEXT_INVERSE: '#FFFFFF', // Text on primary buttons
 
     BORDER: '#E5E7EB', // Dividers, subtle borders
-SUCCESS: '#22C55E', // green-500 style
+    DIVIDER: '#E5E7EB', // Semantic alias for section separators
+    SUCCESS: '#22C55E', // green-500 style
     ERROR: '#EF4444', // Error messages, sign out button
     GOOGLE_RED: '#DB4437', // Google OAuth button icon
 };
