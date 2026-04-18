@@ -29,11 +29,11 @@ export default function GeneratingProfile() {
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
   const [steps, setSteps] = useState([
-    { id: 1, label: 'Initializing AI engine', status: 'loading' as StepStatus },
+    { id: 1, label: 'Initializing SwasthBharat AI', status: 'loading' as StepStatus },
     { id: 2, label: 'Analyzing your profile', status: 'pending' as StepStatus },
-    { id: 3, label: 'Calculating metabolic rate', status: 'pending' as StepStatus },
-    { id: 4, label: 'Building diet plan', status: 'pending' as StepStatus },
-    { id: 5, label: 'Finalizing nutrition targets', status: 'pending' as StepStatus },
+    { id: 3, label: 'Calculating metabolic rate (BMR)', status: 'pending' as StepStatus },
+    { id: 4, label: 'Building Indian diet plan', status: 'pending' as StepStatus },
+    { id: 5, label: 'Adding Ayurvedic recommendations', status: 'pending' as StepStatus },
   ]);
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export default function GeneratingProfile() {
       animateProgress(0.2, 600);
 
       const prompt = `
-You are a professional nutritionist.
+You are a certified Indian nutritionist and Ayurvedic wellness expert specializing in traditional Indian diets.
 
 User profile:
 Gender: ${profileData.gender}
@@ -109,7 +109,7 @@ Birthdate: ${profileData.birthdate.day}/${profileData.birthdate.month}/${profile
 Height: ${profileData.heightFeet}'${profileData.heightInches}"
 Weight: ${profileData.weightKg}kg
 
-Return ONLY valid JSON:
+Create a personalized Indian wellness plan. Return ONLY valid JSON:
 {
   "dailyCalories": number,
   "macros": {
@@ -119,8 +119,25 @@ Return ONLY valid JSON:
   },
   "waterIntake": string,
   "planSummary": string,
-  "fitnessTips": string[]
+  "fitnessTips": string[],
+  "ayurvedicTip": string,
+  "indianMealTiming": {
+    "morning": string,
+    "breakfast": string,
+    "lunch": string,
+    "dinner": string
+  },
+  "recommendedIndianFoods": string[],
+  "foodsToAvoid": string[]
 }
+
+Guidelines:
+- Base calorie recommendations on ICMR Indian RDA standards
+- Prefer Indian foods: roti, dal, rice, sabzi, curd, sprouts, paneer
+- Include Indian meal timing (breakfast 7-9am, lunch 12-2pm, dinner 7-9pm)
+- Suggest Ayurvedic tips relevant to their dosha and season
+- planSummary should be 2-3 sentences in an encouraging Hinglish tone
+- fitnessTips should include at least 2 yoga/pranayama recommendations
 `;
 
       const result = await model.generateContent(prompt);
@@ -195,7 +212,7 @@ Return ONLY valid JSON:
       <View style={styles.content}>
         <Animated.View style={[styles.loader, { transform: [{ rotate }] }]} />
 
-        <Text style={styles.title}>Creating Your Plan</Text>
+        <Text style={styles.title}>SwasthBharat Plan Ban Raha Hai! 🇮🇳</Text>
 
         <View style={styles.stepsContainer}>
           {steps.map(step => (

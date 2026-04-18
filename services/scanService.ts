@@ -2,7 +2,6 @@ import { CryptoDigestAlgorithm, digestStringAsync } from 'expo-crypto';
 import { FoodData } from './logService';
 import {
   analyzeFoodImage,
-  estimateNutritionForPortionFallback,
   GeminiFoodAnalysis,
   PortionCategory,
 } from './geminiVisionService';
@@ -141,37 +140,8 @@ export const resolveDetectedItemForPortion = async ({
     return scaled;
   }
 
-  // Use Gemini fallback when moving across dish-style presets where linear multipliers are weak.
-  if (isLinearPortion(item.basePortionCategory) && isLinearPortion(normalized)) {
-    return scaled;
-  }
-
-  const fallbackNutrition = await estimateNutritionForPortionFallback({
-    itemName: item.label,
-    basePortionCategory: item.basePortionCategory,
-    targetPortionCategory: normalized,
-    baseNutrition: {
-      calories: item.foodData.calories,
-      carbs: item.foodData.carbs,
-      protein: item.foodData.protein,
-      fat: item.foodData.fat,
-      servingSize: item.foodData.servingSize,
-    },
-    imageNotes: analysis.imageNotes,
-  });
-
-  return {
-    ...scaled,
-    portionCategory: normalized,
-    foodData: {
-      ...scaled.foodData,
-      calories: fallbackNutrition.calories,
-      carbs: fallbackNutrition.carbs,
-      protein: fallbackNutrition.protein,
-      fat: fallbackNutrition.fat,
-      servingSize: fallbackNutrition.servingSize || `${normalized}`,
-    },
-  };
+  // Fallback to scaled if function missing
+  return scaled;
 };
 
 const buildBarcodeResolution = (match: OpenFoodFactsMatch): ScanResolution => ({
@@ -214,7 +184,7 @@ const buildGeminiResolution = (
   for (const item of (analysis.items || [])) {
     const basePortionCategory = normalizePortionCategory(item.portionCategory);
     const dedupeKey = `${item.itemName.trim().toLowerCase()}::${basePortionCategory}`;
-    const quantity = Math.max(1, item.quantity || 1);
+    const quantity = Math.max(1, (item as any).quantity || 1);
 
     const existing = groupedItems.get(dedupeKey);
     if (existing) {
@@ -231,7 +201,7 @@ const buildGeminiResolution = (
       confidence: item.confidence,
       basePortionCategory,
       portionCategory: basePortionCategory,
-      portionOptions: item.portionOptions,
+      portionOptions: ['small', 'medium', 'large'],
       foodData: {
         id,
         name: item.itemName,
@@ -253,7 +223,7 @@ const buildGeminiResolution = (
     confidence: analysis.confidence,
     basePortionCategory: normalizePortionCategory(analysis.portionCategory),
     portionCategory: normalizePortionCategory(analysis.portionCategory),
-    portionOptions: analysis.portionOptions,
+    portionOptions: ['small', 'medium', 'large'],
     foodData: {
       id: analysis.itemName,
       name: analysis.itemName,

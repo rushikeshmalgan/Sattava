@@ -16,21 +16,12 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const options = [
-    { id: "exercise", title: "Log Exercise", icon: "walk", color: "#DC2626" },
-    {
-      id: "water",
-      title: "Add Water Intake",
-      icon: "water-outline",
-      color: "#0284C7",
-    },
-    { id: "food", title: "Add Food", icon: "restaurant", color: "#EA580C" },
-    {
-      id: "scan",
-      title: "Scan Food",
-      icon: "scan-outline",
-      color: "#10B981",
-      isPremium: true,
-    },
+    { id: "exercise", title: "Vyayaam Log",   icon: "walk",              color: "#DC2626",       subtitle: 'Exercise' },
+    { id: "water",    title: "Paani Piyo",    icon: "water-outline",      color: "#0284C7",       subtitle: 'Water' },
+    { id: "food",     title: "Khana Add Karo",icon: "restaurant",         color: Colors.PRIMARY,  subtitle: 'Indian Food' },
+    { id: "yoga",     title: "Yoga & Pranayam",icon: "body-outline",      color: '#138808',       subtitle: 'Wellness' },
+    { id: "scan",     title: "Scan Karo",     icon: "scan-outline",       color: "#10B981",       subtitle: 'Barcode', isPremium: true },
+    { id: "manual",   title: "Manual Calories",icon: "calculator-outline", color: Colors.ACCENT_GOLD, subtitle: 'Custom' },
   ];
 
   const handleOptionPress = async (id: string) => {
@@ -56,8 +47,14 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
       onClose();
       router.push("/log/water-intake");
       return;
-    } else {
-      console.log(`Selected option: ${id}`);
+    } else if (id === "yoga") {
+      onClose();
+      router.push("/log/yoga" as any);
+      return;
+    } else if (id === "manual") {
+      onClose();
+      router.push("/log/manual-calories" as any);
+      return;
     }
     onClose();
   };
@@ -74,7 +71,8 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
           style={[styles.modalContainer, { paddingBottom: insets.bottom + 90 }]}
         >
           <View style={styles.handle} />
-          <Text style={styles.modalTitle}>Quick Actions</Text>
+          <Text style={styles.modalTitle}>🇮🇳 SwasthBharat — Log Karo!</Text>
+          <Text style={styles.modalSubtitle}>Aaj ka kya add karna hai?</Text>
           <View style={styles.grid}>
             {options.map((option) => (
               <Pressable
@@ -103,6 +101,7 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
                   )}
                 </View>
                 <Text style={styles.optionTitle}>{option.title}</Text>
+                <Text style={styles.optionSubtitle}>{(option as any).subtitle}</Text>
                 {option.isPremium && (
                   <Text style={styles.premiumLabel}>Premium</Text>
                 )}
@@ -125,9 +124,11 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     padding: 24,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    backgroundColor: Colors.BACKGROUND,
+    borderTopWidth: 1.5,
+    borderTopColor: Colors.BORDER,
   },
   handle: {
     width: 42,
@@ -138,11 +139,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: "700",
+    fontSize: 17,
+    fontWeight: "800",
     color: Colors.TEXT_MAIN,
     textAlign: "center",
-    marginBottom: 16,
+    marginBottom: 2,
+  },
+  modalSubtitle: {
+    fontSize: 13,
+    color: Colors.TEXT_MUTED,
+    textAlign: 'center',
+    marginBottom: 18,
   },
   grid: {
     flexDirection: "row",
@@ -150,22 +157,21 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   optionCard: {
-    flexBasis: "47%",
+    flexBasis: "30%",
     flexGrow: 1,
-    maxWidth: "48%",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    padding: 20,
+    maxWidth: "31%",
+    backgroundColor: Colors.SURFACE_ELEVATED,
+    borderRadius: 18,
+    padding: 16,
     alignItems: "center",
     justifyContent: "center",
-    // Shadow
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 5,
     elevation: 2,
     borderWidth: 1,
-    borderColor: "#f5f5f5",
+    borderColor: Colors.BORDER,
   },
   optionCardPressed: {
     transform: [{ scale: 0.97 }],
@@ -180,10 +186,18 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   optionTitle: {
-    fontSize: 14,
+    fontSize: 11,
     fontWeight: "700",
     color: Colors.TEXT_MAIN,
     textAlign: "center",
+    marginTop: 4,
+  },
+  optionSubtitle: {
+    fontSize: 9,
+    color: Colors.TEXT_MUTED,
+    textAlign: 'center',
+    fontWeight: '600',
+    marginTop: 2,
   },
   premiumBadge: {
     position: "absolute",
