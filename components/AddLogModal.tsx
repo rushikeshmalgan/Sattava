@@ -21,7 +21,7 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
     { id: "food",     title: "Log Meal",icon: "restaurant",         color: Colors.PRIMARY,  subtitle: 'Indian Food' },
     { id: "yoga",     title: "Yoga & Flow",icon: "body-outline",      color: Colors.ACCENT,       subtitle: 'Wellness' },
     { id: "scan",     title: "AI Scan",     icon: "scan-outline",       color: Colors.PRIMARY,       subtitle: 'Photo log', isPremium: true },
-    { id: "manual",   title: "Manual Entry",icon: "calculator-outline", color: Colors.ACCENT_GOLD, subtitle: 'Custom' },
+    { id: "ghar-ka-khana", title: "Ghar Ka Khana",icon: "home-outline", color: Colors.ACCENT_GOLD, subtitle: 'Homemade' },
   ];
 
   const handleOptionPress = async (id: string) => {
@@ -51,9 +51,9 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
       onClose();
       router.push("/log/yoga" as any);
       return;
-    } else if (id === "manual") {
+    } else if (id === "ghar-ka-khana") {
       onClose();
-      router.push("/log/manual-calories" as any);
+      router.push("/log/ghar-ka-khana" as any);
       return;
     }
     onClose();

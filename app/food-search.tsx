@@ -7,6 +7,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../constants/Colors';
 import { FoodSearchItem, searchFoods } from '../services/fatSecretService';
 import { addFoodLog } from '../services/logService';
+import { searchLocalIndianFoods } from '../services/localFoodService';
+import { LocalIndianFood } from '../data/indianFoodsDatabase';
+
+type UnifiedFoodItem = (FoodSearchItem & { isLocal?: boolean }) | (LocalIndianFood & { isLocal: true });
 
 // Parses a value like "Calories: 95kcal" -> 95
 const parseMacro = (description: string, key: string): number => {
@@ -21,7 +25,7 @@ const FoodSearchScreen = () => {
     const insets = useSafeAreaInsets();
 
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<FoodSearchItem[]>([]);
+    const [results, setResults] = useState<UnifiedFoodItem[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [addingId, setAddingId] = useState<string | null>(null); // tracks which item is being added
@@ -43,38 +47,83 @@ const FoodSearchScreen = () => {
         try {
             setLoading(true);
             setError(null);
-            const data = await searchFoods(searchQuery);
-            setResults(data);
+
+            // 1. Search Local CSV Data (Instant)
+            const localRaw = searchLocalIndianFoods(searchQuery);
+            const localResults = localRaw.map(item => ({
+                ...item,
+                isLocal: true,
+                food_id: item.id,
+                food_name: item.name,
+            })) as UnifiedFoodItem[];
+
+            // Show local results immediately!
+            setResults(localResults);
+
+            // If we have local results, we might not need the loading spinner anymore
+            // but let's keep it if we expect online results.
+            // Actually, let's stop the global loading if we have local hits to feel "fast".
+            if (localResults.length > 0) {
+                setLoading(false);
+            }
+
+            // 2. Search FatSecret (Online) - Background
+            try {
+                const onlineData = await searchFoods(searchQuery);
+                // Combine: Local first (always at top), then Online
+                setResults([...localResults, ...onlineData]);
+            } catch (apiErr) {
+                console.warn('[FoodSearch] API Search failed:', apiErr);
+                // If API fails but we have local results, don't show error to user
+                if (localResults.length === 0) {
+                    throw apiErr;
+                }
+            }
         } catch (err: any) {
             setError(err.message || 'Failed to fetch results');
+            // If error happens and we already have local results, maybe don't clear them?
+            // But per logic above, catches only happen if locals are 0.
             setResults([]);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleAddFood = async (food: FoodSearchItem) => {
+    const handleAddFood = async (food: UnifiedFoodItem) => {
         if (!user?.id) {
             Alert.alert('Error', 'Please sign in to log food.');
             return;
         }
         if (addingId) return; // prevent double-taps
 
-        setAddingId(food.food_id);
-        try {
-            const desc = food.food_description || '';
-            const calories = parseMacro(desc, 'Calories');
-            const carbs = parseMacro(desc, 'Carbs');
-            const protein = parseMacro(desc, 'Protein');
-            const fat = parseMacro(desc, 'Fat');
+        const foodId = 'isLocal' in food ? food.id : food.food_id;
+        const foodName = 'isLocal' in food ? food.name : food.food_name;
 
-            // Extract serving size: "Per 100g - Calories..." -> "Per 100g"
-            const servingSize = desc.split('-')[0]?.trim() || '1 serving';
+        setAddingId(foodId);
+        try {
+            let calories = 0, carbs = 0, protein = 0, fat = 0, servingSize = '1 serving';
+
+            if ('isLocal' in food && food.isLocal) {
+                // It's a CSV local item
+                calories = food.calories;
+                carbs = food.carbs;
+                protein = food.protein;
+                fat = food.fat;
+                servingSize = food.servingSize;
+            } else {
+                // It's a FatSecret item
+                const desc = (food as FoodSearchItem).food_description || '';
+                calories = parseMacro(desc, 'Calories');
+                carbs = parseMacro(desc, 'Carbs');
+                protein = parseMacro(desc, 'Protein');
+                fat = parseMacro(desc, 'Fat');
+                servingSize = desc.split('-')[0]?.trim() || '1 serving';
+            }
 
             const dateString = new Date().toISOString().split('T')[0];
             await addFoodLog(user.id, dateString, {
-                id: food.food_id,
-                name: food.food_name,
+                id: foodId,
+                name: foodName,
                 calories,
                 carbs,
                 protein,
@@ -82,7 +131,7 @@ const FoodSearchScreen = () => {
                 servingSize,
             });
 
-            Alert.alert('Added!', `${food.food_name} (${calories} kcal) logged successfully.`, [
+            Alert.alert('Added!', `${foodName} (${calories} kcal) logged successfully.`, [
                 { text: 'Go Home', onPress: () => router.replace('/(tabs)/home') },
                 { text: 'Keep Searching', style: 'cancel' },
             ]);
@@ -94,31 +143,50 @@ const FoodSearchScreen = () => {
         }
     };
 
-    const renderItem = ({ item }: { item: FoodSearchItem }) => {
-        // Extract basic data from food_description: "Per 1 apple - Calories: 95kcal | Fat: 0.31g | Carbs: 25.13g | Protein: 0.47g"
-        // Let's just show it as is, or split by '-'
-        const descriptionParts = item.food_description ? item.food_description.split('-') : [];
-        const servingSize = descriptionParts[0] ? descriptionParts[0].trim() : '';
-        const caloriesEtc = descriptionParts[1] ? descriptionParts[1].trim() : item.food_description;
+    const renderItem = ({ item }: { item: UnifiedFoodItem }) => {
+        let name = '', brand = '', serving = '', calDesc = '', isLocal = false, id = '';
+
+        if ('isLocal' in item && item.isLocal) {
+            name = item.name;
+            serving = item.servingSize;
+            calDesc = `Calories: ${item.calories}kcal | P: ${item.protein}g | C: ${item.carbs}g | F: ${item.fat}g`;
+            isLocal = true;
+            id = item.id;
+        } else {
+            const fsItem = item as FoodSearchItem;
+            name = fsItem.food_name;
+            brand = fsItem.brand_name || '';
+            const descriptionParts = fsItem.food_description ? fsItem.food_description.split('-') : [];
+            serving = descriptionParts[0] ? descriptionParts[0].trim() : '';
+            calDesc = descriptionParts[1] ? descriptionParts[1].trim() : fsItem.food_description;
+            id = fsItem.food_id;
+        }
 
         return (
             <View style={styles.card}>
                 <View style={styles.cardContent}>
-                    <Text style={styles.foodName} numberOfLines={1}>{item.food_name}</Text>
-                    {item.brand_name && (
-                        <Text style={styles.brandName}>{item.brand_name}</Text>
+                    <View style={styles.nameRow}>
+                        <Text style={styles.foodName} numberOfLines={1}>{name}</Text>
+                        {isLocal && (
+                            <View style={styles.localBadge}>
+                                <Text style={styles.localBadgeText}>Indian</Text>
+                            </View>
+                        )}
+                    </View>
+                    {brand !== '' && (
+                        <Text style={styles.brandName}>{brand}</Text>
                     )}
                     <View style={styles.detailsRow}>
-                        <Text style={styles.servingSize} numberOfLines={1}>{servingSize}</Text>
+                        <Text style={styles.servingSize} numberOfLines={1}>{serving}</Text>
                     </View>
-                    <Text style={styles.caloriesText} numberOfLines={1}>{caloriesEtc}</Text>
+                    <Text style={styles.caloriesText} numberOfLines={1}>{calDesc}</Text>
                 </View>
                 <TouchableOpacity
-                    style={[styles.addButton, addingId === item.food_id && { opacity: 0.6 }]}
+                    style={[styles.addButton, addingId === id && { opacity: 0.6 }]}
                     onPress={() => handleAddFood(item)}
                     disabled={addingId !== null}
                 >
-                    {addingId === item.food_id
+                    {addingId === id
                         ? <ActivityIndicator size="small" color="#FFFFFF" />
                         : <Ionicons name="add" size={24} color="#FFFFFF" />
                     }
@@ -183,7 +251,7 @@ const FoodSearchScreen = () => {
                     {!loading && !error && (
                         <FlatList
                             data={results}
-                            keyExtractor={(item) => item.food_id.toString()}
+                            keyExtractor={(item) => ('isLocal' in item ? item.id : item.food_id).toString()}
                             renderItem={renderItem}
                             contentContainerStyle={styles.listContent}
                             showsVerticalScrollIndicator={false}
@@ -285,7 +353,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: Colors.TEXT_MAIN,
+    },
+    nameRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 4,
+    },
+    localBadge: {
+        backgroundColor: Colors.PRIMARY + '20', // transparent primary
+        paddingHorizontal: 6,
+        paddingVertical: 2,
+        borderRadius: 4,
+        marginLeft: 8,
+        borderWidth: 1,
+        borderColor: Colors.PRIMARY + '40',
+    },
+    localBadgeText: {
+        fontSize: 10,
+        fontWeight: '700',
+        color: Colors.PRIMARY,
+        textTransform: 'uppercase',
     },
     brandName: {
         fontSize: 12,
