@@ -1,10 +1,6 @@
-/**
- * SwasthBharat — Indian Food Service
- * Offline-first search: local Indian DB → FatSecret proxy → OpenFoodFacts
- */
-
 import { INDIAN_FOODS, IndianFood, searchFoodsByName, DietType, MealType } from '../data/indianFoods';
 import { FoodData } from './logService';
+import { searchCSVFoods } from './csvFoodService';
 
 // Convert IndianFood → FoodData (for existing log flow)
 export const indianFoodToFoodData = (food: IndianFood): FoodData => ({
@@ -18,11 +14,26 @@ export const indianFoodToFoodData = (food: IndianFood): FoodData => ({
 });
 
 /**
- * Search Indian foods locally with rich metadata
+ * Search Indian foods locally with rich metadata (Combined DB + CSV)
  */
-export const searchLocalIndianFoods = (query: string, limit = 20): IndianFood[] => {
-  const results = searchFoodsByName(query);
-  return results.slice(0, limit);
+export const searchLocalIndianFoods = (query: string, limit = 25): IndianFood[] => {
+  const localResults = searchFoodsByName(query);
+  const csvResults = searchCSVFoods(query, limit);
+  
+  // Combine results, prioritizing high-quality manually curated local results
+  // Remove duplicates by name
+  const combined = [...localResults];
+  const existingNames = new Set(combined.map(f => f.name.toLowerCase()));
+  
+  for (const food of csvResults) {
+    if (!existingNames.has(food.name.toLowerCase())) {
+      combined.push(food);
+      existingNames.add(food.name.toLowerCase());
+    }
+    if (combined.length >= limit) break;
+  }
+  
+  return combined.slice(0, limit);
 };
 
 /**

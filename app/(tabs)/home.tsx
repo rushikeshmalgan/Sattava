@@ -188,9 +188,8 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: TOTAL_BOTTOM_SPACE }]}
       >
-        {/* Header with saffron gradient */}
         <LinearGradient
-          colors={['#FFF8ED', Colors.BACKGROUND]}
+          colors={[Colors.SURFACE_ELEVATED, Colors.BACKGROUND]}
           style={styles.headerSection}
         >
           <HomeHeader />
@@ -265,7 +264,7 @@ export default function Home() {
               <ScrollView showsVerticalScrollIndicator={false}>
                 {[
                   { label: 'Daily Calories Goal 🔥', key: 'calories', icon: 'flame-outline', color: Colors.PRIMARY, numeric: true },
-                  { label: 'Water Target (ml) 💧', key: 'water', icon: 'water-outline', color: '#0284C7', numeric: true },
+                  { label: 'Water Target (ml) 💧', key: 'water', icon: 'water-outline', color: Colors.ACCENT, numeric: true },
                 ].map(field => (
                   <View key={field.key} style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>{field.label}</Text>
@@ -284,8 +283,8 @@ export default function Home() {
                 <Text style={styles.sectionTitle}>Macros</Text>
                 <View style={styles.macroGrid}>
                   {[
-                    { label: 'Protein g', key: 'protein', color: '#DC2626' },
-                    { label: 'Fats g', key: 'fat', color: '#0284C7' },
+                    { label: 'Protein g', key: 'protein', color: Colors.SECONDARY },
+                    { label: 'Fats g', key: 'fat', color: Colors.ACCENT },
                     { label: 'Carbs g', key: 'carbs', color: Colors.PRIMARY },
                   ].map(m => (
                     <View key={m.key} style={styles.macroBox}>
@@ -328,7 +327,7 @@ const styles = StyleSheet.create({
   content: { flex: 1, marginTop: 4, paddingHorizontal: 15 },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 },
   keyboardView: { width: '100%' },
-  modalContent: { backgroundColor: Colors.BACKGROUND, borderRadius: 24, padding: 24, maxHeight: '90%' },
+  modalContent: { backgroundColor: Colors.SURFACE, borderRadius: 24, padding: 24, maxHeight: '90%', borderWidth: 1, borderColor: Colors.BORDER },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   modalTitle: { fontSize: 20, fontWeight: 'bold', color: Colors.TEXT_MAIN },
   inputLabel: { fontSize: 14, fontWeight: '600', color: Colors.TEXT_MAIN, marginBottom: 8, marginTop: 12 },

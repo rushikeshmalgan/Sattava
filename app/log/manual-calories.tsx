@@ -115,7 +115,7 @@ const ManualFoodLogScreen = () => {
 
                         <Text style={styles.label}>Calories</Text>
                         <View style={styles.inputWrapper}>
-                            <Ionicons name="flame-outline" size={20} color="#FF6347" style={styles.inputIcon} />
+                            <Ionicons name="flame-outline" size={20} color={Colors.SECONDARY} style={styles.inputIcon} />
                             <TextInput
                                 style={styles.input}
                                 placeholder="0"
@@ -214,12 +214,12 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.SURFACE,
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
+        shadowOpacity: 0.25,
         shadowRadius: 5,
         elevation: 3,
         marginRight: 15,
@@ -233,15 +233,17 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     card: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 24,
+        backgroundColor: Colors.SURFACE_ELEVATED,
+        borderRadius: 22,
         padding: 20,
         marginBottom: 20,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.05,
-        shadowRadius: 15,
+        shadowOpacity: 0.2,
+        shadowRadius: 12,
         elevation: 2,
+        borderWidth: 1,
+        borderColor: Colors.BORDER,
     },
     label: {
         fontSize: 16,
@@ -257,7 +259,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         paddingHorizontal: 12,
         borderWidth: 1,
-        borderColor: '#f0f0f0',
+        borderColor: Colors.BORDER,
     },
     inputIcon: {
         marginRight: 10,
@@ -291,10 +293,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     macroInputWrapper: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.SURFACE,
         borderRadius: 12,
         borderWidth: 1,
-        borderColor: '#f0f0f0',
+        borderColor: Colors.BORDER,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 8,
@@ -316,7 +318,7 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: Colors.BACKGROUND,
         borderTopWidth: 1,
-        borderTopColor: '#f0f0f0',
+        borderTopColor: Colors.BORDER,
     },
     logButton: {
         backgroundColor: Colors.PRIMARY,

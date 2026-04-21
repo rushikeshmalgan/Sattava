@@ -97,17 +97,17 @@ export default WaterIntakeCard;
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 20,
+        backgroundColor: Colors.SURFACE_ELEVATED,
+        borderRadius: 22,
         padding: 24,
         marginVertical: 16,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowOpacity: 0.25,
+        shadowRadius: 16,
         elevation: 5,
         borderWidth: 1,
-        borderColor: '#f0f0f0',
+        borderColor: Colors.BORDER,
     },
     header: {
         flexDirection: 'row',
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         borderTopWidth: 1,
-        borderTopColor: '#f5f5f5',
+        borderTopColor: Colors.BORDER,
         paddingTop: 15,
     },
     statsText: {

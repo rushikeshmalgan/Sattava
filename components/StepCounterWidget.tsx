@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, Gradients } from '../constants/Colors';
+import { Colors } from '../constants/Colors';
 import { StepData, getStepGoalProgress, getStepMotivation } from '../services/stepService';
 
 interface StepCounterWidgetProps {
@@ -51,13 +51,13 @@ export default function StepCounterWidget({
 
   return (
     <LinearGradient
-      colors={Gradients.STEPS_CARD}
+      colors={[Colors.SURFACE_ELEVATED, Colors.SURFACE]}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
       <View style={styles.header}>
-        <Text style={styles.title}>👟 Aaj ke Kadam</Text>
+        <Text style={styles.title}>👟 Step Tracker</Text>
         <TouchableOpacity onPress={onToggle} style={[styles.trackBtn, isTracking && styles.trackBtnActive]}>
           <Text style={styles.trackBtnText}>{isTracking ? '⏹ Stop' : '▶ Track'}</Text>
         </TouchableOpacity>
@@ -116,13 +116,13 @@ export default function StepCounterWidget({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 20,
+    borderRadius: 22,
     padding: 16,
     marginBottom: 12,
-    shadowColor: Colors.ACCENT,
+    shadowColor: Colors.PRIMARY,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
     elevation: 5,
   },
   header: {
@@ -134,21 +134,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#fff',
+    color: Colors.TEXT_MAIN,
   },
   trackBtn: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: Colors.SURFACE_DARK,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.4)',
+    borderColor: Colors.BORDER,
   },
   trackBtnActive: {
-    backgroundColor: 'rgba(255,255,255,0.35)',
+    backgroundColor: `${Colors.PRIMARY}25`,
   },
   trackBtnText: {
-    color: '#fff',
+    color: Colors.PRIMARY,
     fontWeight: '700',
     fontSize: 12,
   },
@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: Colors.SURFACE_DARK,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 6,
-    borderColor: 'rgba(255,255,255,0.5)',
+    borderColor: `${Colors.PRIMARY}55`,
   },
   ringInner: {
     alignItems: 'center',
@@ -174,11 +174,11 @@ const styles = StyleSheet.create({
   stepCount: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#fff',
+    color: Colors.TEXT_MAIN,
   },
   stepLabel: {
     fontSize: 10,
-    color: 'rgba(255,255,255,0.8)',
+    color: Colors.TEXT_MUTED,
     fontWeight: '600',
   },
   progressRing: {
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     borderWidth: 6,
-    borderColor: '#fff',
+    borderColor: Colors.PRIMARY,
     borderTopColor: 'transparent',
     borderRightColor: 'transparent',
   },
@@ -208,34 +208,34 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#fff',
+    color: Colors.TEXT_MAIN,
   },
   statLabel: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.75)',
+    color: Colors.TEXT_MUTED,
     fontWeight: '600',
     marginTop: 2,
   },
   statDivider: {
     width: 1,
     height: 30,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: Colors.BORDER,
   },
   progressBarBg: {
     height: 6,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: Colors.SURFACE_DARK,
     borderRadius: 3,
     overflow: 'hidden',
     marginBottom: 8,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.PRIMARY,
     borderRadius: 3,
   },
   motivation: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.9)',
+    color: Colors.TEXT_MUTED,
     fontWeight: '500',
     textAlign: 'center',
   },

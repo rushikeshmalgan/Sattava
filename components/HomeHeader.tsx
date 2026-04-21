@@ -2,14 +2,13 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
 import { Colors } from '../constants/Colors';
-import { Strings } from '../constants/HindiStrings';
 
 function getGreeting(name: string): { text: string; emoji: string } {
   const hour = new Date().getHours();
-  if (hour < 12) return { text: `Suprabhat, ${name}!`, emoji: '🌅' };
-  if (hour < 17) return { text: `Namaskar, ${name}!`, emoji: '☀️' };
-  if (hour < 20) return { text: `Shubh Sandhya, ${name}!`, emoji: '🌆' };
-  return { text: `Shubh Ratri, ${name}!`, emoji: '🌙' };
+  if (hour < 12) return { text: `Good Morning, ${name}!`, emoji: '🌅' };
+  if (hour < 17) return { text: `Good Afternoon, ${name}!`, emoji: '☀️' };
+  if (hour < 20) return { text: `Good Evening, ${name}!`, emoji: '🌆' };
+  return { text: `Good Night, ${name}!`, emoji: '🌙' };
 }
 
 export default function HomeHeader() {
@@ -22,9 +21,9 @@ export default function HomeHeader() {
       {/* Top row */}
       <View style={styles.topRow}>
         <View style={styles.greetingBlock}>
-          <Text style={styles.appName}>🇮🇳 SwasthBharat</Text>
+          <Text style={styles.appName}>Sattva</Text>
           <Text style={styles.greetingText}>{emoji} {text}</Text>
-          <Text style={styles.tagline}>{Strings.APP_TAGLINE_HINDI}</Text>
+          <Text style={styles.tagline}>Your Intelligent Companion for Mindful Eating</Text>
         </View>
 
         {/* Avatar */}
@@ -56,7 +55,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '800',
     color: Colors.PRIMARY,
-    letterSpacing: 0.5,
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
     marginBottom: 4,
   },
   greetingText: {
@@ -69,13 +69,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.TEXT_MUTED,
     marginTop: 2,
-    fontStyle: 'italic',
+    fontWeight: '500',
   },
   avatar: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    borderWidth: 2.5,
+    borderWidth: 2,
     borderColor: Colors.PRIMARY,
   },
   avatarFallback: {
@@ -85,6 +85,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.PRIMARY,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: Colors.PRIMARY,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
   },
   avatarInitial: {
     color: '#fff',

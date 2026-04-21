@@ -16,12 +16,12 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const options = [
-    { id: "exercise", title: "Vyayaam Log",   icon: "walk",              color: "#DC2626",       subtitle: 'Exercise' },
-    { id: "water",    title: "Paani Piyo",    icon: "water-outline",      color: "#0284C7",       subtitle: 'Water' },
-    { id: "food",     title: "Khana Add Karo",icon: "restaurant",         color: Colors.PRIMARY,  subtitle: 'Indian Food' },
-    { id: "yoga",     title: "Yoga & Pranayam",icon: "body-outline",      color: '#138808',       subtitle: 'Wellness' },
-    { id: "scan",     title: "Scan Karo",     icon: "scan-outline",       color: "#10B981",       subtitle: 'Barcode', isPremium: true },
-    { id: "manual",   title: "Manual Calories",icon: "calculator-outline", color: Colors.ACCENT_GOLD, subtitle: 'Custom' },
+    { id: "exercise", title: "Log Exercise",   icon: "walk",              color: Colors.SECONDARY,       subtitle: 'Activity' },
+    { id: "water",    title: "Log Water",    icon: "water-outline",      color: Colors.ACCENT,       subtitle: 'Hydration' },
+    { id: "food",     title: "Log Meal",icon: "restaurant",         color: Colors.PRIMARY,  subtitle: 'Indian Food' },
+    { id: "yoga",     title: "Yoga & Flow",icon: "body-outline",      color: Colors.ACCENT,       subtitle: 'Wellness' },
+    { id: "scan",     title: "AI Scan",     icon: "scan-outline",       color: Colors.PRIMARY,       subtitle: 'Photo log', isPremium: true },
+    { id: "manual",   title: "Manual Entry",icon: "calculator-outline", color: Colors.ACCENT_GOLD, subtitle: 'Custom' },
   ];
 
   const handleOptionPress = async (id: string) => {
@@ -71,8 +71,8 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
           style={[styles.modalContainer, { paddingBottom: insets.bottom + 90 }]}
         >
           <View style={styles.handle} />
-          <Text style={styles.modalTitle}>🇮🇳 SwasthBharat — Log Karo!</Text>
-          <Text style={styles.modalSubtitle}>Aaj ka kya add karna hai?</Text>
+          <Text style={styles.modalTitle}>Sattva — Log Activity</Text>
+          <Text style={styles.modalSubtitle}>What would you like to log today?</Text>
           <View style={styles.grid}>
             {options.map((option) => (
               <Pressable
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 5,
     borderRadius: 3,
-    backgroundColor: "#D1D5DB",
+    backgroundColor: Colors.BORDER,
     alignSelf: "center",
     marginBottom: 10,
   },
@@ -160,21 +160,22 @@ const styles = StyleSheet.create({
     flexBasis: "30%",
     flexGrow: 1,
     maxWidth: "31%",
-    backgroundColor: Colors.SURFACE_ELEVATED,
-    borderRadius: 18,
+    backgroundColor: Colors.SURFACE,
+    borderRadius: 22,
     padding: 16,
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
     borderWidth: 1,
     borderColor: Colors.BORDER,
   },
   optionCardPressed: {
     transform: [{ scale: 0.97 }],
+    backgroundColor: Colors.SURFACE_DARK,
   },
   iconCircle: {
     width: 60,
@@ -203,15 +204,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     right: 0,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Colors.SURFACE,
     borderRadius: 10,
     padding: 4,
     borderWidth: 1,
-    borderColor: "#f0f0f0",
+    borderColor: Colors.BORDER,
 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.05,
     shadowRadius: 2,
   },
   premiumLabel: {

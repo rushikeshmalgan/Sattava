@@ -27,8 +27,8 @@ interface DayStats {
 
 const MACRO_COLORS = {
   carbs: Colors.PRIMARY,
-  protein: '#DC2626',
-  fat: '#0284C7',
+  protein: Colors.SECONDARY,
+  fat: Colors.ACCENT,
   fiber: Colors.SUCCESS,
 };
 
@@ -111,9 +111,9 @@ export default function Analytics() {
   });
 
   const macroItems = [
-    { label: 'Protein', consumed: todayData.protein, target: targets.protein, unit: 'g', color: '#DC2626', rda: ICMR_RDA.protein },
+    { label: 'Protein', consumed: todayData.protein, target: targets.protein, unit: 'g', color: Colors.SECONDARY, rda: ICMR_RDA.protein },
     { label: 'Carbs', consumed: todayData.carbs, target: targets.carbs, unit: 'g', color: Colors.PRIMARY, rda: ICMR_RDA.carbs },
-    { label: 'Fat', consumed: todayData.fat, target: targets.fat, unit: 'g', color: '#0284C7', rda: ICMR_RDA.fat },
+    { label: 'Fat', consumed: todayData.fat, target: targets.fat, unit: 'g', color: Colors.ACCENT, rda: ICMR_RDA.fat },
     { label: 'Fiber', consumed: todayData.fiber, target: 40, unit: 'g', color: Colors.SUCCESS, rda: ICMR_RDA.fiber },
   ];
 
@@ -127,8 +127,8 @@ export default function Analytics() {
     <Animated.View style={[styles.container, { paddingTop: insets.top, opacity: fadeAnim }]}>
       {/* Header */}
       <LinearGradient colors={Gradients.SAFFRON} style={styles.header}>
-        <Text style={styles.headerTitle}>📊 Insights — Jaankari</Text>
-        <Text style={styles.headerSub}>Teri health ka poora hisaab</Text>
+        <Text style={styles.headerTitle}>📊 Insights Dashboard</Text>
+        <Text style={styles.headerSub}>Your complete nutrition and activity overview</Text>
 
         {/* Quick stats pill row */}
         <View style={styles.pillRow}>
@@ -141,7 +141,7 @@ export default function Analytics() {
       {/* Tab Bar */}
       <View style={styles.tabBar}>
         <TouchableOpacity style={[styles.tab, activeTab === 'today' && styles.tabActive]} onPress={() => setActiveTab('today')}>
-          <Text style={[styles.tabText, activeTab === 'today' && styles.tabTextActive]}>📅 Aaj Ka Haal</Text>
+          <Text style={[styles.tabText, activeTab === 'today' && styles.tabTextActive]}>📅 Today</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.tab, activeTab === 'week' && styles.tabActive]} onPress={() => setActiveTab('week')}>
           <Text style={[styles.tabText, activeTab === 'week' && styles.tabTextActive]}>📈 Weekly Trends</Text>
@@ -237,10 +237,10 @@ export default function Analytics() {
               <Text style={styles.ayurTitle}>🕉️ Ayurvedic Tip Of The Day</Text>
               <Text style={styles.ayurText}>
                 {todayData.calories < 1200
-                  ? 'Kal ka khana bahut kam hai! Proper nourishment is important — have a meal now. 🍛'
+                  ? 'Your intake is too low today. Add a balanced meal to support recovery and energy.'
                   : todayData.protein < 30
-                    ? 'Protein kam lag raha hai. Dal, paneer, ya dahi add karo. 🥛'
-                    : 'Balanced diet! Keep drinking warm water after meals for better digestion. 🌿'}
+                    ? 'Protein is below target today. Add dal, paneer, yogurt, or eggs to close the gap.'
+                    : 'Great balance today. Keep hydration steady across meals for better digestion and performance.'}
               </Text>
             </View>
           </>
@@ -250,7 +250,7 @@ export default function Analytics() {
           <>
             {/* Weekly Calorie Bar Chart */}
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>📅 Weekly Calories (Hafte bhar)</Text>
+              <Text style={styles.cardTitle}>📅 Weekly Calories</Text>
               <View style={styles.barChart}>
                 {weeklyData.map((day, i) => {
                   const barH = Math.round((day.calories / maxWeekCal) * 120);
@@ -260,7 +260,7 @@ export default function Analytics() {
                       <Text style={styles.barVal}>{Math.round(day.calories / 100) / 10}k</Text>
                       <View style={styles.barWrapper}>
                         <LinearGradient
-                          colors={isToday ? Gradients.SAFFRON : ['#E8D5B0', '#D4C4A0']}
+                          colors={isToday ? [Colors.PRIMARY_DARK, Colors.PRIMARY] : [Colors.SURFACE_DARK, Colors.BORDER]}
                           style={[styles.bar, { height: barH }]}
                         />
                       </View>
@@ -274,7 +274,7 @@ export default function Analytics() {
               <View style={styles.legendRow}>
                 <View style={[styles.legendDot, { backgroundColor: Colors.PRIMARY }]} />
                 <Text style={styles.legendText}>Today</Text>
-                <View style={[styles.legendDot, { backgroundColor: '#D4C4A0', marginLeft: 12 }]} />
+                <View style={[styles.legendDot, { backgroundColor: Colors.BORDER, marginLeft: 12 }]} />
                 <Text style={styles.legendText}>Other days</Text>
               </View>
             </View>
@@ -291,7 +291,7 @@ export default function Analytics() {
                       <Text style={styles.barVal}>{ Math.round((day.steps || 0) / 1000) }k</Text>
                       <View style={styles.barWrapper}>
                         <LinearGradient
-                          colors={isToday ? Gradients.STEPS_CARD : ['#D4C4A0', '#C0B090']}
+                          colors={isToday ? [Colors.ACCENT, Colors.ACCENT_LIGHT] : [Colors.SURFACE_DARK, Colors.BORDER]}
                           style={[styles.bar, { height: barH }]}
                         />
                       </View>
@@ -302,14 +302,14 @@ export default function Analytics() {
                   );
                 })}
               </View>
-              <Text style={styles.stepGoalLine}>— Daily step goal: 8,000 steps</Text>
+              <Text style={styles.stepGoalLine}>Daily step goal: 8,000 steps</Text>
             </View>
 
             {/* Weekly summary card */}
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>🧾 Hafta Bhar Ka Summary</Text>
+              <Text style={styles.cardTitle}>🧾 Weekly Summary</Text>
               <StatRow label="Avg daily calories" value={`${Math.round(weeklyData.reduce((a,b)=>a+b.calories,0)/7)} kcal`} color={Colors.PRIMARY} />
-              <StatRow label="Avg daily protein" value={`${Math.round(weeklyData.reduce((a,b)=>a+b.protein,0)/7)}g`} color="#DC2626" />
+              <StatRow label="Avg daily protein" value={`${Math.round(weeklyData.reduce((a,b)=>a+b.protein,0)/7)}g`} color={Colors.SECONDARY} />
               <StatRow label="Total steps (week)" value={(weeklyData.reduce((a,b)=>a+(b.steps||0),0)).toLocaleString('en-IN')} color={Colors.ACCENT} />
               <StatRow label="Diet Score (today)" value={`${dietScore.score}/100 — Grade ${dietScore.grade}`} color={Colors.SUCCESS} />
             </View>
@@ -386,8 +386,8 @@ const styles = StyleSheet.create({
   miniProgressBg: { width: '100%', height: 5, backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 3, overflow: 'hidden' },
   miniProgressFill: { height: '100%', borderRadius: 3 },
   miniPct: { fontSize: 11, fontWeight: '700', color: Colors.TEXT_MUTED, marginTop: 4 },
-  ayurCard: { backgroundColor: '#FFF9E6', borderRadius: 16, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: Colors.FESTIVAL_GOLD },
-  ayurTitle: { fontSize: 14, fontWeight: '700', color: Colors.TURMERIC, marginBottom: 6 },
+  ayurCard: { backgroundColor: Colors.SURFACE, borderRadius: 16, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: Colors.BORDER },
+  ayurTitle: { fontSize: 14, fontWeight: '700', color: Colors.ACCENT, marginBottom: 6 },
   ayurText: { fontSize: 13, color: Colors.TEXT_MUTED, lineHeight: 20 },
   barChart: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', height: 150, paddingBottom: 24, marginBottom: 8 },
   barCol: { flex: 1, alignItems: 'center', gap: 4 },

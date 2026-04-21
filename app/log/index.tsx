@@ -123,17 +123,17 @@ const styles = StyleSheet.create({
     optionCard: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        borderRadius: 20,
+        backgroundColor: Colors.SURFACE_ELEVATED,
+        borderRadius: 22,
         padding: 16,
         // Shadow
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
+        shadowOpacity: 0.25,
+        shadowRadius: 14,
         elevation: 2,
         borderWidth: 1,
-        borderColor: '#f5f5f5',
+        borderColor: Colors.BORDER,
     },
     iconContainer: {
         width: 60,

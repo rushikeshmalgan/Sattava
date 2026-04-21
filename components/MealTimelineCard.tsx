@@ -11,7 +11,7 @@ interface MealTimelineCardProps {
 export default function MealTimelineCard({ meals, onLogMeal }: MealTimelineCardProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>📅 Aaj Ka Meal Plan</Text>
+      <Text style={styles.title}>📅 Today Meal Plan</Text>
       <Text style={styles.subtitle}>Today's Indian Meal Schedule</Text>
 
       <ScrollView showsVerticalScrollIndicator={false} style={styles.list}>

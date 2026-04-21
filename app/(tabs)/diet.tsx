@@ -12,7 +12,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors, Gradients } from '../../constants/Colors';
 import { INDIAN_REGIONS, IndianRegion } from '../../constants/IndianRegions';
-import { Strings } from '../../constants/HindiStrings';
 import { INDIAN_FOODS } from '../../data/indianFoods';
 import { ScheduledMeal } from '../../data/mealPlans';
 import {
@@ -26,15 +25,15 @@ type DietType = 'Veg' | 'Non-Veg' | 'Vegan';
 type GoalType = 'weight_loss' | 'maintain' | 'weight_gain' | 'muscle_gain';
 
 const DIET_OPTIONS: { id: DietType; label: string; emoji: string; color: string }[] = [
-  { id: 'Veg',     label: 'Shaakahaari', emoji: '🟢', color: Colors.SUCCESS },
-  { id: 'Non-Veg', label: 'Maansahaari', emoji: '🔴', color: Colors.ERROR },
+  { id: 'Veg',     label: 'Vegetarian', emoji: '🟢', color: Colors.SUCCESS },
+  { id: 'Non-Veg', label: 'Non-Vegetarian', emoji: '🔴', color: Colors.ERROR },
   { id: 'Vegan',   label: 'Vegan',       emoji: '🌱', color: Colors.SECONDARY },
 ];
 
 const GOAL_OPTIONS: { id: GoalType; label: string; emoji: string }[] = [
-  { id: 'weight_loss',  label: 'Wajan Kam Karna', emoji: '⬇️' },
-  { id: 'maintain',     label: 'Maintain Karna',  emoji: '⚖️' },
-  { id: 'weight_gain',  label: 'Wajan Badhana',   emoji: '⬆️' },
+  { id: 'weight_loss',  label: 'Weight Loss', emoji: '⬇️' },
+  { id: 'maintain',     label: 'Maintain Weight',  emoji: '⚖️' },
+  { id: 'weight_gain',  label: 'Weight Gain',   emoji: '⬆️' },
   { id: 'muscle_gain',  label: 'Muscle Gain',      emoji: '💪' },
 ];
 
@@ -78,7 +77,7 @@ export default function DietScreen() {
     await generateMealPlan(prefs);
     await loadPlan();
     setShowSetup(false);
-    Alert.alert('✅ Plan Ready!', 'Tera naya meal plan ban gaya! Dekho aaj ka schedule.');
+    Alert.alert('✅ Plan Ready!', 'Your new meal plan has been generated.');
   };
 
   const handleSearchFood = (q: string) => {
@@ -105,7 +104,7 @@ export default function DietScreen() {
       {/* Header */}
       <LinearGradient colors={Gradients.SAFFRON} style={styles.header}>
         <Text style={styles.headerTitle}>🍛 Diet & Meal Plan</Text>
-        <Text style={styles.headerSubtitle}>Aapka Swasth Khane Ka Schedule</Text>
+        <Text style={styles.headerSubtitle}>Your Personalized Nutrition Schedule</Text>
         <View style={styles.headerRow}>
           <TouchableOpacity style={styles.setupBtn} onPress={() => setShowSetup(true)}>
             <Text style={styles.setupBtnText}>⚙️ Customize Plan</Text>
@@ -135,7 +134,7 @@ export default function DietScreen() {
 
       {/* Next Meal Pill */}
       {nextMeal && activeTab === 'plan' && (
-        <LinearGradient colors={['#FF6B1A', Colors.PRIMARY]} style={styles.nextMealPill}>
+        <LinearGradient colors={[Colors.ACCENT, Colors.PRIMARY]} style={styles.nextMealPill}>
           <Text style={styles.nextMealLabel}>⏰ Next: {nextMeal.label}</Text>
           <Text style={styles.nextMealTime}>{nextMeal.timeDisplay}</Text>
         </LinearGradient>
@@ -150,8 +149,8 @@ export default function DietScreen() {
           {todaysMeals.length === 0 ? (
             <View style={styles.emptyState}>
               <Text style={styles.emptyEmoji}>🍽️</Text>
-              <Text style={styles.emptyTitle}>Koi plan nahi mila!</Text>
-              <Text style={styles.emptySubtitle}>Apna Indian meal plan customize karo</Text>
+              <Text style={styles.emptyTitle}>No Meal Plan Found</Text>
+              <Text style={styles.emptySubtitle}>Customize your dietary preferences to generate a plan</Text>
               <TouchableOpacity style={styles.emptyBtn} onPress={() => setShowSetup(true)}>
                 <Text style={styles.emptyBtnText}>Setup Meal Plan →</Text>
               </TouchableOpacity>
@@ -216,8 +215,8 @@ export default function DietScreen() {
           {searchQuery.length >= 2 && searchResults.length === 0 && (
             <View style={styles.emptyState}>
               <Text style={styles.emptyEmoji}>🤷</Text>
-              <Text style={styles.emptyTitle}>Nahi mila!</Text>
-              <Text style={styles.emptySubtitle}>Try searching in English or Hindi</Text>
+              <Text style={styles.emptyTitle}>No results found</Text>
+              <Text style={styles.emptySubtitle}>Try a different English keyword</Text>
             </View>
           )}
         </View>
@@ -226,7 +225,7 @@ export default function DietScreen() {
       {activeTab === 'fasting' && (
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: insets.bottom + 90 }}>
           <View style={styles.fastingHeader}>
-            <Text style={styles.fastingTitle}>🕉️ Vrat / Fasting Foods</Text>
+            <Text style={styles.fastingTitle}>🕉️ Fasting Foods</Text>
             <Text style={styles.fastingSubtitle}>Safe foods for Navratri, Ekadashi, Ramadan & more</Text>
           </View>
           {FASTING_FOODS.map(food => (
@@ -240,7 +239,7 @@ export default function DietScreen() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalSheet}>
             <View style={styles.modalHandle} />
-            <Text style={styles.modalTitle}>🛒 Hafte Ka Grocery List</Text>
+            <Text style={styles.modalTitle}>🛒 Weekly Grocery List</Text>
             <ScrollView>
               {groceryList.map((item, i) => (
                 <View key={i} style={styles.groceryItem}>
@@ -355,38 +354,38 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.BACKGROUND },
   header: { paddingHorizontal: 16, paddingBottom: 16, paddingTop: 12 },
   headerTitle: { fontSize: 22, fontWeight: '800', color: '#fff', marginBottom: 2 },
-  headerSubtitle: { fontSize: 13, color: 'rgba(255,255,255,0.85)', marginBottom: 12 },
+  headerSubtitle: { fontSize: 13, color: 'rgba(255,255,255,0.9)', marginBottom: 12 },
   headerRow: { flexDirection: 'row', gap: 10 },
-  setupBtn: { flex: 1, backgroundColor: 'rgba(255,255,255,0.2)', padding: 10, borderRadius: 12, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.4)' },
+  setupBtn: { flex: 1, backgroundColor: 'rgba(255,255,255,0.2)', padding: 10, borderRadius: 24, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.3)' },
   setupBtnText: { color: '#fff', fontWeight: '700', fontSize: 13 },
-  groceryBtn: { flex: 1, backgroundColor: 'rgba(255,255,255,0.2)', padding: 10, borderRadius: 12, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.4)' },
+  groceryBtn: { flex: 1, backgroundColor: 'rgba(255,255,255,0.2)', padding: 10, borderRadius: 24, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.3)' },
   groceryBtnText: { color: '#fff', fontWeight: '700', fontSize: 13 },
   tabBar: { flexDirection: 'row', backgroundColor: Colors.SURFACE, borderBottomWidth: 1, borderBottomColor: Colors.BORDER },
   tab: { flex: 1, paddingVertical: 12, alignItems: 'center' },
   tabActive: { borderBottomWidth: 2.5, borderBottomColor: Colors.PRIMARY },
   tabText: { fontSize: 11, color: Colors.TEXT_MUTED, fontWeight: '600' },
   tabTextActive: { color: Colors.PRIMARY },
-  nextMealPill: { marginHorizontal: 16, marginTop: 12, marginBottom: 4, borderRadius: 14, paddingHorizontal: 16, paddingVertical: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  nextMealPill: { marginHorizontal: 16, marginTop: 12, marginBottom: 4, borderRadius: 24, paddingHorizontal: 16, paddingVertical: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   nextMealLabel: { color: '#fff', fontWeight: '700', fontSize: 14 },
-  nextMealTime: { color: 'rgba(255,255,255,0.9)', fontWeight: '600', fontSize: 13 },
-  mealRow: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: Colors.SURFACE_ELEVATED, borderRadius: 14, padding: 12, marginTop: 8, borderWidth: 1, borderColor: Colors.BORDER, gap: 10 },
+  nextMealTime: { color: '#fff', fontWeight: '700', fontSize: 13, opacity: 0.9 },
+  mealRow: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: Colors.SURFACE_ELEVATED, borderRadius: 24, padding: 12, marginTop: 8, borderWidth: 1, borderColor: Colors.BORDER, gap: 10 },
   mealRowCurrent: { borderColor: Colors.PRIMARY, backgroundColor: `${Colors.PRIMARY}08` },
   mealTimeCol: { width: 70, alignItems: 'center', paddingTop: 2 },
   mealTimeText: { fontSize: 12, fontWeight: '700', color: Colors.PRIMARY },
   mealInfoCol: { flex: 1 },
   mealRowLabel: { fontSize: 13, fontWeight: '700', color: Colors.TEXT_MAIN, marginBottom: 4 },
   mealRowFood: { fontSize: 11, color: Colors.TEXT_MUTED, lineHeight: 16 },
-  mealRowCal: { fontSize: 11, fontWeight: '700', color: Colors.ACCENT_GOLD, marginTop: 4 },
+  mealRowCal: { fontSize: 11, fontWeight: '700', color: Colors.ACCENT, marginTop: 4 },
   statusDot: { width: 10, height: 10, borderRadius: 5, marginTop: 4 },
   emptyState: { alignItems: 'center', paddingVertical: 60 },
   emptyEmoji: { fontSize: 56, marginBottom: 16 },
   emptyTitle: { fontSize: 20, fontWeight: '700', color: Colors.TEXT_MAIN, marginBottom: 8 },
   emptySubtitle: { fontSize: 14, color: Colors.TEXT_MUTED, textAlign: 'center', marginBottom: 24 },
   emptyBtn: { backgroundColor: Colors.PRIMARY, paddingHorizontal: 28, paddingVertical: 12, borderRadius: 24 },
-  emptyBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
-  searchBar: { backgroundColor: Colors.SURFACE, borderRadius: 14, paddingHorizontal: 16, paddingVertical: 12, fontSize: 14, color: Colors.TEXT_MAIN, borderWidth: 1, borderColor: Colors.BORDER, marginTop: 12, marginBottom: 8 },
+  emptyBtnText: { color: '#fff', fontWeight: '800', fontSize: 15 },
+  searchBar: { backgroundColor: Colors.SURFACE, borderRadius: 24, paddingHorizontal: 16, paddingVertical: 12, fontSize: 14, color: Colors.TEXT_MAIN, borderWidth: 1, borderColor: Colors.BORDER, marginTop: 12, marginBottom: 8 },
   sectionLabel: { fontSize: 14, fontWeight: '700', color: Colors.TEXT_MAIN, marginBottom: 8 },
-  foodCard: { flexDirection: 'row', backgroundColor: Colors.SURFACE_ELEVATED, borderRadius: 14, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: Colors.BORDER },
+  foodCard: { flexDirection: 'row', backgroundColor: Colors.SURFACE_ELEVATED, borderRadius: 24, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: Colors.BORDER },
   foodCardLeft: { flex: 1 },
   foodName: { fontSize: 14, fontWeight: '700', color: Colors.TEXT_MAIN },
   foodNameHindi: { fontSize: 11, color: Colors.TEXT_MUTED, marginBottom: 4 },
@@ -408,8 +407,8 @@ const styles = StyleSheet.create({
   groceryItem: { flexDirection: 'row', gap: 8, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: Colors.BORDER },
   groceryNum: { fontSize: 13, color: Colors.TEXT_MUTED, fontWeight: '600', width: 24 },
   groceryText: { fontSize: 13, color: Colors.TEXT_MAIN, flex: 1 },
-  closeBtn: { backgroundColor: Colors.PRIMARY, padding: 14, borderRadius: 14, alignItems: 'center', marginTop: 12 },
-  closeBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  closeBtn: { backgroundColor: Colors.PRIMARY, padding: 14, borderRadius: 24, alignItems: 'center', marginTop: 12 },
+  closeBtnText: { color: '#fff', fontWeight: '800', fontSize: 15 },
   setupLabel: { fontSize: 14, fontWeight: '700', color: Colors.TEXT_MAIN, marginTop: 16, marginBottom: 8 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   chip: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1.5, borderColor: Colors.BORDER, backgroundColor: Colors.SURFACE },

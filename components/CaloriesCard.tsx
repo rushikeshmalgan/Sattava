@@ -62,25 +62,25 @@ const CaloriesCard = ({
                 <View style={styles.divider} />
                 <View style={styles.statItem}>
                     <Text style={styles.statLabel}>Burned</Text>
-                    <Text style={[styles.statValue, { color: '#FF6347' }]}>{burned}</Text>
+                    <Text style={[styles.statValue, { color: Colors.SECONDARY }]}>{burned}</Text>
                 </View>
             </View>
 
             <View style={styles.macrosContainer}>
                 <View style={styles.macroCard}>
-                    <Ionicons name="restaurant-outline" size={24} color="#EA580C" />
+                    <Ionicons name="restaurant-outline" size={24} color={Colors.PRIMARY} />
                     <Text style={styles.macroValue}>{macros.carbs}g</Text>
                     <Text style={styles.macroLabel}>Carbs Left</Text>
                 </View>
 
                 <View style={styles.macroCard}>
-                    <Ionicons name="barbell-outline" size={24} color="#DC2626" />
+                    <Ionicons name="barbell-outline" size={24} color={Colors.SECONDARY} />
                     <Text style={styles.macroValue}>{macros.protein}g</Text>
                     <Text style={styles.macroLabel}>Proteins Left</Text>
                 </View>
 
                 <View style={styles.macroCard}>
-                    <Ionicons name="water-outline" size={24} color="#0284C7" />
+                    <Ionicons name="water-outline" size={24} color={Colors.ACCENT} />
                     <Text style={styles.macroValue}>{macros.fat}g</Text>
                     <Text style={styles.macroLabel}>Fats Left</Text>
                 </View>
@@ -93,17 +93,19 @@ export default CaloriesCard;
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 20,
+        backgroundColor: Colors.SURFACE_ELEVATED,
+        borderRadius: 22,
         padding: 24,
         marginVertical: 5,
 
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.1,
-        shadowRadius: 15,
+        shadowOpacity: 0.28,
+        shadowRadius: 18,
 
         elevation: 4,
+        borderWidth: 1,
+        borderColor: Colors.BORDER,
     },
     header: {
         flexDirection: 'row',
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
     divider: {
         width: 1,
         height: 30,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: Colors.BORDER,
     },
     macrosContainer: {
         flexDirection: 'row',

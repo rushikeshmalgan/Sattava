@@ -29,11 +29,11 @@ export default function GeneratingProfile() {
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
   const [steps, setSteps] = useState([
-    { id: 1, label: 'Initializing SwasthBharat AI', status: 'loading' as StepStatus },
+    { id: 1, label: 'Initializing Sattva AI', status: 'loading' as StepStatus },
     { id: 2, label: 'Analyzing your profile', status: 'pending' as StepStatus },
     { id: 3, label: 'Calculating metabolic rate (BMR)', status: 'pending' as StepStatus },
     { id: 4, label: 'Building Indian diet plan', status: 'pending' as StepStatus },
-    { id: 5, label: 'Adding Ayurvedic recommendations', status: 'pending' as StepStatus },
+    { id: 5, label: 'Adding wellness recommendations', status: 'pending' as StepStatus },
   ]);
 
   useEffect(() => {
@@ -135,9 +135,9 @@ Guidelines:
 - Base calorie recommendations on ICMR Indian RDA standards
 - Prefer Indian foods: roti, dal, rice, sabzi, curd, sprouts, paneer
 - Include Indian meal timing (breakfast 7-9am, lunch 12-2pm, dinner 7-9pm)
-- Suggest Ayurvedic tips relevant to their dosha and season
-- planSummary should be 2-3 sentences in an encouraging Hinglish tone
-- fitnessTips should include at least 2 yoga/pranayama recommendations
+- Suggest wellness tips relevant to their current goals
+- planSummary should be 2-3 sentences in a highly professional yet warm English tone. Strictly no Hinglish.
+- fitnessTips should include at least 2 yoga/activity recommendations
 `;
 
       const result = await model.generateContent(prompt);
@@ -212,7 +212,7 @@ Guidelines:
       <View style={styles.content}>
         <Animated.View style={[styles.loader, { transform: [{ rotate }] }]} />
 
-        <Text style={styles.title}>SwasthBharat Plan Ban Raha Hai! 🇮🇳</Text>
+        <Text style={styles.title}>Generating your Sattva profile...</Text>
 
         <View style={styles.stepsContainer}>
           {steps.map(step => (
@@ -310,9 +310,11 @@ const styles = StyleSheet.create({
   progressBarBackground: {
     width: '100%',
     height: 10,
-    backgroundColor: Colors.SURFACE,
+    backgroundColor: Colors.DIVIDER,
     borderRadius: 5,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: Colors.BORDER,
   },
   progressBarFill: {
     height: '100%',

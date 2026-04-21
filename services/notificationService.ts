@@ -1,15 +1,6 @@
-/**
- * SwasthBharat — Notification Service
- * Indian-context Hinglish smart notifications with meal reminders
- * Uses expo-notifications for local scheduled alerts
- */
-
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { INDIAN_MEAL_SCHEDULE } from '../data/mealPlans';
-import { Strings } from '../constants/HindiStrings';
-
-// Configure how notifications appear when the app is in foreground
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -69,32 +60,32 @@ export const scheduleMealReminders = async (): Promise<void> => {
 
   const mealMessages: Record<string, { title: string; body: string }> = {
     morning_detox: {
-      title: '🌿 SwasthBharat — Morning Detox',
-      body: Strings.NOTIF_MORNING_DETOX,
+      title: '🌿 Sattva — Morning Detox',
+      body: 'Start your day right with warm water, lemon, or your preferred detox drink.',
     },
     breakfast: {
-      title: '🍳 Naashta Time!',
-      body: Strings.NOTIF_BREAKFAST,
+      title: '🍳 Breakfast Time',
+      body: 'Time to fuel up for the day. Remember to log your morning meal.',
     },
     mid_morning: {
       title: '🍎 Mid-Morning Snack',
-      body: 'Thoda kuch halka khao — fruits ya nuts!',
+      body: 'Opt for a light snack — consider fresh fruits, nuts, or seeds.',
     },
     lunch: {
-      title: '🍛 Lunch Time!',
-      body: Strings.NOTIF_LUNCH,
+      title: '🍛 Lunch Time',
+      body: 'Take a break for a balanced lunch. Keep an eye on your macros.',
     },
     evening: {
-      title: '☕ Chai Break!',
-      body: Strings.NOTIF_EVENING,
+      title: '☕ Evening Tea Break',
+      body: 'A perfect time for herbal tea and a mindful, light snack.',
     },
     dinner: {
-      title: '🌙 Dinner Time!',
-      body: Strings.NOTIF_DINNER,
+      title: '🌙 Dinner Time',
+      body: 'Keep dinner light for better digestion and sleep quality.',
     },
     bedtime: {
-      title: '🥛 Sone Ka Waqt Aa Gaya',
-      body: Strings.NOTIF_BEDTIME,
+      title: '🌙 Time to Rest',
+      body: 'Prepare for a restful night. Hydrate slightly if needed.',
     },
   };
 
@@ -110,8 +101,8 @@ export const scheduleMealReminders = async (): Promise<void> => {
   for (const hour of waterHours) {
     await scheduleDaily(
       `water_${hour}`,
-      '💧 Paani Peene Ka Waqt!',
-      Strings.NOTIF_WATER_2HR,
+      '💧 Hydration Check!',
+      'Stay hydrated. Remember to drink a glass of water.',
       hour,
       0
     ).catch(() => {});
@@ -124,16 +115,16 @@ export const sendFoodAlert = async (foodName: string, calories: number): Promise
 
   let body = `You logged ${foodName} (${calories} kcal).`;
 
-  if (lower.includes('samosa')) body = Strings.ALERT_SAMOSA;
-  else if (lower.includes('chai') || lower.includes('tea')) body = Strings.ALERT_CHAI_EXCESS;
-  else if (lower.includes('gulab jamun') || lower.includes('mithai') || lower.includes('sweet')) body = Strings.ALERT_SWEET_EXCESS;
-  else if (lower.includes('pickle') || lower.includes('achar')) body = Strings.ALERT_SODIUM_PICKLE;
-  else if (calories > 400) body = `⚠️ High calorie item! ${foodName} has ${calories} kcal — balance karo.`;
-  else if (calories < 100) body = `✅ Light and healthy choice! ${foodName} — great pick.`;
+  if (lower.includes('samosa')) body = 'Fried snacks are dense in calories. Be sure to balance your next meal.';
+  else if (lower.includes('chai') || lower.includes('tea')) body = 'Limit added sugar in your tea for a healthier metabolic response.';
+  else if (lower.includes('gulab jamun') || lower.includes('mithai') || lower.includes('sweet')) body = 'Sweets have high sugar content. Enjoy in strict moderation.';
+  else if (lower.includes('pickle') || lower.includes('achar')) body = 'Pickles can be high in sodium. Be mindful of your portion size.';
+  else if (calories > 400) body = `⚠️ High calorie item: ${foodName} (${calories} kcal). Consider balancing your daily macros.`;
+  else if (calories < 100) body = `✅ Excellent choice! ${foodName} is a light and healthy option.`;
 
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: '🍛 SwasthBharat Food Alert',
+      title: '🥗 Sattva Nutrition Alert',
       body,
       sound: true,
     },
@@ -145,7 +136,7 @@ export const sendStepGoalAlert = async (steps: number): Promise<void> => {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: '👟 Step Goal Reached!',
-      body: `${steps.toLocaleString('en-IN')} kadam ho gaye! Shabash! 🎉`,
+      body: `${steps.toLocaleString('en-IN')} steps completed! Fantastic progress! 🎉`,
       sound: true,
     },
     trigger: null,
@@ -155,8 +146,8 @@ export const sendStepGoalAlert = async (steps: number): Promise<void> => {
 export const sendWaterAlert = async (): Promise<void> => {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: '💧 Paani!',
-      body: Strings.WATER_REMINDER,
+      title: '💧 Hydration Alert!',
+      body: 'Time to drink your hourly water and stay refreshed.',
       sound: false,
     },
     trigger: null,
@@ -167,7 +158,7 @@ export const sendCalorieBurnAlert = async (calories: number): Promise<void> => {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: '🔥 Calorie Burn!',
-      body: Strings.ALERT_CALORIE_BURN(calories),
+      body: `Great job! You burned ${calories} kcal.`,
       sound: true,
     },
     trigger: null,

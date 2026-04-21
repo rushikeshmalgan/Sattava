@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   },
   floatingBar: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.92)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderRadius: 36,
     height: 68,
     paddingHorizontal: 8,
@@ -153,11 +153,11 @@ const styles = StyleSheet.create({
     width: '100%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.12,
-    shadowRadius: 14,
-    elevation: 10,
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
     borderWidth: 1,
-    borderColor: 'rgba(255, 153, 51, 0.2)',  // subtle saffron border
+    borderColor: 'rgba(255, 255, 255, 0.5)',
   },
   systemMask: {
     width: '100%',
@@ -190,9 +190,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: Colors.PRIMARY,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 10,
+    elevation: 6,
   },
   fabPressed: {
     transform: [{ scale: 0.92 }],

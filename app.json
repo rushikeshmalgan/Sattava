@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "SwasthBharat",
+    "name": "Sattva",
     "slug": "AI-Cal-Tracker",
     "version": "2.0.0",
     "orientation": "portrait",
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#FF9933",
+        "backgroundColor": "#F8FAFC",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -35,9 +35,9 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#FFFDF7",
+          "backgroundColor": "#F8FAFC",
           "dark": {
-            "backgroundColor": "#1A0F00"
+            "backgroundColor": "#0F1115"
           }
         }
       ],
@@ -46,14 +46,14 @@
         "expo-notifications",
         {
           "icon": "./assets/images/icon.png",
-          "color": "#FF9933",
+          "color": "#00BFA5",
           "sounds": []
         }
       ],
       [
         "expo-sensors",
         {
-          "motionPermission": "SwasthBharat needs motion access to auto-count your daily steps."
+          "motionPermission": "Sattva needs motion access to auto-count your daily steps."
         }
       ]
     ],

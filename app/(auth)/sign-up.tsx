@@ -102,12 +102,12 @@ export default function SignUp() {
 
                 <View style={styles.formContainer}>
                     <View style={styles.inputWrapper}>
-                        <Ionicons name="keypad-outline" size={20} color="#9CA3AF" style={styles.icon} />
+                        <Ionicons name="keypad-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
                         <TextInput
                             style={styles.input}
                             value={code}
                             placeholder="Verification Code"
-                            placeholderTextColor="#9CA3AF"
+                            placeholderTextColor={Colors.TEXT_MUTED}
                             keyboardType="numeric"
                             onChangeText={(code) => setCode(code)}
                         />
@@ -139,42 +139,42 @@ export default function SignUp() {
             <View style={styles.formContainer}>
                 {/* Name Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="person-outline" size={20} color="#9CA3AF" style={styles.icon} />
+                    <Ionicons name="person-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
                     <TextInput
                         style={styles.input}
                         value={name}
                         placeholder="Full Name"
-                        placeholderTextColor="#9CA3AF"
+                        placeholderTextColor={Colors.TEXT_MUTED}
                         onChangeText={(n) => setName(n)}
                     />
                 </View>
 
                 {/* Email Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="mail-outline" size={20} color="#9CA3AF" style={styles.icon} />
+                    <Ionicons name="mail-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
                     <TextInput
                         style={styles.input}
                         autoCapitalize="none"
                         value={emailAddress}
                         placeholder="Email Address"
-                        placeholderTextColor="#9CA3AF"
+                        placeholderTextColor={Colors.TEXT_MUTED}
                         onChangeText={(email) => setEmailAddress(email)}
                     />
                 </View>
 
                 {/* Password Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="lock-closed-outline" size={20} color="#9CA3AF" style={styles.icon} />
+                    <Ionicons name="lock-closed-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
                     <TextInput
                         style={styles.input}
                         value={password}
                         placeholder="Password"
-                        placeholderTextColor="#9CA3AF"
+                        placeholderTextColor={Colors.TEXT_MUTED}
                         secureTextEntry={secureText}
                         onChangeText={(password) => setPassword(password)}
                     />
                     <TouchableOpacity onPress={() => setSecureText(!secureText)} style={styles.eyeIcon}>
-                        <Ionicons name={secureText ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
+                        <Ionicons name={secureText ? "eye-off-outline" : "eye-outline"} size={20} color={Colors.TEXT_MUTED} />
                     </TouchableOpacity>
                 </View>
 
@@ -215,7 +215,7 @@ export default function SignUp() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.BACKGROUND,
     },
     headerContainer: {
         alignItems: 'center',
@@ -235,12 +235,12 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: '700',
-        color: '#111827',
+        color: Colors.TEXT_MAIN,
         marginBottom: 8,
     },
     subtitle: {
         fontSize: 16,
-        color: '#6B7280',
+        color: Colors.TEXT_MUTED,
         textAlign: 'center',
         paddingHorizontal: 20,
     },
@@ -250,7 +250,9 @@ const styles = StyleSheet.create({
     inputWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F3F4F6',
+        backgroundColor: Colors.SURFACE,
+        borderWidth: 1,
+        borderColor: Colors.BORDER,
         borderRadius: 12,
         marginBottom: 16,
         paddingHorizontal: 16,
@@ -265,7 +267,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         fontSize: 16,
-        color: '#111827',
+        color: Colors.TEXT_MAIN,
     },
     primaryButton: {
         backgroundColor: Colors.PRIMARY,
@@ -293,10 +295,10 @@ const styles = StyleSheet.create({
     divider: {
         flex: 1,
         height: 1,
-        backgroundColor: '#E5E7EB',
+        backgroundColor: Colors.BORDER,
     },
     dividerText: {
-        color: '#9CA3AF',
+        color: Colors.TEXT_MUTED,
         paddingHorizontal: 16,
         fontSize: 14,
         fontWeight: '500',
@@ -305,14 +307,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.SURFACE_ELEVATED,
         borderWidth: 1,
-        borderColor: '#E5E7EB',
+        borderColor: Colors.BORDER,
         borderRadius: 12,
         height: 56,
     },
     googleButtonText: {
-        color: '#374151',
+        color: Colors.TEXT_MAIN,
         fontSize: 16,
         fontWeight: '600',
         marginLeft: 12,
@@ -323,7 +325,7 @@ const styles = StyleSheet.create({
         marginTop: 32,
     },
     footerText: {
-        color: '#6B7280',
+        color: Colors.TEXT_MUTED,
         fontSize: 15,
     },
     signInText: {

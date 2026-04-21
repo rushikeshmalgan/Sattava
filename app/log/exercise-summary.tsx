@@ -67,7 +67,7 @@ const ExerciseSummaryScreen = () => {
             <View style={styles.container}>
                 <View style={styles.content}>
                     <View style={styles.fireIconContainer}>
-                        <Ionicons name="flame" size={100} color="#FF6347" />
+                        <Ionicons name="flame" size={100} color={Colors.SECONDARY} />
                     </View>
 
                     <Text style={styles.label}>Your Workout Burned</Text>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.SURFACE,
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: '#000',
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         width: 140,
         height: 140,
         borderRadius: 70,
-        backgroundColor: '#FFF5F2',
+        backgroundColor: Colors.SURFACE_ELEVATED,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 30,
@@ -194,6 +194,11 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
+        shadowColor: Colors.PRIMARY,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.45,
+        shadowRadius: 10,
+        elevation: 6,
     },
     logButtonText: {
         color: 'white',

@@ -64,12 +64,12 @@ const confidenceLabel = (confidence: number): string => {
 
 const confidenceColor = (confidence: number): string => {
   if (confidence >= 0.85) {
-    return '#0F766E';
+    return Colors.PRIMARY;
   }
   if (confidence >= 0.65) {
-    return '#D97706';
+    return Colors.ACCENT;
   }
-  return '#DC2626';
+  return Colors.SECONDARY;
 };
 
 const formatMacros = (food: ScanResolution['foodData']) => {
@@ -533,7 +533,7 @@ const ScanFoodScreen = () => {
         <ScrollView contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 24 }]}>
           {showSaveSuccess ? (
             <View style={styles.successBanner}>
-              <Ionicons name="checkmark-circle" size={18} color="#047857" />
+              <Ionicons name="checkmark-circle" size={18} color={Colors.PRIMARY} />
               <Text style={styles.successBannerText}>Saved to your log</Text>
             </View>
           ) : null}
@@ -543,14 +543,14 @@ const ScanFoodScreen = () => {
               style={[styles.modeChip, mode === 'barcode' && styles.modeChipActive]}
               onPress={() => setMode('barcode')}
             >
-              <Ionicons name="barcode-outline" size={18} color={mode === 'barcode' ? '#fff' : Colors.TEXT_MUTED} />
+              <Ionicons name="barcode-outline" size={18} color={mode === 'barcode' ? Colors.TEXT_MAIN : Colors.TEXT_MUTED} />
               <Text style={[styles.modeChipText, mode === 'barcode' && styles.modeChipTextActive]}>Barcode</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.modeChip, mode === 'photo' && styles.modeChipActive]}
               onPress={() => setMode('photo')}
             >
-              <Ionicons name="camera-outline" size={18} color={mode === 'photo' ? '#fff' : Colors.TEXT_MUTED} />
+              <Ionicons name="camera-outline" size={18} color={mode === 'photo' ? Colors.TEXT_MAIN : Colors.TEXT_MUTED} />
               <Text style={[styles.modeChipText, mode === 'photo' && styles.modeChipTextActive]}>Photo</Text>
             </TouchableOpacity>
           </View>
@@ -884,11 +884,13 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 20,
     padding: 24,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE_ELEVATED,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 14,
+    borderWidth: 1,
+    borderColor: Colors.BORDER,
   },
   permissionTitle: {
     fontSize: 22,
@@ -913,7 +915,7 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     width: '100%',
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.SURFACE_DARK,
     borderRadius: 18,
     paddingVertical: 14,
     alignItems: 'center',
@@ -934,7 +936,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -955,7 +957,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -973,11 +975,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE,
     borderRadius: 18,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: Colors.BORDER,
   },
   modeChipActive: {
     backgroundColor: Colors.PRIMARY,
@@ -988,7 +990,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   modeChipTextActive: {
-    color: '#fff',
+    color: Colors.TEXT_MAIN,
   },
   cameraCard: {
     borderRadius: 28,
@@ -1040,26 +1042,28 @@ const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   loadingCard: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE_ELEVATED,
     borderRadius: 20,
     padding: 16,
     gap: 10,
+    borderWidth: 1,
+    borderColor: Colors.BORDER,
   },
   skeletonLineLarge: {
     height: 12,
     width: '84%',
     borderRadius: 999,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Colors.BORDER,
   },
   skeletonLineSmall: {
     height: 10,
     width: '58%',
     borderRadius: 999,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Colors.BORDER,
   },
   successBanner: {
-    backgroundColor: '#ECFDF5',
-    borderColor: '#A7F3D0',
+    backgroundColor: `${Colors.PRIMARY}18`,
+    borderColor: `${Colors.PRIMARY}55`,
     borderWidth: 1,
     borderRadius: 14,
     paddingVertical: 10,
@@ -1069,7 +1073,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   successBannerText: {
-    color: '#065F46',
+    color: Colors.PRIMARY,
     fontWeight: '700',
   },
   actionsRow: {
@@ -1083,19 +1087,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   captureButtonText: {
-    color: '#fff',
+    color: Colors.TEXT_MAIN,
     fontWeight: '800',
     fontSize: 16,
   },
   scanHintCard: {
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE_ELEVATED,
     borderRadius: 18,
     paddingVertical: 14,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+    borderWidth: 1,
+    borderColor: Colors.BORDER,
   },
   scanHintText: {
     color: Colors.TEXT_MAIN,
@@ -1103,12 +1109,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nutritionOverviewCard: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE_ELEVATED,
     borderRadius: 24,
     padding: 16,
     gap: 10,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: Colors.BORDER,
   },
   nutritionOverviewHeader: {
     flexDirection: 'row',
@@ -1131,12 +1137,12 @@ const styles = StyleSheet.create({
   },
   nutritionMetricPill: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: Colors.SURFACE_DARK,
     borderRadius: 14,
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: Colors.BORDER,
   },
   nutritionMetricLabel: {
     color: Colors.TEXT_MUTED,
@@ -1155,10 +1161,12 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   summaryCard: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE_ELEVATED,
     borderRadius: 28,
     padding: 18,
     gap: 16,
+    borderWidth: 1,
+    borderColor: Colors.BORDER,
   },
   summaryHeader: {
     flexDirection: 'row',
@@ -1191,7 +1199,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 999,
     borderWidth: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE,
   },
   summaryConfidenceText: {
     fontSize: 12,
@@ -1201,7 +1209,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     borderRadius: 22,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.SURFACE_DARK,
   },
   detectedItemsSection: {
     gap: 10,
@@ -1212,9 +1220,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   detectedItemChip: {
-    backgroundColor: '#F9FAFB',
+    backgroundColor: Colors.SURFACE_DARK,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: Colors.BORDER,
     borderRadius: 14,
     paddingHorizontal: 12,
     paddingVertical: 9,
@@ -1228,7 +1236,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   detectedItemChipActive: {
-    backgroundColor: '#EEF8FF',
+    backgroundColor: `${Colors.PRIMARY}15`,
     borderColor: Colors.PRIMARY,
   },
   detectedItemChipText: {
@@ -1264,15 +1272,15 @@ const styles = StyleSheet.create({
   portionChip: {
     flexBasis: '48%',
     flexGrow: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: Colors.SURFACE_DARK,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: Colors.BORDER,
     borderRadius: 18,
     padding: 12,
     gap: 4,
   },
   portionChipActive: {
-    backgroundColor: '#EEF8FF',
+    backgroundColor: `${Colors.PRIMARY}15`,
     borderColor: Colors.PRIMARY,
   },
   portionChipText: {
@@ -1291,10 +1299,10 @@ const styles = StyleSheet.create({
   },
   quantityAdjusterRow: {
     marginTop: 4,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: Colors.SURFACE_DARK,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: Colors.BORDER,
     paddingVertical: 10,
     paddingHorizontal: 12,
     flexDirection: 'row',
@@ -1315,8 +1323,8 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#D1D5DB',
-    backgroundColor: '#fff',
+    borderColor: Colors.BORDER,
+    backgroundColor: Colors.SURFACE,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1350,23 +1358,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logButtonText: {
-    color: '#fff',
+    color: Colors.TEXT_MAIN,
     fontWeight: '800',
     fontSize: 16,
   },
   manualSearchCard: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE_ELEVATED,
     borderRadius: 28,
     padding: 18,
     gap: 12,
+    borderWidth: 1,
+    borderColor: Colors.BORDER,
   },
   manualToggleButton: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.SURFACE,
     borderRadius: 16,
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: Colors.BORDER,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -1377,13 +1387,13 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: Colors.BORDER,
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
     color: Colors.TEXT_MAIN,
     fontSize: 15,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: Colors.SURFACE_DARK,
   },
   manualLoading: {
     flexDirection: 'row',
@@ -1404,8 +1414,8 @@ const styles = StyleSheet.create({
   resultCard: {
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
-    backgroundColor: '#FDFDFD',
+    borderColor: Colors.BORDER,
+    backgroundColor: Colors.SURFACE,
     padding: 14,
     gap: 8,
   },
