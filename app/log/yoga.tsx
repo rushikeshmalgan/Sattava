@@ -183,7 +183,7 @@ export default function YogaScreen() {
   if (screen === 'home') {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
-        <LinearGradient colors={Gradients.YOGA_CARD} style={styles.header}>
+        <LinearGradient colors={Gradients.PRIMARY} style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
             <Ionicons name="chevron-back" size={24} color="#fff" />
           </TouchableOpacity>

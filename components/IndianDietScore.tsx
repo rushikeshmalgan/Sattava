@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
-import { Colors } from '../constants/Colors';
+import { useTheme } from '../context/ThemeContext';
 
 interface IndianDietScoreProps {
   score: number;
@@ -10,20 +10,21 @@ interface IndianDietScoreProps {
 }
 
 const getScoreColor = (score: number): string => {
-  if (score >= 80) return Colors.SUCCESS;
-  if (score >= 55) return Colors.PRIMARY;
-  return Colors.ERROR;
+  if (score >= 80) return '#10B981'; // success green
+  if (score >= 55) return '#1E7D5A'; // primary
+  return '#DC2626'; // error red
 };
 
 const SCORE_SEGMENTS = [
-  { label: 'Protein', color: '#DC2626', key: 'protein', max: 25 },
-  { label: 'Fiber',   color: '#059669', key: 'fiber',   max: 20 },
-  { label: 'Calories',color: Colors.PRIMARY, key: 'calories', max: 25 },
-  { label: 'Water',   color: '#0284C7', key: 'water',   max: 15 },
-  { label: 'Balance', color: '#9B59B6', key: 'balance', max: 15 },
+  { label: 'Protein', color: '#DC2626',  key: 'protein', max: 25 },
+  { label: 'Fiber',   color: '#059669',  key: 'fiber',   max: 20 },
+  { label: 'Calories',color: '#1E7D5A',  key: 'calories',max: 25 },
+  { label: 'Water',   color: '#0284C7',  key: 'water',   max: 15 },
+  { label: 'Balance', color: '#9B59B6',  key: 'balance', max: 15 },
 ];
 
 export default function IndianDietScore({ score, grade, message, breakdown }: IndianDietScoreProps) {
+  const { theme } = useTheme();
   const scoreAnim = useRef(new Animated.Value(0)).current;
   const color = getScoreColor(score);
 
@@ -41,9 +42,9 @@ export default function IndianDietScore({ score, grade, message, breakdown }: In
   });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.card, borderColor: theme.border }]}>
       <View style={styles.titleRow}>
-        <Text style={styles.title}>🇮🇳 Indian Diet Score</Text>
+        <Text style={[styles.title, { color: theme.text }]}>🇮🇳 Indian Diet Score</Text>
         <View style={[styles.gradeBadge, { backgroundColor: `${color}20`, borderColor: color }]}>
           <Text style={[styles.gradeText, { color }]}>{grade}</Text>
         </View>
@@ -51,7 +52,7 @@ export default function IndianDietScore({ score, grade, message, breakdown }: In
 
       {/* Score display */}
       <View style={styles.scoreRow}>
-        <View style={[styles.scoreCircle, { borderColor: color }]}>
+        <View style={[styles.scoreCircle, { borderColor: color, backgroundColor: theme.surfaceMuted }]}>
           <Animated.Text style={[styles.scoreNumber, { color }]}>
             {score}
           </Animated.Text>
@@ -59,7 +60,7 @@ export default function IndianDietScore({ score, grade, message, breakdown }: In
         </View>
 
         <View style={styles.messageBox}>
-          <Text style={styles.messageText}>{message}</Text>
+          <Text style={[styles.messageText, { color: theme.textMuted }]}>{message}</Text>
           {breakdown && (
             <View style={styles.segmentsContainer}>
               {SCORE_SEGMENTS.map(seg => {
@@ -67,7 +68,7 @@ export default function IndianDietScore({ score, grade, message, breakdown }: In
                 const pct = (val / seg.max) * 100;
                 return (
                   <View key={seg.key} style={styles.segRow}>
-                    <Text style={styles.segLabel}>{seg.label}</Text>
+                    <Text style={[styles.segLabel, { color: theme.textMuted }]}>{seg.label}</Text>
                     <View style={styles.segBarBg}>
                       <View style={[styles.segBarFill, { width: `${pct}%`, backgroundColor: seg.color }]} />
                     </View>
@@ -81,8 +82,8 @@ export default function IndianDietScore({ score, grade, message, breakdown }: In
       </View>
 
       {/* ICMR comparison note */}
-      <View style={styles.icmrNote}>
-        <Text style={styles.icmrText}>📊 Based on ICMR Indian Dietary Guidelines</Text>
+      <View style={[styles.icmrNote, { borderTopColor: theme.border }]}>
+        <Text style={[styles.icmrText, { color: theme.textLight }]}>📊 Based on ICMR Indian Dietary Guidelines</Text>
       </View>
     </View>
   );
@@ -90,7 +91,6 @@ export default function IndianDietScore({ score, grade, message, breakdown }: In
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.SURFACE_ELEVATED,
     borderRadius: 20,
     padding: 16,
     marginBottom: 12,
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
     borderWidth: 1,
-    borderColor: Colors.BORDER,
   },
   titleRow: {
     flexDirection: 'row',
@@ -111,7 +110,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Colors.TEXT_MAIN,
   },
   gradeBadge: {
     paddingHorizontal: 12,
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.SURFACE,
   },
   scoreNumber: {
     fontSize: 28,
@@ -143,7 +140,7 @@ const styles = StyleSheet.create({
   },
   scoreOf: {
     fontSize: 10,
-    color: Colors.TEXT_MUTED,
+    color: '#6B8F7E',
     fontWeight: '600',
   },
   messageBox: {
@@ -151,7 +148,6 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 13,
-    color: Colors.TEXT_MUTED,
     marginBottom: 8,
     lineHeight: 18,
   },
@@ -165,14 +161,13 @@ const styles = StyleSheet.create({
   },
   segLabel: {
     fontSize: 10,
-    color: Colors.TEXT_MUTED,
     width: 52,
     fontWeight: '600',
   },
   segBarBg: {
     flex: 1,
-    height: 5,
-    backgroundColor: Colors.SURFACE_DARK,
+    height: 6,
+    backgroundColor: 'rgba(150,150,150,0.2)',
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -190,11 +185,9 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: Colors.BORDER,
   },
   icmrText: {
     fontSize: 11,
-    color: Colors.TEXT_LIGHT,
     textAlign: 'center',
     fontStyle: 'italic',
   },

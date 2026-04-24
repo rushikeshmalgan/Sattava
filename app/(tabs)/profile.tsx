@@ -2,10 +2,18 @@ import { useAuth, useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors } from '../../constants/Colors';
+import { useRouter } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Colors, Gradients } from '../../constants/Colors';
 import { db } from '../../firebaseConfig';
+import { useTheme } from '../../context/ThemeContext';
+import { loadDemoData } from '../../services/logService';
+import AchievementSection from '../../components/AchievementSection';
+
+import { ThemeType } from '../../constants/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GOAL_OPTIONS = ['Lose Weight', 'Maintain Weight', 'Gain Weight'];
 const ACTIVITY_LEVEL_OPTIONS = ['2-3 Days / Week', '3-4 Days / Week', '5-6 Days / Week'];
@@ -14,20 +22,45 @@ export default function Profile() {
     const { user } = useUser();
     const { signOut } = useAuth();
     const insets = useSafeAreaInsets();
+    const router = useRouter();
+    const { theme, mode, setMode, isDark } = useTheme();
+    const [showAppearanceModal, setShowAppearanceModal] = useState(false);
+    const [isDemoLoading, setIsDemoLoading] = useState(false);
+    const [demoPressCount, setDemoPressCount] = useState(0);
+
+    // Mock achievement stats for demo
+    const userStats = {
+        streak: 5,
+        mealsLogged: 32,
+        hitWaterGoal: true,
+        maxStepsInDay: 12000,
+        hasUsedAIChat: true,
+        bestDietScore: 85,
+    };
+
+    // Core data state
     const [userPlan, setUserPlan] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-    const [showNameModal, setShowNameModal] = useState(false);
+
+    // Goal modal state
     const [showGoalModal, setShowGoalModal] = useState(false);
-    const [showActivityModal, setShowActivityModal] = useState(false);
-    const [showPlanModal, setShowPlanModal] = useState(false);
-    const [tempName, setTempName] = useState('');
-    const [editingGoal, setEditingGoal] = useState(false);
-    const [editingActivity, setEditingActivity] = useState(false);
     const [tempGoal, setTempGoal] = useState('');
-    const [tempActivity, setTempActivity] = useState('');
-    const [isSavingName, setIsSavingName] = useState(false);
+    const [editingGoal, setEditingGoal] = useState(false);
     const [isSavingGoal, setIsSavingGoal] = useState(false);
+
+    // Name modal state
+    const [showNameModal, setShowNameModal] = useState(false);
+    const [tempName, setTempName] = useState('');
+    const [isSavingName, setIsSavingName] = useState(false);
+
+    // Activity modal state
+    const [showActivityModal, setShowActivityModal] = useState(false);
+    const [tempActivity, setTempActivity] = useState('');
+    const [editingActivity, setEditingActivity] = useState(false);
     const [isSavingActivity, setIsSavingActivity] = useState(false);
+
+    // Plan modal state
+    const [showPlanModal, setShowPlanModal] = useState(false);
 
     const currentName =
         userPlan?.userProfile?.name || userPlan?.physicalProfile?.name || user?.fullName || 'User';
@@ -159,6 +192,19 @@ export default function Profile() {
         setShowNameModal(true);
     };
 
+    const handleLoadDemo = async () => {
+        if (!user?.id) return;
+        setIsDemoLoading(true);
+        try {
+            await loadDemoData(user.id);
+            Alert.alert('Demo Mode Activated 🚀', '7 days of perfect nutrition data has been loaded. Your profile is now presentation-ready!');
+        } catch (error) {
+            Alert.alert('Error', 'Failed to load demo data.');
+        } finally {
+            setIsDemoLoading(false);
+        }
+    };
+
     const handleSignOut = () => {
         Alert.alert(
             'Sign Out',
@@ -174,13 +220,17 @@ export default function Profile() {
         );
     };
 
+    const styles = getStyles(theme);
+
     if (loading) {
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={Colors.PRIMARY} />
+                <ActivityIndicator size="large" color={theme.primary} />
             </View>
         );
     }
+
+    if (!user) return null;
 
     return (
         <ScrollView
@@ -198,18 +248,57 @@ export default function Profile() {
             {/* User Info Card */}
             <View style={styles.card}>
                 <View style={styles.userInfoHeader}>
-                    <View style={styles.userInitials}>
-                        <Text style={styles.initialsText}>
-                            {user?.firstName?.charAt(0) || 'U'}
-                            {user?.lastName?.charAt(0) || 'S'}
-                        </Text>
-                    </View>
+                    <Pressable 
+                        onPress={async () => {
+                            setDemoPressCount(p => p + 1);
+                            if (demoPressCount >= 2) { // 3rd tap
+                                const currentPro = await AsyncStorage.getItem('isPro');
+                                if (currentPro === 'true') {
+                                    await AsyncStorage.removeItem('isPro');
+                                    await AsyncStorage.removeItem('demoGodMode');
+                                    Alert.alert("God Mode Disabled", "Pro features locked.");
+                                } else {
+                                    await AsyncStorage.setItem('isPro', 'true');
+                                    await AsyncStorage.setItem('demoGodMode', 'true');
+                                    Alert.alert("God Mode Enabled 🏆", "15-day streak, all badges unlocked, and Pro features activated.");
+                                }
+                                setDemoPressCount(0);
+                            }
+                        }}
+                    >
+                        <View style={styles.userInitials}>
+                            <Text style={styles.initialsText}>
+                                {user?.firstName?.charAt(0) || 'U'}
+                                {user?.lastName?.charAt(0) || 'S'}
+                            </Text>
+                        </View>
+                    </Pressable>
                     <View style={styles.userDetails}>
                         <Text style={styles.userName}>{currentName}</Text>
                         <Text style={styles.userEmail}>{user?.primaryEmailAddress?.emailAddress || 'No email'}</Text>
                     </View>
                 </View>
             </View>
+
+            {/* Premium Call to Action */}
+            <TouchableOpacity 
+                style={styles.premiumBanner}
+                onPress={() => router.push('/subscription')}
+            >
+                <LinearGradient 
+                    colors={Gradients.PRIMARY} 
+                    start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                    style={styles.premiumGradient}
+                >
+                    <View style={styles.premiumContent}>
+                        <View style={styles.premiumTextGroup}>
+                            <Text style={styles.premiumTitle}>Sattva Pro</Text>
+                            <Text style={styles.premiumSub}>Unlock AI Coach & Combo Builder</Text>
+                        </View>
+                        <Ionicons name="chevron-forward" size={24} color="#fff" />
+                    </View>
+                </LinearGradient>
+            </TouchableOpacity>
 
             {/* Daily Targets Section */}
             {userPlan?.generatedPlan && (
@@ -272,6 +361,11 @@ export default function Profile() {
                 </View>
             )}
 
+            {/* Achievements Section */}
+            <View style={{ marginTop: 24 }}>
+                <AchievementSection stats={userStats} />
+            </View>
+
             {/* Profile Settings Section */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Settings</Text>
@@ -319,6 +413,19 @@ export default function Profile() {
 
                     <View style={styles.divider} />
 
+                    <TouchableOpacity style={styles.settingRow} onPress={() => setShowAppearanceModal(true)}>
+                        <View style={styles.settingContent}>
+                            <Ionicons name="color-palette-outline" size={20} color={theme.text} />
+                            <View style={styles.settingTextContainer}>
+                                <Text style={[styles.settingLabel, { color: theme.text }]}>Appearance</Text>
+                                <Text style={styles.settingValue}>{mode.charAt(0).toUpperCase() + mode.slice(1)} Mode</Text>
+                            </View>
+                        </View>
+                        <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+                    </TouchableOpacity>
+
+                    <View style={styles.divider} />
+
                     <TouchableOpacity style={styles.settingRow} onPress={() => setShowPlanModal(true)}>
                         <View style={styles.settingContent}>
                             <Ionicons name="document-text-outline" size={20} color={Colors.TEXT_MAIN} />
@@ -348,6 +455,17 @@ export default function Profile() {
                         </View>
                     </TouchableOpacity>
                 </View>
+            </View>
+
+            {/* Version & Hidden Demo Button */}
+            <View style={{ marginTop: 20, alignItems: 'center', paddingBottom: 40 }}>
+                <Pressable 
+                    onLongPress={handleLoadDemo}
+                    delayLongPress={3000}
+                >
+                    <Text style={{ color: Colors.TEXT_LIGHT, fontSize: 12 }}>Sattva v1.0.0 (Production Build)</Text>
+                    {isDemoLoading && <ActivityIndicator size="small" color={Colors.PRIMARY} style={{ marginTop: 8 }} />}
+                </Pressable>
             </View>
 
             {/* Name Modal */}
@@ -664,14 +782,57 @@ export default function Profile() {
                     </ScrollView>
                 </View>
             </Modal>
+
+            {/* Appearance Modal */}
+            <Modal visible={showAppearanceModal} animationType="slide" transparent onRequestClose={() => setShowAppearanceModal(false)}>
+                <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' }}>
+                    <View style={{ backgroundColor: theme.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24 }}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.text, marginBottom: 20 }}>Appearance</Text>
+                        
+                        {(['light', 'dark', 'system'] as const).map((m) => (
+                            <TouchableOpacity 
+                                key={m} 
+                                style={{ 
+                                    flexDirection: 'row', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'space-between',
+                                    paddingVertical: 16,
+                                    borderBottomWidth: m !== 'system' ? 1 : 0,
+                                    borderBottomColor: theme.border
+                                }}
+                                onPress={() => {
+                                    setMode(m);
+                                    setShowAppearanceModal(false);
+                                }}
+                            >
+                                <Text style={{ fontSize: 16, color: theme.text }}>{m.charAt(0).toUpperCase() + m.slice(1)}</Text>
+                                {mode === m && <Ionicons name="checkmark-circle" size={24} color={theme.primary} />}
+                            </TouchableOpacity>
+                        ))}
+                        
+                        <TouchableOpacity 
+                            style={{ 
+                                marginTop: 20, 
+                                backgroundColor: theme.primary, 
+                                padding: 16, 
+                                borderRadius: 12, 
+                                alignItems: 'center' 
+                            }}
+                            onPress={() => setShowAppearanceModal(false)}
+                        >
+                            <Text style={{ color: 'white', fontWeight: 'bold' }}>Done</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </ScrollView>
     );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.BACKGROUND,
+        backgroundColor: theme.background,
     },
     scrollContent: {
         paddingHorizontal: 16,
@@ -680,7 +841,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: Colors.BACKGROUND,
+        backgroundColor: theme.background,
     },
     header: {
         marginBottom: 24,
@@ -688,20 +849,16 @@ const styles = StyleSheet.create({
     pageTitle: {
         fontSize: 28,
         fontWeight: '700',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
     },
     card: {
-        backgroundColor: Colors.SURFACE_ELEVATED,
+        backgroundColor: theme.card,
         borderRadius: 22,
         overflow: 'hidden',
         marginBottom: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 10,
-        elevation: 3,
+        ...theme.shadow,
         borderWidth: 1,
-        borderColor: Colors.BORDER,
+        borderColor: theme.border,
     },
     userInfoHeader: {
         flexDirection: 'row',
@@ -712,7 +869,7 @@ const styles = StyleSheet.create({
         width: 52,
         height: 52,
         borderRadius: 26,
-        backgroundColor: Colors.PRIMARY,
+        backgroundColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 12,
@@ -728,11 +885,11 @@ const styles = StyleSheet.create({
     userName: {
         fontSize: 18,
         fontWeight: '600',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
     },
     userEmail: {
         fontSize: 14,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         marginTop: 4,
     },
     section: {
@@ -741,7 +898,7 @@ const styles = StyleSheet.create({
     staleBanner: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: `${Colors.ERROR}18`,
+        backgroundColor: `${theme.error}18`,
         borderRadius: 10,
         paddingVertical: 8,
         paddingHorizontal: 10,
@@ -749,14 +906,14 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     staleText: {
-        color: Colors.ERROR,
+        color: theme.error,
         fontSize: 12,
         flex: 1,
     },
     sectionTitle: {
         fontSize: 16,
         fontWeight: '600',
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         marginBottom: 8,
         textTransform: 'uppercase',
         letterSpacing: 0.5,
@@ -774,12 +931,12 @@ const styles = StyleSheet.create({
     },
     targetLabel: {
         fontSize: 14,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
     },
     targetValue: {
         fontSize: 16,
         fontWeight: '600',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
         marginTop: 2,
     },
     macroGroup: {
@@ -794,17 +951,17 @@ const styles = StyleSheet.create({
     },
     macroLabel: {
         fontSize: 12,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         marginBottom: 4,
     },
     macroValue: {
         fontSize: 16,
         fontWeight: '600',
-        color: Colors.PRIMARY,
+        color: theme.primary,
     },
     divider: {
         height: 1,
-        backgroundColor: Colors.DIVIDER || '#E5E7EB',
+        backgroundColor: theme.border,
         marginHorizontal: 16,
     },
     settingRow: {
@@ -825,11 +982,11 @@ const styles = StyleSheet.create({
     settingLabel: {
         fontSize: 16,
         fontWeight: '500',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
     },
     settingValue: {
         fontSize: 13,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         marginTop: 2,
     },
     dangerRow: {
@@ -838,11 +995,9 @@ const styles = StyleSheet.create({
     footerSpace: {
         height: 40,
     },
-    
-    /* Modal Styles */
     modalContainer: {
         flex: 1,
-        backgroundColor: Colors.BACKGROUND,
+        backgroundColor: theme.background,
     },
     modalHeader: {
         flexDirection: 'row',
@@ -851,18 +1006,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 12,
         borderBottomWidth: 1,
-        borderBottomColor: Colors.DIVIDER || '#E5E7EB',
-        backgroundColor: Colors.SURFACE,
+        borderBottomColor: theme.border,
+        backgroundColor: theme.card,
     },
     modalCloseText: {
         fontSize: 16,
         fontWeight: '500',
-        color: Colors.PRIMARY,
+        color: theme.primary,
     },
     modalTitle: {
         fontSize: 18,
         fontWeight: '600',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
     },
     modalContent: {
         flex: 1,
@@ -875,7 +1030,7 @@ const styles = StyleSheet.create({
     },
     modalLabel: {
         fontSize: 14,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         marginBottom: 8,
         textTransform: 'uppercase',
         letterSpacing: 0.5,
@@ -883,13 +1038,13 @@ const styles = StyleSheet.create({
     modalValueLarge: {
         fontSize: 28,
         fontWeight: '700',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
         marginBottom: 16,
         textAlign: 'center',
     },
     modalDescription: {
         fontSize: 14,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         textAlign: 'center',
         marginBottom: 24,
         lineHeight: 20,
@@ -906,24 +1061,24 @@ const styles = StyleSheet.create({
     },
     detailText: {
         fontSize: 13,
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
         marginLeft: 8,
         flex: 1,
         lineHeight: 18,
     },
     planCard: {
-        backgroundColor: Colors.SURFACE_ELEVATED,
+        backgroundColor: theme.card,
         borderRadius: 20,
         padding: 16,
         marginBottom: 16,
         width: '100%',
         borderWidth: 1,
-        borderColor: Colors.BORDER,
+        borderColor: theme.border,
     },
     planSectionTitle: {
         fontSize: 14,
         fontWeight: '600',
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         marginBottom: 12,
         textTransform: 'uppercase',
         letterSpacing: 0.5,
@@ -931,7 +1086,7 @@ const styles = StyleSheet.create({
     planValue: {
         fontSize: 24,
         fontWeight: '700',
-        color: Colors.PRIMARY,
+        color: theme.primary,
     },
     macroRow: {
         flexDirection: 'row',
@@ -939,7 +1094,7 @@ const styles = StyleSheet.create({
     },
     macroBox: {
         flex: 1,
-        backgroundColor: Colors.BACKGROUND,
+        backgroundColor: theme.background,
         borderRadius: 8,
         paddingVertical: 12,
         paddingHorizontal: 8,
@@ -948,26 +1103,26 @@ const styles = StyleSheet.create({
     },
     macroBoxLabel: {
         fontSize: 12,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         marginBottom: 4,
     },
     macroBoxValue: {
         fontSize: 18,
         fontWeight: '700',
-        color: Colors.PRIMARY,
+        color: theme.primary,
     },
     tipsSection: {
-        backgroundColor: Colors.SURFACE_ELEVATED,
+        backgroundColor: theme.card,
         borderRadius: 20,
         padding: 16,
         marginTop: 8,
         borderWidth: 1,
-        borderColor: Colors.BORDER,
+        borderColor: theme.border,
     },
     tipsTitle: {
         fontSize: 14,
         fontWeight: '600',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
         marginBottom: 12,
     },
     tipItem: {
@@ -977,20 +1132,20 @@ const styles = StyleSheet.create({
     },
     tipText: {
         fontSize: 13,
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
         marginLeft: 8,
         flex: 1,
         lineHeight: 18,
     },
     noDataText: {
         fontSize: 16,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         textAlign: 'center',
         marginTop: 20,
         lineHeight: 22,
     },
     editButton: {
-        backgroundColor: Colors.PRIMARY,
+        backgroundColor: theme.primary,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -1010,7 +1165,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     optionCard: {
-        backgroundColor: Colors.SURFACE_ELEVATED,
+        backgroundColor: theme.card,
         borderRadius: 20,
         padding: 16,
         marginBottom: 12,
@@ -1018,11 +1173,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderWidth: 2,
-        borderColor: Colors.DIVIDER || '#E5E7EB',
+        borderColor: theme.border,
     },
     selectedOptionCard: {
-        borderColor: Colors.PRIMARY,
-        backgroundColor: `${Colors.PRIMARY}10`,
+        borderColor: theme.primary,
+        backgroundColor: `${theme.primary}10`,
     },
     optionContent: {
         flexDirection: 'row',
@@ -1032,11 +1187,11 @@ const styles = StyleSheet.create({
     optionText: {
         fontSize: 16,
         fontWeight: '500',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
         marginLeft: 12,
     },
     selectedOptionText: {
-        color: Colors.PRIMARY,
+        color: theme.primary,
         fontWeight: '600',
     },
     buttonGroup: {
@@ -1051,18 +1206,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: Colors.TEXT_MUTED,
+        borderColor: theme.textMuted,
         justifyContent: 'center',
         alignItems: 'center',
     },
     cancelButtonText: {
         fontSize: 16,
         fontWeight: '600',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
     },
     saveButton: {
         flex: 1,
-        backgroundColor: Colors.PRIMARY,
+        backgroundColor: theme.primary,
         flexDirection: 'row',
         paddingVertical: 12,
         paddingHorizontal: 16,
@@ -1081,14 +1236,20 @@ const styles = StyleSheet.create({
         paddingTop: 24,
     },
     nameInput: {
-        backgroundColor: Colors.SURFACE,
+        backgroundColor: theme.card,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: Colors.DIVIDER || '#E5E7EB',
+        borderColor: theme.border,
         paddingHorizontal: 14,
         paddingVertical: 12,
         fontSize: 16,
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
         marginTop: 8,
     },
+    premiumBanner:      { marginHorizontal: 16, marginTop: 12, borderRadius: 20, overflow: 'hidden', ...theme.shadow },
+    premiumGradient:    { padding: 20 },
+    premiumContent:     { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    premiumTextGroup:   { gap: 4 },
+    premiumTitle:       { fontSize: 20, fontWeight: '900', color: '#fff' },
+    premiumSub:         { fontSize: 13, color: 'rgba(255,255,255,0.85)', fontWeight: '600' },
 });

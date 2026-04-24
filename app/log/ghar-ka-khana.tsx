@@ -194,7 +194,7 @@ const GharKaKhanaScreen = () => {
 
                     <Text style={styles.sectionTitle}>Ingredients Section</Text>
                     <View style={styles.card}>
-                        {ingredients.map((ingredient, index) => (
+                        {Array.isArray(ingredients) && ingredients.map((ingredient, index) => (
                             <View key={index} style={styles.ingredientRow}>
                                 <View style={[styles.inputWrapper, { flex: 2, marginRight: 8 }]}>
                                     <TextInput

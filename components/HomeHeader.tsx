@@ -2,6 +2,8 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
 import { Colors } from '../constants/Colors';
+import { showSmartToast } from './SmartToast';
+import { Alert } from 'react-native';
 
 function getGreeting(name: string): { text: string; emoji: string } {
   const hour = new Date().getHours();
@@ -20,11 +22,14 @@ export default function HomeHeader() {
     <View style={styles.container}>
       {/* Top row */}
       <View style={styles.topRow}>
-        <View style={styles.greetingBlock}>
+        <TouchableOpacity 
+          style={styles.greetingBlock} 
+          activeOpacity={0.9}
+        >
           <Text style={styles.appName}>Sattva</Text>
           <Text style={styles.greetingText}>{emoji} {text}</Text>
           <Text style={styles.tagline}>Your Intelligent Companion for Mindful Eating</Text>
-        </View>
+        </TouchableOpacity>
 
         {/* Avatar */}
         {user?.imageUrl ? (

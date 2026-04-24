@@ -3,12 +3,15 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import { tokenCache } from "../utils/cache";
 import { SyncUserToFirestore } from "../utils/SyncUserToFirestore";
+import { ThemeProvider } from "../context/ThemeContext";
+import SmartToast from "../components/SmartToast";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
 if (!publishableKey) {
   throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in .env");
 }
+
 const InitialLayout = () => {
   const { isLoaded, isSignedIn } = useAuth();
   const segments = useSegments();
@@ -34,8 +37,11 @@ const InitialLayout = () => {
 export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-      <SyncUserToFirestore />
-      <InitialLayout />
+      <ThemeProvider>
+        <SyncUserToFirestore />
+        <InitialLayout />
+        <SmartToast />
+      </ThemeProvider>
     </ClerkProvider>
   );
 }

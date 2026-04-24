@@ -1,5 +1,6 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { useRouter } from 'expo-router';
@@ -8,7 +9,6 @@ import {
     Alert,
     KeyboardAvoidingView,
     Platform,
-    SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
@@ -184,19 +184,23 @@ export default function Onboarding() {
                         <Text style={styles.stepSubtitle}>This helps us tailor your daily calorie recommendations.</Text>
 
                         <View style={styles.listContainer}>
-                            {['Lose Weight', 'Maintain Weight', 'Gain Weight'].map((item) => (
+                            {([
+                              { label: 'Lose Weight',     icon: 'trending-down-outline' },
+                              { label: 'Maintain Weight', icon: 'swap-horizontal-outline' },
+                              { label: 'Gain Weight',     icon: 'trending-up-outline' },
+                            ] as { label: string; icon: any }[]).map((item) => (
                                 <TouchableOpacity
-                                    key={item}
-                                    style={[styles.listCard, goal === item && styles.selectedCard]}
-                                    onPress={() => setGoal(item)}
+                                    key={item.label}
+                                    style={[styles.listCard, goal === item.label && styles.selectedCard]}
+                                    onPress={() => setGoal(item.label)}
                                 >
                                     <Ionicons
-                                        name="locate-outline"
+                                        name={item.icon}
                                         size={32}
-                                        color={goal === item ? Colors.PRIMARY : Colors.TEXT_MUTED}
+                                        color={goal === item.label ? Colors.PRIMARY : Colors.TEXT_MUTED}
                                     />
-                                    <Text style={[styles.listText, goal === item && styles.selectedText]}>{item}</Text>
-                                    {goal === item && <Ionicons name="checkmark-circle" size={24} color={Colors.PRIMARY} style={styles.checkIcon} />}
+                                    <Text style={[styles.listText, goal === item.label && styles.selectedText]}>{item.label}</Text>
+                                    {goal === item.label && <Ionicons name="checkmark-circle" size={24} color={Colors.PRIMARY} style={styles.checkIcon} />}
                                 </TouchableOpacity>
                             ))}
                         </View>

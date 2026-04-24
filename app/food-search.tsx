@@ -1,42 +1,62 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, FlatList, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+    ActivityIndicator,
+    Alert,
+    FlatList,
+    KeyboardAvoidingView,
+    Platform,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../constants/Colors';
-import { FoodSearchItem, searchFoods } from '../services/fatSecretService';
 import { addFoodLog } from '../services/logService';
-import { searchLocalIndianFoods } from '../services/localFoodService';
-import { LocalIndianFood } from '../data/indianFoodsDatabase';
-
-type UnifiedFoodItem = (FoodSearchItem & { isLocal?: boolean }) | (LocalIndianFood & { isLocal: true });
-
-// Parses a value like "Calories: 95kcal" -> 95
-const parseMacro = (description: string, key: string): number => {
-    const regex = new RegExp(`${key}[:\\s]+([\\d.]+)`, 'i');
-    const match = description?.match(regex);
-    return match ? Math.round(parseFloat(match[1])) : 0;
-};
+import { searchAllFoods, UnifiedFoodResult } from '../services/foodSearchService';
+import { getHealthyAlternative } from '../constants/HealthyAlternatives';
+import { useTheme } from '../context/ThemeContext';
+import { ThemeType } from '../constants/theme';
+import PortionSelectorModal from '../components/PortionSelectorModal';
+import { showSmartToast } from '../components/SmartToast';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
+import * as Haptics from 'expo-haptics';
 
 const FoodSearchScreen = () => {
     const { user } = useUser();
     const router = useRouter();
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
     const insets = useSafeAreaInsets();
+    const params = useLocalSearchParams<{ query?: string }>();
+    const inputRef = useRef<TextInput>(null);
 
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState<UnifiedFoodItem[]>([]);
+    const [query, setQuery] = useState(params.query ?? '');
+    const [results, setResults] = useState<UnifiedFoodResult[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [addingId, setAddingId] = useState<string | null>(null); // tracks which item is being added
+    const [addingId, setAddingId] = useState<string | null>(null);
+    const [selectedFoodForPortion, setSelectedFoodForPortion] = useState<UnifiedFoodResult | null>(null);
+    const alternative = getHealthyAlternative(query);
 
-    // Debounce search implementation
+    // Auto-search when navigated with a pre-filled query (from meal plan)
+    useEffect(() => {
+        if (params.query && params.query.trim().length >= 2) {
+            performSearch(params.query.trim());
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Debounced search on manual typing
     useEffect(() => {
         if (query.trim().length >= 3) {
-            const timeoutId = setTimeout(() => {
-                performSearch(query.trim());
-            }, 500); // 500ms debounce
-            return () => clearTimeout(timeoutId);
+            const id = setTimeout(() => performSearch(query.trim()), 500);
+            return () => clearTimeout(id);
         } else {
             setResults([]);
             setError(null);
@@ -48,145 +68,141 @@ const FoodSearchScreen = () => {
             setLoading(true);
             setError(null);
 
-            // 1. Search Local CSV Data (Instant)
-            const localRaw = searchLocalIndianFoods(searchQuery);
-            const localResults = localRaw.map(item => ({
-                ...item,
-                isLocal: true,
-                food_id: item.id,
-                food_name: item.name,
-            })) as UnifiedFoodItem[];
-
-            // Show local results immediately!
-            setResults(localResults);
-
-            // If we have local results, we might not need the loading spinner anymore
-            // but let's keep it if we expect online results.
-            // Actually, let's stop the global loading if we have local hits to feel "fast".
-            if (localResults.length > 0) {
-                setLoading(false);
-            }
-
-            // 2. Search FatSecret (Online) - Background
-            try {
-                const onlineData = await searchFoods(searchQuery);
-                // Combine: Local first (always at top), then Online
-                setResults([...localResults, ...onlineData]);
-            } catch (apiErr) {
-                console.warn('[FoodSearch] API Search failed:', apiErr);
-                // If API fails but we have local results, don't show error to user
-                if (localResults.length === 0) {
-                    throw apiErr;
-                }
-            }
+            await searchAllFoods(searchQuery, (partial) => {
+                // Show local results immediately while online request is in flight
+                setResults(partial);
+                if (partial.length > 0) setLoading(false);
+            }).then((all) => {
+                setResults(all);
+            });
         } catch (err: any) {
             setError(err.message || 'Failed to fetch results');
-            // If error happens and we already have local results, maybe don't clear them?
-            // But per logic above, catches only happen if locals are 0.
             setResults([]);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleAddFood = async (food: UnifiedFoodItem) => {
+    const handleSelectFood = (food: UnifiedFoodResult) => {
         if (!user?.id) {
             Alert.alert('Error', 'Please sign in to log food.');
             return;
         }
-        if (addingId) return; // prevent double-taps
+        if (food.calories <= 0) {
+            Alert.alert(
+                'Nutrition Data Unavailable',
+                `We couldn't find nutrition details for "${food.name}". Please search for a more specific item or log it manually.`
+            );
+            return;
+        }
+        setSelectedFoodForPortion(food);
+    };
 
-        const foodId = 'isLocal' in food ? food.id : food.food_id;
-        const foodName = 'isLocal' in food ? food.name : food.food_name;
-
-        setAddingId(foodId);
-        try {
-            let calories = 0, carbs = 0, protein = 0, fat = 0, servingSize = '1 serving';
-
-            if ('isLocal' in food && food.isLocal) {
-                // It's a CSV local item
-                calories = food.calories;
-                carbs = food.carbs;
-                protein = food.protein;
-                fat = food.fat;
-                servingSize = food.servingSize;
-            } else {
-                // It's a FatSecret item
-                const desc = (food as FoodSearchItem).food_description || '';
-                calories = parseMacro(desc, 'Calories');
-                carbs = parseMacro(desc, 'Carbs');
-                protein = parseMacro(desc, 'Protein');
-                fat = parseMacro(desc, 'Fat');
-                servingSize = desc.split('-')[0]?.trim() || '1 serving';
-            }
-
-            const dateString = new Date().toISOString().split('T')[0];
-            await addFoodLog(user.id, dateString, {
-                id: foodId,
-                name: foodName,
-                calories,
-                carbs,
-                protein,
-                fat,
-                servingSize,
-            });
-
-            Alert.alert('Added!', `${foodName} (${calories} kcal) logged successfully.`, [
-                { text: 'Go Home', onPress: () => router.replace('/(tabs)/home') },
-                { text: 'Keep Searching', style: 'cancel' },
-            ]);
-        } catch (err) {
-            console.error('Failed to log food:', err);
-            Alert.alert('Error', 'Failed to log food. Please try again.');
-        } finally {
+    const handleAddFood = async (multiplier: number, portionUnit: string) => {
+        if (!user?.id || !selectedFoodForPortion) return;
+        
+        const food = selectedFoodForPortion;
+        setAddingId(food.id);
+        setSelectedFoodForPortion(null);
+        if (food.calories <= 0) {
+            Alert.alert(
+                'Nutrition Data Unavailable',
+                `We couldn't find nutrition details for "${food.name}". Please search for a more specific item or log it manually.`
+            );
             setAddingId(null);
+            return;
+        }
+
+        const dateString = new Date().toISOString().split('T')[0];
+        const loggedCalories = Math.round(food.calories * multiplier);
+        const loggedProtein = Math.round(food.protein * multiplier * 10) / 10;
+        
+        const logData = async () => {
+            try {
+                await addFoodLog(user.id!, dateString, {
+                    id: food.id,
+                    name: food.name,
+                    calories: loggedCalories,
+                    carbs: Math.round(food.carbs * multiplier * 10) / 10,
+                    protein: loggedProtein,
+                    fat: Math.round(food.fat * multiplier * 10) / 10,
+                    fiber: food.fiber !== undefined ? Math.round(food.fiber * multiplier * 10) / 10 : undefined,
+                    servingSize: `${multiplier} x ${portionUnit}`,
+                });
+
+                // Micro-dopamine!
+                const message = loggedProtein >= 15 
+                    ? `Nice choice! High protein 💪` 
+                    : `${food.name} logged (${loggedCalories} kcal)`;
+                
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                showSmartToast({ message, icon: 'checkmark-circle' });
+                
+                // No notifications needed
+                router.replace('/(tabs)/home');
+            } catch {
+                Alert.alert('Error', 'Failed to log food. Please try again.');
+            } finally {
+                setAddingId(null);
+            }
+        };
+
+        if (loggedCalories >= 2000) {
+            Alert.alert(
+                "Unrealistic Entry Detected",
+                `Logging ${loggedCalories} kcal at once. Are you bluffing or just extremely hungry? The coach is watching.`,
+                [
+                    { text: "Cancel", style: "cancel", onPress: () => setAddingId(null) },
+                    { text: "I Really Ate This", onPress: logData }
+                ]
+            );
+        } else if (loggedCalories >= 1200) {
+            Alert.alert(
+                "Bulk Entry Detected",
+                "This looks like a massive entry. Please log mindfully.",
+                [
+                    { text: "Cancel", style: "cancel", onPress: () => setAddingId(null) },
+                    { text: "Log Anyway", onPress: logData }
+                ]
+            );
+        } else {
+            await logData();
         }
     };
 
-    const renderItem = ({ item }: { item: UnifiedFoodItem }) => {
-        let name = '', brand = '', serving = '', calDesc = '', isLocal = false, id = '';
-
-        if ('isLocal' in item && item.isLocal) {
-            name = item.name;
-            serving = item.servingSize;
-            calDesc = `Calories: ${item.calories}kcal | P: ${item.protein}g | C: ${item.carbs}g | F: ${item.fat}g`;
-            isLocal = true;
-            id = item.id;
-        } else {
-            const fsItem = item as FoodSearchItem;
-            name = fsItem.food_name;
-            brand = fsItem.brand_name || '';
-            const descriptionParts = fsItem.food_description ? fsItem.food_description.split('-') : [];
-            serving = descriptionParts[0] ? descriptionParts[0].trim() : '';
-            calDesc = descriptionParts[1] ? descriptionParts[1].trim() : fsItem.food_description;
-            id = fsItem.food_id;
-        }
-
+    const renderItem = ({ item }: { item: UnifiedFoodResult }) => {
+        const isAdding = addingId === item.id;
         return (
             <View style={styles.card}>
                 <View style={styles.cardContent}>
                     <View style={styles.nameRow}>
-                        <Text style={styles.foodName} numberOfLines={1}>{name}</Text>
-                        {isLocal && (
+                        <Text style={styles.foodName} numberOfLines={1}>{item.name}</Text>
+                        {item.source === 'local' && (
                             <View style={styles.localBadge}>
                                 <Text style={styles.localBadgeText}>Indian</Text>
                             </View>
                         )}
                     </View>
-                    {brand !== '' && (
-                        <Text style={styles.brandName}>{brand}</Text>
+                    {!!item.brand && (
+                        <Text style={styles.brandName}>{item.brand}</Text>
                     )}
-                    <View style={styles.detailsRow}>
-                        <Text style={styles.servingSize} numberOfLines={1}>{serving}</Text>
-                    </View>
-                    <Text style={styles.caloriesText} numberOfLines={1}>{calDesc}</Text>
+                    <Text style={styles.servingText} numberOfLines={1}>{item.servingSize}</Text>
+                    <Text style={styles.macroText} numberOfLines={1}>
+                        {item.calories > 0
+                            ? `${item.calories} kcal · P ${item.protein}g · C ${item.carbs}g · F ${item.fat}g${item.fiber !== undefined ? ` · Fiber ${item.fiber}g` : ''}`
+                            : 'Nutrition data unavailable'}
+                    </Text>
                 </View>
                 <TouchableOpacity
-                    style={[styles.addButton, addingId === id && { opacity: 0.6 }]}
-                    onPress={() => handleAddFood(item)}
+                    style={[
+                        styles.addButton,
+                        isAdding && { opacity: 0.6 },
+                        item.calories <= 0 && styles.addButtonDisabled,
+                    ]}
+                    onPress={() => handleSelectFood(item)}
                     disabled={addingId !== null}
                 >
-                    {addingId === id
+                    {isAdding
                         ? <ActivityIndicator size="small" color="#FFFFFF" />
                         : <Ionicons name="add" size={24} color="#FFFFFF" />
                     }
@@ -194,6 +210,8 @@ const FoodSearchScreen = () => {
             </View>
         );
     };
+
+    const showHint = query.trim().length > 0 && query.trim().length < 3;
 
     return (
         <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
@@ -214,8 +232,9 @@ const FoodSearchScreen = () => {
                 <View style={styles.searchContainer}>
                     <Ionicons name="search" size={20} color={Colors.TEXT_MUTED} style={styles.searchIcon} />
                     <TextInput
+                        ref={inputRef}
                         style={styles.searchInput}
-                        placeholder="Search for a food..."
+                        placeholder="Search Indian or packaged foods…"
                         placeholderTextColor={Colors.TEXT_MUTED}
                         value={query}
                         onChangeText={setQuery}
@@ -225,15 +244,46 @@ const FoodSearchScreen = () => {
                     />
                 </View>
 
-                {/* Status / Results */}
+                {/* Healthy Alternative Suggestion */}
+                {alternative && (
+                    <View style={[styles.alternativeBanner, { backgroundColor: theme.primary + '15', borderColor: theme.primary + '30' }]}>
+                        <View style={styles.alternativeIcon}>
+                            <Ionicons name="sparkles" size={18} color={theme.primary} />
+                        </View>
+                        <View style={styles.alternativeTextContent}>
+                            <Text style={[styles.alternativeTitle, { color: theme.text }]}>
+                                Try <Text style={{ color: theme.primary, fontWeight: '800' }}>{alternative.suggestion}</Text> instead?
+                            </Text>
+                            <Text style={[styles.alternativeReason, { color: theme.textMuted }]}>{alternative.reason}</Text>
+                        </View>
+                        <TouchableOpacity 
+                            style={[styles.alternativeAction, { backgroundColor: theme.primary }]}
+                            onPress={() => setQuery(alternative.suggestion)}
+                        >
+                            <Text style={styles.alternativeActionText}>Swap</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+
+                {/* Content */}
                 <View style={styles.contentContainer}>
-                    {loading && (
+                    {/* Short query hint */}
+                    {showHint && (
                         <View style={styles.centerContainer}>
-                            <ActivityIndicator size="large" color={Colors.PRIMARY} />
-                            <Text style={styles.loadingText}>Searching Database...</Text>
+                            <Ionicons name="search-outline" size={40} color={Colors.TEXT_MUTED} />
+                            <Text style={styles.hintText}>Type at least 3 characters to search…</Text>
                         </View>
                     )}
 
+                    {/* Loading */}
+                    {loading && !showHint && (
+                        <View style={styles.centerContainer}>
+                            <ActivityIndicator size="large" color={Colors.PRIMARY} />
+                            <Text style={styles.loadingText}>Searching database…</Text>
+                        </View>
+                    )}
+
+                    {/* Error */}
                     {!loading && error && (
                         <View style={styles.centerContainer}>
                             <Ionicons name="alert-circle-outline" size={48} color={Colors.ERROR} />
@@ -241,17 +291,20 @@ const FoodSearchScreen = () => {
                         </View>
                     )}
 
-                    {!loading && !error && query.trim().length >= 3 && results.length === 0 && (
+                    {/* Empty */}
+                    {!loading && !error && !showHint && query.trim().length >= 3 && results.length === 0 && (
                         <View style={styles.centerContainer}>
                             <Ionicons name="restaurant-outline" size={48} color={Colors.TEXT_MUTED} />
                             <Text style={styles.emptyText}>No results found for "{query}"</Text>
+                            <Text style={styles.emptySubtext}>Try a different spelling or a more common name</Text>
                         </View>
                     )}
 
-                    {!loading && !error && (
+                    {/* Results */}
+                    {!error && !showHint && (
                         <FlatList
                             data={results}
-                            keyExtractor={(item) => ('isLocal' in item ? item.id : item.food_id).toString()}
+                            keyExtractor={(item) => item.id}
                             renderItem={renderItem}
                             contentContainerStyle={styles.listContent}
                             showsVerticalScrollIndicator={false}
@@ -260,16 +313,24 @@ const FoodSearchScreen = () => {
                     )}
                 </View>
             </KeyboardAvoidingView>
+
+            <PortionSelectorModal 
+                visible={selectedFoodForPortion !== null}
+                food={selectedFoodForPortion}
+                theme={theme}
+                onClose={() => setSelectedFoodForPortion(null)}
+                onLog={handleAddFood}
+            />
         </SafeAreaView>
     );
 };
 
 export default FoodSearchScreen;
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.BACKGROUND,
+        backgroundColor: theme.background,
     },
     flex1: {
         flex: 1,
@@ -280,33 +341,35 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 16,
         paddingVertical: 12,
-        backgroundColor: Colors.BACKGROUND,
+        backgroundColor: theme.background,
     },
     backButton: {
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: Colors.SURFACE_DARK,
+        backgroundColor: theme.card,
         justifyContent: 'center',
         alignItems: 'center',
     },
     headerTitle: {
         fontSize: 18,
         fontWeight: '700',
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
     },
     headerRight: {
-        width: 40, // To balance the back button
+        width: 40,
     },
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.SURFACE,
+        backgroundColor: theme.card,
         marginHorizontal: 16,
         marginBottom: 16,
         borderRadius: 12,
         paddingHorizontal: 12,
         height: 48,
+        borderWidth: 1,
+        borderColor: theme.border,
     },
     searchIcon: {
         marginRight: 8,
@@ -314,8 +377,49 @@ const styles = StyleSheet.create({
     searchInput: {
         flex: 1,
         fontSize: 16,
-        color: Colors.TEXT_MAIN,
+        color: theme.text,
         height: '100%',
+    },
+    alternativeBanner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: 16,
+        marginBottom: 16,
+        padding: 12,
+        borderRadius: 16,
+        borderWidth: 1,
+    },
+    alternativeIcon: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    alternativeTextContent: {
+        flex: 1,
+        marginRight: 8,
+    },
+    alternativeTitle: {
+        fontSize: 13,
+        fontWeight: '600',
+    },
+    alternativeReason: {
+        fontSize: 11,
+        marginTop: 2,
+        lineHeight: 14,
+    },
+    alternativeAction: {
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 8,
+    },
+    alternativeActionText: {
+        color: 'white',
+        fontSize: 12,
+        fontWeight: '700',
     },
     contentContainer: {
         flex: 1,
@@ -325,6 +429,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 24,
+        gap: 12,
     },
     listContent: {
         paddingHorizontal: 16,
@@ -333,90 +438,95 @@ const styles = StyleSheet.create({
     card: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.SURFACE_ELEVATED,
+        backgroundColor: theme.card,
         borderRadius: 20,
         padding: 16,
         marginVertical: 6,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 8,
-        elevation: 2,
+        ...theme.shadow,
         borderWidth: 1,
-        borderColor: Colors.BORDER,
+        borderColor: theme.border,
     },
     cardContent: {
         flex: 1,
-        marginRight: 16,
-    },
-    foodName: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: Colors.TEXT_MAIN,
+        marginRight: 12,
     },
     nameRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 4,
+        marginBottom: 2,
+        gap: 6,
+    },
+    foodName: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: theme.text,
+        flex: 1,
     },
     localBadge: {
-        backgroundColor: Colors.PRIMARY + '20', // transparent primary
+        backgroundColor: theme.primary + '20',
         paddingHorizontal: 6,
         paddingVertical: 2,
         borderRadius: 4,
-        marginLeft: 8,
         borderWidth: 1,
-        borderColor: Colors.PRIMARY + '40',
+        borderColor: theme.primary + '40',
     },
     localBadgeText: {
-        fontSize: 10,
+        fontSize: 9,
         fontWeight: '700',
-        color: Colors.PRIMARY,
+        color: theme.primary,
         textTransform: 'uppercase',
     },
     brandName: {
         fontSize: 12,
-        color: Colors.PRIMARY,
+        color: theme.primary,
         fontWeight: '600',
-        marginBottom: 4,
-    },
-    detailsRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
         marginBottom: 2,
     },
-    servingSize: {
-        fontSize: 13,
-        color: Colors.TEXT_MUTED,
-        fontWeight: '500',
+    servingText: {
+        fontSize: 12,
+        color: theme.textMuted,
+        marginBottom: 2,
     },
-    caloriesText: {
-        fontSize: 13,
-        color: Colors.TEXT_MUTED,
+    macroText: {
+        fontSize: 12,
+        color: theme.textMuted,
     },
     addButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: Colors.PRIMARY,
+        width: 42,
+        height: 42,
+        borderRadius: 21,
+        backgroundColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    loadingText: {
-        marginTop: 12,
+    addButtonDisabled: {
+        backgroundColor: theme.textMuted,
+    },
+    hintText: {
         fontSize: 14,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
+        textAlign: 'center',
+    },
+    loadingText: {
+        fontSize: 14,
+        color: theme.textMuted,
+        textAlign: 'center',
     },
     errorText: {
-        marginTop: 12,
         fontSize: 14,
-        color: Colors.ERROR,
+        color: theme.error,
         textAlign: 'center',
     },
     emptyText: {
-        marginTop: 12,
         fontSize: 15,
-        color: Colors.TEXT_MUTED,
+        color: theme.textMuted,
         textAlign: 'center',
+        fontWeight: '600',
+    },
+    emptySubtext: {
+        fontSize: 13,
+        color: theme.textMuted,
+        textAlign: 'center',
+        opacity: 0.7,
     },
 });

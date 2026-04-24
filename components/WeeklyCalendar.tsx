@@ -3,9 +3,7 @@ import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from '
 import { Colors } from '../constants/Colors';
 
 const { width } = Dimensions.get('window');
-// HOME_PADDING is 15 on each side as per app/(tabs)/home.tsx
-const HOME_PADDING = 15;
-const VISIBLE_WIDTH = width - (HOME_PADDING * 2);
+const VISIBLE_WIDTH = width;
 const ITEM_WIDTH = VISIBLE_WIDTH / 7;
 
 interface DateItem {

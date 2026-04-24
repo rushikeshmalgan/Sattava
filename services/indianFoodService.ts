@@ -33,6 +33,22 @@ export const searchLocalIndianFoods = (query: string, limit = 25): IndianFood[] 
     if (combined.length >= limit) break;
   }
   
+  if (combined.length === 0) {
+    return [{
+      id: "fallback",
+      name: query,
+      calories: 150,
+      protein: 6,
+      carbs: 20,
+      fat: 5,
+      servingSize: "1 serving",
+      tags: [],
+      mealType: [],
+      dietType: "Veg",
+      healthRating: "Moderate"
+    }];
+  }
+
   return combined.slice(0, limit);
 };
 

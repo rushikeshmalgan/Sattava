@@ -34,6 +34,27 @@ export const updateUserTargets = async (
 };
 
 /**
+ * Updates generic user profile fields in Firestore.
+ */
+export const updateUserProfile = async (
+    userId: string,
+    updates: Record<string, any>
+) => {
+    try {
+        const userDocRef = doc(db, 'users', userId);
+        const updateData = {
+            ...updates,
+            lastUpdated: new Date(),
+        };
+        await updateDoc(userDocRef, updateData);
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating user profile:", error);
+        throw error;
+    }
+};
+
+/**
  * Updates the consumed values for a specific date in Firestore.
  */
 export const logConsumption = async (
@@ -83,13 +104,12 @@ export const incrementConsumption = async (
         const updateData: any = {
             lastUpdated: new Date(),
         };
-        if (increments.calories) updateData.consumedCalories = increment(increments.calories);
-        if (increments.carbs) updateData.totalCarbs = increment(increments.carbs);
-        if (increments.protein) updateData.totalProtein = increment(increments.protein);
-        if (increments.fat) updateData.totalFat = increment(increments.fat);
-        if (increments.water) {
+        if (increments.calories !== undefined) updateData.consumedCalories = increment(increments.calories);
+        if (increments.carbs !== undefined) updateData.totalCarbs = increment(increments.carbs);
+        if (increments.protein !== undefined) updateData.totalProtein = increment(increments.protein);
+        if (increments.fat !== undefined) updateData.totalFat = increment(increments.fat);
+        if (increments.water !== undefined) {
             updateData.totalWater = increment(increments.water);
-            updateData.waterIntake = increment(increments.water);
         }
 
         await setDoc(logDocRef, updateData, { merge: true });

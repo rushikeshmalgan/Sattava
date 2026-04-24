@@ -1,7 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Colors } from '../constants/Colors';
 import { ScheduledMeal, getMealStatus, getMealIcon, formatTimeAgo } from '../services/mealSchedulerService';
+import { useTheme } from '../context/ThemeContext';
+import { ThemeType } from '../constants/theme';
 
 interface MealTimelineCardProps {
   meals: ScheduledMeal[];
@@ -9,12 +10,14 @@ interface MealTimelineCardProps {
 }
 
 export default function MealTimelineCard({ meals, onLogMeal }: MealTimelineCardProps) {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>📅 Today Meal Plan</Text>
       <Text style={styles.subtitle}>Today's Indian Meal Schedule</Text>
 
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.list}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.list} nestedScrollEnabled={true}>
         {meals.map((meal, idx) => {
           const status = getMealStatus(meal);
           const icon = getMealIcon(meal.mealCategory);
@@ -65,7 +68,7 @@ export default function MealTimelineCard({ meals, onLogMeal }: MealTimelineCardP
                       </View>
                     ) : isCurrent ? (
                       <View style={styles.currentBadge}>
-                        <Text style={styles.currentBadgeText}>Now!</Text>
+                        <Text style={styles.currentBadgeText}>Smart Recommendation</Text>
                       </View>
                     ) : null}
                   </View>
@@ -97,28 +100,24 @@ export default function MealTimelineCard({ meals, onLogMeal }: MealTimelineCardP
   );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   container: {
-    backgroundColor: Colors.SURFACE_ELEVATED,
+    backgroundColor: theme.card,
     borderRadius: 20,
     padding: 16,
     marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 3,
+    ...theme.shadow,
     borderWidth: 1,
-    borderColor: Colors.BORDER,
+    borderColor: theme.border,
   },
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Colors.TEXT_MAIN,
+    color: theme.text,
   },
   subtitle: {
     fontSize: 12,
-    color: Colors.TEXT_MUTED,
+    color: theme.textMuted,
     marginBottom: 12,
   },
   list: {
@@ -138,42 +137,42 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: Colors.BORDER,
+    backgroundColor: theme.border,
     borderWidth: 2,
-    borderColor: Colors.TEXT_MUTED,
+    borderColor: theme.textMuted,
   },
   dotCurrent: {
-    backgroundColor: Colors.PRIMARY,
-    borderColor: Colors.PRIMARY_DARK,
+    backgroundColor: theme.primary,
+    borderColor: theme.primary,
     width: 14,
     height: 14,
     borderRadius: 7,
   },
   dotPast: {
-    backgroundColor: Colors.SUCCESS,
-    borderColor: Colors.SECONDARY_DARK,
+    backgroundColor: theme.accent,
+    borderColor: theme.accent,
   },
   line: {
     width: 2,
     flex: 1,
-    backgroundColor: Colors.BORDER,
+    backgroundColor: theme.border,
     marginTop: 2,
   },
   linePast: {
-    backgroundColor: Colors.SUCCESS,
+    backgroundColor: theme.accent,
     opacity: 0.4,
   },
   mealCard: {
     flex: 1,
-    backgroundColor: Colors.SURFACE,
+    backgroundColor: theme.background,
     borderRadius: 12,
     padding: 10,
     borderWidth: 1,
-    borderColor: Colors.BORDER,
+    borderColor: theme.border,
   },
   mealCardCurrent: {
-    backgroundColor: `${Colors.PRIMARY}10`,
-    borderColor: Colors.PRIMARY,
+    backgroundColor: `${theme.primary}10`,
+    borderColor: theme.primary,
   },
   mealCardPast: {
     opacity: 0.6,
@@ -198,14 +197,14 @@ const styles = StyleSheet.create({
   mealLabel: {
     fontSize: 13,
     fontWeight: '700',
-    color: Colors.TEXT_MAIN,
+    color: theme.text,
   },
   mealLabelCurrent: {
-    color: Colors.PRIMARY,
+    color: theme.primary,
   },
   mealLabelHindi: {
     fontSize: 10,
-    color: Colors.TEXT_MUTED,
+    color: theme.textMuted,
     fontWeight: '500',
   },
   mealRight: {
@@ -214,14 +213,14 @@ const styles = StyleSheet.create({
   mealTime: {
     fontSize: 12,
     fontWeight: '700',
-    color: Colors.TEXT_MAIN,
+    color: theme.text,
   },
   mealTimeAgo: {
     fontSize: 10,
-    color: Colors.TEXT_MUTED,
+    color: theme.textMuted,
   },
   pastBadge: {
-    backgroundColor: `${Colors.SUCCESS}20`,
+    backgroundColor: `${theme.accent}20`,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 8,
@@ -229,11 +228,11 @@ const styles = StyleSheet.create({
   },
   pastBadgeText: {
     fontSize: 9,
-    color: Colors.SUCCESS,
+    color: theme.accent,
     fontWeight: '700',
   },
   currentBadge: {
-    backgroundColor: `${Colors.PRIMARY}20`,
+    backgroundColor: `${theme.primary}20`,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 8,
@@ -241,7 +240,7 @@ const styles = StyleSheet.create({
   },
   currentBadgeText: {
     fontSize: 9,
-    color: Colors.PRIMARY,
+    color: theme.primary,
     fontWeight: '700',
   },
   foodList: {
@@ -249,7 +248,7 @@ const styles = StyleSheet.create({
   },
   foodItem: {
     fontSize: 11,
-    color: Colors.TEXT_MUTED,
+    color: theme.textMuted,
     lineHeight: 16,
   },
   foodItemPast: {
@@ -258,7 +257,7 @@ const styles = StyleSheet.create({
   },
   moreItems: {
     fontSize: 10,
-    color: Colors.PRIMARY,
+    color: theme.primary,
     fontWeight: '600',
   },
   mealFooter: {
@@ -266,18 +265,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: Colors.BORDER,
+    borderTopColor: theme.border,
     paddingTop: 6,
     marginTop: 2,
   },
   calText: {
     fontSize: 11,
     fontWeight: '700',
-    color: Colors.TEXT_MAIN,
+    color: theme.text,
   },
   logHint: {
     fontSize: 10,
-    color: Colors.PRIMARY,
+    color: theme.primary,
     fontWeight: '600',
   },
 });

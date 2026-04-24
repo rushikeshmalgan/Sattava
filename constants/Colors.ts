@@ -1,77 +1,101 @@
+/**
+ * Sattva — Global Color Palette
+ *
+ * Use SemanticColors from theme.ts for component styling.
+ * Use these only for one-off elements or chart colors.
+ */
+
 export const Colors = {
-  // ── Primary
-  PRIMARY: '#00BFA5',        // Premium Teal Green
-  PRIMARY_DARK: '#00897B',   
-  PRIMARY_LIGHT: '#E0F2F1',  
+  // ── Brand Primary: Forest Green ─────────────────────────────────
+  PRIMARY:       '#1E7D5A',
+  PRIMARY_DARK:  '#145A46',
+  PRIMARY_LIGHT: '#D6F5E9',
 
-  // ── Secondary
-  SECONDARY: '#FF5252',      // Soft Red
-  SECONDARY_DARK: '#D32F2F', 
-  SECONDARY_LIGHT: '#FFEBEE',
+  // ── Accent: Real Saffron/Amber ───────────────────────────────────
+  ACCENT:        '#F59E0B',
+  ACCENT_DARK:   '#D97706',
+  ACCENT_LIGHT:  '#FEF3C7',
 
-  // ── Accent: Purple
-  ACCENT: '#6C5CE7',         // Soft Purple
-  ACCENT_LIGHT: '#EFEEFE',   
-  ACCENT_GOLD: '#FFB300',    
+  // ── Lotus Pink (Indian identity) ─────────────────────────────────
+  LOTUS:         '#E05C8A',
+  LOTUS_LIGHT:   '#FCE7F3',
 
-  // ── Backgrounds ────────────────────────────────────
-  BACKGROUND: '#F8FAFC',     // Light Background
-  SURFACE: '#FFFFFF',        // Pure White Card
-  SURFACE_DARK: '#F1F5F9',   
-  SURFACE_ELEVATED: '#FFFFFF', 
+  // ── Backgrounds ───────────────────────────────────────────────────
+  BACKGROUND:       '#F3F8F5',
+  SURFACE:          '#FFFFFF',
+  SURFACE_DARK:     '#F0F7F4',
+  SURFACE_ELEVATED: '#FFFFFF',
 
-  // ── Typography ────────────────────────────────────────────────────────
-  TEXT_MAIN: '#1E293B',      // Deep Slate
-  TEXT_MUTED: '#64748B',     // Muted Blue-Grey
-  TEXT_INVERSE: '#FFFFFF',   
-  TEXT_LIGHT: '#94A3B8',     
+  // ── Text ──────────────────────────────────────────────────────────
+  TEXT_MAIN:    '#0F1F18',
+  TEXT_MUTED:   '#6B8F7E',
+  TEXT_LIGHT:   '#9DB5A8',
+  TEXT_INVERSE: '#FFFFFF',
 
-  // ── Borders & Dividers ────────────────────────────────────────────────
-  BORDER: '#E2E8F0',         
-  DIVIDER: '#F1F5F9',        
+  // ── Borders ───────────────────────────────────────────────────────
+  BORDER:  '#D1E8DF',
+  DIVIDER: '#E8F4EF',
 
-  // ── Status ────────────────────────────────────────────────────────────
-  SUCCESS: '#10B981',        
-  ERROR: '#EF4444',          
-  WARNING: '#F59E0B',        
-  INFO: '#3B82F6',           
+  // ── Status ────────────────────────────────────────────────────────
+  SUCCESS: '#10B981',
+  ERROR:   '#DC2626',
+  WARNING: '#F59E0B',
+  INFO:    '#2563EB',
 
-  // ── Special Palette ────────────────────────────────────────────
-  FESTIVAL_GOLD: '#FFB300',  
-  FESTIVAL_PINK: '#F06292',  
-  LOTUS_PINK: '#F06292',     
-  TURMERIC: '#FFB300',       
-  MEHENDI: '#2D6A4F',        
-  SINDOOR: '#C81D11',        
+  // ── Nutrition macro colors (same as theme.ts for consistency) ─────
+  MACRO_PROTEIN: '#E05C8A',
+  MACRO_CARBS:   '#1E7D5A',
+  MACRO_FAT:     '#F59E0B',
+  MACRO_FIBER:   '#2563EB',
+  MACRO_WATER:   '#0EA5E9',
 
-  // ── Chart & Data Visualization ────────────────────────────────────────
-  CHART_1: '#00BFA5',        
-  CHART_2: '#FF5252',        
-  CHART_3: '#6C5CE7',        
-  CHART_4: '#0EA5E9',        
-  CHART_5: '#F59E0B',        
-  CHART_6: '#94A3B8',        
+  // ── Health Rating ─────────────────────────────────────────────────
+  HEALTHY:   '#10B981',
+  MODERATE:  '#F59E0B',
+  UNHEALTHY: '#DC2626',
 
-  // ── Nutrition Health Ratings ──────────────────────────────────────────
-  HEALTHY: '#10B981',
-  MODERATE: '#F59E0B',
-  UNHEALTHY: '#EF4444',
+  // ── Chart ─────────────────────────────────────────────────────────
+  CHART_1: '#1E7D5A',
+  CHART_2: '#E05C8A',
+  CHART_3: '#F59E0B',
+  CHART_4: '#2563EB',
+  CHART_5: '#0EA5E9',
+  CHART_6: '#9DB5A8',
 
-  // ── Google / OAuth ────────────────────────────────────────────────────
+  // ── Festivals ─────────────────────────────────────────────────────
+  FESTIVAL_GOLD:  '#F59E0B',
+  FESTIVAL_PINK:  '#E05C8A',
+  TURMERIC:       '#F59E0B',
+  MEHENDI:        '#1E7D5A',
+  SINDOOR:        '#DC2626',
+
+  // ── Google OAuth ──────────────────────────────────────────────────
   GOOGLE_RED: '#DB4437',
+
+  // ── Legacy aliases (keep for backwards compat) ────────────────────
+  SECONDARY:       '#E05C8A',
+  SECONDARY_DARK:  '#C0346A',
+  SECONDARY_LIGHT: '#FCE7F3',
+  ACCENT_GOLD:     '#F59E0B',
 };
 
-// Gradient definitions for LinearGradient
+/** LinearGradient color pairs */
 export const Gradients = {
-  SAFFRON: ['#00BFA5', '#009688'], 
-  GREEN: ['#10B981', '#059669'],
-  GOLD: ['#F59E0B', '#D97706'],
-  TRICOLOR: ['#00BFA5', '#FFFFFF', '#FF5252'],
-  CARD_WARM: ['#FFFFFF', '#F8FAFC'],
-  HEADER: ['#00BFA5', '#009688'],
-  CALORIE_CARD: ['#FFFFFF', '#F8FAFC'],
-  PROTEIN_CARD: ['#FFFFFF', '#F8FAFC'],
-  WATER_CARD: ['#FFFFFF', '#F8FAFC'],
-  STEPS_CARD: ['#FFFFFF', '#F8FAFC'],
-  YOGA_CARD: ['#FFFFFF', '#F8FAFC'],
+  // Hero headers
+  PRIMARY:          ['#145A46', '#1E7D5A'] as const,
+  SAFFRON:          ['#D97706', '#F59E0B'] as const,   // ACTUALLY saffron this time
+  LOTUS:            ['#C0346A', '#E05C8A'] as const,
+
+  // Card backgrounds
+  CARD_WARM:        ['#FFFFFF', '#F3F8F5'] as const,
+  CARD_GREEN:       ['#F0F7F4', '#FFFFFF'] as const,
+
+  // Analytics header
+  ANALYTICS_HEADER: ['#0A1210', '#145A46'] as const,
+
+  // Streak / fire
+  STREAK:           ['#F97316', '#F59E0B'] as const,
+
+  // Full gradient (calorie ring)
+  CALORIE_RING:     ['#1E7D5A', '#34D399'] as const,
 } as const;

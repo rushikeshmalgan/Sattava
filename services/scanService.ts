@@ -291,7 +291,15 @@ export const resolveImageScan = async ({
   const analysis = await analyzeFoodImage({ imageBase64 });
   const resolution = buildGeminiResolution(analysis, imageUri);
 
-  await setCachedImageResult(cacheKey, resolution);
+  // Do NOT cache "Unknown food" results — they indicate a transient Gemini failure.
+  // If we cached them, the user would see "Unknown food" forever for that image.
+  const isUnknown = resolution.label?.toLowerCase().includes('unknown');
+  if (!isUnknown) {
+    await setCachedImageResult(cacheKey, resolution);
+  } else {
+    console.warn('[ScanService] Skipping cache for unknown-food result');
+  }
+
   return resolution;
 };
 
