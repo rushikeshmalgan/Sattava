@@ -20,10 +20,10 @@ const genAI = new GoogleGenerativeAI(apiKey);
 // gemini-2.0-flash* and gemini-1.5-flash* have SEPARATE quota pools,
 // so if the 2.0 daily quota is exhausted, 1.5 models will still respond.
 const MODEL_PRIORITY = [
-  'gemini-1.5-flash',      // Primary stable model
-  'gemini-1.5-flash-8b',   // Smaller, faster fallback
-  'gemini-2.0-flash-exp',  // Latest generation (experimental)
-  'gemini-1.5-pro',        // High-intelligence fallback
+  'gemini-2.5-flash',              // Highest performance 2026 stable
+  'gemini-3.1-flash-lite-preview', // High-speed 3.x series
+  'gemini-2.0-flash',              // Traditional 2.x fallback
+  'gemini-2.5-pro',                // High-intelligence fallback
 ];
 
 // ── Types ────────────────────────────────────────────────────────────────────
