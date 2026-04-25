@@ -436,6 +436,13 @@ const ScanFoodScreen = () => {
       setIsSaving(false);
     }
   };
+  
+  const handleUseDescriptor = (descriptor: string) => {
+    setManualQuery(descriptor);
+    setShowManualSearch(true);
+    // Smooth scroll to manual search
+    // (In a real app we might use a ref, but scrollToEnd is fine for demo)
+  };
 
   const requestCameraAccess = async () => {
     const result = await requestPermission();
@@ -547,6 +554,38 @@ const ScanFoodScreen = () => {
       ? activeItem.portionOptions
       : [activeItem.basePortionCategory];
   }, [activeItem]);
+
+  const selectedItemsCount = useMemo(() => {
+    return detectedItems.filter(item => selectedItemsToLog[item.id] !== false).length;
+  }, [detectedItems, selectedItemsToLog]);
+
+  const totalMealMacros = useMemo(() => {
+    const selected = detectedItems.filter(item => selectedItemsToLog[item.id] !== false);
+    
+    // Start with 0s
+    let calories = 0, carbs = 0, protein = 0, fat = 0;
+
+    // Use current displayed nutrition for active item, and base nutrition for others
+    // (In a perfect world we'd resolve all items, but this is a good approximation)
+    selected.forEach(item => {
+      if (item.id === activeItem?.id && displayedActiveItem) {
+        calories += displayedActiveItem.foodData.calories;
+        carbs += displayedActiveItem.foodData.carbs;
+        protein += displayedActiveItem.foodData.protein;
+        fat += displayedActiveItem.foodData.fat;
+      } else {
+        const portion = selectedPortions[item.id] || item.basePortionCategory;
+        const qty = selectedPortionCounts[item.id] || 1;
+        const scaled = scaleDetectedItemForPortion(item, portion);
+        calories += Math.round(scaled.foodData.calories * qty);
+        carbs += Math.round(scaled.foodData.carbs * qty);
+        protein += Math.round(scaled.foodData.protein * qty);
+        fat += Math.round(scaled.foodData.fat * qty);
+      }
+    });
+
+    return { calories, carbs, protein, fat };
+  }, [detectedItems, selectedItemsToLog, activeItem, displayedActiveItem, selectedPortions, selectedPortionCounts]);
 
   const speakSummary = () => {
     if (!displayedActiveItem) return;
@@ -839,16 +878,39 @@ const ScanFoodScreen = () => {
             <View style={styles.summaryCard}>
               <View style={styles.summaryHeader}>
                 <View style={styles.summaryTitleBlock}>
-                  <Text style={styles.summaryLabel}>We think this is your meal</Text>
+                  <Text style={styles.summaryLabel}>
+                    {scanResult.isCombination ? '🍛 COMBINATION MEAL DETECTED' : 'We think this is your meal'}
+                  </Text>
 
                   <Text style={styles.summaryTitle}>
-                    {displayedActiveItem.label}
+                    {scanResult.mealLabel || displayedActiveItem.label}
                   </Text>
 
                   <Text style={styles.summarySubtitle}>
                     {scanResult.subtitle ||
                       'Review each item and portion, then log the full meal.'}
                   </Text>
+
+                  {/* Explain the Match Fallback Hint */}
+                  {(displayedActiveItem.confidence < 0.5 || displayedActiveItem.label.toLowerCase().includes('unknown')) && (displayedActiveItem.visualDescriptor || scanResult.visualDescriptor) && (
+                    <TouchableOpacity 
+                      style={[styles.fallbackHintCard, { backgroundColor: theme.primary + '10' }]}
+                      onPress={() => handleUseDescriptor(displayedActiveItem.visualDescriptor || scanResult.visualDescriptor || '')}
+                    >
+                      <View style={styles.fallbackHintIcon}>
+                        <Ionicons name="bulb" size={16} color={theme.primary} />
+                      </View>
+                      <View style={styles.fallbackHintContent}>
+                        <Text style={[styles.fallbackHintText, { color: theme.text }]}>
+                          Not fully confident—try searching for:
+                        </Text>
+                        <Text style={[styles.fallbackDescriptor, { color: theme.primary }]}>
+                          "{displayedActiveItem.visualDescriptor || scanResult.visualDescriptor}"
+                        </Text>
+                      </View>
+                      <Ionicons name="arrow-forward" size={14} color={theme.primary} />
+                    </TouchableOpacity>
+                  )}
                 </View>
 
                 <View style={{ alignItems: 'flex-end', gap: 8 }}>
@@ -983,7 +1045,7 @@ const ScanFoodScreen = () => {
 
               <View style={styles.portionSection}>
                 <Text style={styles.sectionLabel}>
-                  Portion preset for {displayedActiveItem.label}
+                  {scanResult.isCombination ? 'Review items in this combo' : `Portion preset for ${displayedActiveItem.label}`}
                 </Text>
 
                 <View style={styles.portionGrid}>
@@ -1120,13 +1182,15 @@ const ScanFoodScreen = () => {
               <View style={styles.nutritionOverviewHeader}>
                 <View>
                   <Text style={styles.nutritionOverviewTitle}>
-                    Nutrition Information
+                    {selectedItemsCount > 1 ? 'Total Meal Nutrition' : 'Nutrition Information'}
                   </Text>
 
                   <Text style={styles.nutritionOverviewSubtitle}>
-                    {displayedActiveItem
-                      ? `${displayedActiveItem.label} • ${activeItemPortion} • Qty ${activeItemQuantity}`
-                      : 'Scan or search a food to see nutrition details'}
+                    {selectedItemsCount > 1 
+                      ? `${selectedItemsCount} items combined • Total estimate`
+                      : displayedActiveItem
+                        ? `${displayedActiveItem.label} • ${activeItemPortion} • Qty ${activeItemQuantity}`
+                        : 'Scan or search a food to see nutrition details'}
                   </Text>
                 </View>
 
@@ -1145,14 +1209,14 @@ const ScanFoodScreen = () => {
                 <View style={styles.nutritionMetricPill}>
                   <Text style={styles.nutritionMetricLabel}>Calories</Text>
                   <Text style={styles.nutritionMetricValue}>
-                    {displayNutritionValue(displayedActiveItem?.foodData.calories)} kcal
+                    {displayNutritionValue(totalMealMacros.calories)} kcal
                   </Text>
                 </View>
 
                 <View style={styles.nutritionMetricPill}>
                   <Text style={styles.nutritionMetricLabel}>Carbs</Text>
                   <Text style={styles.nutritionMetricValue}>
-                    {displayNutritionValue(displayedActiveItem?.foodData.carbs)}g
+                    {displayNutritionValue(totalMealMacros.carbs)}g
                   </Text>
                 </View>
               </View>
@@ -1161,14 +1225,14 @@ const ScanFoodScreen = () => {
                 <View style={styles.nutritionMetricPill}>
                   <Text style={styles.nutritionMetricLabel}>Protein</Text>
                   <Text style={styles.nutritionMetricValue}>
-                    {displayNutritionValue(displayedActiveItem?.foodData.protein)}g
+                    {displayNutritionValue(totalMealMacros.protein)}g
                   </Text>
                 </View>
 
                 <View style={styles.nutritionMetricPill}>
                   <Text style={styles.nutritionMetricLabel}>Fat</Text>
                   <Text style={styles.nutritionMetricValue}>
-                    {displayNutritionValue(displayedActiveItem?.foodData.fat)}g
+                    {displayNutritionValue(totalMealMacros.fat)}g
                   </Text>
                 </View>
               </View>
@@ -1492,6 +1556,37 @@ const getStyles = (theme: ThemeType) =>
       color: Colors.TEXT_MAIN,
       fontWeight: '600',
       flex: 1,
+    },
+    fallbackHintCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 12,
+      padding: 12,
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: Colors.PRIMARY + '30',
+      gap: 10,
+    },
+    fallbackHintIcon: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: '#fff',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    fallbackHintContent: {
+      flex: 1,
+    },
+    fallbackHintText: {
+      fontSize: 11,
+      fontWeight: '600',
+      opacity: 0.8,
+    },
+    fallbackDescriptor: {
+      fontSize: 13,
+      fontWeight: '800',
+      marginTop: 2,
     },
     nutritionOverviewCard: {
       backgroundColor: Colors.SURFACE_ELEVATED,

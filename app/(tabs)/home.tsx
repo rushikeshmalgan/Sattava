@@ -274,7 +274,18 @@ export default function Home() {
               type:     'water',
               amount:   '250ml',
             });
-            showSmartToast({ message: "Hydration on point 💧", icon: "water" });
+
+            const newWater = consumed.water + 250;
+            if (newWater >= waterTargetMl && consumed.water < waterTargetMl) {
+                showSmartToast({ 
+                    message: "Goal Reached! You've hit your water target! 🏆", 
+                    type: "success",
+                    icon: "trophy" 
+                });
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            } else {
+                showSmartToast({ message: "Hydration on point 💧", icon: "water" });
+            }
         } catch (e) {
             Alert.alert("Error", "Could not log water.");
         }

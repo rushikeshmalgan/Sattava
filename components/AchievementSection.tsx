@@ -20,7 +20,7 @@ export interface AchievementDef {
   gradient: [string, string];
 }
 
-const ALL_ACHIEVEMENTS: AchievementDef[] = [
+export const ALL_ACHIEVEMENTS: AchievementDef[] = [
   {
     id: 'streak_3',
     icon: 'flame',
@@ -273,8 +273,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 14,
     paddingHorizontal: 20,
+    marginBottom: 6,
   },
   sectionTitle: {
     fontSize: 17,
@@ -295,8 +295,9 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   scroll: {
-    paddingHorizontal: 16,
-    gap: 10,
+    paddingHorizontal: 20,
+    paddingBottom: 4,
+    gap: 12,
   },
   badge: {
     alignItems: 'center',

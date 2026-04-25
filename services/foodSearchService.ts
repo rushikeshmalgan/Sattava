@@ -10,6 +10,7 @@ export type { LocalIndianFood };
 export interface UnifiedFoodResult {
   id: string;
   name: string;
+  brand?: string;
   calories: number;
   carbs: number;
   protein: number;
@@ -23,6 +24,7 @@ export interface UnifiedFoodResult {
 const fromLocal = (item: LocalIndianFood): UnifiedFoodResult => ({
   id: item.id,
   name: item.name,
+  brand: item.brand,
   calories: Math.floor(item.calories || 0),
   carbs: Math.floor(item.carbs || 0),
   protein: Math.floor(item.protein || 0),

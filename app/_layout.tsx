@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { tokenCache } from "../utils/cache";
 import { SyncUserToFirestore } from "../utils/SyncUserToFirestore";
 import { ThemeProvider } from "../context/ThemeContext";
+import { NotificationProvider } from "../context/NotificationContext";
 import SmartToast from "../components/SmartToast";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -38,9 +39,11 @@ export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ThemeProvider>
-        <SyncUserToFirestore />
-        <InitialLayout />
-        <SmartToast />
+        <NotificationProvider>
+          <SyncUserToFirestore />
+          <InitialLayout />
+          <SmartToast />
+        </NotificationProvider>
       </ThemeProvider>
     </ClerkProvider>
   );

@@ -43,14 +43,36 @@ const FoodSearchScreen = () => {
     const [addingId, setAddingId] = useState<string | null>(null);
     const [selectedFoodForPortion, setSelectedFoodForPortion] = useState<UnifiedFoodResult | null>(null);
     const alternative = getHealthyAlternative(query);
+    const [healthContext, setHealthContext] = useState<any>(null);
 
     // Auto-search when navigated with a pre-filled query (from meal plan)
     useEffect(() => {
+        if (user?.id) {
+            const dateStr = new Date().toISOString().split('T')[0];
+            const loadContext = async () => {
+                const userDoc = await getDoc(doc(db, 'users', user.id));
+                const logDoc = await getDoc(doc(db, 'users', user.id, 'dailyLogs', dateStr));
+                
+                const userData = userDoc.data();
+                const logData = logDoc.data();
+                const plan = userData?.generatedPlan;
+
+                setHealthContext({
+                    calories: logData?.consumedCalories || 0,
+                    protein: logData?.totalProtein || 0,
+                    calorieTarget: plan?.dailyCalories || 2000,
+                    proteinTarget: parseInt(plan?.macros?.protein) || 60,
+                    goal: userData?.userProfile?.goal || 'Maintain Weight'
+                });
+            };
+            loadContext();
+        }
+
         if (params.query && params.query.trim().length >= 2) {
             performSearch(params.query.trim());
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user?.id]);
 
     // Debounced search on manual typing
     useEffect(() => {
@@ -318,6 +340,7 @@ const FoodSearchScreen = () => {
                 visible={selectedFoodForPortion !== null}
                 food={selectedFoodForPortion}
                 theme={theme}
+                context={healthContext}
                 onClose={() => setSelectedFoodForPortion(null)}
                 onLog={handleAddFood}
             />

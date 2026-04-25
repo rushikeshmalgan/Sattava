@@ -40,8 +40,9 @@ export default function AchievementsScreen() {
         checkGodMode();
     }, []);
 
-    const unlockedSet = computeAchievements(userStats);
-    const unlockedCount = unlockedSet.size;
+    const unlockedSet = computeAchievements(userStats) || new Set();
+    const unlockedCount = unlockedSet?.size || 0;
+    const achievementsList = Array.isArray(ALL_ACHIEVEMENTS) ? ALL_ACHIEVEMENTS : [];
 
     return (
         <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -58,7 +59,7 @@ export default function AchievementsScreen() {
                     <Ionicons name="trophy" size={32} color="#F59E0B" />
                     <View style={styles.statsText}>
                         <Text style={[styles.statsTitle, { color: theme.text }]}>
-                            {unlockedCount} / {ALL_ACHIEVEMENTS.length} Unlocked
+                            {unlockedCount} / {achievementsList.length} Unlocked
                         </Text>
                         <Text style={[styles.statsSub, { color: theme.textMuted }]}>
                             Keep logging to unlock more badges!
@@ -67,7 +68,7 @@ export default function AchievementsScreen() {
                 </View>
 
                 <View style={styles.grid}>
-                    {Array.isArray(ALL_ACHIEVEMENTS) && ALL_ACHIEVEMENTS.map(achievement => {
+                    {achievementsList.map(achievement => {
                         const isUnlocked = unlockedSet.has(achievement.id);
                         return (
                             <View key={achievement.id} style={[styles.badgeCard, { backgroundColor: theme.card, borderColor: theme.border }]}>

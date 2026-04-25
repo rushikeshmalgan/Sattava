@@ -2,7 +2,9 @@ import { useAuth, useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Pressable } from 'react-native';
+import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Pressable, Switch } from 'react-native';
+import { useNotifications } from '../../context/NotificationContext';
+import { showSmartToast } from '../../components/SmartToast';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,6 +13,7 @@ import { db } from '../../firebaseConfig';
 import { useTheme } from '../../context/ThemeContext';
 import { loadDemoData } from '../../services/logService';
 import AchievementSection from '../../components/AchievementSection';
+import SmartReminderCard from '../../components/SmartReminderCard';
 
 import { ThemeType } from '../../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,6 +27,7 @@ export default function Profile() {
     const insets = useSafeAreaInsets();
     const router = useRouter();
     const { theme, mode, setMode, isDark } = useTheme();
+    const { settings, updateSettings, requestPermissions, sendTestNotification, scheduleAllHealthReminders } = useNotifications();
     const [showAppearanceModal, setShowAppearanceModal] = useState(false);
     const [isDemoLoading, setIsDemoLoading] = useState(false);
     const [demoPressCount, setDemoPressCount] = useState(0);
@@ -241,80 +245,91 @@ export default function Profile() {
             ]}
         >
             {/* Header */}
-            <View style={styles.header}>
+            <View style={[styles.header, { paddingHorizontal: 20 }]}>
                 <Text style={styles.pageTitle}>Profile</Text>
             </View>
 
             {/* User Info Card */}
-            <View style={styles.card}>
-                <View style={styles.userInfoHeader}>
-                    <Pressable 
-                        onPress={async () => {
-                            setDemoPressCount(p => p + 1);
-                            if (demoPressCount >= 2) { // 3rd tap
-                                const currentPro = await AsyncStorage.getItem('isPro');
-                                if (currentPro === 'true') {
-                                    await AsyncStorage.removeItem('isPro');
-                                    await AsyncStorage.removeItem('demoGodMode');
-                                    Alert.alert("God Mode Disabled", "Pro features locked.");
-                                } else {
-                                    await AsyncStorage.setItem('isPro', 'true');
-                                    await AsyncStorage.setItem('demoGodMode', 'true');
-                                    Alert.alert("God Mode Enabled 🏆", "15-day streak, all badges unlocked, and Pro features activated.");
+            <View style={{ paddingHorizontal: 20 }}>
+                <View style={styles.card}>
+                    <View style={styles.userInfoHeader}>
+                        <Pressable 
+                            onPress={async () => {
+                                setDemoPressCount(p => p + 1);
+                                if (demoPressCount >= 2) { // 3rd tap
+                                    const currentPro = await AsyncStorage.getItem('isPro');
+                                    if (currentPro === 'true') {
+                                        await AsyncStorage.removeItem('isPro');
+                                        await AsyncStorage.removeItem('demoGodMode');
+                                        Alert.alert("God Mode Disabled", "Pro features locked.");
+                                    } else {
+                                        await AsyncStorage.setItem('isPro', 'true');
+                                        await AsyncStorage.setItem('demoGodMode', 'true');
+                                        Alert.alert("God Mode Enabled 🏆", "15-day streak, all badges unlocked, and Pro features activated.");
+                                    }
+                                    setDemoPressCount(0);
                                 }
-                                setDemoPressCount(0);
-                            }
-                        }}
-                    >
-                        <View style={styles.userInitials}>
-                            <Text style={styles.initialsText}>
-                                {user?.firstName?.charAt(0) || 'U'}
-                                {user?.lastName?.charAt(0) || 'S'}
-                            </Text>
+                            }}
+                        >
+                            <View style={styles.userInitials}>
+                                <Text style={styles.initialsText}>
+                                    {user?.firstName?.charAt(0) || 'U'}
+                                    {user?.lastName?.charAt(0) || 'S'}
+                                </Text>
+                            </View>
+                        </Pressable>
+                        <View style={styles.userDetails}>
+                            <Text style={styles.userName}>{currentName}</Text>
+                            <Text style={styles.userEmail}>{user?.primaryEmailAddress?.emailAddress || 'No email'}</Text>
                         </View>
-                    </Pressable>
-                    <View style={styles.userDetails}>
-                        <Text style={styles.userName}>{currentName}</Text>
-                        <Text style={styles.userEmail}>{user?.primaryEmailAddress?.emailAddress || 'No email'}</Text>
                     </View>
                 </View>
             </View>
 
             {/* Premium Call to Action */}
-            <TouchableOpacity 
-                style={styles.premiumBanner}
-                onPress={() => router.push('/subscription')}
-            >
-                <LinearGradient 
-                    colors={Gradients.PRIMARY} 
-                    start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-                    style={styles.premiumGradient}
+            <View style={{ paddingHorizontal: 20 }}>
+                <TouchableOpacity 
+                    style={styles.premiumBanner}
+                    onPress={() => router.push('/subscription')}
                 >
-                    <View style={styles.premiumContent}>
-                        <View style={styles.premiumTextGroup}>
-                            <Text style={styles.premiumTitle}>Sattva Pro</Text>
-                            <Text style={styles.premiumSub}>Unlock AI Coach & Combo Builder</Text>
+                    <LinearGradient 
+                        colors={Gradients.PRIMARY} 
+                        start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                        style={styles.premiumGradient}
+                    >
+                        <View style={styles.premiumContent}>
+                            <View style={styles.premiumTextGroup}>
+                                <Text style={styles.premiumTitle}>Sattva Pro</Text>
+                                <Text style={styles.premiumSub}>Unlock AI Coach & Combo Builder</Text>
+                            </View>
+                            <Ionicons name="chevron-forward" size={24} color="#fff" />
                         </View>
-                        <Ionicons name="chevron-forward" size={24} color="#fff" />
-                    </View>
-                </LinearGradient>
-            </TouchableOpacity>
+                    </LinearGradient>
+                </TouchableOpacity>
+            </View>
+
+            {/* Smart Health Reminders Demo Center */}
+            <View style={{ paddingHorizontal: 20 }}>
+                <SmartReminderCard />
+            </View>
 
             {/* Daily Targets Section */}
             {userPlan?.generatedPlan && (
-                <View style={styles.section}>
+                <View style={[styles.section, { paddingHorizontal: 20, marginTop: 24 }]}>
                     <Text style={styles.sectionTitle}>Daily Targets</Text>
                     {isPlanStale && (
                         <View style={styles.staleBanner}>
-                            <Ionicons name="alert-circle-outline" size={16} color={Colors.ERROR} />
+                            <Ionicons name="alert-circle-outline" size={16} color={theme.error} marginTop={10} />
                             <Text style={styles.staleText}>Your nutrition plan may be outdated after goal/activity changes.</Text>
                         </View>
                     )}
                     <View style={styles.card}>
                         <View style={styles.targetRow}>
                             <View style={styles.targetItem}>
-                                <Ionicons name="flame-outline" size={20} color={Colors.PRIMARY} />
-                                <View style={styles.targetContent}>
+                                <View style={styles.settingIconContainer}>
+                                    <Ionicons name="flame-outline" size={22} color={theme.primary} />
+                                </View>
+                                <View style={styles.settingTextContainer}>
                                     <Text style={styles.targetLabel}>Daily Calories</Text>
                                     <Text style={styles.targetValue}>
                                         {userPlan.generatedPlan.dailyCalories || '—'} kcal
@@ -323,7 +338,7 @@ export default function Profile() {
                             </View>
                         </View>
 
-                        <View style={[styles.targetRow, { borderTopWidth: 1, borderTopColor: Colors.DIVIDER }]}>
+                        <View style={[styles.targetRow, { borderTopWidth: 1, borderTopColor: theme.divider }]}>
                             <View style={styles.macroGroup}>
                                 <View style={styles.macroItem}>
                                     <Text style={styles.macroLabel}>Protein</Text>
@@ -331,13 +346,13 @@ export default function Profile() {
                                         {userPlan.generatedPlan.macros?.protein || '—'}g
                                     </Text>
                                 </View>
-                                <View style={[styles.macroItem, { borderLeftWidth: 1, borderLeftColor: Colors.DIVIDER }]}>
+                                <View style={[styles.macroItem, { borderLeftWidth: 1, borderLeftColor: theme.divider }]}>
                                     <Text style={styles.macroLabel}>Carbs</Text>
                                     <Text style={styles.macroValue}>
                                         {userPlan.generatedPlan.macros?.carbs || '—'}g
                                     </Text>
                                 </View>
-                                <View style={[styles.macroItem, { borderLeftWidth: 1, borderLeftColor: Colors.DIVIDER }]}>
+                                <View style={[styles.macroItem, { borderLeftWidth: 1, borderLeftColor: theme.divider }]}>
                                     <Text style={styles.macroLabel}>Fats</Text>
                                     <Text style={styles.macroValue}>
                                         {userPlan.generatedPlan.macros?.fats || '—'}g
@@ -346,10 +361,12 @@ export default function Profile() {
                             </View>
                         </View>
 
-                        <View style={[styles.targetRow, { borderTopWidth: 1, borderTopColor: Colors.DIVIDER }]}>
+                        <View style={[styles.targetRow, { borderTopWidth: 1, borderTopColor: theme.divider }]}>
                             <View style={styles.targetItem}>
-                                <Ionicons name="water-outline" size={20} color={Colors.PRIMARY} />
-                                <View style={styles.targetContent}>
+                                <View style={styles.settingIconContainer}>
+                                    <Ionicons name="water-outline" size={22} color={theme.primary} />
+                                </View>
+                                <View style={styles.settingTextContainer}>
                                     <Text style={styles.targetLabel}>Daily Water Intake</Text>
                                     <Text style={styles.targetValue}>
                                         {userPlan.generatedPlan.waterIntake || '—'}
@@ -362,30 +379,34 @@ export default function Profile() {
             )}
 
             {/* Achievements Section */}
-            <View style={{ marginTop: 24 }}>
+            <View style={{ marginTop: 0 }}>
                 <AchievementSection stats={userStats} />
             </View>
 
             {/* Profile Settings Section */}
-            <View style={styles.section}>
+            <View style={[styles.section, { paddingHorizontal: 20, marginTop: 15}]}>
                 <Text style={styles.sectionTitle}>Settings</Text>
                 <View style={styles.card}>
                     <TouchableOpacity style={styles.settingRow} onPress={openNameModal}>
                         <View style={styles.settingContent}>
-                            <Ionicons name="person-outline" size={20} color={Colors.TEXT_MAIN} />
+                            <View style={styles.settingIconContainer}>
+                                <Ionicons name="person-outline" size={22} color={theme.primary} />
+                            </View>
                             <View style={styles.settingTextContainer}>
                                 <Text style={styles.settingLabel}>Name</Text>
                                 <Text style={styles.settingValue}>{currentName}</Text>
                             </View>
                         </View>
-                        <Ionicons name="chevron-forward" size={18} color={Colors.TEXT_MUTED} />
+                        <Ionicons name="chevron-forward" size={20} color={theme.textLight} />
                     </TouchableOpacity>
 
                     <View style={styles.divider} />
 
                     <TouchableOpacity style={styles.settingRow} onPress={openGoalModal}>
                         <View style={styles.settingContent}>
-                            <Ionicons name="flag-outline" size={20} color={Colors.TEXT_MAIN} />
+                            <View style={styles.settingIconContainer}>
+                                <Ionicons name="flag-outline" size={22} color={theme.primary} />
+                            </View>
                             <View style={styles.settingTextContainer}>
                                 <Text style={styles.settingLabel}>Your Goal</Text>
                                 <Text style={styles.settingValue}>
@@ -393,14 +414,16 @@ export default function Profile() {
                                 </Text>
                             </View>
                         </View>
-                        <Ionicons name="chevron-forward" size={18} color={Colors.TEXT_MUTED} />
+                        <Ionicons name="chevron-forward" size={20} color={theme.textLight} />
                     </TouchableOpacity>
 
                     <View style={styles.divider} />
 
                     <TouchableOpacity style={styles.settingRow} onPress={openActivityModal}>
                         <View style={styles.settingContent}>
-                            <Ionicons name="flash-outline" size={20} color={Colors.TEXT_MAIN} />
+                            <View style={styles.settingIconContainer}>
+                                <Ionicons name="flash-outline" size={22} color={theme.primary} />
+                            </View>
                             <View style={styles.settingTextContainer}>
                                 <Text style={styles.settingLabel}>Activity Level</Text>
                                 <Text style={styles.settingValue}>
@@ -408,39 +431,44 @@ export default function Profile() {
                                 </Text>
                             </View>
                         </View>
-                        <Ionicons name="chevron-forward" size={18} color={Colors.TEXT_MUTED} />
+                        <Ionicons name="chevron-forward" size={20} color={theme.textLight} />
                     </TouchableOpacity>
 
                     <View style={styles.divider} />
 
                     <TouchableOpacity style={styles.settingRow} onPress={() => setShowAppearanceModal(true)}>
                         <View style={styles.settingContent}>
-                            <Ionicons name="color-palette-outline" size={20} color={theme.text} />
+                            <View style={styles.settingIconContainer}>
+                                <Ionicons name="color-palette-outline" size={22} color={theme.primary} />
+                            </View>
                             <View style={styles.settingTextContainer}>
-                                <Text style={[styles.settingLabel, { color: theme.text }]}>Appearance</Text>
+                                <Text style={styles.settingLabel}>Appearance</Text>
                                 <Text style={styles.settingValue}>{mode.charAt(0).toUpperCase() + mode.slice(1)} Mode</Text>
                             </View>
                         </View>
-                        <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+                        <Ionicons name="chevron-forward" size={20} color={theme.textLight} />
                     </TouchableOpacity>
 
                     <View style={styles.divider} />
 
                     <TouchableOpacity style={styles.settingRow} onPress={() => setShowPlanModal(true)}>
                         <View style={styles.settingContent}>
-                            <Ionicons name="document-text-outline" size={20} color={Colors.TEXT_MAIN} />
+                            <View style={styles.settingIconContainer}>
+                                <Ionicons name="document-text-outline" size={22} color={theme.primary} />
+                            </View>
                             <View style={styles.settingTextContainer}>
                                 <Text style={styles.settingLabel}>View Nutrition Plan</Text>
                                 <Text style={styles.settingValue}>Personalized meal guide</Text>
                             </View>
                         </View>
-                        <Ionicons name="chevron-forward" size={18} color={Colors.TEXT_MUTED} />
+                        <Ionicons name="chevron-forward" size={20} color={theme.textLight} />
                     </TouchableOpacity>
                 </View>
             </View>
 
+
             {/* Account Section */}
-            <View style={styles.section}>
+            <View style={[styles.section, { paddingHorizontal: 20 }]}>
                 <Text style={styles.sectionTitle}>Account</Text>
                 <View style={styles.card}>
                     <TouchableOpacity
@@ -448,9 +476,11 @@ export default function Profile() {
                         onPress={handleSignOut}
                     >
                         <View style={styles.settingContent}>
-                            <Ionicons name="log-out-outline" size={20} color={Colors.ERROR} />
+                            <View style={styles.settingIconContainer}>
+                                <Ionicons name="log-out-outline" size={22} color={theme.error} />
+                            </View>
                             <View style={styles.settingTextContainer}>
-                                <Text style={[styles.settingLabel, { color: Colors.ERROR }]}>Sign Out</Text>
+                                <Text style={[styles.settingLabel, { color: theme.error }]}>Sign Out</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -835,7 +865,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         backgroundColor: theme.background,
     },
     scrollContent: {
-        paddingHorizontal: 16,
+        paddingHorizontal: 0,
     },
     loadingContainer: {
         flex: 1,
@@ -893,7 +923,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         marginTop: 4,
     },
     section: {
-        marginBottom: 24,
+        marginBottom: 32,
     },
     staleBanner: {
         flexDirection: 'row',
@@ -919,7 +949,8 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         letterSpacing: 0.5,
     },
     targetRow: {
-        padding: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
     },
     targetItem: {
         flexDirection: 'row',
@@ -968,20 +999,28 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        minHeight: 76,
     },
     settingContent: {
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
     },
+    settingIconContainer: {
+        width: 32,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     settingTextContainer: {
         marginLeft: 12,
         flex: 1,
+        justifyContent: 'center',
     },
     settingLabel: {
         fontSize: 16,
-        fontWeight: '500',
+        fontWeight: '600',
         color: theme.text,
     },
     settingValue: {
@@ -1246,7 +1285,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         color: theme.text,
         marginTop: 8,
     },
-    premiumBanner:      { marginHorizontal: 16, marginTop: 12, borderRadius: 20, overflow: 'hidden', ...theme.shadow },
+    premiumBanner:      { marginTop: 12, borderRadius: 20, overflow: 'hidden', ...theme.shadow },
     premiumGradient:    { padding: 20 },
     premiumContent:     { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
     premiumTextGroup:   { gap: 4 },

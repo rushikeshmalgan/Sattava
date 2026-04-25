@@ -7,9 +7,9 @@
 
 export interface ChatContext {
   calories: number;
-  water: number;
+  water?: number;
   goal: string;
-  coachType: string;
+  coachType?: string;
   protein?: number;
   carbs?: number;
   fat?: number;
@@ -20,6 +20,14 @@ export interface ChatContext {
   streak?: number;
   diet?: string;
   recentFoods?: string[];
+}
+
+export interface FoodValidationResult {
+  score: 'Healthy' | 'Moderate' | 'Unhealthy';
+  reason: string;
+  suggestion?: string;
+  color: string;
+  icon: string;
 }
 
 export async function safeAIReply(prompt: string, context: ChatContext): Promise<string> {
@@ -41,8 +49,9 @@ function getDynamicLocalResponse(prompt: string, ctx: ChatContext): string {
   const proteinTarget = ctx.proteinTarget ?? 60;
   
   const calPct = Math.round((ctx.calories / Math.max(calTarget, 1)) * 100);
-  const waterL = (ctx.water / 1000).toFixed(1);
-  const remWater = Math.max((waterTarget - ctx.water) / 1000, 0).toFixed(1);
+  const currentWater = ctx.water ?? 0;
+  const waterL = (currentWater / 1000).toFixed(1);
+  const remWater = Math.max((waterTarget - currentWater) / 1000, 0).toFixed(1);
   const protRemaining = Math.max(proteinTarget - (ctx.protein ?? 0), 0);
   
   const streakText = (ctx.streak ?? 0) > 2 ? ` You're on a ${ctx.streak}-day streak, let's not break it!` : '';
@@ -50,7 +59,7 @@ function getDynamicLocalResponse(prompt: string, ctx: ChatContext): string {
 
   // INTENT 1: Water / Hydration
   if (lower.includes('water') || lower.includes('drink') || lower.includes('hydrat')) {
-    if (ctx.water >= waterTarget) {
+    if (currentWater >= waterTarget) {
       return getRandom([
         `You've hit your water goal of ${waterL}L today! Excellent hydration. 🚰`,
         `Amazing job! ${waterL}L logged. Staying hydrated is key for your ${ctx.goal} goal. 💧`
@@ -136,4 +145,98 @@ function getDynamicLocalResponse(prompt: string, ctx: ChatContext): string {
     `I'm your personal Sattva coach! Whether it's meal ideas or motivation, just ask. 🌟`,
     `You've logged ${calPct}% of your daily calories. Are you planning any workouts today? 🏃🏽‍♀️`
   ]);
+}
+import { HEALTHY_SWAPS } from '../constants/HealthyAlternatives';
+
+export function validateFoodIntake(food: { calories: number; protein: number; carbs: number; fat: number; name: string }, ctx: ChatContext, quantity: number): FoodValidationResult {
+  const qCals = food.calories * quantity;
+  const qProt = food.protein * quantity;
+  const qFat = food.fat * quantity;
+  const qCarbs = food.carbs * quantity;
+  
+  const calTarget = ctx.calorieTarget ?? 2000;
+  const protTarget = ctx.proteinTarget ?? 60;
+  
+  const remainingCals = Math.max(calTarget - ctx.calories, 0);
+  
+  // Lookup specific alternative
+  const foodLower = food.name.toLowerCase();
+  let suggestion = '';
+  for (const key in HEALTHY_SWAPS) {
+    if (foodLower.includes(key)) {
+      suggestion = `Consider ${HEALTHY_SWAPS[key].suggestion} instead.`;
+      break;
+    }
+  }
+
+  // Rule 1: High Calorie Alert
+  if (qCals > calTarget * 0.35) {
+    return {
+      score: 'Unhealthy',
+      reason: 'This items consumes over 35% of your total daily calorie budget.',
+      suggestion: suggestion || 'Try reducing the portion size or swapping for a lighter snack.',
+      color: '#EF4444',
+      icon: 'alert-circle'
+    };
+  }
+
+  // Rule 2: Exceeding Daily Budget
+  if (qCals > remainingCals && remainingCals > 0) {
+    return {
+      score: 'Unhealthy',
+      reason: `Logging this will put you ${Math.round(qCals - remainingCals)} kcal over your daily goal.`,
+      suggestion: suggestion || 'Consider a smaller portion to stay within your limits.',
+      color: '#EF4444',
+      icon: 'warning'
+    };
+  }
+
+  // Rule 3: High Sugar / High Carb proxy
+  if (qCarbs > 45 && qProt < 5) {
+    return {
+      score: 'Unhealthy',
+      reason: 'High in refined carbs/sugar with low protein balance.',
+      suggestion: suggestion || 'Try adding a protein source like Greek yogurt or sprouts.',
+      color: '#F59E0B',
+      icon: 'nutrition'
+    };
+  }
+
+  // Rule 4: High Fat balance
+  if (qFat > 25 || (qFat * 9) > (qCals * 0.45)) {
+    return {
+      score: 'Moderate',
+      reason: 'Relatively high in fats. Ensure your next meal is fiber-rich.',
+      suggestion: suggestion || 'Try more grilled or steamed options next time.',
+      color: '#F59E0B',
+      icon: 'nutrition'
+    };
+  }
+
+  // Rule 5: High Protein (Healthy)
+  if (qProt > 15 && qCals < 500) {
+    return {
+      score: 'Healthy',
+      reason: 'Excellent protein-to-calorie ratio! Great for your goals.',
+      color: '#10B981',
+      icon: 'checkmark-circle'
+    };
+  }
+
+  // Rule 6: Fits budget perfectly
+  if (qCals < remainingCals * 0.2) {
+    return {
+      score: 'Healthy',
+      reason: 'Fits perfectly within your remaining daily budget.',
+      color: '#10B981',
+      icon: 'thumbs-up'
+    };
+  }
+
+  return {
+    score: 'Moderate',
+    reason: 'A balanced selection that fits within your daily limits.',
+    color: '#3B82F6',
+    icon: 'information-circle'
+  };
 }

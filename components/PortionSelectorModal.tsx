@@ -3,18 +3,26 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput } from 'reac
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeType } from '../constants/theme';
 import { UnifiedFoodResult } from '../services/foodSearchService';
+import { validateFoodIntake, FoodValidationResult, ChatContext } from '../services/aiCoach';
+import { BlurView } from 'expo-blur';
+import { useTheme } from '../context/ThemeContext';
+import * as Haptics from 'expo-haptics';
+import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 
 interface Props {
     visible: boolean;
     food: UnifiedFoodResult | null;
     theme: ThemeType;
+    context: ChatContext | null;
     onClose: () => void;
     onLog: (multiplier: number, portionName: string) => void;
 }
 
-export default function PortionSelectorModal({ visible, food, theme, onClose, onLog }: Props) {
+export default function PortionSelectorModal({ visible, food, theme: propsTheme, context, onClose, onLog }: Props) {
+    const { theme, isDark } = useTheme();
     const [quantity, setQuantity] = useState('1');
     const [portionUnit, setPortionUnit] = useState('serving');
+    const [validation, setValidation] = useState<FoodValidationResult | null>(null);
 
     useEffect(() => {
         if (food) {
@@ -35,6 +43,20 @@ export default function PortionSelectorModal({ visible, food, theme, onClose, on
             }
         }
     }, [food]);
+
+    useEffect(() => {
+        if (food && context) {
+            const result = validateFoodIntake(food, context, parseFloat(quantity) || 1);
+            setValidation(result);
+            
+            // Trigger haptics based on health score
+            if (result.score === 'Unhealthy') {
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+            } else if (result.score === 'Healthy') {
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            }
+        }
+    }, [food, context, quantity]);
 
     if (!food) return null;
 
@@ -84,6 +106,39 @@ export default function PortionSelectorModal({ visible, food, theme, onClose, on
                         </View>
                     </View>
 
+                    {/* Health Detection Popup */}
+                    {validation && (
+                        <Animated.View 
+                            entering={FadeInDown.springify().damping(15)} 
+                            exiting={FadeOutUp}
+                            style={styles.validationWrapper}
+                        >
+                            <View style={[styles.validationContent, { borderColor: validation.color + '40', backgroundColor: validation.color + '08' }]}>
+                                <View style={styles.validationBody}>
+                                    <View style={styles.scoreRow}>
+                                        <View style={[styles.scoreBadge, { backgroundColor: validation.color }]}>
+                                            <Ionicons name={validation.icon as any} size={14} color="#FFF" />
+                                            <Text style={styles.scoreText}>{validation.score}</Text>
+                                        </View>
+                                        <Text style={[styles.aiTitle, { color: theme.textSecondary }]}>Sattva Analysis</Text>
+                                    </View>
+                                    
+                                    <Text style={[styles.validationReason, { color: theme.text }]}>
+                                        {validation.reason}
+                                    </Text>
+                                    
+                                    {validation.suggestion && (
+                                        <View style={[styles.suggestionBox, { backgroundColor: theme.surfaceMuted }]}>
+                                            <Text style={[styles.validationSuggestion, { color: theme.textSecondary }]}>
+                                                💡 {validation.suggestion}
+                                            </Text>
+                                        </View>
+                                    )}
+                                </View>
+                            </View>
+                        </Animated.View>
+                    )}
+
                     <TouchableOpacity 
                         style={[styles.logBtn, { backgroundColor: theme.primary }]}
                         onPress={() => onLog(numQty, portionUnit)}
@@ -112,5 +167,57 @@ const styles = StyleSheet.create({
     macroRow: { flexDirection: 'row', gap: 16 },
     macroText: { fontSize: 14, fontWeight: '700' },
     logBtn: { padding: 16, borderRadius: 16, alignItems: 'center' },
-    logBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' }
+    logBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+    validationWrapper: {
+        marginBottom: 24,
+        borderRadius: 20,
+        overflow: 'hidden',
+    },
+    validationContent: {
+        borderRadius: 20,
+        borderWidth: 2,
+        padding: 16,
+    },
+    validationBody: {
+        gap: 12,
+    },
+    scoreRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    scoreBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 12,
+        gap: 4,
+    },
+    scoreText: {
+        color: '#FFF',
+        fontSize: 12,
+        fontWeight: '800',
+        textTransform: 'uppercase',
+    },
+    aiTitle: {
+        fontSize: 12,
+        fontWeight: '700',
+        letterSpacing: 0.5,
+        opacity: 0.8,
+    },
+    validationReason: {
+        fontSize: 15,
+        fontWeight: '600',
+        lineHeight: 20,
+    },
+    suggestionBox: {
+        padding: 12,
+        borderRadius: 12,
+    },
+    validationSuggestion: {
+        fontSize: 13,
+        lineHeight: 18,
+        fontStyle: 'italic',
+    }
 });

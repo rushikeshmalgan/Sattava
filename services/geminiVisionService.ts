@@ -20,10 +20,13 @@ const genAI = new GoogleGenerativeAI(apiKey);
 // gemini-2.0-flash* and gemini-1.5-flash* have SEPARATE quota pools,
 // so if the 2.0 daily quota is exhausted, 1.5 models will still respond.
 const MODEL_PRIORITY = [
-  'gemini-2.0-flash',
+  'gemini-2.5-flash',      // Highest performance & reliable
+  'gemini-flash-latest',   // Consistent stable fallback
+  'gemini-1.5-flash',      // Traditional name
+  'gemini-2.0-flash',      // Fast, but experimental quota limits apply
   'gemini-2.0-flash-lite',
-  'gemini-1.5-flash',
   'gemini-1.5-flash-8b',
+  'gemini-pro-vision',     // Legacy fallback
 ];
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -41,6 +44,7 @@ export interface GeminiDetectedItem {
   itemName: string;
   portionCategory: PortionCategory;
   confidence: number;
+  visualDescriptor?: string;
   estimatedNutrition: GeminiEstimatedNutrition;
 }
 
@@ -53,6 +57,9 @@ export interface GeminiFoodAnalysis {
   isPackaged: boolean;
   brandName?: string;
   imageNotes?: string;
+  visualDescriptor?: string;
+  isCombination: boolean;
+  mealLabel?: string;
   estimatedNutrition: GeminiEstimatedNutrition;
   items: GeminiDetectedItem[];
 }
@@ -72,6 +79,7 @@ const DEFAULT_ANALYSIS: GeminiFoodAnalysis = {
   portionCategory: 'medium',
   confidence: 0.5,
   isPackaged: false,
+  isCombination: false,
   estimatedNutrition: DEFAULT_NUTRITION,
   items: [
     {
@@ -124,8 +132,8 @@ const isRateLimit = (err: unknown): boolean => {
 };
 
 const isApiKeyError = (err: unknown): boolean => {
-  const msg = String((err as any)?.message ?? '');
-  return msg.includes('API_KEY') || msg.includes('401') || msg.includes('403') || msg.includes('invalid');
+  const msg = String((err as any)?.message ?? '').toLowerCase();
+  return msg.includes('api_key') || msg.includes('401') || msg.includes('403') || msg.includes('unauthorized') || msg.includes('forbidden') || msg.includes('invalid');
 };
 
 const stripFence = (text: string): string =>
@@ -174,12 +182,19 @@ const normalizeItem = (raw: any): GeminiDetectedItem => {
     itemName: name,
     portionCategory: portion,
     confidence: Math.min(1, Math.max(0, toNum(raw?.confidence, 0.5))),
+    visualDescriptor: raw?.visualDescriptor ? String(raw.visualDescriptor) : undefined,
     estimatedNutrition: normalizeNutrition(raw?.estimatedNutrition),
   };
 };
 
 const normalizeAnalysis = (raw: any, modelUsed?: string): GeminiFoodAnalysis => {
-  const rootItem = normalizeItem({ itemName: raw?.itemName, portionCategory: raw?.portionCategory, confidence: raw?.confidence, estimatedNutrition: raw?.estimatedNutrition });
+  const rootItem = normalizeItem({ 
+    itemName: raw?.itemName, 
+    portionCategory: raw?.portionCategory, 
+    confidence: raw?.confidence, 
+    estimatedNutrition: raw?.estimatedNutrition,
+    visualDescriptor: raw?.visualDescriptor 
+  });
   const rawItems = Array.isArray(raw?.items) && raw.items.length > 0 ? raw.items : [raw];
   const items = rawItems.map(normalizeItem);
   const primary = items[0] ?? rootItem;
@@ -193,6 +208,9 @@ const normalizeAnalysis = (raw: any, modelUsed?: string): GeminiFoodAnalysis => 
     isPackaged: Boolean(raw?.isPackaged),
     brandName: raw?.brandName ? String(raw.brandName) : undefined,
     imageNotes: raw?.imageNotes ? String(raw.imageNotes) : undefined,
+    visualDescriptor: primary.visualDescriptor,
+    isCombination: Boolean(raw?.isCombination),
+    mealLabel: raw?.mealLabel ? String(raw.mealLabel) : undefined,
     estimatedNutrition: primary.estimatedNutrition,
     items,
   };
@@ -207,6 +225,9 @@ async function tryModels(
     console.warn('[Gemini] No API key — check EXPO_PUBLIC_GEMINI_API_KEY in .env');
     return null;
   }
+  
+  // Diagnostic log (first 10 chars)
+  console.log(`[Gemini] Using API Key: ${apiKey.slice(0, 10)}... (length: ${apiKey.length})`);
 
   for (const modelName of MODEL_PRIORITY) {
     try {
@@ -224,10 +245,13 @@ async function tryModels(
         console.warn(`[Gemini] Rate limit on ${modelName}, trying next model...`);
         continue;
       }
-      console.warn(`[Gemini] Model ${modelName} failed (${errMsg}), trying next...`);
+      console.warn(`[Gemini] Model ${modelName} failed. Reason: ${errMsg}`);
+      if (err && typeof err === 'object') {
+        console.warn(`[Gemini] Error details:`, JSON.stringify(err, null, 2).slice(0, 500));
+      }
     }
   }
-  console.error('[Gemini] All models failed — returning null');
+  console.error('[Gemini] CRITICAL: All models tried and failed. Check network connection or API Key permissions in AI Studio.');
   return null;
 }
 
@@ -248,13 +272,16 @@ export const analyzeFoodImage = async ({
 
 Return ONLY valid JSON (no markdown, no explanation) with this exact shape:
 {
-  "itemName": "string — most specific Indian dish name",
+  "itemName": "string — most specific primary dish name",
   "searchHint": "string — best keyword for food database search",
   "portionCategory": "small | medium | large | 1 bowl | 1 plate | 1 piece",
   "confidence": 0.0,
   "isPackaged": false,
+  "isCombination": true,
+  "mealLabel": "string — e.g., 'Roti-Sabzi Combo' or 'Special Maharashtrian Thali'",
   "brandName": "string or null",
   "imageNotes": "string — brief observation about the image",
+  "visualDescriptor": "string — 3-4 word appearance description (e.g., 'yellow dal with tadka')",
   "estimatedNutrition": {
     "calories": 0,
     "carbs": 0,
@@ -267,6 +294,7 @@ Return ONLY valid JSON (no markdown, no explanation) with this exact shape:
       "itemName": "string",
       "portionCategory": "1 bowl",
       "confidence": 0.9,
+      "visualDescriptor": "string",
       "estimatedNutrition": { "calories": 0, "carbs": 0, "protein": 0, "fat": 0, "servingSize": "1 bowl" }
     }
   ]
@@ -274,8 +302,10 @@ Return ONLY valid JSON (no markdown, no explanation) with this exact shape:
 
 Rules:
 - Detect 1-5 visible food items
+- If multiple distinct Indian components are present (e.g., Dal, Rice, Roti, Sabzi), set isCombination: true and create a descriptive mealLabel.
 - Use specific Indian names (e.g., "Dal Makhani" not "lentil soup")
 - For roti/chapati/paratha, always use "1 piece" portionCategory
+- If confidence is low (< 0.7), ensure visualDescriptor is very accurate based on colors/textures
 - Estimate nutrition per the chosen portionCategory
 - Return confidence 0-1 (1 = very sure)`;
 
@@ -386,6 +416,34 @@ Reply with ONLY the tip sentence. No intro, no quotes, no punctuation at the sta
   const text = result ?? LOCAL_TIPS[Math.floor(Math.random() * LOCAL_TIPS.length)];
   toCache(cacheKey, text);
   return text;
+};
+
+/**
+ * Secondary fallback: Generates a short visual descriptor for a difficult image.
+ * Used when primary analysis is low-confidence.
+ */
+export const getVisualDescriptor = async ({
+  imageBase64,
+  mimeType = 'image/jpeg',
+}: {
+  imageBase64: string;
+  mimeType?: string;
+}): Promise<string> => {
+  const prompt = `Describe the food in this photo in 3-5 simple words for an Indian food database search. 
+Examples: 'Yellow lentil curry', 'Flatbread with butter', 'Fried rice with veggies'. 
+Be ingredient-aware and culturally relevant. 
+Reply ONLY with the descriptor.`;
+
+  const result = await tryModels(async (modelName) => {
+    const model = genAI.getGenerativeModel({ model: modelName, generationConfig: { temperature: 0.3, maxOutputTokens: 20 } });
+    const res = await model.generateContent([
+      prompt,
+      { inlineData: { data: imageBase64, mimeType } },
+    ]);
+    return res.response.text().trim();
+  }, true);
+
+  return result || 'Indian food dish';
 };
 
 /**

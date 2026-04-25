@@ -2,6 +2,7 @@ import { CryptoDigestAlgorithm, digestStringAsync } from 'expo-crypto';
 import { FoodData } from './logService';
 import {
   analyzeFoodImage,
+  getVisualDescriptor,
   GeminiFoodAnalysis,
   PortionCategory,
 } from './geminiVisionService';
@@ -25,6 +26,7 @@ export interface ScanDetectedItem {
   portionCategory: PortionCategory;
   portionOptions: PortionCategory[];
   foodData: FoodData;
+  visualDescriptor?: string;
 }
 
 export interface ScanResolution {
@@ -45,6 +47,9 @@ export interface ScanResolution {
   alternatives?: OpenFoodFactsMatch[];
   analysis?: GeminiFoodAnalysis;
   detectedItems?: ScanDetectedItem[];
+  visualDescriptor?: string;
+  isCombination?: boolean;
+  mealLabel?: string;
 }
 
 const PORTION_MULTIPLIERS: Record<PortionCategory, number> = {
@@ -211,6 +216,7 @@ const buildGeminiResolution = (
         fat: item.estimatedNutrition.fat,
         servingSize: item.estimatedNutrition.servingSize,
       },
+      visualDescriptor: item.visualDescriptor,
     });
   }
 
@@ -247,9 +253,12 @@ const buildGeminiResolution = (
     portionOptions: primary.portionOptions,
     foodData: primary.foodData,
     imageUri,
-    searchHint: analysis.searchHint,
+    searchHint: analysis.searchHint || primary.visualDescriptor || analysis.itemName,
     analysis,
     detectedItems,
+    visualDescriptor: primary.visualDescriptor,
+    isCombination: analysis.isCombination,
+    mealLabel: analysis.mealLabel,
   };
 };
 
@@ -290,6 +299,19 @@ export const resolveImageScan = async ({
 
   const analysis = await analyzeFoodImage({ imageBase64 });
   const resolution = buildGeminiResolution(analysis, imageUri);
+
+  // Trigger "Explain the Match" fallback for low confidence
+  if (resolution.confidence < 0.5 || resolution.label.toLowerCase().includes('unknown')) {
+    try {
+      const fallbackDescriptor = await getVisualDescriptor({ imageBase64 });
+      if (fallbackDescriptor) {
+        resolution.visualDescriptor = fallbackDescriptor;
+        resolution.searchHint = fallbackDescriptor;
+      }
+    } catch (e) {
+      console.warn('[ScanService] Visual descriptor fallback failed', e);
+    }
+  }
 
   // Do NOT cache "Unknown food" results — they indicate a transient Gemini failure.
   // If we cached them, the user would see "Unknown food" forever for that image.

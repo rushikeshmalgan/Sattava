@@ -1,5 +1,6 @@
 import { arrayRemove, arrayUnion, doc, getDoc, increment, setDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
+import { showSmartToast } from '../components/SmartToast';
 
 export interface ExerciseData {
     id: string;
@@ -94,6 +95,28 @@ export const addFoodLog = async (
 };
 
         await setDoc(logDocRef, updateData, { merge: true });
+        
+        // Trigger In-App Alert
+        const isHealthy = foodData.protein > (foodData.calories * 0.05) && foodData.fat < (foodData.calories * 0.03);
+        const isUnhealthy = foodData.calories > 600 || foodData.fat > 25;
+
+        if (isUnhealthy) {
+            showSmartToast({
+                message: `Logged ${foodData.name}. Warning: High calorie/fat content.`,
+                type: 'unhealthy'
+            });
+        } else if (isHealthy) {
+            showSmartToast({
+                message: `Excellent choice! Healthy ${foodData.name} logged.`,
+                type: 'success'
+            });
+        } else {
+            showSmartToast({
+                message: `${foodData.name} logged successfully!`,
+                type: 'success'
+            });
+        }
+
         return { success: true };
     } catch (error) {
         console.error("Error adding food log:", error);

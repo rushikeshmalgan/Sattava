@@ -3,6 +3,7 @@ import { CSV_FOODS } from '../data/csvFoods';
 export interface LocalIndianFood {
     id: string;
     name: string;
+    brand?: string;
     calories: number;
     carbs: number;
     protein: number;
