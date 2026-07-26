@@ -1,0 +1,16226 @@
+export const CSV_FOODS = [
+  {
+    "id": "csv-0",
+    "name": "Hot tea (Garam Chai)",
+    "calories": 16.14,
+    "carbs": 2.58,
+    "protein": 0.39,
+    "fat": 0.53,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1",
+    "name": "Instant coffee",
+    "calories": 23.16,
+    "carbs": 3.65,
+    "protein": 0.64,
+    "fat": 0.75,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-2",
+    "name": "Espreso coffee",
+    "calories": 51.54,
+    "carbs": 6.62,
+    "protein": 1.75,
+    "fat": 2.14,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-3",
+    "name": "Iced tea",
+    "calories": 10.34,
+    "carbs": 2.7,
+    "protein": 0.03,
+    "fat": 0.01,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-4",
+    "name": "Raw mango drink (Aam panna)",
+    "calories": 35.92,
+    "carbs": 9.05,
+    "protein": 0.16,
+    "fat": 0.03,
+    "fiber": 0.61,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-5",
+    "name": "Fruit Punch (with fresh juices)",
+    "calories": 36.12,
+    "carbs": 9.38,
+    "protein": 0.14,
+    "fat": 0.03,
+    "fiber": 0.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-6",
+    "name": "Fruit Punch (with squashes)",
+    "calories": 23.13,
+    "carbs": 5.99,
+    "protein": 0.07,
+    "fat": 0.02,
+    "fiber": 0.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-7",
+    "name": "Lemonade",
+    "calories": 20.8,
+    "carbs": 5.48,
+    "protein": 0.03,
+    "fat": 0.01,
+    "fiber": 0.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-8",
+    "name": "Lem-o-gin",
+    "calories": 21.52,
+    "carbs": 5.55,
+    "protein": 0.08,
+    "fat": 0.03,
+    "fiber": 0.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-9",
+    "name": "Cumin infused water (Jeere/Zeere ka pani)",
+    "calories": 9.09,
+    "carbs": 1.86,
+    "protein": 0.17,
+    "fat": 0.11,
+    "fiber": 0.46,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-10",
+    "name": "Coco pine cooler",
+    "calories": 32.75,
+    "carbs": 5.72,
+    "protein": 0.56,
+    "fat": 1,
+    "fiber": 0.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-11",
+    "name": "Summer cooler",
+    "calories": 22.43,
+    "carbs": 5.43,
+    "protein": 0.37,
+    "fat": 0.04,
+    "fiber": 0.2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-12",
+    "name": "Hot cocoa",
+    "calories": 90.1,
+    "carbs": 9.23,
+    "protein": 3.36,
+    "fat": 4.56,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-13",
+    "name": "Cold coffee with ice cream",
+    "calories": 67.85,
+    "carbs": 11.24,
+    "protein": 1.57,
+    "fat": 2.11,
+    "fiber": 0.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-14",
+    "name": "Banana milkshake (Kele milkshake)",
+    "calories": 65.31,
+    "carbs": 9.15,
+    "protein": 1.84,
+    "fat": 2.37,
+    "fiber": 0.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-15",
+    "name": "Mango milkshake (Aam milkshake)",
+    "calories": 56.9,
+    "carbs": 7.23,
+    "protein": 1.73,
+    "fat": 2.35,
+    "fiber": 0.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-16",
+    "name": "Pineapple milkshake (Ananas milkshake)",
+    "calories": 55.72,
+    "carbs": 7.62,
+    "protein": 1.66,
+    "fat": 2.23,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-17",
+    "name": "Orange milkshake (Narangi milkshake)",
+    "calories": 57.42,
+    "carbs": 7.11,
+    "protein": 1.86,
+    "fat": 2.52,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-18",
+    "name": "Egg nog",
+    "calories": 97.14,
+    "carbs": 8.15,
+    "protein": 4.78,
+    "fat": 5.11,
+    "fiber": 0.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-19",
+    "name": "Sweet Lassi (Meethi lassi)",
+    "calories": 35.66,
+    "carbs": 6.51,
+    "protein": 1.29,
+    "fat": 0.68,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-20",
+    "name": "Lassi (salted)",
+    "calories": 18.84,
+    "carbs": 1.86,
+    "protein": 1.35,
+    "fat": 0.72,
+    "fiber": 0.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-21",
+    "name": "Cheese and chilli sandwich ",
+    "calories": 218.11,
+    "carbs": 27.4,
+    "protein": 6.8,
+    "fat": 9.78,
+    "fiber": 2.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-22",
+    "name": "Egg sandwich (Ande ka sandwich)",
+    "calories": 285.96,
+    "carbs": 29.16,
+    "protein": 8.69,
+    "fat": 15.8,
+    "fiber": 1.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-23",
+    "name": "Cucumber sandwich (Kheere ka sandwich)",
+    "calories": 188.6,
+    "carbs": 25.77,
+    "protein": 4.8,
+    "fat": 8,
+    "fiber": 2.45,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-24",
+    "name": "Cheese and pineapple sandwich (Cheese aur ananas ka sandwich)",
+    "calories": 257.71,
+    "carbs": 29.1,
+    "protein": 8.2,
+    "fat": 12.8,
+    "fiber": 2.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-25",
+    "name": "Cheese and tomato sandwich (Cheese aur tamatar ke sandwich)",
+    "calories": 243.32,
+    "carbs": 26.92,
+    "protein": 7.92,
+    "fat": 12.27,
+    "fiber": 1.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-26",
+    "name": "Chicken sandwich",
+    "calories": 253.27,
+    "carbs": 25.38,
+    "protein": 13.12,
+    "fat": 11.75,
+    "fiber": 1.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-27",
+    "name": "Peanut and tomato sandwich (Moongfali aur tamatar ka sandwich)",
+    "calories": 291.43,
+    "carbs": 28.54,
+    "protein": 9.53,
+    "fat": 16.14,
+    "fiber": 4.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-28",
+    "name": "Rainbow sandwich",
+    "calories": 272.75,
+    "carbs": 34.26,
+    "protein": 7.75,
+    "fat": 12.54,
+    "fiber": 2.1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-29",
+    "name": "Club sandwich ",
+    "calories": 235.32,
+    "carbs": 18.51,
+    "protein": 7.31,
+    "fat": 15.12,
+    "fiber": 1.81,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-30",
+    "name": "Vegetarian club sandwich",
+    "calories": 198.33,
+    "carbs": 19.68,
+    "protein": 5.45,
+    "fat": 11.33,
+    "fiber": 2.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-31",
+    "name": "Pin wheel sandwich",
+    "calories": 311.52,
+    "carbs": 14,
+    "protein": 8.77,
+    "fat": 24.93,
+    "fiber": 0.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-32",
+    "name": "Carrot apple sandwich (Gajar aur seb ka sandwich)",
+    "calories": 214.11,
+    "carbs": 29.04,
+    "protein": 5.3,
+    "fat": 9.12,
+    "fiber": 3.66,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-33",
+    "name": "Salami sandwich",
+    "calories": 255.59,
+    "carbs": 21.54,
+    "protein": 8.7,
+    "fat": 15.51,
+    "fiber": 1.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-34",
+    "name": "Vegetable and mayonnaise sandwich",
+    "calories": 244.26,
+    "carbs": 23.2,
+    "protein": 4.47,
+    "fat": 15.4,
+    "fiber": 2.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-35",
+    "name": "Egg and tomato sandwich (Ande aur tamatar ka sandwich)",
+    "calories": 222.11,
+    "carbs": 25.9,
+    "protein": 7.66,
+    "fat": 10.51,
+    "fiber": 1.77,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-36",
+    "name": "Sweet open sandwich",
+    "calories": 244.25,
+    "carbs": 39.24,
+    "protein": 4.99,
+    "fat": 8.15,
+    "fiber": 2.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-37",
+    "name": "Mushroom and cheese sandwich (toasted)",
+    "calories": 227.42,
+    "carbs": 21.01,
+    "protein": 7.79,
+    "fat": 13.01,
+    "fiber": 2.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-38",
+    "name": "Cheese and tomato sandwich (toasted) (Cheese aur tamatar ke sandwich (toasted))",
+    "calories": 224.58,
+    "carbs": 21.42,
+    "protein": 6.82,
+    "fat": 12.95,
+    "fiber": 1.78,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-39",
+    "name": "Pea potato sandwich (toasted) (Matar aloo ka sandwich)",
+    "calories": 164.9,
+    "carbs": 25.17,
+    "protein": 4.6,
+    "fat": 5.43,
+    "fiber": 2.89,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-40",
+    "name": "Paneer pea sandwich (toasted) (Paneer matar ka sandwich)",
+    "calories": 249.56,
+    "carbs": 24.05,
+    "protein": 12.4,
+    "fat": 11.98,
+    "fiber": 2.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-41",
+    "name": "Chicken sandwich (toasted)",
+    "calories": 167.37,
+    "carbs": 18.82,
+    "protein": 12.08,
+    "fat": 5.32,
+    "fiber": 1.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-42",
+    "name": "Pea keema sandwich (toasted) (Matar aur keema ka sandwich)",
+    "calories": 171.78,
+    "carbs": 20.26,
+    "protein": 11.06,
+    "fat": 5.61,
+    "fiber": 2.45,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-43",
+    "name": "Classic club sandwich",
+    "calories": 200.83,
+    "carbs": 18.49,
+    "protein": 6.74,
+    "fat": 11.56,
+    "fiber": 1.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-44",
+    "name": "Sesame toast",
+    "calories": 495.19,
+    "carbs": 11.15,
+    "protein": 1.9,
+    "fat": 49.38,
+    "fiber": 1.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-45",
+    "name": "Cracked wheat porridge (Meetha daliya)",
+    "calories": 81.57,
+    "carbs": 8.87,
+    "protein": 2.64,
+    "fat": 4.08,
+    "fiber": 0.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-46",
+    "name": "Semolina porridge (Suji/Rava daliya)",
+    "calories": 100.89,
+    "carbs": 12.39,
+    "protein": 3.75,
+    "fat": 4.08,
+    "fiber": 0.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-47",
+    "name": "Oatmeal Porridge",
+    "calories": 72.85,
+    "carbs": 8.77,
+    "protein": 2.6,
+    "fat": 3.22,
+    "fiber": 0.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-48",
+    "name": "Cornflakes with milk",
+    "calories": 117.33,
+    "carbs": 14.95,
+    "protein": 3.59,
+    "fat": 5.12,
+    "fiber": 0.78,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-49",
+    "name": "Rice flakes (Chiwda/Aval)",
+    "calories": 112.44,
+    "carbs": 15.57,
+    "protein": 3.62,
+    "fat": 3.99,
+    "fiber": 0.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-50",
+    "name": "Wheat flakes",
+    "calories": 112.44,
+    "carbs": 15.57,
+    "protein": 3.62,
+    "fat": 3.99,
+    "fiber": 0.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-51",
+    "name": "Murmura (Puffed rice)",
+    "calories": 113.32,
+    "carbs": 15.67,
+    "protein": 3.62,
+    "fat": 4.04,
+    "fiber": 0.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-52",
+    "name": "Puffed wheat (Murmure/Moori)",
+    "calories": 113.32,
+    "carbs": 15.67,
+    "protein": 3.62,
+    "fat": 4.04,
+    "fiber": 0.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-53",
+    "name": "Boiled egg (Ubla anda)",
+    "calories": 45.35,
+    "carbs": 0.12,
+    "protein": 4.43,
+    "fat": 3.04,
+    "fiber": 0.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-54",
+    "name": "Fried Egg ",
+    "calories": 223.67,
+    "carbs": 0.31,
+    "protein": 11.59,
+    "fat": 19.62,
+    "fiber": 0.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-55",
+    "name": "Poached egg",
+    "calories": 123.87,
+    "carbs": 0.37,
+    "protein": 11.98,
+    "fat": 8.19,
+    "fiber": 0.3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-56",
+    "name": "Scrambled egg (Ande ki bhurji)",
+    "calories": 155.97,
+    "carbs": 1.35,
+    "protein": 10.29,
+    "fat": 12.21,
+    "fiber": 0.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-57",
+    "name": "Baked egg ",
+    "calories": 218.85,
+    "carbs": 15.42,
+    "protein": 11.88,
+    "fat": 12.65,
+    "fiber": 1.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-58",
+    "name": "Plain omelette/omlet",
+    "calories": 272.41,
+    "carbs": 0.64,
+    "protein": 9.66,
+    "fat": 25.74,
+    "fiber": 0.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-59",
+    "name": "Stuffed egg omelette/omlet",
+    "calories": 203.51,
+    "carbs": 2.3,
+    "protein": 8.6,
+    "fat": 17.77,
+    "fiber": 0.75,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-60",
+    "name": "Pancake",
+    "calories": 203.36,
+    "carbs": 20.49,
+    "protein": 5.68,
+    "fat": 10.82,
+    "fiber": 0.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-61",
+    "name": "Keema pancake",
+    "calories": 176.27,
+    "carbs": 9.56,
+    "protein": 9.01,
+    "fat": 11.25,
+    "fiber": 0.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-62",
+    "name": "Vegetable pancake",
+    "calories": 125.18,
+    "carbs": 12.24,
+    "protein": 3.87,
+    "fat": 6.57,
+    "fiber": 2.48,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-63",
+    "name": "Jam and fruit pancake",
+    "calories": 162.02,
+    "carbs": 20.73,
+    "protein": 3.79,
+    "fat": 7.01,
+    "fiber": 1.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-64",
+    "name": "Khoa and coconut pancake",
+    "calories": 271.98,
+    "carbs": 27.32,
+    "protein": 6.98,
+    "fat": 15.29,
+    "fiber": 1.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-65",
+    "name": "Brown stock",
+    "calories": 21.32,
+    "carbs": 0.25,
+    "protein": 1.95,
+    "fat": 1.38,
+    "fiber": 0.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-66",
+    "name": "Vegetable stock",
+    "calories": 17.6,
+    "carbs": 0.96,
+    "protein": 0.3,
+    "fat": 1.38,
+    "fiber": 0.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-67",
+    "name": "Chicken stock",
+    "calories": 29.88,
+    "carbs": 0.37,
+    "protein": 3.69,
+    "fat": 1.51,
+    "fiber": 0.1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-68",
+    "name": "Clear tomato soup (Tamatar ka soup)",
+    "calories": 80.07,
+    "carbs": 3.45,
+    "protein": 4.79,
+    "fat": 12.22,
+    "fiber": 1.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-69",
+    "name": "Lentil soup",
+    "calories": 31.17,
+    "carbs": 3.94,
+    "protein": 9.65,
+    "fat": 11.68,
+    "fiber": 2.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-70",
+    "name": "Chicken consomme (Clear chicken soup)",
+    "calories": 47.94,
+    "carbs": 1.19,
+    "protein": 11.47,
+    "fat": 12.02,
+    "fiber": 1.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-71",
+    "name": "Cream of tomato soup",
+    "calories": 97.81,
+    "carbs": 3.93,
+    "protein": 4.61,
+    "fat": 13.12,
+    "fiber": 1.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-72",
+    "name": "Cream of green peas soup",
+    "calories": 127.84,
+    "carbs": 6.75,
+    "protein": 7.13,
+    "fat": 14.78,
+    "fiber": 2.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-73",
+    "name": "Cream of spinach soup",
+    "calories": 100.54,
+    "carbs": 3.45,
+    "protein": 5.21,
+    "fat": 13.31,
+    "fiber": 1.74,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-74",
+    "name": "Cream of mixed vegetable soup",
+    "calories": 59.65,
+    "carbs": 4.93,
+    "protein": 6.84,
+    "fat": 9.05,
+    "fiber": 2.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-75",
+    "name": "Cream of mushroom soup",
+    "calories": 117.28,
+    "carbs": 3.74,
+    "protein": 6.64,
+    "fat": 15.5,
+    "fiber": 1.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-76",
+    "name": "Chicken sweet corn soup",
+    "calories": 28.32,
+    "carbs": 1.63,
+    "protein": 14.48,
+    "fat": 12.59,
+    "fiber": 0.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-77",
+    "name": "Minestrone soup",
+    "calories": 42.66,
+    "carbs": 3.71,
+    "protein": 9.3,
+    "fat": 11.09,
+    "fiber": 1.92,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-78",
+    "name": "Egg drop soup",
+    "calories": 26.64,
+    "carbs": 1.1,
+    "protein": 12.93,
+    "fat": 13.52,
+    "fiber": 0.81,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-79",
+    "name": "Chinese cabbage and meat ball soup",
+    "calories": 484.31,
+    "carbs": 1.43,
+    "protein": 5.21,
+    "fat": 56.57,
+    "fiber": 0.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-80",
+    "name": "French onion soup",
+    "calories": 55.61,
+    "carbs": 4.28,
+    "protein": 11.41,
+    "fat": 14.39,
+    "fiber": 1.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-81",
+    "name": "Hot and sour soup",
+    "calories": 31.51,
+    "carbs": 1.78,
+    "protein": 3.12,
+    "fat": 1.31,
+    "fiber": 0.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-82",
+    "name": "Talaumein soup",
+    "calories": 35.63,
+    "carbs": 4.17,
+    "protein": 10.12,
+    "fat": 12.78,
+    "fiber": 1.94,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-83",
+    "name": "Cold cucumber soup (Thanda kheere ka soup)",
+    "calories": 48.03,
+    "carbs": 4.58,
+    "protein": 2.99,
+    "fat": 1.99,
+    "fiber": 0.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-84",
+    "name": "Cold summer garden soup",
+    "calories": 49.19,
+    "carbs": 2.65,
+    "protein": 8.57,
+    "fat": 14.08,
+    "fiber": 1.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-85",
+    "name": "Chapati/Roti",
+    "calories": 202.31,
+    "carbs": 35.65,
+    "protein": 5.88,
+    "fat": 3.56,
+    "fiber": 6.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-86",
+    "name": "Plain parantha/paratha",
+    "calories": 298.3,
+    "carbs": 30.69,
+    "protein": 5.06,
+    "fat": 16.86,
+    "fiber": 5.43,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-87",
+    "name": "Potato parantha/paratha (Aloo ka parantha/paratha)",
+    "calories": 205.04,
+    "carbs": 23.92,
+    "protein": 3.7,
+    "fat": 10.22,
+    "fiber": 4.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-88",
+    "name": "Radish parantha/paratha (Mooli ka parantha/paratha)",
+    "calories": 183.52,
+    "carbs": 20.54,
+    "protein": 3.3,
+    "fat": 9.53,
+    "fiber": 4.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-89",
+    "name": "Cauliflower parantha/paratha (Phoolgobhi ka parantha/paratha)",
+    "calories": 178.07,
+    "carbs": 18.84,
+    "protein": 3.73,
+    "fat": 9.47,
+    "fiber": 4.68,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-90",
+    "name": "Dal parantha/paratha",
+    "calories": 268.24,
+    "carbs": 30.03,
+    "protein": 6.78,
+    "fat": 13.05,
+    "fiber": 6.46,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-91",
+    "name": "Sprouted moong parantha/paratha",
+    "calories": 228.59,
+    "carbs": 24.31,
+    "protein": 4.29,
+    "fat": 12.43,
+    "fiber": 4.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-92",
+    "name": "Pea parantha/paratha (Matar ka parantha/paratha)",
+    "calories": 190.73,
+    "carbs": 21.51,
+    "protein": 5.59,
+    "fat": 8.8,
+    "fiber": 5.61,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-93",
+    "name": "Keema parantha/paratha",
+    "calories": 238.09,
+    "carbs": 18.36,
+    "protein": 9.41,
+    "fat": 13.91,
+    "fiber": 3.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-94",
+    "name": "Paneer parantha/paratha",
+    "calories": 262.97,
+    "carbs": 24.33,
+    "protein": 7.98,
+    "fat": 14.62,
+    "fiber": 4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-95",
+    "name": "Besan and spinach parantha/paratha (Besan aur palak ka parantha/paratha)",
+    "calories": 216.49,
+    "carbs": 21.39,
+    "protein": 5.54,
+    "fat": 12.09,
+    "fiber": 4.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-96",
+    "name": "Poori",
+    "calories": 737.63,
+    "carbs": 8.22,
+    "protein": 1.35,
+    "fat": 77.61,
+    "fiber": 1.46,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-97",
+    "name": "Spinach poori (Palak poori)",
+    "calories": 684.25,
+    "carbs": 7.76,
+    "protein": 1.42,
+    "fat": 71.86,
+    "fiber": 1.55,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-98",
+    "name": "Methi poori",
+    "calories": 710.02,
+    "carbs": 7.98,
+    "protein": 1.45,
+    "fat": 74.6,
+    "fiber": 1.61,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-99",
+    "name": "Dal stuffed poori",
+    "calories": 785.16,
+    "carbs": 10.14,
+    "protein": 2.08,
+    "fat": 81.69,
+    "fiber": 1.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-100",
+    "name": "Potato stuffed poori (Aloo ki poori)",
+    "calories": 776.74,
+    "carbs": 9.4,
+    "protein": 1.52,
+    "fat": 81.35,
+    "fiber": 1.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-101",
+    "name": "Tandoori parantha/paratha",
+    "calories": 295.37,
+    "carbs": 30.74,
+    "protein": 5.08,
+    "fat": 16.51,
+    "fiber": 5.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-102",
+    "name": "Boiled rice (Uble chawal)",
+    "calories": 117.19,
+    "carbs": 25.72,
+    "protein": 2.6,
+    "fat": 0.18,
+    "fiber": 1.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-103",
+    "name": "Plain pulao",
+    "calories": 140.21,
+    "carbs": 21.82,
+    "protein": 2.34,
+    "fat": 4.62,
+    "fiber": 1.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-104",
+    "name": "Mixed vegetable pulao",
+    "calories": 113.05,
+    "carbs": 17.49,
+    "protein": 2.72,
+    "fat": 3.33,
+    "fiber": 2.67,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-105",
+    "name": "Mushroom pulao",
+    "calories": 124.29,
+    "carbs": 19.02,
+    "protein": 2.52,
+    "fat": 4.03,
+    "fiber": 1.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-106",
+    "name": "Sprouted moong pulao",
+    "calories": 112.97,
+    "carbs": 17.49,
+    "protein": 2.19,
+    "fat": 3.61,
+    "fiber": 1.78,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-107",
+    "name": "Paneer pulao",
+    "calories": 581.91,
+    "carbs": 8.76,
+    "protein": 1.98,
+    "fat": 59.81,
+    "fiber": 0.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-108",
+    "name": "Peanut pulao ",
+    "calories": 193.28,
+    "carbs": 21.18,
+    "protein": 5.32,
+    "fat": 9.51,
+    "fiber": 2.9,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-109",
+    "name": "Navratan pulao",
+    "calories": 261.71,
+    "carbs": 36.98,
+    "protein": 6.2,
+    "fat": 9.45,
+    "fiber": 3.82,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-110",
+    "name": "Green chickpeas pulao (Choliya pulao/Hare chane ka pulao)",
+    "calories": 173.43,
+    "carbs": 27.57,
+    "protein": 4.88,
+    "fat": 4.82,
+    "fiber": 3.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-111",
+    "name": "Mutton biryani/biriyani",
+    "calories": 190.76,
+    "carbs": 22.5,
+    "protein": 7.38,
+    "fat": 7.72,
+    "fiber": 2.42,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-112",
+    "name": "Vegetable biryani/biriyani",
+    "calories": 174.61,
+    "carbs": 18.56,
+    "protein": 3.16,
+    "fat": 9.51,
+    "fiber": 3.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-113",
+    "name": "\"Lemon rice (Pulihora",
+    "calories": 0,
+    "carbs": 0,
+    "protein": 176.3,
+    "fat": 21.62,
+    "fiber": 7.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-114",
+    "name": "Sweet rice (Meethe chawal)",
+    "calories": 215.41,
+    "carbs": 42.59,
+    "protein": 2.1,
+    "fat": 4.57,
+    "fiber": 1.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-115",
+    "name": "Curd rice (Dahi bhaat/Dahi chawal/ Perugu annam/Daddojanam/Thayir saadam)",
+    "calories": 195.74,
+    "carbs": 32.93,
+    "protein": 5.75,
+    "fat": 4.32,
+    "fiber": 2.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-116",
+    "name": "Tamarind rice (Chintapandu pulihora/Puliyodharai/Puli sadam/Huli anna)",
+    "calories": 373.04,
+    "carbs": 65.08,
+    "protein": 7.45,
+    "fat": 8.53,
+    "fiber": 5.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-117",
+    "name": "Spanish rice",
+    "calories": 164.24,
+    "carbs": 31.1,
+    "protein": 4.19,
+    "fat": 2.23,
+    "fiber": 2.78,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-118",
+    "name": "Chinese fried rice",
+    "calories": 120.58,
+    "carbs": 13.4,
+    "protein": 4.05,
+    "fat": 5.43,
+    "fiber": 2.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-119",
+    "name": "Macroni cheese pie",
+    "calories": 170.63,
+    "carbs": 21.1,
+    "protein": 5.85,
+    "fat": 7.48,
+    "fiber": 0.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-120",
+    "name": "Vegetable chowmein",
+    "calories": 129.71,
+    "carbs": 15.44,
+    "protein": 3.07,
+    "fat": 6.36,
+    "fiber": 1.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-121",
+    "name": "Chicken chowmein",
+    "calories": 151.33,
+    "carbs": 13.3,
+    "protein": 6.33,
+    "fat": 8.23,
+    "fiber": 1.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-122",
+    "name": "Cheese noodle ring",
+    "calories": 133.67,
+    "carbs": 13.96,
+    "protein": 6.22,
+    "fat": 6.12,
+    "fiber": 1.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-123",
+    "name": "Spaghetti and cheese balls in tomato sauce",
+    "calories": 508.32,
+    "carbs": 7.82,
+    "protein": 2.41,
+    "fat": 52.08,
+    "fiber": 0.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-124",
+    "name": "Penne platter",
+    "calories": 177.4,
+    "carbs": 20.87,
+    "protein": 5.04,
+    "fat": 8.71,
+    "fiber": 1.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-125",
+    "name": "Pasta hot pot",
+    "calories": 125.17,
+    "carbs": 11.6,
+    "protein": 5.84,
+    "fat": 6.47,
+    "fiber": 0.8,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-126",
+    "name": "Chicken lasagne",
+    "calories": 187.49,
+    "carbs": 13.9,
+    "protein": 10.45,
+    "fat": 10.36,
+    "fiber": 0.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-127",
+    "name": "Fettuccine with spinach sauce",
+    "calories": 129.21,
+    "carbs": 12.19,
+    "protein": 3.1,
+    "fat": 7.83,
+    "fiber": 0.77,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-128",
+    "name": "Naan",
+    "calories": 286.45,
+    "carbs": 51.75,
+    "protein": 8.05,
+    "fat": 4.99,
+    "fiber": 1.91,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-129",
+    "name": "Bhatura",
+    "calories": 793.2,
+    "carbs": 10.73,
+    "protein": 1.63,
+    "fat": 82.56,
+    "fiber": 0.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-130",
+    "name": "Idli",
+    "calories": 137.54,
+    "carbs": 28.18,
+    "protein": 4.64,
+    "fat": 0.33,
+    "fiber": 2.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-131",
+    "name": "Masala dosa",
+    "calories": 164.58,
+    "carbs": 19.57,
+    "protein": 3.29,
+    "fat": 7.84,
+    "fiber": 2.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-132",
+    "name": "Semolina dosa (Suji/Rava dosa)",
+    "calories": 227.05,
+    "carbs": 32.84,
+    "protein": 7.3,
+    "fat": 7.12,
+    "fiber": 4.04,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-133",
+    "name": "Onion tomato uttapam",
+    "calories": 462.02,
+    "carbs": 11.32,
+    "protein": 1.91,
+    "fat": 45.3,
+    "fiber": 1.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-134",
+    "name": "Paneer kaathi roll",
+    "calories": 285.94,
+    "carbs": 20.1,
+    "protein": 6.92,
+    "fat": 19.55,
+    "fiber": 2.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-135",
+    "name": "Makki ki roti",
+    "calories": 263.97,
+    "carbs": 24.19,
+    "protein": 3.49,
+    "fat": 16.85,
+    "fiber": 5.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-136",
+    "name": "Washed moong dal (Dhuli moong ki dal)",
+    "calories": 50,
+    "carbs": 5.91,
+    "protein": 2.68,
+    "fat": 1.68,
+    "fiber": 1.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-137",
+    "name": "Washed urad dal (Dhuli urad ki dal)",
+    "calories": 61.32,
+    "carbs": 5.84,
+    "protein": 2.51,
+    "fat": 2.98,
+    "fiber": 1.53,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-138",
+    "name": "Split bengal gram with bottle gourd (Channa dal with ghiya/lauki)",
+    "calories": 73.25,
+    "carbs": 7.1,
+    "protein": 2.79,
+    "fat": 3.6,
+    "fiber": 2.72,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-139",
+    "name": "Dry washed urad",
+    "calories": 124.71,
+    "carbs": 15.66,
+    "protein": 6.85,
+    "fat": 3.5,
+    "fiber": 4.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-140",
+    "name": "Mixed dal",
+    "calories": 61.93,
+    "carbs": 5.79,
+    "protein": 2.51,
+    "fat": 3.1,
+    "fiber": 1.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-141",
+    "name": "Whole moong (Moong ki dal)",
+    "calories": 53.7,
+    "carbs": 5.22,
+    "protein": 2.25,
+    "fat": 2.56,
+    "fiber": 2.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-142",
+    "name": "Whole masoor (Masoor ki dal)",
+    "calories": 54.05,
+    "carbs": 5.37,
+    "protein": 2.28,
+    "fat": 2.52,
+    "fiber": 1.98,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-143",
+    "name": "Whole moth (Moth ki dal)",
+    "calories": 55,
+    "carbs": 5.74,
+    "protein": 2.01,
+    "fat": 2.62,
+    "fiber": 1.85,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-144",
+    "name": "Whole urad (Urad ki dal)",
+    "calories": 53.8,
+    "carbs": 5.05,
+    "protein": 2.21,
+    "fat": 2.62,
+    "fiber": 2.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-145",
+    "name": "Moti mahal dal (Urad rajmah mix dal)",
+    "calories": 103.13,
+    "carbs": 8.74,
+    "protein": 3.93,
+    "fat": 5.66,
+    "fiber": 3.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-146",
+    "name": "Black channa curry/Bengal gram curry (Kale chane ki curry)",
+    "calories": 140.68,
+    "carbs": 14.11,
+    "protein": 5.67,
+    "fat": 6.61,
+    "fiber": 7.99,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-147",
+    "name": "Chickpeas curry (Safed channa curry)",
+    "calories": 163.43,
+    "carbs": 19.98,
+    "protein": 6.1,
+    "fat": 6.84,
+    "fiber": 4.73,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-148",
+    "name": "Lobia curry",
+    "calories": 148.99,
+    "carbs": 17.88,
+    "protein": 6.06,
+    "fat": 5.62,
+    "fiber": 4.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-149",
+    "name": "Soyabean curry",
+    "calories": 163.28,
+    "carbs": 6.76,
+    "protein": 10.43,
+    "fat": 10.19,
+    "fiber": 7.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-150",
+    "name": "Kidney bean curry (Rajmah curry)",
+    "calories": 143.73,
+    "carbs": 16.38,
+    "protein": 5.95,
+    "fat": 5.77,
+    "fiber": 5.83,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-151",
+    "name": "Sambar",
+    "calories": 96.92,
+    "carbs": 10.57,
+    "protein": 3.35,
+    "fat": 4.38,
+    "fiber": 3.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-152",
+    "name": "Besan kadhi with pakodies",
+    "calories": 403.35,
+    "carbs": 3.56,
+    "protein": 1.64,
+    "fat": 42.59,
+    "fiber": 0.81,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-153",
+    "name": "Khatta channa",
+    "calories": 202.57,
+    "carbs": 21.14,
+    "protein": 6.3,
+    "fat": 10.56,
+    "fiber": 5.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-154",
+    "name": "Sprouted moong dal chat",
+    "calories": 32.47,
+    "carbs": 6.01,
+    "protein": 1.35,
+    "fat": 0.32,
+    "fiber": 1.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-155",
+    "name": "Potato cauliflower (Aloo gobhi)",
+    "calories": 106.18,
+    "carbs": 5.99,
+    "protein": 1.9,
+    "fat": 8.13,
+    "fiber": 3.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-156",
+    "name": "Potato capsicum (Shimla mirch aloo)",
+    "calories": 125.53,
+    "carbs": 8.72,
+    "protein": 1.41,
+    "fat": 9.33,
+    "fiber": 2.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-157",
+    "name": "Cabbage and peas (Pattagobhi aur matar)",
+    "calories": 63.88,
+    "carbs": 6.24,
+    "protein": 3.24,
+    "fat": 2.64,
+    "fiber": 3.99,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-158",
+    "name": "Carrot and fenugreek leaves (Gajar methi)",
+    "calories": 61.92,
+    "carbs": 4.17,
+    "protein": 2.1,
+    "fat": 3.81,
+    "fiber": 4.43,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-159",
+    "name": "Potato fenugreek (Aloo methi)",
+    "calories": 135.15,
+    "carbs": 8.47,
+    "protein": 2.25,
+    "fat": 10.04,
+    "fiber": 2.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-160",
+    "name": "Brinjal bhartha (Baingan ka bhartha)",
+    "calories": 65.12,
+    "carbs": 4.4,
+    "protein": 1.38,
+    "fat": 4.48,
+    "fiber": 3.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-161",
+    "name": "Dry potato (Sookhe aloo)",
+    "calories": 103.15,
+    "carbs": 14.38,
+    "protein": 1.62,
+    "fat": 4.18,
+    "fiber": 1.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-162",
+    "name": "Beans with coconut (Nariyal aur sem/phali; Beans thoran)",
+    "calories": 131.63,
+    "carbs": 4.39,
+    "protein": 2.62,
+    "fat": 11.39,
+    "fiber": 5.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-163",
+    "name": "Cauliflower with coconut (Nariyal ke saath phoolgobhi)",
+    "calories": 132.11,
+    "carbs": 3.99,
+    "protein": 2.64,
+    "fat": 11.56,
+    "fiber": 5.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-164",
+    "name": "Carrot and cabbage with coconut (Nariyal ke saath pattagobhi aur gajar)",
+    "calories": 106.61,
+    "carbs": 4.99,
+    "protein": 1.82,
+    "fat": 8.62,
+    "fiber": 4.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-165",
+    "name": "Raw turnip with coconut ",
+    "calories": 132.15,
+    "carbs": 5.78,
+    "protein": 1.8,
+    "fat": 11.47,
+    "fiber": 2.79,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-166",
+    "name": "Raw papaya with coconut (Papaya thoran)",
+    "calories": 132.75,
+    "carbs": 5.58,
+    "protein": 1.54,
+    "fat": 11.42,
+    "fiber": 4.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-167",
+    "name": "Stuffed okra (Bharwa bhindi)",
+    "calories": 94.34,
+    "carbs": 3.85,
+    "protein": 2.08,
+    "fat": 7.66,
+    "fiber": 4.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-168",
+    "name": "Stuffed round gourd (Bharwa tinde)",
+    "calories": 72.8,
+    "carbs": 4.02,
+    "protein": 1.1,
+    "fat": 5.75,
+    "fiber": 2.1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-169",
+    "name": "Stuffed capsicum (Bharwa shimla mirch)",
+    "calories": 90.94,
+    "carbs": 8.26,
+    "protein": 1.34,
+    "fat": 5.7,
+    "fiber": 2.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-170",
+    "name": "Stuffed brinjal (Bharwa baingan)",
+    "calories": 93,
+    "carbs": 3.96,
+    "protein": 1.53,
+    "fat": 7.73,
+    "fiber": 4.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-171",
+    "name": "Stuffed tomatoes (Bharwa tamatar)",
+    "calories": 93.35,
+    "carbs": 6.19,
+    "protein": 3.28,
+    "fat": 6.06,
+    "fiber": 2.2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-172",
+    "name": "Pea potato curry (Aloo matar)",
+    "calories": 100.92,
+    "carbs": 9.74,
+    "protein": 3.48,
+    "fat": 5.13,
+    "fiber": 3.61,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-173",
+    "name": "Pea paneer curry (Matar paneer)",
+    "calories": 134.83,
+    "carbs": 9.29,
+    "protein": 6.61,
+    "fat": 7.75,
+    "fiber": 3.3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-174",
+    "name": "Pea mushroom curry (Matar mushroom)",
+    "calories": 93.3,
+    "carbs": 7.41,
+    "protein": 3.87,
+    "fat": 5.16,
+    "fiber": 3.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-175",
+    "name": "Pea curry (Matar ki sabzi)",
+    "calories": 102.99,
+    "carbs": 9.2,
+    "protein": 4.51,
+    "fat": 5.11,
+    "fiber": 4.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-176",
+    "name": "Pea vadi curry",
+    "calories": 101.95,
+    "carbs": 8.9,
+    "protein": 4.64,
+    "fat": 5.08,
+    "fiber": 4.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-177",
+    "name": "Paneer curry",
+    "calories": 176.52,
+    "carbs": 8.4,
+    "protein": 7.8,
+    "fat": 12.38,
+    "fiber": 1.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-178",
+    "name": "Lotus stem curry (Kamal kakdi curry)",
+    "calories": 110.34,
+    "carbs": 9.24,
+    "protein": 1.53,
+    "fat": 7.25,
+    "fiber": 3.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-179",
+    "name": "Gravy for kofta",
+    "calories": 125.59,
+    "carbs": 6.31,
+    "protein": 1.75,
+    "fat": 10.35,
+    "fiber": 1.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-180",
+    "name": "Pea kofta curry (Matar kofta curry)",
+    "calories": 595.66,
+    "carbs": 4.17,
+    "protein": 2.01,
+    "fat": 63.39,
+    "fiber": 1.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-181",
+    "name": "Spinach kofta curry (Palak kofta curry)",
+    "calories": 571.78,
+    "carbs": 3.56,
+    "protein": 1.09,
+    "fat": 61.49,
+    "fiber": 0.92,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-182",
+    "name": "Paneer kofta curry",
+    "calories": 670.91,
+    "carbs": 3.27,
+    "protein": 2.39,
+    "fat": 72.06,
+    "fiber": 0.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-183",
+    "name": "Lotus stem kofta curry (Kamal kakdi kofta curry)",
+    "calories": 633.56,
+    "carbs": 5.01,
+    "protein": 0.96,
+    "fat": 67.76,
+    "fiber": 1.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-184",
+    "name": "Raw banana kofta curry (Kela kofta curry)",
+    "calories": 627.27,
+    "carbs": 3.4,
+    "protein": 0.62,
+    "fat": 67.98,
+    "fiber": 0.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-185",
+    "name": "Cauliflower kofta curry (Phoolgobhi kofta curry)",
+    "calories": 641.1,
+    "carbs": 2.62,
+    "protein": 1.04,
+    "fat": 69.62,
+    "fiber": 1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-186",
+    "name": "Cabbage kofta curry (Pattagobhi kofta curry)",
+    "calories": 639.81,
+    "carbs": 2.87,
+    "protein": 0.98,
+    "fat": 69.4,
+    "fiber": 0.9,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-187",
+    "name": "Ghiya/Lauki Kofta Curry",
+    "calories": 638.71,
+    "carbs": 2.71,
+    "protein": 0.89,
+    "fat": 69.4,
+    "fiber": 0.83,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-188",
+    "name": "Spinach paneer kofta curry (Palak paneer kofta curry)",
+    "calories": 606.03,
+    "carbs": 2.94,
+    "protein": 1.43,
+    "fat": 65.41,
+    "fiber": 0.75,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-189",
+    "name": "Vegetarian egg kofta curry",
+    "calories": 627.41,
+    "carbs": 4.26,
+    "protein": 1.33,
+    "fat": 67.24,
+    "fiber": 0.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-190",
+    "name": "Baked vegetables",
+    "calories": 88.99,
+    "carbs": 8.44,
+    "protein": 3.67,
+    "fat": 4.44,
+    "fiber": 2.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-191",
+    "name": "Cauliflower musallam (Phoolgobhi musallam)",
+    "calories": 58.83,
+    "carbs": 4.48,
+    "protein": 1.89,
+    "fat": 3.55,
+    "fiber": 3.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-192",
+    "name": "Baked vegetables with spinach ",
+    "calories": 77.79,
+    "carbs": 6.93,
+    "protein": 3.22,
+    "fat": 4.03,
+    "fiber": 2.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-193",
+    "name": "Baked potato with skin ",
+    "calories": 135.77,
+    "carbs": 11.11,
+    "protein": 3.43,
+    "fat": 8.5,
+    "fiber": 1.2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-194",
+    "name": "Shepherd's pie (vegetarian)",
+    "calories": 135.63,
+    "carbs": 12.03,
+    "protein": 5.04,
+    "fat": 7.3,
+    "fiber": 2.23,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-195",
+    "name": "Baked brinjal in tomato sauce",
+    "calories": 38.63,
+    "carbs": 4.13,
+    "protein": 1.58,
+    "fat": 1.62,
+    "fiber": 2.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-196",
+    "name": "Dum aloo",
+    "calories": 682.33,
+    "carbs": 3.33,
+    "protein": 0.7,
+    "fat": 74.01,
+    "fiber": 0.68,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-197",
+    "name": "Spinach paneer (Palak paneer)",
+    "calories": 77.68,
+    "carbs": 4.43,
+    "protein": 4.03,
+    "fat": 4.76,
+    "fiber": 1.91,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-198",
+    "name": "Methi chaman",
+    "calories": 475.62,
+    "carbs": 2.78,
+    "protein": 1.54,
+    "fat": 50.91,
+    "fiber": 0.53,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-199",
+    "name": "Sarson ka saag",
+    "calories": 87.84,
+    "carbs": 5.33,
+    "protein": 3,
+    "fat": 5.86,
+    "fiber": 3.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-200",
+    "name": "Jackfruit sabzi (Kathal ki sabzi)",
+    "calories": 625.4,
+    "carbs": 3.4,
+    "protein": 0.69,
+    "fat": 67.6,
+    "fiber": 1.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-201",
+    "name": "Avial",
+    "calories": 124.56,
+    "carbs": 8.47,
+    "protein": 2.46,
+    "fat": 8.94,
+    "fiber": 5.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-202",
+    "name": "Al yakhani",
+    "calories": 147.54,
+    "carbs": 4.65,
+    "protein": 2.86,
+    "fat": 13.14,
+    "fiber": 1.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-203",
+    "name": "Shahi paneer",
+    "calories": 156.5,
+    "carbs": 6.64,
+    "protein": 5.06,
+    "fat": 12.34,
+    "fiber": 1.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-204",
+    "name": "Paneer in butter sauce",
+    "calories": 145.61,
+    "carbs": 9.7,
+    "protein": 6.99,
+    "fat": 8.81,
+    "fiber": 1.5,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-205",
+    "name": "Methi malai paneer",
+    "calories": 194.98,
+    "carbs": 8.15,
+    "protein": 7.34,
+    "fat": 14.76,
+    "fiber": 1.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-206",
+    "name": "Chilli paneer",
+    "calories": 777.51,
+    "carbs": 3.31,
+    "protein": 2.1,
+    "fat": 84.01,
+    "fiber": 0.5,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-207",
+    "name": "Paneer makhana korma",
+    "calories": 775.82,
+    "carbs": 4.63,
+    "protein": 3.24,
+    "fat": 82.76,
+    "fiber": 0.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-208",
+    "name": "Kadhai Paneer",
+    "calories": 107.99,
+    "carbs": 7.34,
+    "protein": 4.33,
+    "fat": 6.81,
+    "fiber": 2.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-209",
+    "name": "Roghan josh",
+    "calories": 139.59,
+    "carbs": 4.93,
+    "protein": 9.56,
+    "fat": 9.02,
+    "fiber": 2.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-210",
+    "name": "Spinach mutton (Palak mutton)",
+    "calories": 80.32,
+    "carbs": 3.45,
+    "protein": 5.74,
+    "fat": 4.71,
+    "fiber": 2.23,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-211",
+    "name": "Pea keema curry (Matar keema ki sabzi)",
+    "calories": 133,
+    "carbs": 6.24,
+    "protein": 8.43,
+    "fat": 8.14,
+    "fiber": 2.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-212",
+    "name": "Keema kofta curry",
+    "calories": 154.45,
+    "carbs": 5.64,
+    "protein": 9.77,
+    "fat": 10.39,
+    "fiber": 1.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-213",
+    "name": "Kashmiri mutton koftas (Gushtaba)",
+    "calories": 97.42,
+    "carbs": 3.04,
+    "protein": 6.33,
+    "fat": 6.77,
+    "fiber": 0.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-214",
+    "name": "Mutton yakhni",
+    "calories": 104.13,
+    "carbs": 0.84,
+    "protein": 8.27,
+    "fat": 7.7,
+    "fiber": 0.67,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-215",
+    "name": "Chicken yakhni",
+    "calories": 99,
+    "carbs": 0.78,
+    "protein": 10.66,
+    "fat": 6.1,
+    "fiber": 0.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-216",
+    "name": "Mutton do piaza",
+    "calories": 183.3,
+    "carbs": 4.14,
+    "protein": 9.39,
+    "fat": 14.41,
+    "fiber": 1.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-217",
+    "name": "Mutton chops",
+    "calories": 663.64,
+    "carbs": 1.48,
+    "protein": 4.03,
+    "fat": 71.31,
+    "fiber": 0.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-218",
+    "name": "Shammi kebab",
+    "calories": 685.69,
+    "carbs": 3.54,
+    "protein": 4.52,
+    "fat": 72.61,
+    "fiber": 1.05,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-219",
+    "name": "Scotch egg",
+    "calories": 676.89,
+    "carbs": 1.91,
+    "protein": 4.05,
+    "fat": 72.62,
+    "fiber": 0.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-220",
+    "name": "Shepherd's pie (with minced meat)",
+    "calories": 142.78,
+    "carbs": 8.06,
+    "protein": 7.45,
+    "fat": 8.88,
+    "fiber": 1.05,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-221",
+    "name": "Chicken curry",
+    "calories": 129.22,
+    "carbs": 3.38,
+    "protein": 11.79,
+    "fat": 7.57,
+    "fiber": 1.41,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-222",
+    "name": "Tandoori chicken",
+    "calories": 145.2,
+    "carbs": 2.34,
+    "protein": 16.26,
+    "fat": 7.93,
+    "fiber": 0.5,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-223",
+    "name": "Butter chicken",
+    "calories": 137,
+    "carbs": 3.74,
+    "protein": 10.92,
+    "fat": 8.7,
+    "fiber": 1.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-224",
+    "name": "Chicken kebab",
+    "calories": 729.41,
+    "carbs": 1.11,
+    "protein": 3.71,
+    "fat": 78.89,
+    "fiber": 0.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-225",
+    "name": "Chilli chicken",
+    "calories": 198.83,
+    "carbs": 2.86,
+    "protein": 9.57,
+    "fat": 16.56,
+    "fiber": 0.99,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-226",
+    "name": "Fried chicken with tomato sauce (Fried chicken tamatar ki chutney kay saath)",
+    "calories": 125.03,
+    "carbs": 2.51,
+    "protein": 11.48,
+    "fat": 7.61,
+    "fiber": 1.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-227",
+    "name": "Fish curry (Machli curry)",
+    "calories": 111.13,
+    "carbs": 3.77,
+    "protein": 8.76,
+    "fat": 6.69,
+    "fiber": 1.89,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-228",
+    "name": "Fried fish (Indian style) (Tali hui machli)",
+    "calories": 658.54,
+    "carbs": 5.4,
+    "protein": 4.35,
+    "fat": 68.88,
+    "fiber": 0.61,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-229",
+    "name": "Fried fish and Chips (English Style) (Tali hui machli aur chips)",
+    "calories": 651.75,
+    "carbs": 2.77,
+    "protein": 3.36,
+    "fat": 69.69,
+    "fiber": 0.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-230",
+    "name": "Tomato fish",
+    "calories": 489.79,
+    "carbs": 3.18,
+    "protein": 2.39,
+    "fat": 51.91,
+    "fiber": 0.72,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-231",
+    "name": "Baked fish with cheese sauce",
+    "calories": 113.96,
+    "carbs": 4.06,
+    "protein": 8.64,
+    "fat": 7.02,
+    "fiber": 0.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-232",
+    "name": "Fish tikka",
+    "calories": 117.33,
+    "carbs": 3.91,
+    "protein": 16,
+    "fat": 4.15,
+    "fiber": 1.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-233",
+    "name": "Tandoori fish",
+    "calories": 95.98,
+    "carbs": 2.37,
+    "protein": 11.19,
+    "fat": 4.64,
+    "fiber": 0.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-234",
+    "name": "\"Paneer",
+    "calories": 0,
+    "carbs": 95.08,
+    "protein": 8.35,
+    "fat": 3.88,
+    "fiber": 6.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-235",
+    "name": "Russian salad",
+    "calories": 114.83,
+    "carbs": 6.5,
+    "protein": 4.26,
+    "fat": 7.84,
+    "fiber": 2.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-236",
+    "name": "Pasta salad",
+    "calories": 190.36,
+    "carbs": 12.7,
+    "protein": 4.15,
+    "fat": 13.92,
+    "fiber": 0.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-237",
+    "name": "Deviled egg",
+    "calories": 98.56,
+    "carbs": 2.23,
+    "protein": 4.97,
+    "fat": 7.72,
+    "fiber": 1.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-238",
+    "name": "Hawain salad",
+    "calories": 175.23,
+    "carbs": 14.35,
+    "protein": 4.27,
+    "fat": 11.37,
+    "fiber": 3.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-239",
+    "name": "Mixed pulse and vegetable salad",
+    "calories": 83.12,
+    "carbs": 13.96,
+    "protein": 4.74,
+    "fat": 0.84,
+    "fiber": 2.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-240",
+    "name": "Sprouted moong salad ",
+    "calories": 37.81,
+    "carbs": 5.48,
+    "protein": 2.29,
+    "fat": 0.74,
+    "fiber": 0.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-241",
+    "name": "Tossed salad",
+    "calories": 62.96,
+    "carbs": 4.95,
+    "protein": 1.02,
+    "fat": 4.22,
+    "fiber": 2.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-242",
+    "name": "Mixed vegetable salad with curd sauce",
+    "calories": 60.28,
+    "carbs": 7.03,
+    "protein": 4.23,
+    "fat": 1.5,
+    "fiber": 3.79,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-243",
+    "name": "Potato salad (Aloo ka salaad)",
+    "calories": 89.91,
+    "carbs": 11.19,
+    "protein": 1.4,
+    "fat": 4.4,
+    "fiber": 1.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-244",
+    "name": "Waldroff salad",
+    "calories": 141.75,
+    "carbs": 11.02,
+    "protein": 1.47,
+    "fat": 10.05,
+    "fiber": 1.87,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-245",
+    "name": "Coleslaw",
+    "calories": 76.71,
+    "carbs": 5.59,
+    "protein": 1.24,
+    "fat": 5.32,
+    "fiber": 2.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-246",
+    "name": "Fruit salad (Phalon ka salaad)",
+    "calories": 78.14,
+    "carbs": 15.96,
+    "protein": 0.91,
+    "fat": 1.22,
+    "fiber": 1.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-247",
+    "name": "Tomato onion raita (Tamatar aur pyaaz ka raita)",
+    "calories": 59,
+    "carbs": 7.08,
+    "protein": 3.74,
+    "fat": 1.84,
+    "fiber": 0.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-248",
+    "name": "Peanut raita (Mungfali ka raita)",
+    "calories": 150.39,
+    "carbs": 9.3,
+    "protein": 8.59,
+    "fat": 8.98,
+    "fiber": 1.89,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-249",
+    "name": "Sprouted moong raita ",
+    "calories": 60.89,
+    "carbs": 6.13,
+    "protein": 4.62,
+    "fat": 2.19,
+    "fiber": 0.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-250",
+    "name": "Bottle gourd raita (Ghiya/Lauki ka raita)",
+    "calories": 56.31,
+    "carbs": 5.76,
+    "protein": 3.98,
+    "fat": 2.07,
+    "fiber": 0.85,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-251",
+    "name": "Cucumber raita (Kheere ka raita)",
+    "calories": 59.13,
+    "carbs": 6.35,
+    "protein": 4.04,
+    "fat": 2.08,
+    "fiber": 0.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-252",
+    "name": "Carrot and spinach raita (Gajar aur palak ka raita)",
+    "calories": 56.83,
+    "carbs": 5.83,
+    "protein": 4,
+    "fat": 1.99,
+    "fiber": 1.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-253",
+    "name": "Mint raita (Pudinay ka raita)",
+    "calories": 77.59,
+    "carbs": 7.65,
+    "protein": 5.64,
+    "fat": 2.96,
+    "fiber": 0.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-254",
+    "name": "Potato raita (Aloo ka raita)",
+    "calories": 75.38,
+    "carbs": 10.24,
+    "protein": 4.22,
+    "fat": 2.04,
+    "fiber": 0.75,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-255",
+    "name": "Boondi raita",
+    "calories": 687.72,
+    "carbs": 3.96,
+    "protein": 2.19,
+    "fat": 73.83,
+    "fiber": 0.46,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-256",
+    "name": "Sweet raita (Meetha raita)",
+    "calories": 99.24,
+    "carbs": 17.93,
+    "protein": 3.24,
+    "fat": 1.78,
+    "fiber": 1.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-257",
+    "name": "Dahi vadas/Dahi bhalla",
+    "calories": 667.73,
+    "carbs": 5.49,
+    "protein": 2.96,
+    "fat": 70.4,
+    "fiber": 0.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-258",
+    "name": "Gunjia",
+    "calories": 667.34,
+    "carbs": 5.68,
+    "protein": 2.98,
+    "fat": 70.28,
+    "fiber": 1.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-259",
+    "name": "Saunth/Sonth chutney with tamarind/imli",
+    "calories": 141.53,
+    "carbs": 33.55,
+    "protein": 1.01,
+    "fat": 0.15,
+    "fiber": 0.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-260",
+    "name": "Rice kheer (Chawal ki kheer)",
+    "calories": 75.03,
+    "carbs": 10.05,
+    "protein": 2.3,
+    "fat": 2.97,
+    "fiber": 0.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-261",
+    "name": "Makhana kheer",
+    "calories": 107.85,
+    "carbs": 12.88,
+    "protein": 3.31,
+    "fat": 5,
+    "fiber": 0.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-262",
+    "name": "Vermicelli kheer (Semiya/Seviyan ki kheer)",
+    "calories": 120.07,
+    "carbs": 15.87,
+    "protein": 3.35,
+    "fat": 5,
+    "fiber": 0.5,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-263",
+    "name": "Semolina kheer (Suji/Rava kheer)",
+    "calories": 113.21,
+    "carbs": 15.88,
+    "protein": 3.43,
+    "fat": 4.2,
+    "fiber": 0.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-264",
+    "name": "Paneer kheer",
+    "calories": 105.31,
+    "carbs": 10.03,
+    "protein": 4.53,
+    "fat": 5.37,
+    "fiber": 0.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-265",
+    "name": "Cabbage kheer (Pattagobhi ki kheer)",
+    "calories": 83.51,
+    "carbs": 9.73,
+    "protein": 2.87,
+    "fat": 3.8,
+    "fiber": 0.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-266",
+    "name": "Carrot kheer (Gajar ki kheer)",
+    "calories": 85.35,
+    "carbs": 10.09,
+    "protein": 2.81,
+    "fat": 3.85,
+    "fiber": 0.73,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-267",
+    "name": "Cauliflower kheer (Phoolgobhi ki kheer)",
+    "calories": 81.95,
+    "carbs": 8.78,
+    "protein": 3.04,
+    "fat": 3.95,
+    "fiber": 0.55,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-268",
+    "name": "Moong dal kheer",
+    "calories": 77.16,
+    "carbs": 9.89,
+    "protein": 2.95,
+    "fat": 2.97,
+    "fiber": 0.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-269",
+    "name": "Phirni",
+    "calories": 116.12,
+    "carbs": 16.11,
+    "protein": 3.49,
+    "fat": 4.34,
+    "fiber": 0.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-270",
+    "name": "Semolina halwa (Suji ka halwa)",
+    "calories": 225.65,
+    "carbs": 24.67,
+    "protein": 2.16,
+    "fat": 13.38,
+    "fiber": 1.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-271",
+    "name": "Shahi suji halwa",
+    "calories": 382.34,
+    "carbs": 44.44,
+    "protein": 3.48,
+    "fat": 21.73,
+    "fiber": 2.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-272",
+    "name": "Carrot halwa (Gajar ka halwa)",
+    "calories": 172.64,
+    "carbs": 18.53,
+    "protein": 3.11,
+    "fat": 9.73,
+    "fiber": 2.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-273",
+    "name": "Egg halwa (Ande ka halwa)",
+    "calories": 299.74,
+    "carbs": 39.59,
+    "protein": 7.85,
+    "fat": 13.41,
+    "fiber": 0.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-274",
+    "name": "Potato halwa (Aloo ka halwa)",
+    "calories": 151.66,
+    "carbs": 29.18,
+    "protein": 1.53,
+    "fat": 3.48,
+    "fiber": 1.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-275",
+    "name": "Pumpkin halwa (Kaddu ka halwa)",
+    "calories": 190.27,
+    "carbs": 27.6,
+    "protein": 1.33,
+    "fat": 8.81,
+    "fiber": 2.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-276",
+    "name": "Moong dal halwa",
+    "calories": 349.8,
+    "carbs": 40.23,
+    "protein": 8.35,
+    "fat": 17.68,
+    "fiber": 2.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-277",
+    "name": "Caramel custard (steamed)",
+    "calories": 121.58,
+    "carbs": 15.02,
+    "protein": 4.97,
+    "fat": 4.87,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-278",
+    "name": "Baked custard",
+    "calories": 106.53,
+    "carbs": 9.45,
+    "protein": 5.41,
+    "fat": 5.3,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-279",
+    "name": "Soft Custard (stirred)",
+    "calories": 109.18,
+    "carbs": 11.19,
+    "protein": 5.01,
+    "fat": 5.07,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-280",
+    "name": "Chocolate ice cream",
+    "calories": 177.7,
+    "carbs": 15.41,
+    "protein": 4.47,
+    "fat": 11.25,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-281",
+    "name": "Mango ice cream",
+    "calories": 125.69,
+    "carbs": 11.14,
+    "protein": 3.4,
+    "fat": 7.62,
+    "fiber": 0.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-282",
+    "name": "Fruit Ice cream (Phalon ka Ice cream)",
+    "calories": 171.46,
+    "carbs": 16.05,
+    "protein": 4.37,
+    "fat": 10.38,
+    "fiber": 0.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-283",
+    "name": "Caramel ice cream",
+    "calories": 173.52,
+    "carbs": 14.81,
+    "protein": 4.31,
+    "fat": 11.15,
+    "fiber": 0.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-284",
+    "name": "Lemon souffle",
+    "calories": 168.51,
+    "carbs": 13.43,
+    "protein": 6.95,
+    "fat": 10.02,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-285",
+    "name": "Orange souffle",
+    "calories": 168.28,
+    "carbs": 14.2,
+    "protein": 6.8,
+    "fat": 9.73,
+    "fiber": 0.22,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-286",
+    "name": "Vanilla souffle",
+    "calories": 187.85,
+    "carbs": 14.78,
+    "protein": 7.71,
+    "fat": 11.19,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-287",
+    "name": "Chocolate souffle",
+    "calories": 189.32,
+    "carbs": 14.74,
+    "protein": 7.88,
+    "fat": 11.36,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-288",
+    "name": "Pineapple souffle ",
+    "calories": 196.14,
+    "carbs": 15.52,
+    "protein": 8.06,
+    "fat": 11.72,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-289",
+    "name": "Apple mousse",
+    "calories": 106.92,
+    "carbs": 12.77,
+    "protein": 4.21,
+    "fat": 4.27,
+    "fiber": 1.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-290",
+    "name": "Rich chocolate mousse",
+    "calories": 188.26,
+    "carbs": 10.84,
+    "protein": 7.96,
+    "fat": 12.19,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-291",
+    "name": "Mango mousse",
+    "calories": 124.98,
+    "carbs": 9.14,
+    "protein": 3.21,
+    "fat": 8.47,
+    "fiber": 0.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-292",
+    "name": "Orange and pineapple cream",
+    "calories": 101.18,
+    "carbs": 11.96,
+    "protein": 1.44,
+    "fat": 5.43,
+    "fiber": 1.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-293",
+    "name": "Charlotte rousse",
+    "calories": 188.29,
+    "carbs": 34.08,
+    "protein": 3.95,
+    "fat": 4.78,
+    "fiber": 1.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-294",
+    "name": "Triffle pudding",
+    "calories": 116.97,
+    "carbs": 18.24,
+    "protein": 2.93,
+    "fat": 3.93,
+    "fiber": 0.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-295",
+    "name": "Snow flakes pudding",
+    "calories": 95.21,
+    "carbs": 8.07,
+    "protein": 4.67,
+    "fat": 4.97,
+    "fiber": 0.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-296",
+    "name": "Kulfi",
+    "calories": 98.43,
+    "carbs": 11.3,
+    "protein": 3.21,
+    "fat": 4.7,
+    "fiber": 0.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-297",
+    "name": "Steamed orange pudding",
+    "calories": 278.03,
+    "carbs": 41.53,
+    "protein": 2.34,
+    "fat": 12.04,
+    "fiber": 0.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-298",
+    "name": "Meringue and rice pudding",
+    "calories": 112.93,
+    "carbs": 14.6,
+    "protein": 4.84,
+    "fat": 4.05,
+    "fiber": 0.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-299",
+    "name": "Cheese pudding",
+    "calories": 285.01,
+    "carbs": 19.27,
+    "protein": 11.29,
+    "fat": 18.37,
+    "fiber": 0.05,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-300",
+    "name": "Chocolate pudding",
+    "calories": 211.96,
+    "carbs": 29.59,
+    "protein": 3.55,
+    "fat": 9.48,
+    "fiber": 0.53,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-301",
+    "name": "Bread and butter pudding ",
+    "calories": 167.94,
+    "carbs": 19.63,
+    "protein": 5.59,
+    "fat": 7.88,
+    "fiber": 0.98,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-302",
+    "name": "Queen of pudding",
+    "calories": 132.92,
+    "carbs": 16.35,
+    "protein": 5.51,
+    "fat": 5.38,
+    "fiber": 0.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-303",
+    "name": "Pineapple upside down pudding",
+    "calories": 257.73,
+    "carbs": 35.73,
+    "protein": 3.15,
+    "fat": 11.91,
+    "fiber": 0.8,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-304",
+    "name": "Date and nut pie",
+    "calories": 322.42,
+    "carbs": 46.86,
+    "protein": 3.93,
+    "fat": 13.31,
+    "fiber": 4.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-305",
+    "name": "Stewed apple with custard",
+    "calories": 92.87,
+    "carbs": 18.36,
+    "protein": 1.27,
+    "fat": 1.82,
+    "fiber": 1.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-306",
+    "name": "Apple snowballs",
+    "calories": 101.51,
+    "carbs": 24.58,
+    "protein": 0.86,
+    "fat": 0.31,
+    "fiber": 1.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-307",
+    "name": "Hot orange souffle",
+    "calories": 179.97,
+    "carbs": 18.77,
+    "protein": 6.87,
+    "fat": 8.95,
+    "fiber": 0.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-308",
+    "name": "Hot chocolate souffle",
+    "calories": 226.09,
+    "carbs": 26.21,
+    "protein": 6.7,
+    "fat": 11.1,
+    "fiber": 0.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-309",
+    "name": "Hot vanilla souffle",
+    "calories": 192.93,
+    "carbs": 21.77,
+    "protein": 6.87,
+    "fat": 9.07,
+    "fiber": 0.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-310",
+    "name": "Plain burfi (Burfi)",
+    "calories": 408.32,
+    "carbs": 30.88,
+    "protein": 9.82,
+    "fat": 27.96,
+    "fiber": 0.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-311",
+    "name": "Coconut burfi (Nariyal ki burfi)",
+    "calories": 467.64,
+    "carbs": 32.15,
+    "protein": 8.81,
+    "fat": 34.63,
+    "fiber": 3.5,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-312",
+    "name": "Bottle gourd burfi (Ghiya/Lauki burfi)",
+    "calories": 275.96,
+    "carbs": 24.51,
+    "protein": 5.86,
+    "fat": 17.68,
+    "fiber": 0.73,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-313",
+    "name": "Chocolate burfi",
+    "calories": 339.33,
+    "carbs": 33.15,
+    "protein": 13,
+    "fat": 17.86,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-314",
+    "name": "Cashewnut burfi (Kaju burfi/Kaju katli)",
+    "calories": 421.74,
+    "carbs": 37.92,
+    "protein": 5.48,
+    "fat": 28.46,
+    "fiber": 1.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-315",
+    "name": "Gram flour burfi (Besan burfi)",
+    "calories": 421.79,
+    "carbs": 46.59,
+    "protein": 11.19,
+    "fat": 22.41,
+    "fiber": 3.41,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-316",
+    "name": "Semolina ladoo with khoya (Suji/Rava aur khoye ke ladoo )",
+    "calories": 428.71,
+    "carbs": 52.86,
+    "protein": 6.71,
+    "fat": 21.86,
+    "fiber": 4.68,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-317",
+    "name": "Semolina ladoo with coconut (Suji/Rava aur nariyal ke ladoo )",
+    "calories": 464.43,
+    "carbs": 50.9,
+    "protein": 5.68,
+    "fat": 27.03,
+    "fiber": 6.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-318",
+    "name": "Gram flour ladoo (Besan ladoo)",
+    "calories": 476.91,
+    "carbs": 62.61,
+    "protein": 8.93,
+    "fat": 22.76,
+    "fiber": 4.43,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-319",
+    "name": "Sesame ladoo (Til ke ladoo)",
+    "calories": 396.96,
+    "carbs": 43.5,
+    "protein": 10.7,
+    "fat": 19.64,
+    "fiber": 7.72,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-320",
+    "name": "Chenna murki",
+    "calories": 252.69,
+    "carbs": 36.01,
+    "protein": 10.46,
+    "fat": 8.2,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-321",
+    "name": "Milk cake",
+    "calories": 127.41,
+    "carbs": 9.13,
+    "protein": 3.01,
+    "fat": 8.93,
+    "fiber": 0.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-322",
+    "name": "Ghujia/Lavang latika",
+    "calories": 768.98,
+    "carbs": 13,
+    "protein": 1.86,
+    "fat": 78.93,
+    "fiber": 0.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-323",
+    "name": "Gulab Jamun with khoya",
+    "calories": 586.06,
+    "carbs": 26.09,
+    "protein": 2.03,
+    "fat": 53.23,
+    "fiber": 0.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-324",
+    "name": "Mal pua",
+    "calories": 566.68,
+    "carbs": 17.56,
+    "protein": 1.71,
+    "fat": 54.64,
+    "fiber": 0.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-325",
+    "name": "Shahi tukre",
+    "calories": 189.81,
+    "carbs": 41.46,
+    "protein": 2.76,
+    "fat": 2.54,
+    "fiber": 0.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-326",
+    "name": "Potato pakora/pakoda (Aloo pakoda)",
+    "calories": 677.19,
+    "carbs": 6.04,
+    "protein": 1.9,
+    "fat": 71.84,
+    "fiber": 1.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-327",
+    "name": "Onion pakora/pakoda (Pyaaz ke pakode)",
+    "calories": 674.61,
+    "carbs": 5.41,
+    "protein": 1.9,
+    "fat": 71.84,
+    "fiber": 1.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-328",
+    "name": "Cauliflower pakora/pakoda (Phoolgobhi ke pakode)",
+    "calories": 671.63,
+    "carbs": 4.52,
+    "protein": 1.98,
+    "fat": 71.86,
+    "fiber": 1.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-329",
+    "name": "Mixed vegetable pakora/pakoda",
+    "calories": 673.81,
+    "carbs": 5.12,
+    "protein": 1.94,
+    "fat": 71.86,
+    "fiber": 1.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-330",
+    "name": "Spinach pakora/pakoda (Palak pakoda)",
+    "calories": 712.62,
+    "carbs": 4.68,
+    "protein": 1.96,
+    "fat": 76.38,
+    "fiber": 1.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-331",
+    "name": "Methi pakora/pakoda (Methi ke pakode)",
+    "calories": 713.25,
+    "carbs": 4.68,
+    "protein": 2.06,
+    "fat": 76.39,
+    "fiber": 1.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-332",
+    "name": "Egg pakora/pakoda (Ande ke pakode)",
+    "calories": 710.51,
+    "carbs": 4.48,
+    "protein": 2.83,
+    "fat": 75.86,
+    "fiber": 0.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-333",
+    "name": "Bread pakora/pakoda",
+    "calories": 710.99,
+    "carbs": 8.87,
+    "protein": 2.57,
+    "fat": 74.2,
+    "fiber": 1.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-334",
+    "name": "Paneer pakora/pakoda",
+    "calories": 718.12,
+    "carbs": 5.52,
+    "protein": 3.27,
+    "fat": 76.05,
+    "fiber": 0.89,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-335",
+    "name": "Potato bonda (Aloo bonda)",
+    "calories": 632.84,
+    "carbs": 4.53,
+    "protein": 1.09,
+    "fat": 67.8,
+    "fiber": 0.83,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-336",
+    "name": "Potato samosa (Aloo ka samosa)",
+    "calories": 577.39,
+    "carbs": 9.21,
+    "protein": 1.71,
+    "fat": 59.19,
+    "fiber": 1.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-337",
+    "name": "Minced meat samosa (Keema ka samosa)",
+    "calories": 620.99,
+    "carbs": 6.14,
+    "protein": 4.43,
+    "fat": 64.26,
+    "fiber": 0.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-338",
+    "name": "Paneer and pea samosa (Paneer matar ka samosa)",
+    "calories": 623.81,
+    "carbs": 8.55,
+    "protein": 4.02,
+    "fat": 63.65,
+    "fiber": 1.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-339",
+    "name": "Mathri",
+    "calories": 805.12,
+    "carbs": 12.32,
+    "protein": 1.75,
+    "fat": 83.1,
+    "fiber": 0.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-340",
+    "name": "Khasta kachori",
+    "calories": 712.73,
+    "carbs": 12.81,
+    "protein": 2.51,
+    "fat": 72.27,
+    "fiber": 0.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-341",
+    "name": "Vegetable cutlet",
+    "calories": 665.45,
+    "carbs": 4.68,
+    "protein": 1.25,
+    "fat": 71.33,
+    "fiber": 0.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-342",
+    "name": "Flattened rice cutlet (Chirwa cutlet/Chivda cutlet/Poha cutlet)",
+    "calories": 701.71,
+    "carbs": 7.39,
+    "protein": 1.76,
+    "fat": 73.89,
+    "fiber": 0.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-343",
+    "name": "Peanut cutlet (Mungfali ke cutlet)",
+    "calories": 698.77,
+    "carbs": 5.68,
+    "protein": 2.63,
+    "fat": 74,
+    "fiber": 1.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-344",
+    "name": "Fish cutlet (Machli ka cutlet)",
+    "calories": 654.64,
+    "carbs": 3.13,
+    "protein": 2.77,
+    "fat": 70.11,
+    "fiber": 0.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-345",
+    "name": "Paneer potato cutlet (Paneer aloo cutlet)",
+    "calories": 672.94,
+    "carbs": 5.23,
+    "protein": 2.47,
+    "fat": 71.4,
+    "fiber": 0.41,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-346",
+    "name": "Spinach chickpeas cutlet (Palak channa dal cutlet)",
+    "calories": 688.03,
+    "carbs": 4.93,
+    "protein": 1.44,
+    "fat": 73.6,
+    "fiber": 0.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-347",
+    "name": "Cheese toast",
+    "calories": 785.37,
+    "carbs": 5.49,
+    "protein": 1.98,
+    "fat": 84.11,
+    "fiber": 0.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-348",
+    "name": "Vegetable burger",
+    "calories": 519.93,
+    "carbs": 13.69,
+    "protein": 3.26,
+    "fat": 50.63,
+    "fiber": 1.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-349",
+    "name": "Cheese pizza",
+    "calories": 249.5,
+    "carbs": 30.62,
+    "protein": 5.79,
+    "fat": 12.43,
+    "fiber": 1.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-350",
+    "name": "Vegetable seekh kebab",
+    "calories": 690.73,
+    "carbs": 5.32,
+    "protein": 1.57,
+    "fat": 73.72,
+    "fiber": 0.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-351",
+    "name": "Masala vada",
+    "calories": 826.02,
+    "carbs": 4.06,
+    "protein": 1.69,
+    "fat": 89.15,
+    "fiber": 1.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-352",
+    "name": "Peanut sago vada (Sabudana mungfali vada)",
+    "calories": 749.89,
+    "carbs": 7.14,
+    "protein": 1.01,
+    "fat": 79.82,
+    "fiber": 0.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-353",
+    "name": "Vegeterian scotch egg",
+    "calories": 681.67,
+    "carbs": 4.64,
+    "protein": 2.16,
+    "fat": 72.77,
+    "fiber": 0.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-354",
+    "name": "Paneer shaslik/tikka",
+    "calories": 93.85,
+    "carbs": 7.98,
+    "protein": 5.11,
+    "fat": 4.49,
+    "fiber": 1.23,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-355",
+    "name": "Peanut brittle (Moongfali ki chikki)",
+    "calories": 320.46,
+    "carbs": 47.46,
+    "protein": 6.94,
+    "fat": 11.13,
+    "fiber": 2.63,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-356",
+    "name": "Spring roll",
+    "calories": 623.87,
+    "carbs": 8.56,
+    "protein": 1.81,
+    "fat": 64.63,
+    "fiber": 0.67,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-357",
+    "name": "Dry mango chutney (Sookhe aam ki chutney)",
+    "calories": 298.13,
+    "carbs": 69.17,
+    "protein": 2.43,
+    "fat": 0.7,
+    "fiber": 3.74,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-358",
+    "name": "Peanut chutney (Mungfali ki chutney)",
+    "calories": 258.37,
+    "carbs": 9.87,
+    "protein": 11.8,
+    "fat": 19.06,
+    "fiber": 5.73,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-359",
+    "name": "Coconut chutney (Nariyal ki chutney)",
+    "calories": 265.92,
+    "carbs": 8.29,
+    "protein": 3.59,
+    "fat": 25,
+    "fiber": 6.73,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-360",
+    "name": "Mint and coriander chutney (Pudinay aur dhaniye ki chutney)",
+    "calories": 102.6,
+    "carbs": 21.18,
+    "protein": 2.81,
+    "fat": 0.51,
+    "fiber": 4.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-361",
+    "name": "Custard tart",
+    "calories": 225.6,
+    "carbs": 28.66,
+    "protein": 3.72,
+    "fat": 10.73,
+    "fiber": 0.91,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-362",
+    "name": "Lemon tart",
+    "calories": 303.35,
+    "carbs": 30.68,
+    "protein": 6.12,
+    "fat": 17.45,
+    "fiber": 0.81,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-363",
+    "name": "Jam tart",
+    "calories": 360.72,
+    "carbs": 46.18,
+    "protein": 4.42,
+    "fat": 17.35,
+    "fiber": 1.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-364",
+    "name": "Orange cream tart",
+    "calories": 197.16,
+    "carbs": 27.43,
+    "protein": 2.58,
+    "fat": 8.72,
+    "fiber": 0.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-365",
+    "name": "Pineapple tart",
+    "calories": 195.4,
+    "carbs": 28.62,
+    "protein": 2.29,
+    "fat": 8.21,
+    "fiber": 0.87,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-366",
+    "name": "Cheese and mushroom tart",
+    "calories": 246.1,
+    "carbs": 21.43,
+    "protein": 5.51,
+    "fat": 15.28,
+    "fiber": 1.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-367",
+    "name": "Cottage cheese pie",
+    "calories": 238.98,
+    "carbs": 20.66,
+    "protein": 7.45,
+    "fat": 13.83,
+    "fiber": 2.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-368",
+    "name": "Minced meat pie",
+    "calories": 221.55,
+    "carbs": 18.11,
+    "protein": 7.38,
+    "fat": 13.04,
+    "fiber": 2.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-369",
+    "name": "Apple cinnamon pie",
+    "calories": 258.73,
+    "carbs": 33.68,
+    "protein": 3.35,
+    "fat": 12.21,
+    "fiber": 1.77,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-370",
+    "name": "Lemon meringue pie",
+    "calories": 224.43,
+    "carbs": 35.11,
+    "protein": 3.88,
+    "fat": 8.16,
+    "fiber": 0.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-371",
+    "name": "Chocolate meringue pie",
+    "calories": 214.76,
+    "carbs": 28.8,
+    "protein": 4.98,
+    "fat": 9.17,
+    "fiber": 0.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-372",
+    "name": "Cream puffs",
+    "calories": 221.33,
+    "carbs": 16,
+    "protein": 4.7,
+    "fat": 15.48,
+    "fiber": 0.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-373",
+    "name": "Chocolate eclairs",
+    "calories": 239.42,
+    "carbs": 26.22,
+    "protein": 4.24,
+    "fat": 13.5,
+    "fiber": 0.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-374",
+    "name": "Cheese balls",
+    "calories": 681.28,
+    "carbs": 4.81,
+    "protein": 2.21,
+    "fat": 72.57,
+    "fiber": 0.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-375",
+    "name": "Minced meat patties",
+    "calories": 265.72,
+    "carbs": 15.25,
+    "protein": 6.88,
+    "fat": 19.57,
+    "fiber": 0.77,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-376",
+    "name": "Cheese patties",
+    "calories": 324.01,
+    "carbs": 22.23,
+    "protein": 7.38,
+    "fat": 22.67,
+    "fiber": 1.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-377",
+    "name": "Hot cheese souffle",
+    "calories": 177.1,
+    "carbs": 5.41,
+    "protein": 9.18,
+    "fat": 13.23,
+    "fiber": 0.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-378",
+    "name": "Hot potato souffle",
+    "calories": 125.64,
+    "carbs": 8.56,
+    "protein": 5.51,
+    "fat": 7.64,
+    "fiber": 0.66,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-379",
+    "name": "Hot fish souffle",
+    "calories": 142.92,
+    "carbs": 3.69,
+    "protein": 11.23,
+    "fat": 9.24,
+    "fiber": 0.1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-380",
+    "name": "Hot spinach souffle",
+    "calories": 104.25,
+    "carbs": 4.19,
+    "protein": 5.43,
+    "fat": 7.24,
+    "fiber": 0.99,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-381",
+    "name": "Plain cream cake",
+    "calories": 353.94,
+    "carbs": 47.18,
+    "protein": 6.18,
+    "fat": 16.17,
+    "fiber": 0.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-382",
+    "name": "Apple cake (Seb ka cake)",
+    "calories": 290.08,
+    "carbs": 39.48,
+    "protein": 4.94,
+    "fat": 12.87,
+    "fiber": 1.22,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-383",
+    "name": "Marble cake",
+    "calories": 354.11,
+    "carbs": 46.88,
+    "protein": 6.3,
+    "fat": 16.27,
+    "fiber": 0.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-384",
+    "name": "Chocolate cake",
+    "calories": 335.61,
+    "carbs": 45.14,
+    "protein": 6.01,
+    "fat": 15.18,
+    "fiber": 0.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-385",
+    "name": "Orange cake",
+    "calories": 357.61,
+    "carbs": 48.28,
+    "protein": 6.1,
+    "fat": 16.21,
+    "fiber": 0.83,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-386",
+    "name": "Fruit Loaf ",
+    "calories": 324.19,
+    "carbs": 46.49,
+    "protein": 5.36,
+    "fat": 13.31,
+    "fiber": 0.87,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-387",
+    "name": "Banana cake (Kele ka cake)",
+    "calories": 389.51,
+    "carbs": 40,
+    "protein": 5.77,
+    "fat": 23.31,
+    "fiber": 1.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-388",
+    "name": "Chocolate chiffon cake",
+    "calories": 311.71,
+    "carbs": 37.87,
+    "protein": 5.76,
+    "fat": 15.8,
+    "fiber": 0.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-389",
+    "name": "Christmas cake",
+    "calories": 372.95,
+    "carbs": 48.29,
+    "protein": 5.49,
+    "fat": 16.88,
+    "fiber": 1.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-390",
+    "name": "Strawberry and vanilla cake with butter icing",
+    "calories": 370.54,
+    "carbs": 44.25,
+    "protein": 3.89,
+    "fat": 20.39,
+    "fiber": 0.79,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-391",
+    "name": "Eggless cake",
+    "calories": 318.08,
+    "carbs": 46.14,
+    "protein": 8.12,
+    "fat": 11.75,
+    "fiber": 0.68,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-392",
+    "name": "Swiss roll",
+    "calories": 251.87,
+    "carbs": 48.34,
+    "protein": 7.3,
+    "fat": 3.77,
+    "fiber": 0.55,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-393",
+    "name": "Pineapple pastry ",
+    "calories": 208.21,
+    "carbs": 29.04,
+    "protein": 6.06,
+    "fat": 7.87,
+    "fiber": 0.72,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-394",
+    "name": "Black forest pastry",
+    "calories": 233.55,
+    "carbs": 34.48,
+    "protein": 6.09,
+    "fat": 8.46,
+    "fiber": 0.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-395",
+    "name": "Coconut finger",
+    "calories": 274.86,
+    "carbs": 42.56,
+    "protein": 7.09,
+    "fat": 8.86,
+    "fiber": 1.87,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-396",
+    "name": "Pineapple cake ",
+    "calories": 195.57,
+    "carbs": 23.51,
+    "protein": 5.01,
+    "fat": 9.34,
+    "fiber": 0.76,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-397",
+    "name": "Chocolate walnut cookies (Chocolate aur akhrot ke cookies)",
+    "calories": 424.8,
+    "carbs": 47.1,
+    "protein": 6.56,
+    "fat": 23.62,
+    "fiber": 1.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-398",
+    "name": "Chocolate chip cookies",
+    "calories": 425.29,
+    "carbs": 57.98,
+    "protein": 5.79,
+    "fat": 19.38,
+    "fiber": 1.05,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-399",
+    "name": "Sweet plain biscuit",
+    "calories": 380.76,
+    "carbs": 50.29,
+    "protein": 5.86,
+    "fat": 17.67,
+    "fiber": 1.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-400",
+    "name": "Chocolate biscuit",
+    "calories": 379.76,
+    "carbs": 51.56,
+    "protein": 5.88,
+    "fat": 17.09,
+    "fiber": 1.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-401",
+    "name": "Coconut biscuit (Nariyal ke biscuit)",
+    "calories": 434.98,
+    "carbs": 42.9,
+    "protein": 5.78,
+    "fat": 27.16,
+    "fiber": 3.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-402",
+    "name": "Sweet and salty biscuit (Meethay aur namkeen biscuit)",
+    "calories": 407.96,
+    "carbs": 45.09,
+    "protein": 6.15,
+    "fat": 22.39,
+    "fiber": 1.68,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-403",
+    "name": "Peanut biscuit",
+    "calories": 401.05,
+    "carbs": 46.72,
+    "protein": 8.45,
+    "fat": 20.41,
+    "fiber": 2.48,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-404",
+    "name": "Pin wheel biscuit",
+    "calories": 404.6,
+    "carbs": 54.56,
+    "protein": 5.4,
+    "fat": 18.66,
+    "fiber": 1.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-405",
+    "name": "Saffron biscuit (Kesar biscuit)",
+    "calories": 458.61,
+    "carbs": 59.7,
+    "protein": 6.05,
+    "fat": 22.01,
+    "fiber": 1.9,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-406",
+    "name": "Masala biscuit",
+    "calories": 393.64,
+    "carbs": 45.18,
+    "protein": 6.06,
+    "fat": 20.75,
+    "fiber": 2.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-407",
+    "name": "Ice box cookies",
+    "calories": 374.24,
+    "carbs": 56.09,
+    "protein": 5.7,
+    "fat": 14.44,
+    "fiber": 1.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-408",
+    "name": "Ginger bread man",
+    "calories": 365,
+    "carbs": 60.26,
+    "protein": 6.61,
+    "fat": 11.01,
+    "fiber": 1.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-409",
+    "name": "Danish cookies",
+    "calories": 475.33,
+    "carbs": 58,
+    "protein": 5.33,
+    "fat": 24.92,
+    "fiber": 1.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-410",
+    "name": "Short bread cookies",
+    "calories": 443.09,
+    "carbs": 64.82,
+    "protein": 6.03,
+    "fat": 17.98,
+    "fiber": 1.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-411",
+    "name": "Coffee biscuit",
+    "calories": 416.57,
+    "carbs": 46.55,
+    "protein": 6.9,
+    "fat": 23,
+    "fiber": 1.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-412",
+    "name": "Melting moments",
+    "calories": 437.91,
+    "carbs": 55.84,
+    "protein": 5.71,
+    "fat": 21.78,
+    "fiber": 1.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-413",
+    "name": "Ginger biscuit (Adarak ke biscuit)",
+    "calories": 417.91,
+    "carbs": 58.44,
+    "protein": 5.98,
+    "fat": 18.31,
+    "fiber": 1.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-414",
+    "name": "Soyabean muthias",
+    "calories": 839.33,
+    "carbs": 3.7,
+    "protein": 2.46,
+    "fat": 90.45,
+    "fiber": 1.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-415",
+    "name": "Soyabean tikki",
+    "calories": 698.17,
+    "carbs": 4.39,
+    "protein": 3.53,
+    "fat": 74.02,
+    "fiber": 2.2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-416",
+    "name": "Soyabean namak paras",
+    "calories": 838.46,
+    "carbs": 4.65,
+    "protein": 2.65,
+    "fat": 89.83,
+    "fiber": 1.41,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-417",
+    "name": "Peanut burfi (Moongfali ki burfi)",
+    "calories": 550.99,
+    "carbs": 48.14,
+    "protein": 9.31,
+    "fat": 36.84,
+    "fiber": 4.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-418",
+    "name": "Spinach peanut namak paras (Palak moongfali namak paras)",
+    "calories": 740.16,
+    "carbs": 6.62,
+    "protein": 1.65,
+    "fat": 78.51,
+    "fiber": 0.81,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-419",
+    "name": "Gram flour and semolina chilla/cheela/savory pancake (Besan suji chilla/cheela)",
+    "calories": 758.89,
+    "carbs": 7.63,
+    "protein": 2.08,
+    "fat": 80.04,
+    "fiber": 1.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-420",
+    "name": "Rice moong dal cheela (Chawal aur moong dal ka cheela)",
+    "calories": 798.26,
+    "carbs": 11.13,
+    "protein": 2.74,
+    "fat": 82.44,
+    "fiber": 1.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-421",
+    "name": "Split bengal gram sweet rice (Channa dal sweet rice)",
+    "calories": 190.21,
+    "carbs": 41.07,
+    "protein": 4.15,
+    "fat": 0.64,
+    "fiber": 2.23,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-422",
+    "name": "Sweet poori (Meethi poori)",
+    "calories": 782.75,
+    "carbs": 14.26,
+    "protein": 2.12,
+    "fat": 79.63,
+    "fiber": 1.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-423",
+    "name": "Wheat flour and moong dal burfi (Atta aur moong dal ki burfi)",
+    "calories": 441.08,
+    "carbs": 60,
+    "protein": 9.84,
+    "fat": 18.41,
+    "fiber": 6.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-424",
+    "name": "Spinach burfi (Palak burfi)",
+    "calories": 121.17,
+    "carbs": 12.76,
+    "protein": 2.71,
+    "fat": 6.81,
+    "fiber": 1.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-425",
+    "name": "Sweet split chickpea roti (Sweet channa dal roti/Puranpoli)",
+    "calories": 366.59,
+    "carbs": 62.66,
+    "protein": 9.51,
+    "fat": 7.93,
+    "fiber": 8.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-426",
+    "name": "Sprouted moong daliya ",
+    "calories": 111.56,
+    "carbs": 14.77,
+    "protein": 2.81,
+    "fat": 4.71,
+    "fiber": 3.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-427",
+    "name": "Sprouted moong poha ",
+    "calories": 192.6,
+    "carbs": 26.6,
+    "protein": 5.59,
+    "fat": 6.89,
+    "fiber": 3.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-428",
+    "name": "Pearl millet ladoo (Bajra ladoo)",
+    "calories": 319.66,
+    "carbs": 50.98,
+    "protein": 9.61,
+    "fat": 8.06,
+    "fiber": 6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-429",
+    "name": "Paushtik ladoo",
+    "calories": 485.87,
+    "carbs": 60.34,
+    "protein": 7.65,
+    "fat": 24.98,
+    "fiber": 4.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-430",
+    "name": "Paushtik roti",
+    "calories": 149.26,
+    "carbs": 26.59,
+    "protein": 7.17,
+    "fat": 1.51,
+    "fiber": 5.74,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-431",
+    "name": "Semolina carrot vada (Suji gajar vada)",
+    "calories": 699.53,
+    "carbs": 6.52,
+    "protein": 1.56,
+    "fat": 74.07,
+    "fiber": 1.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-432",
+    "name": "Dhokla",
+    "calories": 216.49,
+    "carbs": 30.68,
+    "protein": 13.45,
+    "fat": 5.28,
+    "fiber": 4.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-433",
+    "name": "Kashmiri tea (Kehwa)",
+    "calories": 24.9,
+    "carbs": 5.23,
+    "protein": 0.17,
+    "fat": 0.51,
+    "fiber": 0.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-434",
+    "name": "Steeped hot coffee",
+    "calories": 15.91,
+    "carbs": 3.01,
+    "protein": 0.39,
+    "fat": 0.33,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-435",
+    "name": "Hot chocolate",
+    "calories": 90.01,
+    "carbs": 9.02,
+    "protein": 3.43,
+    "fat": 4.61,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-436",
+    "name": "Cold coffee (with cream)",
+    "calories": 82.76,
+    "carbs": 11.98,
+    "protein": 1.93,
+    "fat": 3.29,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-437",
+    "name": "Banana milkshake with ice cream (Kele ka milkshake ice cream ke saath)",
+    "calories": 76.45,
+    "carbs": 11.15,
+    "protein": 2.01,
+    "fat": 2.77,
+    "fiber": 0.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-438",
+    "name": "Flavoured milkshake",
+    "calories": 66.78,
+    "carbs": 8.65,
+    "protein": 2.06,
+    "fat": 2.83,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-439",
+    "name": "Jal jeera",
+    "calories": 30.24,
+    "carbs": 6.7,
+    "protein": 0.44,
+    "fat": 0.26,
+    "fiber": 0.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-440",
+    "name": "Gingo",
+    "calories": 48.02,
+    "carbs": 12.42,
+    "protein": 0.14,
+    "fat": 0.06,
+    "fiber": 0.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-441",
+    "name": "Mintade",
+    "calories": 40.32,
+    "carbs": 10.59,
+    "protein": 0.03,
+    "fat": 0.02,
+    "fiber": 0.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-442",
+    "name": "Canjee",
+    "calories": 6.61,
+    "carbs": 0.44,
+    "protein": 0.24,
+    "fat": 0.42,
+    "fiber": 0.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-443",
+    "name": "Cauliflower canjee (Phoolgobhi ki canjee)",
+    "calories": 6.9,
+    "carbs": 0.35,
+    "protein": 0.39,
+    "fat": 0.42,
+    "fiber": 0.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-444",
+    "name": "Potato canjee (Aloo canjee)",
+    "calories": 16.26,
+    "carbs": 2.69,
+    "protein": 0.44,
+    "fat": 0.39,
+    "fiber": 0.43,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-445",
+    "name": "Vermicelli porridge (Semiya/Seviyan porridge)",
+    "calories": 78.4,
+    "carbs": 10.56,
+    "protein": 2.5,
+    "fat": 2.98,
+    "fiber": 0.48,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-446",
+    "name": "Semolina upma (Suji/Rava upma)",
+    "calories": 147.89,
+    "carbs": 16.31,
+    "protein": 3.3,
+    "fat": 7.49,
+    "fiber": 3.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-447",
+    "name": "Vermicelli upma (Semiya/Seviyan upma)",
+    "calories": 149.11,
+    "carbs": 16.88,
+    "protein": 3.11,
+    "fat": 7.45,
+    "fiber": 3.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-448",
+    "name": "Rice upma",
+    "calories": 151.27,
+    "carbs": 17.96,
+    "protein": 2.63,
+    "fat": 7.46,
+    "fiber": 2.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-449",
+    "name": "Bread upma",
+    "calories": 129.51,
+    "carbs": 12.6,
+    "protein": 2.8,
+    "fat": 7.75,
+    "fiber": 1.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-450",
+    "name": "Vegetable upma",
+    "calories": 146.47,
+    "carbs": 16.46,
+    "protein": 4.73,
+    "fat": 6.63,
+    "fiber": 4.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-451",
+    "name": "Poha",
+    "calories": 294.53,
+    "carbs": 35.05,
+    "protein": 6.09,
+    "fat": 14.14,
+    "fiber": 3.72,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-452",
+    "name": "Vegetable poha",
+    "calories": 180.52,
+    "carbs": 21.52,
+    "protein": 4.89,
+    "fat": 8.07,
+    "fiber": 3.76,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-453",
+    "name": "Moong dal stuffed cheela/chilla (Moong dal ka cheela/chilla)",
+    "calories": 154.89,
+    "carbs": 19.42,
+    "protein": 6.97,
+    "fat": 5.11,
+    "fiber": 4.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-454",
+    "name": "Paneer stuffed cheela/chilla",
+    "calories": 205.19,
+    "carbs": 19.16,
+    "protein": 11.44,
+    "fat": 8.89,
+    "fiber": 4.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-455",
+    "name": "Indian style egg bhujia (Anda bhujia (Indian style))",
+    "calories": 102.83,
+    "carbs": 3.76,
+    "protein": 6.1,
+    "fat": 7.02,
+    "fiber": 1.53,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-456",
+    "name": "French omelette/omlet",
+    "calories": 211.04,
+    "carbs": 0.41,
+    "protein": 10.03,
+    "fat": 18.86,
+    "fiber": 0.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-457",
+    "name": "Puffy omelette/omlet",
+    "calories": 188.15,
+    "carbs": 0.08,
+    "protein": 8.82,
+    "fat": 16.84,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-458",
+    "name": "Orange omelette/omlet",
+    "calories": 194.66,
+    "carbs": 1.68,
+    "protein": 8.93,
+    "fat": 16.84,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-459",
+    "name": "Cheese and mushroom omelette/omlet",
+    "calories": 205.63,
+    "carbs": 1.68,
+    "protein": 9.69,
+    "fat": 17.82,
+    "fiber": 0.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-460",
+    "name": "Spanish omelette/omlet",
+    "calories": 157.45,
+    "carbs": 5.1,
+    "protein": 8.25,
+    "fat": 11.44,
+    "fiber": 2.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-461",
+    "name": "Mixed stock",
+    "calories": 25.19,
+    "carbs": 0.33,
+    "protein": 2.06,
+    "fat": 1.71,
+    "fiber": 0.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-462",
+    "name": "Meat stock",
+    "calories": 24.48,
+    "carbs": 0,
+    "protein": 2.1,
+    "fat": 1.78,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-463",
+    "name": "White stock",
+    "calories": 6.99,
+    "carbs": 0.4,
+    "protein": 0.07,
+    "fat": 0.56,
+    "fiber": 0.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-464",
+    "name": "Meat consomme (with mutton)",
+    "calories": 29.76,
+    "carbs": 0.51,
+    "protein": 14.86,
+    "fat": 13.68,
+    "fiber": 0.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-465",
+    "name": "Consomme au julienne",
+    "calories": 27.76,
+    "carbs": 1.49,
+    "protein": 12.49,
+    "fat": 10.66,
+    "fiber": 1.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-466",
+    "name": "Consomme au vermicelli",
+    "calories": 29.94,
+    "carbs": 1.3,
+    "protein": 15.23,
+    "fat": 12.98,
+    "fiber": 0.81,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-467",
+    "name": "Green pea soup (Matar ka soup)",
+    "calories": 39.81,
+    "carbs": 3.63,
+    "protein": 11.06,
+    "fat": 12.9,
+    "fiber": 2.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-468",
+    "name": "Spinach soup (Palak ka soup)",
+    "calories": 32.59,
+    "carbs": 3.03,
+    "protein": 10.54,
+    "fat": 14.26,
+    "fiber": 1.98,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-469",
+    "name": "Mixed vegetable soup",
+    "calories": 35.71,
+    "carbs": 2.95,
+    "protein": 8.22,
+    "fat": 11.66,
+    "fiber": 1.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-470",
+    "name": "Cheese soup",
+    "calories": 41.13,
+    "carbs": 1.87,
+    "protein": 12.39,
+    "fat": 17.07,
+    "fiber": 1.8,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-471",
+    "name": "Mulligatawny soup",
+    "calories": 54.42,
+    "carbs": 8.24,
+    "protein": 11.26,
+    "fat": 13.28,
+    "fiber": 2.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-472",
+    "name": "Cream of carrot soup",
+    "calories": 59.77,
+    "carbs": 5.69,
+    "protein": 8.27,
+    "fat": 12.35,
+    "fiber": 1.98,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-473",
+    "name": "Cream of broccoli soup",
+    "calories": 56.14,
+    "carbs": 3.72,
+    "protein": 8.97,
+    "fat": 12.75,
+    "fiber": 1.89,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-474",
+    "name": "Cream of potato soup",
+    "calories": 60.2,
+    "carbs": 6.14,
+    "protein": 8.1,
+    "fat": 12.05,
+    "fiber": 1.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-475",
+    "name": "Almond soup (Badam ka soup)",
+    "calories": 78.65,
+    "carbs": 3.68,
+    "protein": 10.13,
+    "fat": 13.8,
+    "fiber": 0.91,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-476",
+    "name": "Cold cucumber cream soup ",
+    "calories": 11.88,
+    "carbs": 1.76,
+    "protein": 0.34,
+    "fat": 0.34,
+    "fiber": 0.73,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-477",
+    "name": "Cold tomato soup",
+    "calories": 16.9,
+    "carbs": 0.59,
+    "protein": 0.11,
+    "fat": 1.56,
+    "fiber": 0.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-478",
+    "name": "Chicken stew",
+    "calories": 127.55,
+    "carbs": 4.44,
+    "protein": 7.19,
+    "fat": 8.91,
+    "fiber": 1.82,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-479",
+    "name": "Veg paneer stew",
+    "calories": 145.55,
+    "carbs": 10.22,
+    "protein": 6.98,
+    "fat": 8.41,
+    "fiber": 3.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-480",
+    "name": "Onion-green chilli parantha/paratha (Pyaaz aur hari mirch ka parantha/paratha)",
+    "calories": 191.27,
+    "carbs": 26.37,
+    "protein": 4.37,
+    "fat": 7.27,
+    "fiber": 5.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-481",
+    "name": "Methi parantha/paratha",
+    "calories": 148.36,
+    "carbs": 22.19,
+    "protein": 4.27,
+    "fat": 4.34,
+    "fiber": 5.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-482",
+    "name": "Bathua poori",
+    "calories": 598.79,
+    "carbs": 13.85,
+    "protein": 2.35,
+    "fat": 59.14,
+    "fiber": 1.87,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-483",
+    "name": "Gram flour poori (Besan poori)",
+    "calories": 697.66,
+    "carbs": 10.93,
+    "protein": 2.59,
+    "fat": 71.51,
+    "fiber": 1.94,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-484",
+    "name": "Beetroot poori (Chukandar ki poori)",
+    "calories": 527.66,
+    "carbs": 12.29,
+    "protein": 1.91,
+    "fat": 52.18,
+    "fiber": 1.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-485",
+    "name": "Peas poori (Matar ki poori)",
+    "calories": 592.83,
+    "carbs": 14.92,
+    "protein": 3.04,
+    "fat": 57.69,
+    "fiber": 2.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-486",
+    "name": "Peas kachori (Matar kachori)",
+    "calories": 584.68,
+    "carbs": 13.25,
+    "protein": 3.21,
+    "fat": 57.51,
+    "fiber": 2.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-487",
+    "name": "Pizza",
+    "calories": 146.77,
+    "carbs": 9.94,
+    "protein": 6.85,
+    "fat": 8.72,
+    "fiber": 1.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-488",
+    "name": "Bacon and mushroom pancake",
+    "calories": 157.67,
+    "carbs": 8.47,
+    "protein": 6.82,
+    "fat": 10.6,
+    "fiber": 1.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-489",
+    "name": "Cheese and tomato pancake",
+    "calories": 147.39,
+    "carbs": 10.66,
+    "protein": 5.15,
+    "fat": 9.28,
+    "fiber": 1.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-490",
+    "name": "Minced meat pancake (with chicken)",
+    "calories": 116.04,
+    "carbs": 8.18,
+    "protein": 12.01,
+    "fat": 10.48,
+    "fiber": 0.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-491",
+    "name": "Eggplant/Brinjal rice (Vangi bhat)",
+    "calories": 184.8,
+    "carbs": 31.74,
+    "protein": 5.28,
+    "fat": 3.67,
+    "fiber": 4.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-492",
+    "name": "Kashmiri 'tahar'",
+    "calories": 98.21,
+    "carbs": 19.11,
+    "protein": 1.95,
+    "fat": 1.37,
+    "fiber": 0.98,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-493",
+    "name": "Cumin pulao (Jeera/Zeera pulao)",
+    "calories": 135.24,
+    "carbs": 23.61,
+    "protein": 2.47,
+    "fat": 3.2,
+    "fiber": 1.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-494",
+    "name": "Peas pulao (Matar pulao)",
+    "calories": 108.87,
+    "carbs": 18.42,
+    "protein": 3.89,
+    "fat": 1.9,
+    "fiber": 3.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-495",
+    "name": "Split bengal gram dal and vegetable pulao (Channa dal and vegetable pulao)",
+    "calories": 116.53,
+    "carbs": 19.72,
+    "protein": 3.6,
+    "fat": 2.3,
+    "fiber": 3.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-496",
+    "name": "Black channa pulao/ Bengal gram pulao (Kale chane ka pulao)",
+    "calories": 125.51,
+    "carbs": 21.55,
+    "protein": 3.44,
+    "fat": 2.58,
+    "fiber": 2.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-497",
+    "name": "Mutton pulao",
+    "calories": 130.77,
+    "carbs": 11.26,
+    "protein": 6.52,
+    "fat": 10.78,
+    "fiber": 1.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-498",
+    "name": "Chicken pulao",
+    "calories": 108.24,
+    "carbs": 11.17,
+    "protein": 6.07,
+    "fat": 8.48,
+    "fiber": 1.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-499",
+    "name": "Mexican rice",
+    "calories": 120.57,
+    "carbs": 14.21,
+    "protein": 4.62,
+    "fat": 4.88,
+    "fiber": 1.64,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-500",
+    "name": "Plain khitchdi (Plain khichri/khichdi)",
+    "calories": 57.03,
+    "carbs": 10.04,
+    "protein": 1.72,
+    "fat": 1.01,
+    "fiber": 0.85,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-501",
+    "name": "Instant idli (with semolina)",
+    "calories": 247.29,
+    "carbs": 43.4,
+    "protein": 9.16,
+    "fat": 3.61,
+    "fiber": 7.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-502",
+    "name": "Plain dosa",
+    "calories": 380.91,
+    "carbs": 64.08,
+    "protein": 10.34,
+    "fat": 8.43,
+    "fiber": 5.23,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-503",
+    "name": "Masala dosa mixed vegetable fillings",
+    "calories": 144.53,
+    "carbs": 23.02,
+    "protein": 4.84,
+    "fat": 3.26,
+    "fiber": 4.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-504",
+    "name": "Masala dosa paneer fillings",
+    "calories": 243.12,
+    "carbs": 29.76,
+    "protein": 10.31,
+    "fat": 8.84,
+    "fiber": 3.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-505",
+    "name": "Uttapam",
+    "calories": 255.95,
+    "carbs": 36.28,
+    "protein": 6.18,
+    "fat": 9.03,
+    "fiber": 4.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-506",
+    "name": "Appam",
+    "calories": 267.7,
+    "carbs": 13.28,
+    "protein": 3.12,
+    "fat": 22.63,
+    "fiber": 6.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-507",
+    "name": "Beans and macaroni",
+    "calories": 136.08,
+    "carbs": 14.24,
+    "protein": 4.58,
+    "fat": 7.01,
+    "fiber": 2.05,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-508",
+    "name": "Spaghetti bolognese",
+    "calories": 97.43,
+    "carbs": 10.04,
+    "protein": 9.35,
+    "fat": 9.51,
+    "fiber": 1.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-509",
+    "name": "Meat and macaroni casserole",
+    "calories": 161.55,
+    "carbs": 16.12,
+    "protein": 9.15,
+    "fat": 10.17,
+    "fiber": 1.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-510",
+    "name": "Spaghetti with meat balls and tomato sauce",
+    "calories": 158.13,
+    "carbs": 10.46,
+    "protein": 5.61,
+    "fat": 10.64,
+    "fiber": 1.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-511",
+    "name": "Spaghetti with paneer balls and tomato sauce",
+    "calories": 158.54,
+    "carbs": 12.72,
+    "protein": 3.95,
+    "fat": 10.44,
+    "fiber": 1.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-512",
+    "name": "Lasagne with meat sauce",
+    "calories": 63.38,
+    "carbs": 5.38,
+    "protein": 2.9,
+    "fat": 3.43,
+    "fiber": 0.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-513",
+    "name": "Lasagne with vegetables",
+    "calories": 49.23,
+    "carbs": 5.9,
+    "protein": 1.71,
+    "fat": 2.16,
+    "fiber": 0.66,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-514",
+    "name": "Home made egg noodles",
+    "calories": 240.84,
+    "carbs": 42.92,
+    "protein": 6.55,
+    "fat": 4.37,
+    "fiber": 1.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-515",
+    "name": "Sour lentils (Khatti dal)",
+    "calories": 34.79,
+    "carbs": 6.04,
+    "protein": 2.22,
+    "fat": 0.12,
+    "fiber": 1.22,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-516",
+    "name": "Urad special dehusked",
+    "calories": 69.43,
+    "carbs": 8.86,
+    "protein": 3.14,
+    "fat": 2.17,
+    "fiber": 2.5,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-517",
+    "name": "Arhar with spinach (Arhar dal aur palak)",
+    "calories": 52.84,
+    "carbs": 4.77,
+    "protein": 2.05,
+    "fat": 2.76,
+    "fiber": 1.3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-518",
+    "name": "Moong dal with vadi",
+    "calories": 24.08,
+    "carbs": 1,
+    "protein": 0.4,
+    "fat": 2.05,
+    "fiber": 0.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-519",
+    "name": "Rasam with tamarind (Puli rasam/ Chintapandu rasam/ Charu/Saaru)",
+    "calories": 26.74,
+    "carbs": 3.37,
+    "protein": 1.13,
+    "fat": 0.88,
+    "fiber": 1.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-520",
+    "name": "Rasam with lemon (Nimmakaya rasam/Nimmakaya charu/Elumichai rasam/Nimbe hannina saaru)",
+    "calories": 24.41,
+    "carbs": 2.85,
+    "protein": 1.11,
+    "fat": 0.87,
+    "fiber": 1.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-521",
+    "name": "Green gram whole with baghar (Sabut moong dal with tadka)",
+    "calories": 63.43,
+    "carbs": 6.8,
+    "protein": 3.23,
+    "fat": 2.48,
+    "fiber": 3.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-522",
+    "name": "Urad sabut special",
+    "calories": 79.39,
+    "carbs": 5.03,
+    "protein": 2.33,
+    "fat": 5.46,
+    "fiber": 2.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-523",
+    "name": "Kabuli channa curry",
+    "calories": 68.57,
+    "carbs": 7.63,
+    "protein": 2.92,
+    "fat": 3.06,
+    "fiber": 1.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-524",
+    "name": "Besan gatte curry",
+    "calories": 189.38,
+    "carbs": 16.26,
+    "protein": 7.75,
+    "fat": 10.72,
+    "fiber": 3.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-525",
+    "name": "Dry masala chops",
+    "calories": 135.07,
+    "carbs": 3.3,
+    "protein": 9.08,
+    "fat": 9.54,
+    "fiber": 0.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-526",
+    "name": "Mutton korma",
+    "calories": 115.64,
+    "carbs": 2.53,
+    "protein": 7.09,
+    "fat": 8.54,
+    "fiber": 0.78,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-527",
+    "name": "Shahi keema kofta curry",
+    "calories": 418.13,
+    "carbs": 1.73,
+    "protein": 4.14,
+    "fat": 43.83,
+    "fiber": 0.91,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-528",
+    "name": "Minced meat ball curry",
+    "calories": 109.79,
+    "carbs": 2.86,
+    "protein": 6.82,
+    "fat": 7.85,
+    "fiber": 1.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-529",
+    "name": "Boti kebab",
+    "calories": 132.86,
+    "carbs": 3.06,
+    "protein": 9.22,
+    "fat": 9.27,
+    "fiber": 0.76,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-530",
+    "name": "Mutton seekh kebab",
+    "calories": 133.94,
+    "carbs": 3.11,
+    "protein": 11.25,
+    "fat": 8.43,
+    "fiber": 1.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-531",
+    "name": "Indian lamb and egg curry (Nargisi kofta)",
+    "calories": 335.75,
+    "carbs": 2.07,
+    "protein": 3.84,
+    "fat": 34.7,
+    "fiber": 0.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-532",
+    "name": "Soya chunks sweet and sour (Nutrinugget sweet and sour)",
+    "calories": 500.94,
+    "carbs": 3.27,
+    "protein": 2.85,
+    "fat": 55.99,
+    "fiber": 0.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-533",
+    "name": "Soya chunks korma (Nutrinugget korma)",
+    "calories": 131.43,
+    "carbs": 7.67,
+    "protein": 3.86,
+    "fat": 9.5,
+    "fiber": 2.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-534",
+    "name": "Mushroom matar",
+    "calories": 70.77,
+    "carbs": 5.33,
+    "protein": 2.79,
+    "fat": 4.11,
+    "fiber": 3.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-535",
+    "name": "Soya chunks and peas (Nutrinugget matar)",
+    "calories": 82.62,
+    "carbs": 5.82,
+    "protein": 3.03,
+    "fat": 5.11,
+    "fiber": 2.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-536",
+    "name": "Vegetable yakhni",
+    "calories": 406.06,
+    "carbs": 1.94,
+    "protein": 1.18,
+    "fat": 43.8,
+    "fiber": 0.61,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-537",
+    "name": "Spinach mushroom (Palak mushroom)",
+    "calories": 47.63,
+    "carbs": 2.95,
+    "protein": 1.94,
+    "fat": 2.96,
+    "fiber": 2.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-538",
+    "name": "Vegetarian nargisi kofta curry",
+    "calories": 332.15,
+    "carbs": 6.58,
+    "protein": 2.29,
+    "fat": 32.94,
+    "fiber": 0.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-539",
+    "name": "Roast chicken",
+    "calories": 199.9,
+    "carbs": 0.1,
+    "protein": 20.49,
+    "fat": 13.06,
+    "fiber": 0.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-540",
+    "name": "Shahi chicken masala",
+    "calories": 163.7,
+    "carbs": 4.07,
+    "protein": 9.82,
+    "fat": 12.02,
+    "fiber": 0.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-541",
+    "name": "Tomato chicken",
+    "calories": 111.68,
+    "carbs": 2.13,
+    "protein": 10.57,
+    "fat": 6.71,
+    "fiber": 1.42,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-542",
+    "name": "Creamy chicken",
+    "calories": 152.87,
+    "carbs": 3.13,
+    "protein": 13.52,
+    "fat": 9.57,
+    "fiber": 0.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-543",
+    "name": "Broccoli chicken ala king",
+    "calories": 119.56,
+    "carbs": 5.34,
+    "protein": 7.97,
+    "fat": 7.57,
+    "fiber": 1.92,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-544",
+    "name": "Ginger chicken",
+    "calories": 129.17,
+    "carbs": 5.6,
+    "protein": 8.24,
+    "fat": 8.24,
+    "fiber": 1.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-545",
+    "name": "Chicken sweet and sour",
+    "calories": 445.09,
+    "carbs": 2.67,
+    "protein": 6.92,
+    "fat": 47.59,
+    "fiber": 0.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-546",
+    "name": "Chicken korma",
+    "calories": 147.96,
+    "carbs": 5.43,
+    "protein": 9.83,
+    "fat": 9.67,
+    "fiber": 1.82,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-547",
+    "name": "Bengal fish curry (Bengali machli curry)",
+    "calories": 109.43,
+    "carbs": 4.42,
+    "protein": 7.26,
+    "fat": 7.03,
+    "fiber": 1.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-548",
+    "name": "Fish finger",
+    "calories": 542.9,
+    "carbs": 4.47,
+    "protein": 5.66,
+    "fat": 55.82,
+    "fiber": 0.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-549",
+    "name": "Fish in coconut milk (Nariyal ke doodh ke saath machli)",
+    "calories": 86.21,
+    "carbs": 2.73,
+    "protein": 8.66,
+    "fat": 4.43,
+    "fiber": 1.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-550",
+    "name": "Prawn curry (with coconut) (Jhinga curry)",
+    "calories": 109.55,
+    "carbs": 3.1,
+    "protein": 8.54,
+    "fat": 6.93,
+    "fiber": 1.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-551",
+    "name": "Baked stuffed fish",
+    "calories": 121.96,
+    "carbs": 2.12,
+    "protein": 16.14,
+    "fat": 5.43,
+    "fiber": 0.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-552",
+    "name": "Fish pie",
+    "calories": 120.9,
+    "carbs": 7.74,
+    "protein": 9.25,
+    "fat": 5.77,
+    "fiber": 0.76,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-553",
+    "name": "Crispy baked fish",
+    "calories": 138.4,
+    "carbs": 9.59,
+    "protein": 10.95,
+    "fat": 6.41,
+    "fiber": 1.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-554",
+    "name": "Fish souffle",
+    "calories": 139.71,
+    "carbs": 5.14,
+    "protein": 10.51,
+    "fat": 8.55,
+    "fiber": 0.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-555",
+    "name": "Potato curry (Aloo ki sabzi)",
+    "calories": 89.56,
+    "carbs": 10.42,
+    "protein": 1.52,
+    "fat": 4.47,
+    "fiber": 2.42,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-556",
+    "name": "Egg curry (Anda curry)",
+    "calories": 117.52,
+    "carbs": 4.03,
+    "protein": 5.38,
+    "fat": 8.81,
+    "fiber": 2.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-557",
+    "name": "Vegetable curry with coconut ",
+    "calories": 83.07,
+    "carbs": 7.19,
+    "protein": 2.77,
+    "fat": 4.66,
+    "fiber": 3.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-558",
+    "name": "Curd with potatoes (Dahi aloo)",
+    "calories": 59.9,
+    "carbs": 7.15,
+    "protein": 1.56,
+    "fat": 2.72,
+    "fiber": 1.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-559",
+    "name": "Potato kofta curry (Aloo kofta curry)",
+    "calories": 455.4,
+    "carbs": 2.78,
+    "protein": 0.56,
+    "fat": 49.08,
+    "fiber": 0.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-560",
+    "name": "Yam kofta curry (Zimikand/Suran kofta curry)",
+    "calories": 322.88,
+    "carbs": 3.75,
+    "protein": 0.71,
+    "fat": 33.84,
+    "fiber": 1.04,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-561",
+    "name": "Jackfruit kofta curry (Kathal ka kofta curry)",
+    "calories": 321.08,
+    "carbs": 3.17,
+    "protein": 0.8,
+    "fat": 33.83,
+    "fiber": 0.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-562",
+    "name": "Spinach and potato (Palak aloo)",
+    "calories": 57.17,
+    "carbs": 5.91,
+    "protein": 1.63,
+    "fat": 2.82,
+    "fiber": 2.04,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-563",
+    "name": "Mooli bhujia",
+    "calories": 91.2,
+    "carbs": 4.74,
+    "protein": 1.69,
+    "fat": 7.25,
+    "fiber": 2.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-564",
+    "name": "Bathua bhujia",
+    "calories": 90.9,
+    "carbs": 3.63,
+    "protein": 2.26,
+    "fat": 7.29,
+    "fiber": 3.8,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-565",
+    "name": "Cabbage rolls (dry) ((Pattagobhi rolls) (dry))",
+    "calories": 142.48,
+    "carbs": 6.09,
+    "protein": 8.21,
+    "fat": 9.36,
+    "fiber": 1.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-566",
+    "name": "Cabbage rolls (curry) ((Pattagobhi rolls)(curry))",
+    "calories": 124.63,
+    "carbs": 7.03,
+    "protein": 5.76,
+    "fat": 8.17,
+    "fiber": 2.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-567",
+    "name": "Dry arbi (Sookhi arbi)",
+    "calories": 134.95,
+    "carbs": 11.11,
+    "protein": 2.12,
+    "fat": 8.97,
+    "fiber": 2.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-568",
+    "name": "Masala arbi",
+    "calories": 185.38,
+    "carbs": 16.16,
+    "protein": 3.01,
+    "fat": 11.9,
+    "fiber": 3.1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-569",
+    "name": "Peas brinjal bhartha (Matar baingan bhartha)",
+    "calories": 84.55,
+    "carbs": 5.02,
+    "protein": 2.05,
+    "fat": 6.05,
+    "fiber": 3.63,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-570",
+    "name": "Okra/Lady's fingers fry (Bhindi sabzi/sabji/subji)",
+    "calories": 110.81,
+    "carbs": 4.5,
+    "protein": 1.83,
+    "fat": 9.27,
+    "fiber": 3.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-571",
+    "name": "Crispy okra/Crispy lady's fingers (Karare bhindi)",
+    "calories": 657.76,
+    "carbs": 4.35,
+    "protein": 1.91,
+    "fat": 70.4,
+    "fiber": 1.75,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-572",
+    "name": "Beans foogath",
+    "calories": 105.06,
+    "carbs": 3.26,
+    "protein": 2.03,
+    "fat": 9.22,
+    "fiber": 4.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-573",
+    "name": "Stuffed bittergourd (wet) (Bharwa karele)",
+    "calories": 162.36,
+    "carbs": 4.68,
+    "protein": 1.36,
+    "fat": 15.24,
+    "fiber": 2.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-574",
+    "name": "Jackfruit/Kathal (dry)",
+    "calories": 488.97,
+    "carbs": 4.56,
+    "protein": 0.93,
+    "fat": 51.78,
+    "fiber": 1.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-575",
+    "name": "Yam fried (Zimikand/Suran fried)",
+    "calories": 491.76,
+    "carbs": 5.47,
+    "protein": 0.79,
+    "fat": 51.79,
+    "fiber": 1.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-576",
+    "name": "\"Cauliflower",
+    "calories": 0,
+    "carbs": 0,
+    "protein": 95.67,
+    "fat": 8.23,
+    "fiber": 5.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-577",
+    "name": "Vegetable jalfrezi",
+    "calories": 68.48,
+    "carbs": 5.43,
+    "protein": 1.4,
+    "fat": 4.38,
+    "fiber": 2.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-578",
+    "name": "Vegetables stir fry ",
+    "calories": 30.78,
+    "carbs": 3.19,
+    "protein": 1.04,
+    "fat": 1.47,
+    "fiber": 1.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-579",
+    "name": "Broccoli delight",
+    "calories": 40.7,
+    "carbs": 2.34,
+    "protein": 2.49,
+    "fat": 2.48,
+    "fiber": 2.83,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-580",
+    "name": "Dhansak (vegetarian)",
+    "calories": 82.8,
+    "carbs": 7.28,
+    "protein": 3.32,
+    "fat": 4.18,
+    "fiber": 4.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-581",
+    "name": "Cauliflower basket",
+    "calories": 90.95,
+    "carbs": 3.97,
+    "protein": 5.21,
+    "fat": 5.88,
+    "fiber": 2.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-582",
+    "name": "Stuffed bottle gourd (Stuffed ghiya/lauki)",
+    "calories": 93.19,
+    "carbs": 4.36,
+    "protein": 5.84,
+    "fat": 5.8,
+    "fiber": 1.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-583",
+    "name": "Ducheese potato",
+    "calories": 140.54,
+    "carbs": 10.94,
+    "protein": 3.6,
+    "fat": 9.01,
+    "fiber": 1.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-584",
+    "name": "Roast potatoes ",
+    "calories": 87.32,
+    "carbs": 14.52,
+    "protein": 1.53,
+    "fat": 2.35,
+    "fiber": 1.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-585",
+    "name": "Stuffed baked potatoes ",
+    "calories": 100.2,
+    "carbs": 11.03,
+    "protein": 3.82,
+    "fat": 4.39,
+    "fiber": 1.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-586",
+    "name": "Potato nests",
+    "calories": 111.62,
+    "carbs": 11.05,
+    "protein": 5.71,
+    "fat": 4.77,
+    "fiber": 2.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-587",
+    "name": "Parsley potato",
+    "calories": 119.51,
+    "carbs": 13.81,
+    "protein": 1.49,
+    "fat": 6.28,
+    "fiber": 1.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-588",
+    "name": "Creamed spinach and mushroom",
+    "calories": 419.62,
+    "carbs": 3.17,
+    "protein": 2.28,
+    "fat": 44.14,
+    "fiber": 1.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-589",
+    "name": "Fricassee of Mushroom",
+    "calories": 106.66,
+    "carbs": 8.13,
+    "protein": 3.65,
+    "fat": 6.63,
+    "fiber": 1.23,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-590",
+    "name": "Cauliflower au gratin",
+    "calories": 145.9,
+    "carbs": 9.13,
+    "protein": 4.45,
+    "fat": 10.2,
+    "fiber": 1.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-591",
+    "name": "Vegetable and cheese pie",
+    "calories": 126.88,
+    "carbs": 8.76,
+    "protein": 4.03,
+    "fat": 8.28,
+    "fiber": 1.91,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-592",
+    "name": "Spinach souffle ",
+    "calories": 150.18,
+    "carbs": 6.27,
+    "protein": 7.36,
+    "fat": 10.52,
+    "fiber": 1.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-593",
+    "name": "Beetroot and egg salad (Chukandar aur ande ka salad)",
+    "calories": 84.92,
+    "carbs": 3.4,
+    "protein": 3.36,
+    "fat": 6.45,
+    "fiber": 0.55,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-594",
+    "name": "Sour cream potato salad",
+    "calories": 121.9,
+    "carbs": 9.05,
+    "protein": 2.89,
+    "fat": 8.13,
+    "fiber": 1.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-595",
+    "name": "Tossed green salad",
+    "calories": 49.88,
+    "carbs": 3.82,
+    "protein": 1.33,
+    "fat": 3.24,
+    "fiber": 1.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-596",
+    "name": "Spring basket salad",
+    "calories": 160.46,
+    "carbs": 11.61,
+    "protein": 3.36,
+    "fat": 11.3,
+    "fiber": 3.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-597",
+    "name": "Cucumber and yogurt salad (Kheere aur dahi ka salad)",
+    "calories": 36.13,
+    "carbs": 4.72,
+    "protein": 2.09,
+    "fat": 0.93,
+    "fiber": 1.66,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-598",
+    "name": "Chicken and tomato towers",
+    "calories": 100.55,
+    "carbs": 2.36,
+    "protein": 6.9,
+    "fat": 6.99,
+    "fiber": 1.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-599",
+    "name": "Jellied sunshine fruit salad",
+    "calories": 48.86,
+    "carbs": 4.21,
+    "protein": 5.85,
+    "fat": 0.85,
+    "fiber": 1.8,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-600",
+    "name": "Tomato aspic",
+    "calories": 50.37,
+    "carbs": 5.02,
+    "protein": 6.87,
+    "fat": 0.26,
+    "fiber": 1.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-601",
+    "name": "Frozen frosty fruit salad (Phalon ka salaad)",
+    "calories": 103.51,
+    "carbs": 15.61,
+    "protein": 1.68,
+    "fat": 4.17,
+    "fiber": 0.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-602",
+    "name": "French dressing",
+    "calories": 733.77,
+    "carbs": 3.68,
+    "protein": 0.32,
+    "fat": 79.65,
+    "fiber": 0.22,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-603",
+    "name": "Mayonnaise without eggs",
+    "calories": 329.05,
+    "carbs": 3.98,
+    "protein": 2.13,
+    "fat": 33.84,
+    "fiber": 0.04,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-604",
+    "name": "Curd dressing ",
+    "calories": 78.8,
+    "carbs": 8.03,
+    "protein": 5.59,
+    "fat": 2.9,
+    "fiber": 0.22,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-605",
+    "name": "Carrot raita (Gajar ka raita)",
+    "calories": 64.78,
+    "carbs": 7.19,
+    "protein": 4.14,
+    "fat": 2.19,
+    "fiber": 1.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-606",
+    "name": "Pumpkin raita (Kaddu ka raita)",
+    "calories": 55.6,
+    "carbs": 6.02,
+    "protein": 3.74,
+    "fat": 1.88,
+    "fiber": 1.04,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-607",
+    "name": "Mint and peanut raita (Pudinay aur moongfali ka raita)",
+    "calories": 112.05,
+    "carbs": 7.31,
+    "protein": 7.05,
+    "fat": 6.19,
+    "fiber": 1.79,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-608",
+    "name": "Spinach raita (Palak ka raita)",
+    "calories": 52.75,
+    "carbs": 5.06,
+    "protein": 3.95,
+    "fat": 1.86,
+    "fiber": 1.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-609",
+    "name": "Bathua raita",
+    "calories": 54.4,
+    "carbs": 5.31,
+    "protein": 4.13,
+    "fat": 1.76,
+    "fiber": 2.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-610",
+    "name": "Pineapple raita (Ananas ka raita)",
+    "calories": 67.74,
+    "carbs": 8.62,
+    "protein": 3.9,
+    "fat": 2.02,
+    "fiber": 1.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-611",
+    "name": "Banana raita (Kele ka raita)",
+    "calories": 89.03,
+    "carbs": 13.51,
+    "protein": 4.13,
+    "fat": 2.07,
+    "fiber": 1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-612",
+    "name": "Mango raita (Aam ka raita)",
+    "calories": 67.37,
+    "carbs": 8.23,
+    "protein": 3.9,
+    "fat": 2.14,
+    "fiber": 0.89,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-613",
+    "name": "Guava raita (Amarood ka raita)",
+    "calories": 64.36,
+    "carbs": 7.27,
+    "protein": 4.19,
+    "fat": 2.07,
+    "fiber": 3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-614",
+    "name": "Grapes raita (Angoor ka raita)",
+    "calories": 72.59,
+    "carbs": 9.66,
+    "protein": 3.98,
+    "fat": 2.07,
+    "fiber": 0.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-615",
+    "name": "Bottle gourd kheer (Ghiya/Lauki kheer)",
+    "calories": 84.07,
+    "carbs": 10,
+    "protein": 2.7,
+    "fat": 3.86,
+    "fiber": 0.55,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-616",
+    "name": "Pumpkin kheer (Kaddu ki kheer)",
+    "calories": 86.35,
+    "carbs": 10.44,
+    "protein": 2.76,
+    "fat": 3.86,
+    "fiber": 0.63,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-617",
+    "name": "Apple kheer (Seb ki kheer)",
+    "calories": 81.3,
+    "carbs": 11.34,
+    "protein": 2.14,
+    "fat": 3.18,
+    "fiber": 0.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-618",
+    "name": "Caramel custard (baked)",
+    "calories": 122.7,
+    "carbs": 14.95,
+    "protein": 5.11,
+    "fat": 5.01,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-619",
+    "name": "Vanilla ice cream without egg",
+    "calories": 228.67,
+    "carbs": 14.21,
+    "protein": 2.69,
+    "fat": 18.15,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-620",
+    "name": "Vanilla ice cream with egg",
+    "calories": 214.85,
+    "carbs": 11.71,
+    "protein": 4.16,
+    "fat": 17.02,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-621",
+    "name": "Strawberry ice cream",
+    "calories": 215.61,
+    "carbs": 12.26,
+    "protein": 4.15,
+    "fat": 16.96,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-622",
+    "name": "Chocochip ice cream",
+    "calories": 241.45,
+    "carbs": 16.75,
+    "protein": 4.23,
+    "fat": 17.93,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-623",
+    "name": "Choconut ice cream",
+    "calories": 273.96,
+    "carbs": 23.13,
+    "protein": 5.04,
+    "fat": 18.49,
+    "fiber": 0.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-624",
+    "name": "Pear chocholate sunday",
+    "calories": 183.49,
+    "carbs": 15.02,
+    "protein": 2.08,
+    "fat": 13.11,
+    "fiber": 0.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-625",
+    "name": "Chocolate sauce",
+    "calories": 263.2,
+    "carbs": 43.21,
+    "protein": 1.91,
+    "fat": 10.39,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-626",
+    "name": "Coffee ice cream",
+    "calories": 150.62,
+    "carbs": 14.09,
+    "protein": 3.15,
+    "fat": 9.43,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-627",
+    "name": "Coffee pear alaska",
+    "calories": 203.99,
+    "carbs": 19.36,
+    "protein": 2.88,
+    "fat": 13.22,
+    "fiber": 0.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-628",
+    "name": "Crunchy butterscotch",
+    "calories": 277.32,
+    "carbs": 19.92,
+    "protein": 3.11,
+    "fat": 20.99,
+    "fiber": 0.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-629",
+    "name": "Peach melba ice cream",
+    "calories": 200.85,
+    "carbs": 16.31,
+    "protein": 2.06,
+    "fat": 14.51,
+    "fiber": 0.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-630",
+    "name": "Vanilla ice cream with apples in hot cherry sauce",
+    "calories": 196.32,
+    "carbs": 22.75,
+    "protein": 1.73,
+    "fat": 11.45,
+    "fiber": 0.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-631",
+    "name": "Grape and orange whip",
+    "calories": 57.39,
+    "carbs": 6.72,
+    "protein": 1.41,
+    "fat": 2.62,
+    "fiber": 0.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-632",
+    "name": "Honey banana cream",
+    "calories": 125.49,
+    "carbs": 13.64,
+    "protein": 2.78,
+    "fat": 6.68,
+    "fiber": 0.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-633",
+    "name": "Raspberry bavarian cream",
+    "calories": 150.1,
+    "carbs": 17.82,
+    "protein": 3.34,
+    "fat": 7.88,
+    "fiber": 2.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-634",
+    "name": "Fruit delight",
+    "calories": 107.09,
+    "carbs": 9.11,
+    "protein": 2.09,
+    "fat": 7.09,
+    "fiber": 0.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-635",
+    "name": "Creamy chocolate mousse",
+    "calories": 230.52,
+    "carbs": 9.53,
+    "protein": 6.85,
+    "fat": 18.16,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-636",
+    "name": "Cold lemon souffle",
+    "calories": 169.87,
+    "carbs": 15.62,
+    "protein": 5.89,
+    "fat": 9.78,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-637",
+    "name": "Cold orange souffle",
+    "calories": 173.19,
+    "carbs": 16.27,
+    "protein": 5.94,
+    "fat": 9.82,
+    "fiber": 0.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-638",
+    "name": "Cold pineapple souffle",
+    "calories": 181.22,
+    "carbs": 16.85,
+    "protein": 6.23,
+    "fat": 10.39,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-639",
+    "name": "Cold vanilla souffle",
+    "calories": 179.54,
+    "carbs": 16.29,
+    "protein": 6.22,
+    "fat": 10.32,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-640",
+    "name": "Cold chocolate souffle",
+    "calories": 187.53,
+    "carbs": 17.22,
+    "protein": 6.37,
+    "fat": 10.86,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-641",
+    "name": "Stewed fruit (with pear)",
+    "calories": 74.32,
+    "carbs": 18.22,
+    "protein": 0.25,
+    "fat": 0.32,
+    "fiber": 2.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-642",
+    "name": "Apricot fool",
+    "calories": 240.79,
+    "carbs": 33.64,
+    "protein": 1.54,
+    "fat": 11.35,
+    "fiber": 1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-643",
+    "name": "Pavlova",
+    "calories": 200.6,
+    "carbs": 21.84,
+    "protein": 1.84,
+    "fat": 12.29,
+    "fiber": 0.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-644",
+    "name": "Apple crumb pudding",
+    "calories": 220.85,
+    "carbs": 35.17,
+    "protein": 1.54,
+    "fat": 8.87,
+    "fiber": 1.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-645",
+    "name": "Steamed cake with chocolate sauce",
+    "calories": 301.91,
+    "carbs": 29.06,
+    "protein": 4.49,
+    "fat": 19.01,
+    "fiber": 0.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-646",
+    "name": "Hot lemon souffle",
+    "calories": 155.25,
+    "carbs": 16.31,
+    "protein": 5.29,
+    "fat": 7.93,
+    "fiber": 0.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-647",
+    "name": "Gulab jamun with milk powder",
+    "calories": 471.15,
+    "carbs": 28.24,
+    "protein": 0.85,
+    "fat": 40.15,
+    "fiber": 0.05,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-648",
+    "name": "Chum chum",
+    "calories": 130.05,
+    "carbs": 28.27,
+    "protein": 1.52,
+    "fat": 1.92,
+    "fiber": 0.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-649",
+    "name": "Dil bahar",
+    "calories": 130.05,
+    "carbs": 28.27,
+    "protein": 1.52,
+    "fat": 1.92,
+    "fiber": 0.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-650",
+    "name": "Rasbhari",
+    "calories": 130.05,
+    "carbs": 28.27,
+    "protein": 1.52,
+    "fat": 1.92,
+    "fiber": 0.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-651",
+    "name": "Rajbogh",
+    "calories": 133.7,
+    "carbs": 28.16,
+    "protein": 1.71,
+    "fat": 2.28,
+    "fiber": 0.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-652",
+    "name": "Rasgulla",
+    "calories": 118.64,
+    "carbs": 25.79,
+    "protein": 1.38,
+    "fat": 1.75,
+    "fiber": 0.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-653",
+    "name": "Rasmalai",
+    "calories": 135.55,
+    "carbs": 29.17,
+    "protein": 1.61,
+    "fat": 2.11,
+    "fiber": 0.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-654",
+    "name": "Khoa coconut burfi",
+    "calories": 411.45,
+    "carbs": 36.55,
+    "protein": 9.98,
+    "fat": 26.01,
+    "fiber": 4.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-655",
+    "name": "Danedar burfi",
+    "calories": 102.68,
+    "carbs": 12.33,
+    "protein": 3.24,
+    "fat": 4.72,
+    "fiber": 0.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-656",
+    "name": "Semolina burfi (Suji/Rava burfi)",
+    "calories": 348.67,
+    "carbs": 47.1,
+    "protein": 3.47,
+    "fat": 16.86,
+    "fiber": 2.8,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-657",
+    "name": "Pumpkin coconut burfi (Kaddu aur nariyal ki burfi)",
+    "calories": 186.18,
+    "carbs": 17.02,
+    "protein": 1.75,
+    "fat": 12.66,
+    "fiber": 4.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-658",
+    "name": "Khoa ladoo",
+    "calories": 396.02,
+    "carbs": 34.43,
+    "protein": 12.21,
+    "fat": 24.09,
+    "fiber": 3.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-659",
+    "name": "Wheat and gram flour ladoo (Atta besan ladoo)",
+    "calories": 501.7,
+    "carbs": 50.5,
+    "protein": 9.38,
+    "fat": 29.86,
+    "fiber": 6.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-660",
+    "name": "Semolina ladoo with nuts (Suji/Rava ladoo with nuts)",
+    "calories": 441.84,
+    "carbs": 48.02,
+    "protein": 5.44,
+    "fat": 25.45,
+    "fiber": 4.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-661",
+    "name": "Sesame chickpeas brittle (Til aur channe ki chikki)",
+    "calories": 282.74,
+    "carbs": 50.49,
+    "protein": 8.5,
+    "fat": 4.66,
+    "fiber": 5.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-662",
+    "name": "Murmura chikki",
+    "calories": 253.82,
+    "carbs": 59.59,
+    "protein": 2.12,
+    "fat": 0.32,
+    "fiber": 0.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-663",
+    "name": "Masala onion pakora/pakoda (Pyaaz ke pakode)",
+    "calories": 551.64,
+    "carbs": 6.48,
+    "protein": 2.05,
+    "fat": 57.61,
+    "fiber": 1.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-664",
+    "name": "Masala green chilli pakora/pakoda (Hari mirch kay pakode)",
+    "calories": 668.76,
+    "carbs": 5.55,
+    "protein": 2.22,
+    "fat": 71.01,
+    "fiber": 1.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-665",
+    "name": "Chicken pakora/pakoda",
+    "calories": 590.09,
+    "carbs": 4.55,
+    "protein": 6.03,
+    "fat": 60.98,
+    "fiber": 0.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-666",
+    "name": "Fish pakora/pakoda",
+    "calories": 577.03,
+    "carbs": 4.55,
+    "protein": 5.97,
+    "fat": 59.52,
+    "fiber": 0.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-667",
+    "name": "Paneer cutlet",
+    "calories": 672.2,
+    "carbs": 7.62,
+    "protein": 4.59,
+    "fat": 69.38,
+    "fiber": 0.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-668",
+    "name": "Sago cutlet/vadas (Sabudana cutlet/vadas)",
+    "calories": 558.76,
+    "carbs": 11.23,
+    "protein": 0.56,
+    "fat": 56.97,
+    "fiber": 0.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-669",
+    "name": "Poshtik cutlet",
+    "calories": 496.45,
+    "carbs": 7.39,
+    "protein": 2,
+    "fat": 50.94,
+    "fiber": 1.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-670",
+    "name": "Egg cutlet (Anda cutlet)",
+    "calories": 575.02,
+    "carbs": 5.77,
+    "protein": 2.45,
+    "fat": 60.25,
+    "fiber": 0.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-671",
+    "name": "Minced meat cutlet",
+    "calories": 531.86,
+    "carbs": 5.61,
+    "protein": 5.1,
+    "fat": 54.47,
+    "fiber": 0.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-672",
+    "name": "Vegetable samosa",
+    "calories": 443.11,
+    "carbs": 13.22,
+    "protein": 2.21,
+    "fat": 42.22,
+    "fiber": 1.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-673",
+    "name": "Plain urad dal vada (Uzunne vada/Minapa garelu/Ulundu vadai/Medu vada)",
+    "calories": 745.5,
+    "carbs": 9.7,
+    "protein": 4.39,
+    "fat": 76.32,
+    "fiber": 2.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-674",
+    "name": "Masala urad dal vada",
+    "calories": 703.78,
+    "carbs": 9.93,
+    "protein": 4.32,
+    "fat": 71.62,
+    "fiber": 2.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-675",
+    "name": "Khaman (dhokla)",
+    "calories": 54.73,
+    "carbs": 5.36,
+    "protein": 1.92,
+    "fat": 2.8,
+    "fiber": 1.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-676",
+    "name": "Instant dhokla",
+    "calories": 207.11,
+    "carbs": 24.11,
+    "protein": 7.66,
+    "fat": 9.37,
+    "fiber": 3.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-677",
+    "name": "Tomato ginger chutney (Tamatar adarak ki chutney)",
+    "calories": 44.66,
+    "carbs": 9.11,
+    "protein": 1.05,
+    "fat": 0.32,
+    "fiber": 2.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-678",
+    "name": "Mint tomato chutney (Pudinay aur tamatar ki chutney)",
+    "calories": 43.65,
+    "carbs": 8.22,
+    "protein": 1.53,
+    "fat": 0.36,
+    "fiber": 2.63,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-679",
+    "name": "Coriander chutney (Hare dhaniye ki chutney)",
+    "calories": 42.86,
+    "carbs": 8.16,
+    "protein": 1.38,
+    "fat": 0.37,
+    "fiber": 2.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-680",
+    "name": "Gooseberry chutney (Amla chutney)",
+    "calories": 43.02,
+    "carbs": 8.83,
+    "protein": 1.44,
+    "fat": 0.62,
+    "fiber": 4.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-681",
+    "name": "Walnut chutney (Akhrot ki chutney)",
+    "calories": 370.43,
+    "carbs": 8.91,
+    "protein": 9.44,
+    "fat": 33.46,
+    "fiber": 3.04,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-682",
+    "name": "Saunth/Sonth chutney with ginger",
+    "calories": 84.22,
+    "carbs": 20.62,
+    "protein": 0.28,
+    "fat": 0.11,
+    "fiber": 0.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-683",
+    "name": "Gun powder chutney",
+    "calories": 312.34,
+    "carbs": 47.65,
+    "protein": 21.55,
+    "fat": 2.67,
+    "fiber": 13.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-684",
+    "name": "Dessicated coconut chutney (Sookhe kase nariyal ki chutney) ",
+    "calories": 346.36,
+    "carbs": 36.72,
+    "protein": 12.88,
+    "fat": 15.88,
+    "fiber": 13.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-685",
+    "name": "Curd mint dip ",
+    "calories": 76.13,
+    "carbs": 9.11,
+    "protein": 4.82,
+    "fat": 2.44,
+    "fiber": 0.77,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-686",
+    "name": "Curd vegetable dip",
+    "calories": 56.21,
+    "carbs": 6.04,
+    "protein": 3.88,
+    "fat": 1.94,
+    "fiber": 0.63,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-687",
+    "name": "Mayonnaise vegetable dip",
+    "calories": 241.27,
+    "carbs": 4.8,
+    "protein": 3.01,
+    "fat": 23.44,
+    "fiber": 0.41,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-688",
+    "name": "Tomato and cucumber sandwich (Tamatar aur kheere ka sandwich)",
+    "calories": 150.68,
+    "carbs": 20.51,
+    "protein": 4.03,
+    "fat": 6.31,
+    "fiber": 2.1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-689",
+    "name": "Tomato sandwich (grilled)",
+    "calories": 189.92,
+    "carbs": 21.29,
+    "protein": 6.26,
+    "fat": 9.39,
+    "fiber": 1.91,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-690",
+    "name": "French sandwich (toasted)",
+    "calories": 186.75,
+    "carbs": 14.82,
+    "protein": 6.82,
+    "fat": 11.51,
+    "fiber": 1.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-691",
+    "name": "Peanut butter cucumber sandwich",
+    "calories": 243.33,
+    "carbs": 29.76,
+    "protein": 9.04,
+    "fat": 10.56,
+    "fiber": 3.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-692",
+    "name": "Mint and peanut sandwich",
+    "calories": 273.59,
+    "carbs": 31.83,
+    "protein": 7.18,
+    "fat": 13.88,
+    "fiber": 3.67,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-693",
+    "name": "Spicy chutney sandwich",
+    "calories": 249.58,
+    "carbs": 34.03,
+    "protein": 8.74,
+    "fat": 9.58,
+    "fiber": 3.73,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-694",
+    "name": "Chicken walnut sandwich (Chicken aur akhrot ke sandwich)",
+    "calories": 285.78,
+    "carbs": 22.62,
+    "protein": 12.58,
+    "fat": 16.77,
+    "fiber": 1.53,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-695",
+    "name": "Rolled sandwich",
+    "calories": 293.07,
+    "carbs": 34.69,
+    "protein": 6.45,
+    "fat": 15.29,
+    "fiber": 2.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-696",
+    "name": "Ribbon sandwich",
+    "calories": 239.26,
+    "carbs": 24.76,
+    "protein": 6.26,
+    "fat": 13.37,
+    "fiber": 2.92,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-697",
+    "name": "Checker board sandwich",
+    "calories": 348.37,
+    "carbs": 25.94,
+    "protein": 7.37,
+    "fat": 24.65,
+    "fiber": 2.22,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-698",
+    "name": "Submarine sandwich",
+    "calories": 216.92,
+    "carbs": 13.6,
+    "protein": 6.09,
+    "fat": 15.32,
+    "fiber": 1.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-699",
+    "name": "Cheese open sandwich",
+    "calories": 274.07,
+    "carbs": 28.42,
+    "protein": 9.84,
+    "fat": 14.24,
+    "fiber": 1.74,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-700",
+    "name": "Sunset and sunrise open sandwich",
+    "calories": 241.31,
+    "carbs": 18.89,
+    "protein": 8.58,
+    "fat": 15.14,
+    "fiber": 1.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-701",
+    "name": "Danish luncheon sandwich",
+    "calories": 193.82,
+    "carbs": 17.77,
+    "protein": 9.03,
+    "fat": 10.1,
+    "fiber": 1.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-702",
+    "name": "Chicken and corn open sandwich",
+    "calories": 188.16,
+    "carbs": 19.21,
+    "protein": 8.63,
+    "fat": 8.83,
+    "fiber": 1.67,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-703",
+    "name": "Chocolate sponge cake",
+    "calories": 239.86,
+    "carbs": 39.54,
+    "protein": 9.13,
+    "fat": 5.51,
+    "fiber": 0.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-704",
+    "name": "Chocolate swiss roll",
+    "calories": 306.08,
+    "carbs": 26.97,
+    "protein": 6.01,
+    "fat": 19.76,
+    "fiber": 0.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-705",
+    "name": "Lemon curd filling",
+    "calories": 225.62,
+    "carbs": 26.41,
+    "protein": 3.43,
+    "fat": 12.58,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-706",
+    "name": "Jam filling",
+    "calories": 184.62,
+    "carbs": 46.15,
+    "protein": 0,
+    "fat": 0,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-707",
+    "name": "Chocolate pastry",
+    "calories": 243.37,
+    "carbs": 32.24,
+    "protein": 7.05,
+    "fat": 10.12,
+    "fiber": 0.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-708",
+    "name": "Assorted pastry",
+    "calories": 230.74,
+    "carbs": 31.99,
+    "protein": 6.78,
+    "fat": 8.91,
+    "fiber": 0.43,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-709",
+    "name": "Orange gateau",
+    "calories": 178.05,
+    "carbs": 27.01,
+    "protein": 4.78,
+    "fat": 6.02,
+    "fiber": 0.68,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-710",
+    "name": "Black forest gateau",
+    "calories": 217.82,
+    "carbs": 30.57,
+    "protein": 5.94,
+    "fat": 8.58,
+    "fiber": 0.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-711",
+    "name": "Lemon cake",
+    "calories": 373.85,
+    "carbs": 43.1,
+    "protein": 5.29,
+    "fat": 20.63,
+    "fiber": 0.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-712",
+    "name": "Dundee cake",
+    "calories": 396.62,
+    "carbs": 41.4,
+    "protein": 7.78,
+    "fat": 22.7,
+    "fiber": 1.81,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-713",
+    "name": "Victorian sandwich cake",
+    "calories": 373.09,
+    "carbs": 44.74,
+    "protein": 5.18,
+    "fat": 19.83,
+    "fiber": 0.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-714",
+    "name": "Chocolate eggless cake",
+    "calories": 312.01,
+    "carbs": 43.45,
+    "protein": 6.66,
+    "fat": 13.19,
+    "fiber": 0.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-715",
+    "name": "Orange eggless cake",
+    "calories": 355.62,
+    "carbs": 52.65,
+    "protein": 7.16,
+    "fat": 13.82,
+    "fiber": 0.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-716",
+    "name": "Chocolate glace icing",
+    "calories": 436.29,
+    "carbs": 62.43,
+    "protein": 3.22,
+    "fat": 20.8,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-717",
+    "name": "Butter icing",
+    "calories": 500.72,
+    "carbs": 71.64,
+    "protein": 0.19,
+    "fat": 25.37,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-718",
+    "name": "Chocolate butter icing",
+    "calories": 469.59,
+    "carbs": 61.72,
+    "protein": 3.21,
+    "fat": 24.77,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-719",
+    "name": "Almond biscuit (Badam ke biscuit)",
+    "calories": 407.74,
+    "carbs": 52.14,
+    "protein": 6.25,
+    "fat": 19.7,
+    "fiber": 1.5,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-720",
+    "name": "Orange biscuit",
+    "calories": 354.78,
+    "carbs": 62.11,
+    "protein": 3.63,
+    "fat": 11.01,
+    "fiber": 0.75,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-721",
+    "name": "Gingerman biscuit",
+    "calories": 357.43,
+    "carbs": 55.24,
+    "protein": 6.26,
+    "fat": 12.73,
+    "fiber": 2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-722",
+    "name": "Coffee drops",
+    "calories": 443.07,
+    "carbs": 43.06,
+    "protein": 7.57,
+    "fat": 27.16,
+    "fiber": 1.88,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-723",
+    "name": "Christmas biscuit",
+    "calories": 406.07,
+    "carbs": 60.97,
+    "protein": 5.67,
+    "fat": 15.88,
+    "fiber": 2.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-724",
+    "name": "Christmas wreath biscuit",
+    "calories": 386.05,
+    "carbs": 58.07,
+    "protein": 5.43,
+    "fat": 15.01,
+    "fiber": 2.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-725",
+    "name": "Christmas bell biscuit",
+    "calories": 404.85,
+    "carbs": 60.79,
+    "protein": 5.66,
+    "fat": 15.84,
+    "fiber": 2.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-726",
+    "name": "Christmas star biscuit",
+    "calories": 392.03,
+    "carbs": 74.54,
+    "protein": 3.54,
+    "fat": 10.04,
+    "fiber": 1.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-727",
+    "name": "Christmas tree biscuit",
+    "calories": 385.63,
+    "carbs": 58.41,
+    "protein": 5.43,
+    "fat": 15,
+    "fiber": 2.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-728",
+    "name": "Chocolate cream shells",
+    "calories": 427.17,
+    "carbs": 59.26,
+    "protein": 5.1,
+    "fat": 19.34,
+    "fiber": 0.9,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-729",
+    "name": "Jelly biscuit",
+    "calories": 404.61,
+    "carbs": 55.24,
+    "protein": 4.23,
+    "fat": 19.33,
+    "fiber": 2.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-730",
+    "name": "Cherry and walnut cookies",
+    "calories": 422.6,
+    "carbs": 59.35,
+    "protein": 5.63,
+    "fat": 18.75,
+    "fiber": 1.3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-731",
+    "name": "Cheese straws",
+    "calories": 382,
+    "carbs": 30.61,
+    "protein": 9.83,
+    "fat": 24.28,
+    "fiber": 1.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-732",
+    "name": "Butterfly biscuit",
+    "calories": 341.45,
+    "carbs": 25.33,
+    "protein": 9.98,
+    "fat": 22.11,
+    "fiber": 1.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-733",
+    "name": "Flan pastry",
+    "calories": 445.8,
+    "carbs": 47.84,
+    "protein": 6.72,
+    "fat": 25.04,
+    "fiber": 1.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-734",
+    "name": "Fruit flan",
+    "calories": 261.35,
+    "carbs": 34.71,
+    "protein": 3.3,
+    "fat": 12.48,
+    "fiber": 0.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-735",
+    "name": "Orange cream flan",
+    "calories": 280.28,
+    "carbs": 36.16,
+    "protein": 4.73,
+    "fat": 13.59,
+    "fiber": 0.63,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-736",
+    "name": "Fruit puree tart",
+    "calories": 286.5,
+    "carbs": 30.42,
+    "protein": 3.35,
+    "fat": 16.83,
+    "fiber": 1.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-737",
+    "name": "Apple banana pie",
+    "calories": 243.99,
+    "carbs": 32.12,
+    "protein": 3.13,
+    "fat": 11.39,
+    "fiber": 1.89,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-738",
+    "name": "Lemon chiffon pie",
+    "calories": 259.31,
+    "carbs": 27.63,
+    "protein": 4.88,
+    "fat": 14.52,
+    "fiber": 0.66,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-739",
+    "name": "Orange chiffon pie",
+    "calories": 207.57,
+    "carbs": 23.14,
+    "protein": 3.89,
+    "fat": 11.16,
+    "fiber": 0.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-740",
+    "name": "Cream buns",
+    "calories": 215.74,
+    "carbs": 14.16,
+    "protein": 4.45,
+    "fat": 15.81,
+    "fiber": 0.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-741",
+    "name": "Savoury puffs",
+    "calories": 190.79,
+    "carbs": 10.8,
+    "protein": 9.51,
+    "fat": 15.24,
+    "fiber": 0.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-742",
+    "name": "Choux swans",
+    "calories": 216.34,
+    "carbs": 14.92,
+    "protein": 4.35,
+    "fat": 15.6,
+    "fiber": 0.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-743",
+    "name": "Potato aigrettes",
+    "calories": 530.03,
+    "carbs": 8.01,
+    "protein": 2.35,
+    "fat": 54.24,
+    "fiber": 0.45,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-744",
+    "name": "Cream horns",
+    "calories": 408.23,
+    "carbs": 23.12,
+    "protein": 3.42,
+    "fat": 33.55,
+    "fiber": 0.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-745",
+    "name": "Savoury cheese horns",
+    "calories": 295.15,
+    "carbs": 21.38,
+    "protein": 5.66,
+    "fat": 20.71,
+    "fiber": 0.73,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-746",
+    "name": "Paneer patties",
+    "calories": 338.58,
+    "carbs": 22.79,
+    "protein": 7.6,
+    "fat": 23.96,
+    "fiber": 1.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-747",
+    "name": "Vegetable patties ",
+    "calories": 261.92,
+    "carbs": 20.98,
+    "protein": 4.01,
+    "fat": 17.74,
+    "fiber": 2.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-748",
+    "name": "Pearl millet infant food (Bajra shishu aahaar)",
+    "calories": 362.44,
+    "carbs": 62.1,
+    "protein": 11.98,
+    "fat": 6.62,
+    "fiber": 7.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-749",
+    "name": "Sajina",
+    "calories": 345.26,
+    "carbs": 66.87,
+    "protein": 10.81,
+    "fat": 3.03,
+    "fiber": 7.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-750",
+    "name": "Cereal mix ",
+    "calories": 120.81,
+    "carbs": 21.84,
+    "protein": 3.32,
+    "fat": 2.02,
+    "fiber": 2.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-751",
+    "name": "Pulse mix",
+    "calories": 83.29,
+    "carbs": 16,
+    "protein": 3.16,
+    "fat": 0.54,
+    "fiber": 2.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-752",
+    "name": "Shishu ahar",
+    "calories": 93.37,
+    "carbs": 17.42,
+    "protein": 2.61,
+    "fat": 1.43,
+    "fiber": 1.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-753",
+    "name": "Cereal pulse mix with amylase rice flour",
+    "calories": 151.57,
+    "carbs": 27.8,
+    "protein": 4.27,
+    "fat": 2.74,
+    "fiber": 3.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-754",
+    "name": "Banana groundnut paste/puree",
+    "calories": 213.19,
+    "carbs": 36.15,
+    "protein": 4.27,
+    "fat": 5.45,
+    "fiber": 1.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-755",
+    "name": "Rice dal porridge (Chawal dal ki khichdi/khichri)",
+    "calories": 383.33,
+    "carbs": 65.04,
+    "protein": 10.8,
+    "fat": 8.33,
+    "fiber": 4.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-756",
+    "name": "Lentils and semolina porridge (Dal suji porridge/daliya)",
+    "calories": 117.29,
+    "carbs": 23.19,
+    "protein": 3.26,
+    "fat": 1.06,
+    "fiber": 1.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-757",
+    "name": "Spinach khichri (Palak khichri/khichdi)",
+    "calories": 102.18,
+    "carbs": 17.35,
+    "protein": 3.43,
+    "fat": 1.91,
+    "fiber": 1.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-758",
+    "name": "Vegetable mix",
+    "calories": 174.21,
+    "carbs": 36.02,
+    "protein": 4.7,
+    "fat": 0.94,
+    "fiber": 1.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-759",
+    "name": "Lentils and wheat porridge (Dal wheat porridge/daliya )",
+    "calories": 52.54,
+    "carbs": 8.36,
+    "protein": 2.71,
+    "fat": 0.94,
+    "fiber": 1.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-760",
+    "name": "Maize porridge",
+    "calories": 89.57,
+    "carbs": 15.64,
+    "protein": 2.14,
+    "fat": 1.89,
+    "fiber": 1.68,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-761",
+    "name": "Spinach peanut burfi (Palak aur mungfali ki burfi)",
+    "calories": 105.37,
+    "carbs": 13.59,
+    "protein": 3.36,
+    "fat": 4.39,
+    "fiber": 2.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-762",
+    "name": "Split bengal gram burfi/fudge (Channa dal burfi)",
+    "calories": 287.36,
+    "carbs": 54.63,
+    "protein": 4.65,
+    "fat": 7.09,
+    "fiber": 2.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-763",
+    "name": "Chickpea flour cookies (Sweet besan rounds/cookies)",
+    "calories": 207.01,
+    "carbs": 39.64,
+    "protein": 4.29,
+    "fat": 3.42,
+    "fiber": 2.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-764",
+    "name": "Pearl millet mathri (Bajra mathri)",
+    "calories": 785.08,
+    "carbs": 7.42,
+    "protein": 1.82,
+    "fat": 83.12,
+    "fiber": 1.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-765",
+    "name": "Sesame biscuit (Til ke biscuit)",
+    "calories": 424.03,
+    "carbs": 53.65,
+    "protein": 8.27,
+    "fat": 19.34,
+    "fiber": 6.83,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-766",
+    "name": "Fermented bengal gram vada (Khameerikrit/Ufna hua channa dal ka vada)",
+    "calories": 657.57,
+    "carbs": 8.68,
+    "protein": 4.05,
+    "fat": 67.19,
+    "fiber": 2.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-767",
+    "name": "Poshtik namak paras",
+    "calories": 613.39,
+    "carbs": 19.52,
+    "protein": 6.49,
+    "fat": 56.58,
+    "fiber": 4.55,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-768",
+    "name": "Soya chikki",
+    "calories": 423.7,
+    "carbs": 62.89,
+    "protein": 7.18,
+    "fat": 15.51,
+    "fiber": 3.55,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-769",
+    "name": "Besan bathua chilla/cheela",
+    "calories": 373.82,
+    "carbs": 40.65,
+    "protein": 11.48,
+    "fat": 18.57,
+    "fiber": 7.79,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-770",
+    "name": "Wheat flour and nuts ladoos (Atta nuts ladoos)",
+    "calories": 391.9,
+    "carbs": 44.31,
+    "protein": 9.46,
+    "fat": 19.19,
+    "fiber": 7.3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-771",
+    "name": "Gram flour and semolina dhokla (Besan suji dhokla)",
+    "calories": 198.91,
+    "carbs": 25.92,
+    "protein": 8.52,
+    "fat": 7.1,
+    "fiber": 4.59,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-772",
+    "name": "Atta dal burfi ",
+    "calories": 298.8,
+    "carbs": 40.64,
+    "protein": 6.66,
+    "fat": 12.47,
+    "fiber": 4.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-773",
+    "name": "Soya roti",
+    "calories": 283.96,
+    "carbs": 40.03,
+    "protein": 9.18,
+    "fat": 9.23,
+    "fiber": 8.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-774",
+    "name": "Poshtik khichdi/khichri",
+    "calories": 93.37,
+    "carbs": 15.64,
+    "protein": 3.04,
+    "fat": 1.88,
+    "fiber": 2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-775",
+    "name": "Namkeen daliya",
+    "calories": 295.11,
+    "carbs": 49.32,
+    "protein": 8.29,
+    "fat": 7.99,
+    "fiber": 8.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-776",
+    "name": "Sprouts upma ",
+    "calories": 316.25,
+    "carbs": 44.96,
+    "protein": 9.5,
+    "fat": 10.44,
+    "fiber": 7.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-777",
+    "name": "Semolina idli (Suji/Rava idli)",
+    "calories": 206.39,
+    "carbs": 33.67,
+    "protein": 9.34,
+    "fat": 3.47,
+    "fiber": 5.85,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-778",
+    "name": "Poshtik chilla/cheela",
+    "calories": 159.53,
+    "carbs": 27.47,
+    "protein": 4.85,
+    "fat": 3.04,
+    "fiber": 4.91,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-779",
+    "name": "Stuffed bittergourd (dry) (Bharwa karela)",
+    "calories": 217.65,
+    "carbs": 2.49,
+    "protein": 1.29,
+    "fat": 22.38,
+    "fiber": 3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-780",
+    "name": "Cauliflower potato canjee",
+    "calories": 16.79,
+    "carbs": 2.63,
+    "protein": 0.57,
+    "fat": 0.39,
+    "fiber": 0.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-781",
+    "name": "Creamed spinach",
+    "calories": 96.91,
+    "carbs": 4.44,
+    "protein": 5.18,
+    "fat": 6.39,
+    "fiber": 1.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-782",
+    "name": "Mango milkshake with ice cream (Aam milkshake ice cream ke saath)",
+    "calories": 68.35,
+    "carbs": 9.18,
+    "protein": 1.93,
+    "fat": 2.8,
+    "fiber": 0.23,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-783",
+    "name": "Pineapple milkshake with ice cream (Ananas milkshake ice cream ke saath)",
+    "calories": 68.49,
+    "carbs": 9.33,
+    "protein": 1.93,
+    "fat": 2.75,
+    "fiber": 0.42,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-784",
+    "name": "Orange milkshake with ice cream (Narangi milkshake ice cream ke saath)",
+    "calories": 67.82,
+    "carbs": 9.15,
+    "protein": 1.95,
+    "fat": 2.75,
+    "fiber": 0.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-785",
+    "name": "Woodapple juice (Bel ka sharbat)",
+    "calories": 34.18,
+    "carbs": 6.51,
+    "protein": 0.63,
+    "fat": 0.7,
+    "fiber": 1.03,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-786",
+    "name": "Sattu drink",
+    "calories": 23.38,
+    "carbs": 5.16,
+    "protein": 0.56,
+    "fat": 0.14,
+    "fiber": 0.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-787",
+    "name": "Apple and honey sorbet (Seb aur shehad ka sharbat)",
+    "calories": 121.3,
+    "carbs": 30.74,
+    "protein": 0.15,
+    "fat": 0.29,
+    "fiber": 1.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-788",
+    "name": "Thandai",
+    "calories": 101.18,
+    "carbs": 9.13,
+    "protein": 3.59,
+    "fat": 5.89,
+    "fiber": 0.8,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-789",
+    "name": "Cucumber sharbat (Kheere ka sharbat)",
+    "calories": 27.28,
+    "carbs": 6.64,
+    "protein": 0.26,
+    "fat": 0.06,
+    "fiber": 0.78,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-790",
+    "name": "Apple oats chia seed smoothie",
+    "calories": 85.64,
+    "carbs": 13.07,
+    "protein": 3.49,
+    "fat": 2.48,
+    "fiber": 1.44,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-791",
+    "name": "Nannari sharbat",
+    "calories": 88.79,
+    "carbs": 23.62,
+    "protein": 0.01,
+    "fat": 0.01,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-792",
+    "name": "Semolina milk drink (Thari kanji)",
+    "calories": 44.16,
+    "carbs": 6.93,
+    "protein": 0.98,
+    "fat": 1.36,
+    "fiber": 0.72,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-793",
+    "name": "Saffron milk (Kesariya doodh)",
+    "calories": 102.18,
+    "carbs": 12.64,
+    "protein": 3.17,
+    "fat": 4.57,
+    "fiber": 0.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-794",
+    "name": "Black rice kheer (Chak-hao kheer)",
+    "calories": 147.94,
+    "carbs": 22.93,
+    "protein": 4.37,
+    "fat": 4.91,
+    "fiber": 0.76,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-795",
+    "name": "Coconut kheer (Nariyal ki kheer)",
+    "calories": 162.61,
+    "carbs": 14.42,
+    "protein": 3.4,
+    "fat": 10.55,
+    "fiber": 1.53,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-796",
+    "name": "Apple sago payasam (Seb aur sabudana ki kheer)",
+    "calories": 136.5,
+    "carbs": 14.4,
+    "protein": 3.13,
+    "fat": 7.66,
+    "fiber": 0.38,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-797",
+    "name": "Kesari bath",
+    "calories": 244.57,
+    "carbs": 31.38,
+    "protein": 2.4,
+    "fat": 12.59,
+    "fiber": 1.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-798",
+    "name": "Putharekulu",
+    "calories": 318.3,
+    "carbs": 59.61,
+    "protein": 3.66,
+    "fat": 7.55,
+    "fiber": 1.75,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-799",
+    "name": "Mango malpua",
+    "calories": 334.64,
+    "carbs": 12.84,
+    "protein": 1.65,
+    "fat": 30.67,
+    "fiber": 2.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-800",
+    "name": "Mango vanilla custard",
+    "calories": 147.63,
+    "carbs": 18.41,
+    "protein": 3.43,
+    "fat": 7.04,
+    "fiber": 0.99,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-801",
+    "name": "Kiwi granola pudding",
+    "calories": 280.99,
+    "carbs": 32.33,
+    "protein": 5.6,
+    "fat": 15.36,
+    "fiber": 3.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-802",
+    "name": "Oats burfi",
+    "calories": 425.19,
+    "carbs": 62.47,
+    "protein": 8.89,
+    "fat": 17.27,
+    "fiber": 4.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-803",
+    "name": "Lotus seed halwa (Kamal gattay ka halwa)",
+    "calories": 370.55,
+    "carbs": 39.56,
+    "protein": 7.79,
+    "fat": 20.69,
+    "fiber": 0.42,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-804",
+    "name": "Amaranth ladoo (Rajgira ladoo)",
+    "calories": 454.15,
+    "carbs": 51.33,
+    "protein": 10.12,
+    "fat": 22.7,
+    "fiber": 5.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-805",
+    "name": "Chhena poda",
+    "calories": 344.57,
+    "carbs": 33.64,
+    "protein": 13.68,
+    "fat": 17.94,
+    "fiber": 1.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-806",
+    "name": "Sweet couscous dessert",
+    "calories": 196.2,
+    "carbs": 29.69,
+    "protein": 3.81,
+    "fat": 7.69,
+    "fiber": 2.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-807",
+    "name": "Sweetened yogurt (Shrikhand)",
+    "calories": 107.18,
+    "carbs": 16.02,
+    "protein": 5.27,
+    "fat": 2.89,
+    "fiber": 0.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-808",
+    "name": "Thickened sweetened milk (Rabri)",
+    "calories": 102.79,
+    "carbs": 10.55,
+    "protein": 3.52,
+    "fat": 5.35,
+    "fiber": 0.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-809",
+    "name": "Gram flour halwa (Besan halwa)",
+    "calories": 276.79,
+    "carbs": 25.78,
+    "protein": 5.88,
+    "fat": 17.3,
+    "fiber": 1.82,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-810",
+    "name": "Prawn sandwich",
+    "calories": 169.65,
+    "carbs": 11.89,
+    "protein": 10.36,
+    "fat": 9.27,
+    "fiber": 1.55,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-811",
+    "name": "Watercress sandwich",
+    "calories": 229.42,
+    "carbs": 28.03,
+    "protein": 5.17,
+    "fat": 11.47,
+    "fiber": 2.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-812",
+    "name": "Fish sandwich ",
+    "calories": 150.2,
+    "carbs": 10.09,
+    "protein": 4.72,
+    "fat": 10.37,
+    "fiber": 1.23,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-813",
+    "name": "Kidney bean sandwich with cottage cheese",
+    "calories": 176.64,
+    "carbs": 18.86,
+    "protein": 9.85,
+    "fat": 6.84,
+    "fiber": 3.66,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-814",
+    "name": "Finger millet biscuit (Ragi biscuit)",
+    "calories": 458.56,
+    "carbs": 52.69,
+    "protein": 4.03,
+    "fat": 25.79,
+    "fiber": 5.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-815",
+    "name": "Buttermilk biscuit",
+    "calories": 322.54,
+    "carbs": 34.93,
+    "protein": 5.76,
+    "fat": 17.5,
+    "fiber": 1.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-816",
+    "name": "Lemon cookies",
+    "calories": 394.48,
+    "carbs": 42.19,
+    "protein": 5.63,
+    "fat": 23.02,
+    "fiber": 0.78,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-817",
+    "name": "Sweet potato biscuit (Shakarkand ke biscuit)",
+    "calories": 296.4,
+    "carbs": 38.13,
+    "protein": 5.14,
+    "fat": 13.31,
+    "fiber": 2.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-818",
+    "name": "Raspberry shortbread cookies",
+    "calories": 441.12,
+    "carbs": 61.25,
+    "protein": 3,
+    "fat": 21.25,
+    "fiber": 0.75,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-819",
+    "name": "Pumpkin cookies ",
+    "calories": 218.4,
+    "carbs": 44.69,
+    "protein": 2.51,
+    "fat": 3.93,
+    "fiber": 1.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-820",
+    "name": "Greenpea cookies",
+    "calories": 159.42,
+    "carbs": 23.07,
+    "protein": 6.53,
+    "fat": 4.24,
+    "fiber": 5.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-821",
+    "name": "Sunflower cookies",
+    "calories": 520.62,
+    "carbs": 40.06,
+    "protein": 9.49,
+    "fat": 36.28,
+    "fiber": 3.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-822",
+    "name": "Cardamom cookies (Elaichi cookies)",
+    "calories": 400.49,
+    "carbs": 53.99,
+    "protein": 5.1,
+    "fat": 19.12,
+    "fiber": 2.79,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-823",
+    "name": "Hazelnut cookies",
+    "calories": 493.32,
+    "carbs": 39.44,
+    "protein": 6.25,
+    "fat": 34.97,
+    "fiber": 2.45,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-824",
+    "name": "Milk cookies",
+    "calories": 459.43,
+    "carbs": 48.43,
+    "protein": 10.49,
+    "fat": 24.96,
+    "fiber": 0.99,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-825",
+    "name": "Cranberry cookies",
+    "calories": 272.48,
+    "carbs": 36.39,
+    "protein": 3.92,
+    "fat": 12.66,
+    "fiber": 1.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-826",
+    "name": "Olive biscuit",
+    "calories": 438.29,
+    "carbs": 55.01,
+    "protein": 3.2,
+    "fat": 23.75,
+    "fiber": 0.82,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-827",
+    "name": "Tutti fruitti biscuit",
+    "calories": 420.78,
+    "carbs": 53.12,
+    "protein": 5.21,
+    "fat": 17.9,
+    "fiber": 5.43,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-828",
+    "name": "Peach blueberry preserves",
+    "calories": 177.38,
+    "carbs": 45.76,
+    "protein": 0.53,
+    "fat": 0.2,
+    "fiber": 1.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-829",
+    "name": "Pear preserves (Naashpati ka murabba)",
+    "calories": 101.24,
+    "carbs": 25.67,
+    "protein": 0.25,
+    "fat": 0.19,
+    "fiber": 3.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-830",
+    "name": "Starfruit preserves ",
+    "calories": 128.93,
+    "carbs": 33.62,
+    "protein": 0.24,
+    "fat": 0.12,
+    "fiber": 0.78,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-831",
+    "name": "Gooseberry pickle (Amla ka achaar)",
+    "calories": 278.58,
+    "carbs": 7.61,
+    "protein": 1.55,
+    "fat": 27.61,
+    "fiber": 3.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-832",
+    "name": "Lotus stem pickle (Kamal kakdi ka achar)",
+    "calories": 102.69,
+    "carbs": 20.07,
+    "protein": 1.44,
+    "fat": 1.6,
+    "fiber": 8.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-833",
+    "name": "Date pickle (Khajoor ka achaar)",
+    "calories": 182.29,
+    "carbs": 34.66,
+    "protein": 1.68,
+    "fat": 4.21,
+    "fiber": 5.2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-834",
+    "name": "Garlic pickle (Lahasun ka achar)",
+    "calories": 413.62,
+    "carbs": 9.75,
+    "protein": 3.72,
+    "fat": 39.88,
+    "fiber": 5.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-835",
+    "name": "Fermented bamboo shoot pickle (Mesu pickle)",
+    "calories": 59.83,
+    "carbs": 1.73,
+    "protein": 1.58,
+    "fat": 5.59,
+    "fiber": 2.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-836",
+    "name": "Sweet peach pickle (Aadoo ka achaar)",
+    "calories": 144.64,
+    "carbs": 37.01,
+    "protein": 0.46,
+    "fat": 0.2,
+    "fiber": 1.32,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-837",
+    "name": "Pickled mustard greens ",
+    "calories": 13.12,
+    "carbs": 1.05,
+    "protein": 1.51,
+    "fat": 0.22,
+    "fiber": 1.7,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-838",
+    "name": "Small onion pickle ",
+    "calories": 16.86,
+    "carbs": 2.76,
+    "protein": 1.65,
+    "fat": 0.64,
+    "fiber": 1.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-839",
+    "name": "Green tomato pickle (Haray tamatar ka achaar)",
+    "calories": 193.26,
+    "carbs": 2.87,
+    "protein": 1.23,
+    "fat": 19.67,
+    "fiber": 1.74,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-840",
+    "name": "Pickled cabbage ",
+    "calories": 13.69,
+    "carbs": 2.56,
+    "protein": 0.39,
+    "fat": 0.14,
+    "fiber": 0.61,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-841",
+    "name": "Coconut pickle (Nariyal ka aachar)",
+    "calories": 517.26,
+    "carbs": 11.53,
+    "protein": 3.02,
+    "fat": 51.71,
+    "fiber": 6.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-842",
+    "name": "Potato pickle (Aloo ka achaar)",
+    "calories": 369.14,
+    "carbs": 7.87,
+    "protein": 2.07,
+    "fat": 36.46,
+    "fiber": 2.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-843",
+    "name": "Mango murabba candy",
+    "calories": 293.35,
+    "carbs": 77.32,
+    "protein": 0.27,
+    "fat": 0.05,
+    "fiber": 0.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-844",
+    "name": "Afghani chicken",
+    "calories": 151.51,
+    "carbs": 1.95,
+    "protein": 15.66,
+    "fat": 9.07,
+    "fiber": 0.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-845",
+    "name": "Fish orly",
+    "calories": 563.7,
+    "carbs": 4.27,
+    "protein": 5.87,
+    "fat": 58.18,
+    "fiber": 0.33,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-846",
+    "name": "Hariyali Fish Tikka",
+    "calories": 150.24,
+    "carbs": 2.21,
+    "protein": 14.01,
+    "fat": 9.41,
+    "fiber": 0.99,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-847",
+    "name": "Chicken manchurian",
+    "calories": 142.34,
+    "carbs": 6.06,
+    "protein": 9.53,
+    "fat": 11.96,
+    "fiber": 0.41,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-848",
+    "name": "Handi chicken",
+    "calories": 166.02,
+    "carbs": 1.49,
+    "protein": 12.32,
+    "fat": 12.46,
+    "fiber": 0.67,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-849",
+    "name": "Lemon chicken",
+    "calories": 169.79,
+    "carbs": 0.55,
+    "protein": 20.2,
+    "fat": 9.66,
+    "fiber": 0.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-850",
+    "name": "Lemon butter fish",
+    "calories": 160.25,
+    "carbs": 0.75,
+    "protein": 16.38,
+    "fat": 10.26,
+    "fiber": 0.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-851",
+    "name": "Baked eggs in tomato sauce",
+    "calories": 80.05,
+    "carbs": 3.78,
+    "protein": 4.92,
+    "fat": 5.22,
+    "fiber": 0.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-852",
+    "name": "Egg in a pepper",
+    "calories": 128.78,
+    "carbs": 0.17,
+    "protein": 12.64,
+    "fat": 8.68,
+    "fiber": 0.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-853",
+    "name": "Spinach mushroom scrambled egg (Palak mushroom bhurji)",
+    "calories": 158.85,
+    "carbs": 0.59,
+    "protein": 13.28,
+    "fat": 11.51,
+    "fiber": 0.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-854",
+    "name": "Corn omelette/omlet",
+    "calories": 166.93,
+    "carbs": 1.57,
+    "protein": 11.37,
+    "fat": 12.89,
+    "fiber": 0.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-855",
+    "name": "Cajun chicken",
+    "calories": 184.94,
+    "carbs": 1.94,
+    "protein": 12.69,
+    "fat": 13.99,
+    "fiber": 0.89,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-856",
+    "name": "Paaner do pyaza",
+    "calories": 127.7,
+    "carbs": 3.41,
+    "protein": 4.22,
+    "fat": 10.87,
+    "fiber": 0.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-857",
+    "name": "Cabbage manchurian (Pattagobhi manchurian)",
+    "calories": 224.26,
+    "carbs": 4.85,
+    "protein": 0.64,
+    "fat": 22.48,
+    "fiber": 0.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-858",
+    "name": "Gobi 65",
+    "calories": 278.29,
+    "carbs": 3.59,
+    "protein": 0.56,
+    "fat": 29.11,
+    "fiber": 0.57,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-859",
+    "name": "Paneer lababdar",
+    "calories": 105.48,
+    "carbs": 3.37,
+    "protein": 3.98,
+    "fat": 8.46,
+    "fiber": 1.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-860",
+    "name": "Roasted cauliflower steak",
+    "calories": 78.68,
+    "carbs": 2.02,
+    "protein": 2.05,
+    "fat": 6.7,
+    "fiber": 3.53,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-861",
+    "name": "Sauteed radishes with green beans",
+    "calories": 94.32,
+    "carbs": 6.04,
+    "protein": 2.41,
+    "fat": 6.61,
+    "fiber": 3.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-862",
+    "name": "Garlic chutney/Poondu chutney (Lahasun ki chutney)",
+    "calories": 255.51,
+    "carbs": 20.44,
+    "protein": 3.34,
+    "fat": 17.55,
+    "fiber": 5.15,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-863",
+    "name": "Schezwan chutney",
+    "calories": 205.19,
+    "carbs": 10.79,
+    "protein": 3.33,
+    "fat": 17.72,
+    "fiber": 5.72,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-864",
+    "name": "Onion chutney (Pyaaz ki chutney/Vengaya chutney)",
+    "calories": 143.94,
+    "carbs": 13.52,
+    "protein": 2.97,
+    "fat": 8.38,
+    "fiber": 4.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-865",
+    "name": "Dates chutney (Khajoor ki chutney)",
+    "calories": 103.57,
+    "carbs": 21.69,
+    "protein": 1.07,
+    "fat": 1.12,
+    "fiber": 3.41,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-866",
+    "name": "Chicken salad",
+    "calories": 338.19,
+    "carbs": 1.3,
+    "protein": 15.33,
+    "fat": 30.26,
+    "fiber": 2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-867",
+    "name": "Macaroni salad",
+    "calories": 262.19,
+    "carbs": 21.63,
+    "protein": 5.02,
+    "fat": 17.78,
+    "fiber": 0.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-868",
+    "name": "Cabbage raita (Pattagobhi raita)",
+    "calories": 84.84,
+    "carbs": 5.25,
+    "protein": 3.24,
+    "fat": 5.76,
+    "fiber": 0.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-869",
+    "name": "Pomegranate raita (Anaar ka raita)",
+    "calories": 72.64,
+    "carbs": 7.15,
+    "protein": 4.05,
+    "fat": 3.24,
+    "fiber": 0.6,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-870",
+    "name": "Onion raita (Pyaaz ka raita)",
+    "calories": 71.56,
+    "carbs": 7.86,
+    "protein": 4.86,
+    "fat": 2.43,
+    "fiber": 0.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-871",
+    "name": "Green chilli raita (Hari mirch ka raita)",
+    "calories": 77.13,
+    "carbs": 7.66,
+    "protein": 5.58,
+    "fat": 2.92,
+    "fiber": 0.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-872",
+    "name": "Kale salad",
+    "calories": 177.71,
+    "carbs": 5.01,
+    "protein": 4.86,
+    "fat": 15.33,
+    "fiber": 1.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-873",
+    "name": "Spinach and paneer souffle ",
+    "calories": 186.19,
+    "carbs": 9.64,
+    "protein": 7.56,
+    "fat": 13.49,
+    "fiber": 1.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-874",
+    "name": "Masala souffle ",
+    "calories": 123.51,
+    "carbs": 8.02,
+    "protein": 6.38,
+    "fat": 7.37,
+    "fiber": 1.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-875",
+    "name": "Chicken and cheese souffle",
+    "calories": 182.35,
+    "carbs": 3.47,
+    "protein": 9.07,
+    "fat": 14.74,
+    "fiber": 0.26,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-876",
+    "name": "Tamarind chutney (Chintapandu pachadi/Puli chutney)",
+    "calories": 109.15,
+    "carbs": 25.07,
+    "protein": 0.88,
+    "fat": 0.48,
+    "fiber": 1.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-877",
+    "name": "Pav bhaji masala",
+    "calories": 230.47,
+    "carbs": 29.15,
+    "protein": 9.13,
+    "fat": 10.96,
+    "fiber": 24.3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-878",
+    "name": "Green chutney",
+    "calories": 79.42,
+    "carbs": 10.01,
+    "protein": 5.42,
+    "fat": 1.6,
+    "fiber": 5.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-879",
+    "name": "Sago khitchdi/khichri (Sabudana khitchdi/khichri)",
+    "calories": 187.16,
+    "carbs": 22.41,
+    "protein": 2.72,
+    "fat": 10.1,
+    "fiber": 1.82,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-880",
+    "name": "Gram flour chilla/cheela (Besan chilla/cheela)",
+    "calories": 135.93,
+    "carbs": 21.03,
+    "protein": 7.8,
+    "fat": 2.85,
+    "fiber": 4.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-881",
+    "name": "Vegetable namkeen jave",
+    "calories": 112.23,
+    "carbs": 18.98,
+    "protein": 2.93,
+    "fat": 2.51,
+    "fiber": 2.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-882",
+    "name": "Khakhra",
+    "calories": 178.5,
+    "carbs": 27.66,
+    "protein": 4.78,
+    "fat": 5.32,
+    "fiber": 5.43,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-883",
+    "name": "Moong bean dosa (Pesarattu)",
+    "calories": 285.96,
+    "carbs": 31.91,
+    "protein": 12.32,
+    "fat": 11.67,
+    "fiber": 6.04,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-884",
+    "name": "Methi thepla",
+    "calories": 346.16,
+    "carbs": 41.34,
+    "protein": 8.98,
+    "fat": 15.95,
+    "fiber": 7.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-885",
+    "name": "Rice puttu (Ari puttu)",
+    "calories": 81.98,
+    "carbs": 11.82,
+    "protein": 1.26,
+    "fat": 3.13,
+    "fiber": 0.76,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-886",
+    "name": "Buckwheat pancake (Khura)",
+    "calories": 263.3,
+    "carbs": 27.28,
+    "protein": 2.91,
+    "fat": 16.43,
+    "fiber": 0.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-887",
+    "name": "Quinoa khichdi/khichri",
+    "calories": 64.01,
+    "carbs": 8.83,
+    "protein": 3.18,
+    "fat": 1.59,
+    "fiber": 2.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-888",
+    "name": "Khakhra chaat",
+    "calories": 358.66,
+    "carbs": 16.64,
+    "protein": 4.52,
+    "fat": 30.65,
+    "fiber": 3.04,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-889",
+    "name": "Banana appam",
+    "calories": 469.81,
+    "carbs": 20.06,
+    "protein": 1.17,
+    "fat": 42.53,
+    "fiber": 0.67,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-890",
+    "name": "Veg manchurian",
+    "calories": 585.64,
+    "carbs": 6.82,
+    "protein": 0.89,
+    "fat": 61.65,
+    "fiber": 1.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-891",
+    "name": "Pav bhaji",
+    "calories": 96.53,
+    "carbs": 11.99,
+    "protein": 2.66,
+    "fat": 4.32,
+    "fiber": 1.98,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-892",
+    "name": "Rice murukku",
+    "calories": 593.99,
+    "carbs": 33.29,
+    "protein": 5.41,
+    "fat": 48.22,
+    "fiber": 2.18,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-893",
+    "name": "Bhel puri ",
+    "calories": 509.89,
+    "carbs": 16.47,
+    "protein": 3.52,
+    "fat": 47.91,
+    "fiber": 2.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-894",
+    "name": "Semolina dhokla (Suji/Rava dhokla)",
+    "calories": 194.91,
+    "carbs": 30.86,
+    "protein": 5.44,
+    "fat": 5.2,
+    "fiber": 5.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-895",
+    "name": "Spicy corn chaat ",
+    "calories": 479.8,
+    "carbs": 11.45,
+    "protein": 4.61,
+    "fat": 46.55,
+    "fiber": 2.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-896",
+    "name": "Jackfruit fritters (Ponsa mulik/Kathal ka pakora)",
+    "calories": 597.79,
+    "carbs": 24,
+    "protein": 2.34,
+    "fat": 54.41,
+    "fiber": 1.5,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-897",
+    "name": "Banana chips (Kele ke chips)",
+    "calories": 665.67,
+    "carbs": 7.32,
+    "protein": 0.37,
+    "fat": 70.46,
+    "fiber": 0.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-898",
+    "name": "Wheat cake",
+    "calories": 314.63,
+    "carbs": 41.13,
+    "protein": 4.79,
+    "fat": 14.95,
+    "fiber": 2.76,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-899",
+    "name": "Mango cheesecake",
+    "calories": 152.46,
+    "carbs": 20.06,
+    "protein": 2.39,
+    "fat": 7.3,
+    "fiber": 1.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-900",
+    "name": "Carrot cake (Gajar ka cake)",
+    "calories": 255.59,
+    "carbs": 35.98,
+    "protein": 5.6,
+    "fat": 10.27,
+    "fiber": 2.93,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-901",
+    "name": "Semolina cake (Suji/Rava cake)",
+    "calories": 374.14,
+    "carbs": 31.32,
+    "protein": 6.58,
+    "fat": 25.18,
+    "fiber": 5.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-902",
+    "name": "Finger millet cake (Ragi cake)",
+    "calories": 279.46,
+    "carbs": 38.93,
+    "protein": 3.96,
+    "fat": 12.27,
+    "fiber": 2.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-903",
+    "name": "Honey cake",
+    "calories": 333.59,
+    "carbs": 49.04,
+    "protein": 3.08,
+    "fat": 14.7,
+    "fiber": 0.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-904",
+    "name": "Almond cardamom cake (Badam elaichi cake)",
+    "calories": 356.35,
+    "carbs": 34.53,
+    "protein": 7.18,
+    "fat": 21.36,
+    "fiber": 2.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-905",
+    "name": "Tutti frutti cake",
+    "calories": 347.72,
+    "carbs": 52.94,
+    "protein": 4.49,
+    "fat": 12.68,
+    "fiber": 0.85,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-906",
+    "name": "Ham and Bean soup",
+    "calories": 96.04,
+    "carbs": 4.18,
+    "protein": 10.61,
+    "fat": 4.15,
+    "fiber": 0.54,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-907",
+    "name": "Whey soup",
+    "calories": 68.91,
+    "carbs": 6.26,
+    "protein": 3.45,
+    "fat": 3.34,
+    "fiber": 0.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-908",
+    "name": "Bottle gourd soup (Ghiya/Lauki soup)",
+    "calories": 23.05,
+    "carbs": 1.16,
+    "protein": 0.45,
+    "fat": 1.79,
+    "fiber": 0.96,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-909",
+    "name": "Baked potato soup",
+    "calories": 147.05,
+    "carbs": 5.85,
+    "protein": 5.73,
+    "fat": 11.21,
+    "fiber": 0.3,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-910",
+    "name": "Pumpkin soup",
+    "calories": 40.05,
+    "carbs": 2.08,
+    "protein": 0.47,
+    "fat": 3.2,
+    "fiber": 1.19,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-911",
+    "name": "Sweet corn soup",
+    "calories": 32.25,
+    "carbs": 3.56,
+    "protein": 0.99,
+    "fat": 1.63,
+    "fiber": 0.31,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-912",
+    "name": "Paneer soup",
+    "calories": 47.85,
+    "carbs": 2.42,
+    "protein": 3.22,
+    "fat": 2.8,
+    "fiber": 0.28,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-913",
+    "name": "Curried Cauliflower soup",
+    "calories": 37.32,
+    "carbs": 3.12,
+    "protein": 6.72,
+    "fat": 9.77,
+    "fiber": 2.34,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-914",
+    "name": "Millet soup",
+    "calories": 55.99,
+    "carbs": 8.22,
+    "protein": 11.26,
+    "fat": 12.57,
+    "fiber": 2.82,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-915",
+    "name": "Lemon coriander soup",
+    "calories": 108.06,
+    "carbs": 10.32,
+    "protein": 2.27,
+    "fat": 6.26,
+    "fiber": 6.77,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-916",
+    "name": "Garlic soup",
+    "calories": 194.86,
+    "carbs": 6.99,
+    "protein": 2.38,
+    "fat": 17.62,
+    "fiber": 1.66,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-917",
+    "name": "Dal makhani",
+    "calories": 74.04,
+    "carbs": 7.96,
+    "protein": 3.32,
+    "fat": 3.06,
+    "fiber": 2.27,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-918",
+    "name": "Dalma",
+    "calories": 118.93,
+    "carbs": 15.04,
+    "protein": 4.91,
+    "fat": 4.58,
+    "fiber": 2.16,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-919",
+    "name": "Split bengal gram dal (Channa dal)",
+    "calories": 99.67,
+    "carbs": 9.99,
+    "protein": 4.15,
+    "fat": 4.62,
+    "fiber": 3.72,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-920",
+    "name": "Horsegram dal (Kulthi dal) ",
+    "calories": 55.65,
+    "carbs": 8.21,
+    "protein": 2.91,
+    "fat": 1.13,
+    "fiber": 1.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-921",
+    "name": "Panchmel dal",
+    "calories": 111.22,
+    "carbs": 10.71,
+    "protein": 4.63,
+    "fat": 5.36,
+    "fiber": 3.2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-922",
+    "name": "Dal dhokli",
+    "calories": 68.74,
+    "carbs": 8.55,
+    "protein": 2.96,
+    "fat": 2.47,
+    "fiber": 1.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-923",
+    "name": "Gujarati handvo ",
+    "calories": 207.09,
+    "carbs": 31.86,
+    "protein": 8.24,
+    "fat": 4.8,
+    "fiber": 4.95,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-924",
+    "name": "Sev (Omapodi/Karapusa)",
+    "calories": 609.14,
+    "carbs": 12.87,
+    "protein": 5.12,
+    "fat": 60.08,
+    "fiber": 2.35,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-925",
+    "name": "Papdi",
+    "calories": 708.96,
+    "carbs": 12.89,
+    "protein": 1.83,
+    "fat": 72.11,
+    "fiber": 0.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-926",
+    "name": "Jowar dosa",
+    "calories": 294.35,
+    "carbs": 40.53,
+    "protein": 8.5,
+    "fat": 10.28,
+    "fiber": 5.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-927",
+    "name": "Bread roll",
+    "calories": 435.46,
+    "carbs": 16.12,
+    "protein": 2.85,
+    "fat": 40.25,
+    "fiber": 1.45,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-928",
+    "name": "Soya seekh kebab",
+    "calories": 115.05,
+    "carbs": 10,
+    "protein": 5.4,
+    "fat": 5.88,
+    "fiber": 2.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-929",
+    "name": "Classic seasoned black beans",
+    "calories": 28.78,
+    "carbs": 7.66,
+    "protein": 8.01,
+    "fat": 8.28,
+    "fiber": 3.51,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-930",
+    "name": "Maa chaane ki dal",
+    "calories": 344.67,
+    "carbs": 43.11,
+    "protein": 19.8,
+    "fat": 9.5,
+    "fiber": 13.45,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-931",
+    "name": "Garlic chickpea soup (Lahasun aur chane ka shoraba)",
+    "calories": 89.53,
+    "carbs": 13.92,
+    "protein": 4.45,
+    "fat": 2.01,
+    "fiber": 2.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-932",
+    "name": "White sauce (thin)",
+    "calories": 115.17,
+    "carbs": 6.58,
+    "protein": 3.31,
+    "fat": 8.41,
+    "fiber": 0.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-933",
+    "name": "White sauce (medium)",
+    "calories": 151.27,
+    "carbs": 7.98,
+    "protein": 3.36,
+    "fat": 11.76,
+    "fiber": 0.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-934",
+    "name": "White sauce (thick)",
+    "calories": 209.69,
+    "carbs": 10.24,
+    "protein": 3.43,
+    "fat": 17.19,
+    "fiber": 0.24,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-935",
+    "name": "Cheese sauce",
+    "calories": 194.76,
+    "carbs": 7.08,
+    "protein": 7.68,
+    "fat": 15.12,
+    "fiber": 0.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-936",
+    "name": "Egg sauce",
+    "calories": 146.85,
+    "carbs": 5.88,
+    "protein": 5.97,
+    "fat": 11.08,
+    "fiber": 0.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-937",
+    "name": "Mushroom sauce",
+    "calories": 137.56,
+    "carbs": 7.31,
+    "protein": 3.39,
+    "fat": 10.51,
+    "fiber": 0.47,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-938",
+    "name": "Mustard sauce",
+    "calories": 158.58,
+    "carbs": 8.29,
+    "protein": 3.98,
+    "fat": 12.17,
+    "fiber": 0.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-939",
+    "name": "Brown sauce",
+    "calories": 109.18,
+    "carbs": 5.38,
+    "protein": 11.92,
+    "fat": 23.67,
+    "fiber": 1.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-940",
+    "name": "Classic italian pasta",
+    "calories": 42.12,
+    "carbs": 4.4,
+    "protein": 0.57,
+    "fat": 2.45,
+    "fiber": 1.36,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-941",
+    "name": "Pasta spinach sauce",
+    "calories": 85.46,
+    "carbs": 1.76,
+    "protein": 1.76,
+    "fat": 7.9,
+    "fiber": 0.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-942",
+    "name": "Pasta cheese sauce",
+    "calories": 149.26,
+    "carbs": 9,
+    "protein": 4.33,
+    "fat": 10.84,
+    "fiber": 0.14,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-943",
+    "name": "Mayonnaise",
+    "calories": 774.86,
+    "carbs": 1.65,
+    "protein": 1.86,
+    "fat": 84.52,
+    "fiber": 0.11,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-944",
+    "name": "Low calorie quick mayonnaise",
+    "calories": 242.89,
+    "carbs": 4.71,
+    "protein": 1.41,
+    "fat": 24.35,
+    "fiber": 0.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-945",
+    "name": "Thousand island dressing",
+    "calories": 407.87,
+    "carbs": 4.49,
+    "protein": 1.37,
+    "fat": 42.87,
+    "fiber": 0.46,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-946",
+    "name": "Curd dip",
+    "calories": 79.95,
+    "carbs": 7.95,
+    "protein": 5.04,
+    "fat": 3.36,
+    "fiber": 0.1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-947",
+    "name": "Short crust pastry",
+    "calories": 422.1,
+    "carbs": 44.72,
+    "protein": 6.11,
+    "fat": 23.98,
+    "fiber": 1.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-948",
+    "name": "Choux pastry",
+    "calories": 222.37,
+    "carbs": 16.2,
+    "protein": 5.55,
+    "fat": 14.96,
+    "fiber": 0.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-949",
+    "name": "Flaky pastry",
+    "calories": 443.94,
+    "carbs": 33.61,
+    "protein": 4.69,
+    "fat": 31.99,
+    "fiber": 1.25,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-950",
+    "name": "Sponge cake ",
+    "calories": 253.77,
+    "carbs": 44.63,
+    "protein": 9.18,
+    "fat": 4.74,
+    "fiber": 0.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-951",
+    "name": "Glace icing",
+    "calories": 323.51,
+    "carbs": 86.31,
+    "protein": 0.01,
+    "fat": 0.01,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-952",
+    "name": "Royal icing",
+    "calories": 332.58,
+    "carbs": 86.53,
+    "protein": 1.74,
+    "fat": 0.02,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-953",
+    "name": "American frosting",
+    "calories": 257.57,
+    "carbs": 67.48,
+    "protein": 1.05,
+    "fat": 0.01,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-954",
+    "name": "Gum icing",
+    "calories": 223.07,
+    "carbs": 53.19,
+    "protein": 5.94,
+    "fat": 0,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-955",
+    "name": "Channa murmura premix",
+    "calories": 339.09,
+    "carbs": 72.59,
+    "protein": 10.59,
+    "fat": 3.28,
+    "fiber": 8.21,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-956",
+    "name": "Cracked wheat and green gram dal premix (Dalia moong dal premix)",
+    "calories": 362.16,
+    "carbs": 64.75,
+    "protein": 15.89,
+    "fat": 5.11,
+    "fiber": 11.66,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-957",
+    "name": "Rice flakes and roasted channa ",
+    "calories": 333.4,
+    "carbs": 71.94,
+    "protein": 10.57,
+    "fat": 2.94,
+    "fiber": 8.84,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-958",
+    "name": "Spinach soup in milk ",
+    "calories": 56.72,
+    "carbs": 3.98,
+    "protein": 2.89,
+    "fat": 3.2,
+    "fiber": 0.79,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-959",
+    "name": "Vegetable soup",
+    "calories": 55.21,
+    "carbs": 7.6,
+    "protein": 2.22,
+    "fat": 1.55,
+    "fiber": 3.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-960",
+    "name": "Mashed banana with milk",
+    "calories": 95.43,
+    "carbs": 14.62,
+    "protein": 2.51,
+    "fat": 2.99,
+    "fiber": 0.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-961",
+    "name": "Poha with curd (Poha aur dahi)",
+    "calories": 173.32,
+    "carbs": 26.72,
+    "protein": 6.01,
+    "fat": 4.65,
+    "fiber": 1.09,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-962",
+    "name": "Potato with curd",
+    "calories": 73.18,
+    "carbs": 12.01,
+    "protein": 3.19,
+    "fat": 1.33,
+    "fiber": 1.02,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-963",
+    "name": "Sweet wheat porridge (Sweet dalia)",
+    "calories": 140.66,
+    "carbs": 23.77,
+    "protein": 5.11,
+    "fat": 2.79,
+    "fiber": 2.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-964",
+    "name": "Vegetable khichdi/khichri",
+    "calories": 143.17,
+    "carbs": 19.57,
+    "protein": 5.61,
+    "fat": 4.53,
+    "fiber": 2.45,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-965",
+    "name": "Moong dal mixture",
+    "calories": 158.84,
+    "carbs": 33.93,
+    "protein": 4.62,
+    "fat": 1,
+    "fiber": 1.9,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-966",
+    "name": "Cracked wheat khichri/khichdi (Dalia khichri/khichdi)",
+    "calories": 167.45,
+    "carbs": 22.35,
+    "protein": 7.56,
+    "fat": 5.52,
+    "fiber": 3.74,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-967",
+    "name": "Stewed apple",
+    "calories": 91.93,
+    "carbs": 22.49,
+    "protein": 0.17,
+    "fat": 0.37,
+    "fiber": 1.48,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-968",
+    "name": "Lemon squash (Nimbu ka squash)",
+    "calories": 184.56,
+    "carbs": 48.88,
+    "protein": 0.15,
+    "fat": 0.06,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-969",
+    "name": "Orange squash (Santre ka squash)",
+    "calories": 193.26,
+    "carbs": 50.88,
+    "protein": 0.22,
+    "fat": 0.04,
+    "fiber": 0.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-970",
+    "name": "Lichi squash",
+    "calories": 198.33,
+    "carbs": 51.96,
+    "protein": 0.3,
+    "fat": 0.08,
+    "fiber": 0.41,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-971",
+    "name": "Mango squash (Aam ka squash)",
+    "calories": 194.66,
+    "carbs": 50.96,
+    "protein": 0.17,
+    "fat": 0.17,
+    "fiber": 0.58,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-972",
+    "name": "Pineapple squash (Ananas ka squash)",
+    "calories": 195.02,
+    "carbs": 51.34,
+    "protein": 0.16,
+    "fat": 0.05,
+    "fiber": 1.06,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-973",
+    "name": "Lemon and ginger squash (Nimbu aur adrak ka squash)",
+    "calories": 170.34,
+    "carbs": 44.06,
+    "protein": 0.54,
+    "fat": 0.21,
+    "fiber": 1.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-974",
+    "name": "Apple jam (Seb ka murabba)",
+    "calories": 188.79,
+    "carbs": 48.56,
+    "protein": 0.14,
+    "fat": 0.32,
+    "fiber": 1.29,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-975",
+    "name": "Plum jam (Aloo bukhara jam)",
+    "calories": 178.89,
+    "carbs": 46.2,
+    "protein": 0.31,
+    "fat": 0.19,
+    "fiber": 1,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-976",
+    "name": "Pineapple jam ",
+    "calories": 149.18,
+    "carbs": 38.27,
+    "protein": 0.32,
+    "fat": 0.15,
+    "fiber": 2.2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-977",
+    "name": "Guava jelly (Amrood ki jelly)",
+    "calories": 115.74,
+    "carbs": 28.18,
+    "protein": 1.11,
+    "fat": 0.25,
+    "fiber": 6.61,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-978",
+    "name": "Orange marmalade (Santray ka murabba)",
+    "calories": 104.17,
+    "carbs": 25.94,
+    "protein": 0.66,
+    "fat": 0.13,
+    "fiber": 1.97,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-979",
+    "name": "Carrot murabba (Gajar ka murabba)",
+    "calories": 175.24,
+    "carbs": 45.6,
+    "protein": 0.32,
+    "fat": 0.16,
+    "fiber": 1.39,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-980",
+    "name": "Gooseberry marmalade (Amla murabba)",
+    "calories": 123.16,
+    "carbs": 32.34,
+    "protein": 0.14,
+    "fat": 0.03,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-981",
+    "name": "Ginger candy (Adrak ki candy)",
+    "calories": 195.71,
+    "carbs": 50.38,
+    "protein": 0.69,
+    "fat": 0.27,
+    "fiber": 1.67,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-982",
+    "name": "Mango pickle (Aam ka achaar)",
+    "calories": 192.12,
+    "carbs": 8.11,
+    "protein": 1.6,
+    "fat": 17.89,
+    "fiber": 3.68,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-983",
+    "name": "Mixed vegetable pickle (Sabziyoon ka achaar)",
+    "calories": 211.2,
+    "carbs": 7.48,
+    "protein": 1.9,
+    "fat": 19.68,
+    "fiber": 2.76,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-984",
+    "name": "Sweet lemon pickle (Neembu ka meetha achaar)",
+    "calories": 69.54,
+    "carbs": 16.87,
+    "protein": 1.22,
+    "fat": 0.21,
+    "fiber": 2.13,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-985",
+    "name": "Plum chutney (Aloo bukhara ki chutney)",
+    "calories": 177.11,
+    "carbs": 44.95,
+    "protein": 0.47,
+    "fat": 0.29,
+    "fiber": 1.37,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-986",
+    "name": "Raw mango chutney (Kachhe aam/Kairi ki chutney)",
+    "calories": 193.13,
+    "carbs": 49.94,
+    "protein": 0.51,
+    "fat": 0.16,
+    "fiber": 2.17,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-987",
+    "name": "Tomato sauce",
+    "calories": 34.33,
+    "carbs": 7.23,
+    "protein": 0.81,
+    "fat": 0.27,
+    "fiber": 1.79,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-988",
+    "name": "Tomato puree",
+    "calories": 20.62,
+    "carbs": 3.68,
+    "protein": 0.75,
+    "fat": 0.25,
+    "fiber": 1.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-989",
+    "name": "Garam masala",
+    "calories": 254.21,
+    "carbs": 26.2,
+    "protein": 9.89,
+    "fat": 10.97,
+    "fiber": 35.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-990",
+    "name": "Chat masala",
+    "calories": 222.58,
+    "carbs": 23.87,
+    "protein": 8.19,
+    "fat": 9.91,
+    "fiber": 18.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-991",
+    "name": "Kashmiri masala",
+    "calories": 389.02,
+    "carbs": 23.16,
+    "protein": 8.26,
+    "fat": 31.03,
+    "fiber": 12.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-992",
+    "name": "Rasam powder (Rasam masala)",
+    "calories": 267.96,
+    "carbs": 25.19,
+    "protein": 12.04,
+    "fat": 11.8,
+    "fiber": 35.71,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-993",
+    "name": "Sambar powder (Sambar masala)",
+    "calories": 297.46,
+    "carbs": 23.38,
+    "protein": 12.5,
+    "fat": 15.58,
+    "fiber": 34.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-994",
+    "name": "Tartare sauce",
+    "calories": 610.93,
+    "carbs": 2.96,
+    "protein": 1.44,
+    "fat": 66.12,
+    "fiber": 0.42,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-995",
+    "name": "Barbeque sauce",
+    "calories": 121.93,
+    "carbs": 20.46,
+    "protein": 0.96,
+    "fat": 4.51,
+    "fiber": 0.69,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-996",
+    "name": "Bread sauce",
+    "calories": 111.04,
+    "carbs": 8.69,
+    "protein": 3.46,
+    "fat": 7.05,
+    "fiber": 0.56,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-997",
+    "name": "Green chilli sauce",
+    "calories": 46.06,
+    "carbs": 7.36,
+    "protein": 1.25,
+    "fat": 0.27,
+    "fiber": 1.77,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-998",
+    "name": "Home made plain noodles",
+    "calories": 238.78,
+    "carbs": 44.5,
+    "protein": 6.21,
+    "fat": 3.56,
+    "fiber": 1.65,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-999",
+    "name": "Dal moong",
+    "calories": 43.69,
+    "carbs": 4.92,
+    "protein": 2.2,
+    "fat": 1.62,
+    "fiber": 1.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1000",
+    "name": "Cumin seeds baghar (Jeera baghar/tadka)",
+    "calories": 736.81,
+    "carbs": 5.22,
+    "protein": 3.34,
+    "fat": 78.77,
+    "fiber": 6.01,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1001",
+    "name": "Onion tomato baghar (Pyaaz tamatar ka tadka)",
+    "calories": 137.52,
+    "carbs": 6.17,
+    "protein": 1.26,
+    "fat": 11.98,
+    "fiber": 2.12,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1002",
+    "name": "Mustard seeds baghar (Mustard seed tadka)",
+    "calories": 552.59,
+    "carbs": 10.45,
+    "protein": 4.73,
+    "fat": 54.3,
+    "fiber": 9.74,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Unhealthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1003",
+    "name": "Hot cherry sauce",
+    "calories": 252.74,
+    "carbs": 67.95,
+    "protein": 0.13,
+    "fat": 0.07,
+    "fiber": 0,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1004",
+    "name": "Apple jelly (Seb ki jelly)",
+    "calories": 152.13,
+    "carbs": 39.37,
+    "protein": 0.1,
+    "fat": 0.21,
+    "fiber": 0.86,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1005",
+    "name": "Marmalade (Murabba)",
+    "calories": 143.76,
+    "carbs": 37.64,
+    "protein": 0.23,
+    "fat": 0.04,
+    "fiber": 0.43,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1006",
+    "name": "Plum squash (Aloo bukhara squash)",
+    "calories": 211.17,
+    "carbs": 55.51,
+    "protein": 0.16,
+    "fat": 0.1,
+    "fiber": 0.52,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1007",
+    "name": "Lemon green chilli pickle (Nimboo aur hari mirch ka achaar)",
+    "calories": 14.07,
+    "carbs": 2.14,
+    "protein": 0.85,
+    "fat": 0.24,
+    "fiber": 1.07,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1008",
+    "name": "Brinjal pickle (Baingan ka achaar)",
+    "calories": 139.01,
+    "carbs": 4.23,
+    "protein": 2.24,
+    "fat": 12.98,
+    "fiber": 4.62,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1009",
+    "name": "Sweet and sour tomato pickle (Khatta meetha tamatar ka achaar)",
+    "calories": 60.88,
+    "carbs": 6.55,
+    "protein": 1.26,
+    "fat": 3.24,
+    "fiber": 2.2,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1010",
+    "name": "Jhatpat achar with carrot (Jhatpat achaar gajar ke saath)",
+    "calories": 91.21,
+    "carbs": 6.32,
+    "protein": 1.98,
+    "fat": 6.55,
+    "fiber": 5.08,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1011",
+    "name": "Tomato chutney (Tamatar ki chutney)",
+    "calories": 176.07,
+    "carbs": 31.85,
+    "protein": 0.97,
+    "fat": 6.01,
+    "fiber": 1.49,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1012",
+    "name": "Tomato ketchup",
+    "calories": 33.07,
+    "carbs": 6.48,
+    "protein": 0.91,
+    "fat": 0.3,
+    "fiber": 1.9,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Healthy",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  },
+  {
+    "id": "csv-1013",
+    "name": "Bengal 5 Spice Blend (Panch Phoran)",
+    "calories": 289.79,
+    "carbs": 20,
+    "protein": 18.26,
+    "fat": 22.16,
+    "fiber": 18.4,
+    "servingSize": "100g",
+    "dietType": "Veg",
+    "healthRating": "Moderate",
+    "tags": [
+      "local",
+      "indian"
+    ]
+  }
+];
