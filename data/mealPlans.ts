@@ -162,12 +162,45 @@ export const NON_VEG_MAINTAIN_PLAN: MealPlanTemplate = {
 
 // ── Get plan by goal and diet ──────────────────────────────────────────────
 
+const GOAL_CALORIE_MULTIPLIER: Record<MealPlanTemplate['goal'], number> = {
+  weight_loss: 0.85,
+  maintain: 1.0,
+  weight_gain: 1.15,
+  muscle_gain: 1.15,
+};
+
+// Approximate calorie scaling relative to the base plan.
+// TODO: Replace with hand-authored plans per (dietType × goal) combination
+//       for accurate portion sizes and macro distributions.
+
+function adjustPlanForGoal(
+  basePlan: MealPlanTemplate,
+  goal: MealPlanTemplate['goal'],
+  dietType: MealPlanTemplate['dietType']
+): MealPlanTemplate {
+  const multiplier = GOAL_CALORIE_MULTIPLIER[goal];
+  return {
+    ...basePlan,
+    goal,
+    dietType,
+    targetCalories: Math.round(basePlan.targetCalories * multiplier),
+    days: basePlan.days.map(day => ({
+      ...day,
+      totalCalories: Math.round(day.totalCalories * multiplier),
+      meals: day.meals.map(meal => ({
+        ...meal,
+        estimatedCalories: Math.round(meal.estimatedCalories * multiplier),
+      })),
+    })),
+  };
+}
+
 export const getMealPlan = (
   goal: 'weight_loss' | 'maintain' | 'weight_gain' | 'muscle_gain',
   dietType: 'Veg' | 'Non-Veg' | 'Vegan'
 ): MealPlanTemplate => {
-  if (dietType === 'Non-Veg') return NON_VEG_MAINTAIN_PLAN;
-  return VEG_WEIGHT_LOSS_PLAN;
+  const basePlan = dietType === 'Non-Veg' ? NON_VEG_MAINTAIN_PLAN : VEG_WEIGHT_LOSS_PLAN;
+  return adjustPlanForGoal(basePlan, goal, dietType);
 };
 
 export const getTodaysMeals = (plan: MealPlanTemplate): ScheduledMeal[] => {

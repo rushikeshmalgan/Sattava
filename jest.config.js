@@ -18,9 +18,6 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/$1',
   },
 
-  // Silence noisy React Native module warnings in test output
-  setupFilesAfterFramework: [],
-
   // Collect coverage from service files only (the tested units)
   collectCoverageFrom: [
     'services/**/*.ts',

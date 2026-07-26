@@ -6,12 +6,12 @@
  */
 
 // ── Mock the Gemini SDK before any imports ────────────────────────────────────
-const mockGenerateContent = jest.fn();
+const mockGenerateContent = global.__mockGeminiGenerateContent;
 
 jest.mock('@google/generative-ai', () => ({
   GoogleGenerativeAI: jest.fn().mockImplementation(() => ({
     getGenerativeModel: jest.fn().mockReturnValue({
-      generateContent: mockGenerateContent,
+      generateContent: global.__mockGeminiGenerateContent,
     }),
   })),
 }));

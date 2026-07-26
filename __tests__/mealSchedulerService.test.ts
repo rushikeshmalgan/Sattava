@@ -164,6 +164,17 @@ describe('mealSchedulerService — generateMealPlan', () => {
     expect(Array.isArray(plan.days)).toBe(true);
   });
 
+  it('returns different calorie targets for different goals with the same dietType', async () => {
+    const maintainPlan = await generateMealPlan({ goal: 'maintain', dietType: 'Veg', region: 'North', targetCalories: 2000 });
+    const gainPlan = await generateMealPlan({ goal: 'muscle_gain', dietType: 'Veg', region: 'North', targetCalories: 2800 });
+
+    expect(maintainPlan.targetCalories).toBeLessThan(gainPlan.targetCalories);
+    expect(maintainPlan.goal).toBe('maintain');
+    expect(maintainPlan.dietType).toBe('Veg');
+    expect(gainPlan.goal).toBe('muscle_gain');
+    expect(gainPlan.dietType).toBe('Veg');
+  });
+
   it('saves both plan and prefs to storage during generation', async () => {
     const prefs: MealPreferences = { goal: 'weight_loss', dietType: 'Veg', region: 'South', targetCalories: 1500 };
     await generateMealPlan(prefs);
