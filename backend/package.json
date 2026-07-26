@@ -1,5 +1,5 @@
 {
-  "name": "ai-cal-tracker-backend",
+  "name": "sattava-backend",
   "version": "1.0.0",
   "description": "Proxy server for FatSecret API",
   "main": "server.js",
@@ -12,3 +12,4 @@
     "express": "^4.19.2"
   }
 }
+

@@ -26,6 +26,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import * as Speech from 'expo-speech';
 
 import { Colors } from '../../constants/Colors';
+import { ScanErrorBoundary } from '../../components/ScanErrorBoundary';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeType } from '../../constants/theme';
 import { addFoodLog } from '../../services/logService';
@@ -641,7 +642,12 @@ const ScanFoodScreen = () => {
     );
   }
 
+  const handleRetryScan = () => {
+    resetScan();
+  };
+
   return (
+    <ScanErrorBoundary onRetry={handleRetryScan}>
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -1237,6 +1243,7 @@ const ScanFoodScreen = () => {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
+    </ScanErrorBoundary>
   );
 };
 

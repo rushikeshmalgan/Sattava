@@ -82,19 +82,34 @@ export default function SignIn() {
 
     // Google OAuth Sign In
     const onPressGoogle = async () => {
-        if (!isLoaded || isSignedIn) return;
+        if (!isLoaded) return;
+        
+        // If already signed in, redirect immediately
+        if (isSignedIn) {
+            router.replace('/');
+            return;
+        }
+        
         try {
-            const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
+            const { createdSessionId, setActive } = await startOAuthFlow({
                 redirectUrl: Linking.createURL('/'),
             });
 
             if (createdSessionId) {
-                await setActive!({ session: createdSessionId });
-
+                if (setActive) { await setActive({ session: createdSessionId }); }
+            } else {
+                // No new session created  check if user became signed in
+                router.replace('/');
             }
         } catch (err: any) {
-            if (err?.message?.includes('already signed in')) return;
+            const message = err?.message?.toLowerCase() || '';
+            if (message.includes('already') || message.includes('session')) {
+                // Session already exists  user is signed in, redirect to home
+                router.replace('/');
+                return;
+            }
             console.error('OAuth error', err);
+            alert(err?.errors?.[0]?.message || err?.message || 'Google sign-in failed. Please try again.');
         }
     };
 
