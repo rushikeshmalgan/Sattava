@@ -7,12 +7,16 @@ export function SyncUserToFirestore() {
     const { user, isLoaded } = useUser();
 
     useEffect(() => {
+        console.log('[BOOT] SyncUserToFirestore running');
         if (!isLoaded || !user) return;
 
         const syncUser = async () => {
             try {
                 const userRef = doc(db, "users", user.id);
-                const existing = await getDoc(userRef);
+                const existing = await Promise.race([
+                    getDoc(userRef),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT: getDoc did not respond in 10s')), 10000))
+                ]) as any;
 
                 const baseData: any = {
                     id: user.id,
@@ -27,11 +31,14 @@ export function SyncUserToFirestore() {
                     baseData.createdAt = serverTimestamp();
                 }
 
-                await setDoc(
-                    userRef,
-                    baseData,
-                    { merge: true }
-                );
+                await Promise.race([
+                    setDoc(
+                        userRef,
+                        baseData,
+                        { merge: true }
+                    ),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT: setDoc did not respond in 10s')), 10000))
+                ]);
 
                 console.log("✅ User synced to Firestore");
             } catch (err) {

@@ -19,7 +19,12 @@ const InitialLayout = () => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log('[BOOT] useAuth state — isLoaded:', isLoaded, 'isSignedIn:', isSignedIn);
     if (!isLoaded) return;
+
+    const clerkTimeout = setTimeout(() => {
+      console.error('[BOOT] TIMEOUT: Clerk useAuth did not respond in 10s');
+    }, 10000);
 
     const inTabsGroup = segments[0] === "(auth)";
 
@@ -30,12 +35,16 @@ const InitialLayout = () => {
       // If not signed in and NOT in the auth group, redirect to sign-in
       router.replace("/(auth)/sign-in");
     }
+
+    return () => clearTimeout(clerkTimeout);
   }, [isSignedIn, isLoaded, segments]);
 
   return <Stack screenOptions={{ headerShown: false }} />;
 };
 
 export default function RootLayout() {
+  console.log('[BOOT] Layout mounting, publishableKey present:', !!publishableKey);
+
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ThemeProvider>
