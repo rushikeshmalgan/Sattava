@@ -1,7 +1,7 @@
 /**
- * Sattva — AI Coach Chat Screen
- * Context-aware AI nutrition coach powered by Gemini.
- * Features: quick prompts, typing indicator, message history, dark mode.
+ * Sattva — Nutrition Assistant Chat Screen
+ * Context-aware nutrition assistant with quick prompts, typing indicator,
+ * message history, and dark mode support.
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -465,9 +465,9 @@ export default function ChatScreen() {
         'You are a NEUTRAL and FACTUAL coach. Be direct, data-driven, and objective.';
     }
 
-    return `You are Sattva, an Indian AI nutrition coach inside a health app.
+    return `You are Sattva, an Indian nutrition assistant inside a health app.
 
-Coach personality:
+Assistant personality:
 ${toneInstruction}
 
 Current user data today:
@@ -753,7 +753,7 @@ function createWelcomeMessage(): Message {
   return {
     id: `welcome_${Date.now()}`,
     role: 'ai',
-    text: "Namaste! 🙏 I'm Sattva, your AI nutrition coach. I can read your food logs, goals, water, and activity data. How can I help you today?",
+    text: "Namaste! 🙏 I'm Sattva, your nutrition assistant. I can read your food logs, goals, water, and activity data. How can I help you today?",
     ts: Date.now(),
   };
 }

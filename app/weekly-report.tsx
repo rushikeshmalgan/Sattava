@@ -43,16 +43,10 @@ export default function WeeklyReportScreen() {
             days = days.slice(0, 7); // take last 7 days
 
             if (days.length === 0) {
-                // FRUGAL HACK: If no data, populate beautiful mock data to ensure demo never looks empty.
-                days.push(
-                    { date: 'Mon', consumedCalories: 1800, totalProtein: 55 },
-                    { date: 'Tue', consumedCalories: 1950, totalProtein: 62 },
-                    { date: 'Wed', consumedCalories: 2100, totalProtein: 70 },
-                    { date: 'Thu', consumedCalories: 1850, totalProtein: 58 },
-                    { date: 'Fri', consumedCalories: 2200, totalProtein: 80 },
-                    { date: 'Sat', consumedCalories: 2400, totalProtein: 40 },
-                    { date: 'Sun', consumedCalories: 1900, totalProtein: 65 }
-                );
+                setStats({ avgCals: 0, daysLogged: 0, highestProteinDay: '', chartData: [] });
+                setReportText("No data yet. Log your first meal to unlock analytics.");
+                setLoading(false);
+                return;
             }
 
             let totalCals = 0;

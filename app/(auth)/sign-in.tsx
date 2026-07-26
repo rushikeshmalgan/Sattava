@@ -1,9 +1,9 @@
-import { useOAuth, useSignIn } from '@clerk/clerk-expo';
+import { useOAuth, useSignIn, useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import * as Linking from "expo-linking";
 import { Link, useRouter } from 'expo-router';
 import * as WebBrowser from "expo-web-browser";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     Image,
@@ -23,7 +23,14 @@ WebBrowser.maybeCompleteAuthSession();
 export default function SignIn() {
     const { signIn, setActive, isLoaded } = useSignIn();
     const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
+    const { isSignedIn } = useAuth();
     const router = useRouter();
+
+    useEffect(() => {
+        if (isSignedIn) {
+            router.replace('/');
+        }
+    }, [isSignedIn, router]);
 
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
@@ -33,7 +40,7 @@ export default function SignIn() {
 
     // Email/Password Sign in
     const onSignInPress = async () => {
-        if (!isLoaded) return;
+        if (!isLoaded || isSignedIn) return;
         setLoading(true);
         try {
             const completeSignIn = await signIn.create({
@@ -51,7 +58,7 @@ export default function SignIn() {
     };
 
     const onForgotPasswordPress = async () => {
-        if (!isLoaded) return;
+        if (!isLoaded || isSignedIn) return;
 
         if (!emailAddress.trim()) {
             alert('Please enter your email first to reset password.');
@@ -75,6 +82,7 @@ export default function SignIn() {
 
     // Google OAuth Sign In
     const onPressGoogle = async () => {
+        if (!isLoaded || isSignedIn) return;
         try {
             const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
                 redirectUrl: Linking.createURL('/'),
@@ -84,7 +92,8 @@ export default function SignIn() {
                 await setActive!({ session: createdSessionId });
 
             }
-        } catch (err) {
+        } catch (err: any) {
+            if (err?.message?.includes('already signed in')) return;
             console.error('OAuth error', err);
         }
     };

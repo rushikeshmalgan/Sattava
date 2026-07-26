@@ -1,9 +1,9 @@
-import { useOAuth, useSignUp } from '@clerk/clerk-expo';
+import { useOAuth, useSignUp, useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import * as Linking from "expo-linking";
 import { Link, useRouter } from 'expo-router';
 import * as WebBrowser from "expo-web-browser";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     Image,
@@ -23,7 +23,14 @@ WebBrowser.maybeCompleteAuthSession();
 export default function SignUp() {
     const { isLoaded, signUp, setActive } = useSignUp();
     const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
+    const { isSignedIn } = useAuth();
     const router = useRouter();
+
+    useEffect(() => {
+        if (isSignedIn) {
+            router.replace('/');
+        }
+    }, [isSignedIn, router]);
 
     const [name, setName] = useState('');
     const [emailAddress, setEmailAddress] = useState('');
@@ -35,7 +42,7 @@ export default function SignUp() {
 
     // Email/Password Sign Up
     const onSignUpPress = async () => {
-        if (!isLoaded) return;
+        if (!isLoaded || isSignedIn) return;
         setLoading(true);
         try {
             await signUp.create({
@@ -56,7 +63,7 @@ export default function SignUp() {
 
     // Verify Email OTP
     const onPressVerify = async () => {
-        if (!isLoaded) return;
+        if (!isLoaded || isSignedIn) return;
         setLoading(true);
         try {
             const completeSignUp = await signUp.attemptEmailAddressVerification({
@@ -78,6 +85,7 @@ export default function SignUp() {
 
     // Google OAuth Sign In/Up
     const onPressGoogle = async () => {
+        if (!isLoaded || isSignedIn) return;
         try {
             const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
                 redirectUrl: Linking.createURL('/'),
@@ -86,7 +94,8 @@ export default function SignUp() {
                 await setActive!({ session: createdSessionId });
 
             }
-        } catch (err) {
+        } catch (err: any) {
+            if (err?.message?.includes('already signed in')) return;
             console.error('OAuth error', err);
         }
     };

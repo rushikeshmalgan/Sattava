@@ -1,8 +1,7 @@
 /**
- * Advanced Local AI Engine
- * Guarantees 100% uptime for demo.
- * Uses intent matching and dynamic template arrays to simulate a real AI
- * without hitting any API rate limits.
+ * Local Nutrition Assistant Engine
+ * Uses intent matching and dynamic template arrays to provide instant,
+ * offline-safe responses without hitting any API rate limits.
  */
 
 export interface ChatContext {

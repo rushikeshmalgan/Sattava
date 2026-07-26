@@ -6,7 +6,7 @@ import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, TextInpu
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, Gradients } from '../../constants/Colors';
+import { Colors } from '../../constants/Colors';
 import { db } from '../../firebaseConfig';
 import { useTheme } from '../../context/ThemeContext';
 import { loadDemoData } from '../../services/logService';
@@ -26,17 +26,6 @@ export default function Profile() {
     const { theme, mode, setMode, isDark } = useTheme();
     const [showAppearanceModal, setShowAppearanceModal] = useState(false);
     const [isDemoLoading, setIsDemoLoading] = useState(false);
-    const [demoPressCount, setDemoPressCount] = useState(0);
-
-    // Mock achievement stats for demo
-    const userStats = {
-        streak: 5,
-        mealsLogged: 32,
-        hitWaterGoal: true,
-        maxStepsInDay: 12000,
-        hasUsedAIChat: true,
-        bestDietScore: 85,
-    };
 
     // Core data state
     const [userPlan, setUserPlan] = useState<any>(null);
@@ -248,57 +237,18 @@ export default function Profile() {
             {/* User Info Card */}
             <View style={styles.card}>
                 <View style={styles.userInfoHeader}>
-                    <Pressable 
-                        onPress={async () => {
-                            setDemoPressCount(p => p + 1);
-                            if (demoPressCount >= 2) { // 3rd tap
-                                const currentPro = await AsyncStorage.getItem('isPro');
-                                if (currentPro === 'true') {
-                                    await AsyncStorage.removeItem('isPro');
-                                    await AsyncStorage.removeItem('demoGodMode');
-                                    Alert.alert("God Mode Disabled", "Pro features locked.");
-                                } else {
-                                    await AsyncStorage.setItem('isPro', 'true');
-                                    await AsyncStorage.setItem('demoGodMode', 'true');
-                                    Alert.alert("God Mode Enabled 🏆", "15-day streak, all badges unlocked, and Pro features activated.");
-                                }
-                                setDemoPressCount(0);
-                            }
-                        }}
-                    >
-                        <View style={styles.userInitials}>
-                            <Text style={styles.initialsText}>
-                                {user?.firstName?.charAt(0) || 'U'}
-                                {user?.lastName?.charAt(0) || 'S'}
-                            </Text>
-                        </View>
-                    </Pressable>
+                    <View style={styles.userInitials}>
+                        <Text style={styles.initialsText}>
+                            {user?.firstName?.charAt(0) || 'U'}
+                            {user?.lastName?.charAt(0) || 'S'}
+                        </Text>
+                    </View>
                     <View style={styles.userDetails}>
                         <Text style={styles.userName}>{currentName}</Text>
                         <Text style={styles.userEmail}>{user?.primaryEmailAddress?.emailAddress || 'No email'}</Text>
                     </View>
                 </View>
             </View>
-
-            {/* Premium Call to Action */}
-            <TouchableOpacity 
-                style={styles.premiumBanner}
-                onPress={() => router.push('/subscription')}
-            >
-                <LinearGradient 
-                    colors={Gradients.PRIMARY} 
-                    start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-                    style={styles.premiumGradient}
-                >
-                    <View style={styles.premiumContent}>
-                        <View style={styles.premiumTextGroup}>
-                            <Text style={styles.premiumTitle}>Sattva Pro</Text>
-                            <Text style={styles.premiumSub}>Unlock AI Coach & Combo Builder</Text>
-                        </View>
-                        <Ionicons name="chevron-forward" size={24} color="#fff" />
-                    </View>
-                </LinearGradient>
-            </TouchableOpacity>
 
             {/* Daily Targets Section */}
             {userPlan?.generatedPlan && (

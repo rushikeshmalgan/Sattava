@@ -36,7 +36,6 @@ import TodayMissionsCard from '../../components/TodayMissionsCard';
 import SmartCoachSuggestionCard from '../../components/SmartCoachSuggestionCard';
 import CoachSelectionModal, { CoachType } from '../../components/CoachSelectionModal';
 import SuggestFoodModal from '../../components/SuggestFoodModal';
-import VoiceCoachButton from '../../components/VoiceCoachButton';
 import { showSmartToast } from '../../components/SmartToast';
 import { ActivityListSkeleton, CaloriesCardSkeleton, QuickStatsRowSkeleton } from '../../components/Skeleton';
 import { getDailyHealthTip } from '../../services/geminiVisionService';
@@ -159,17 +158,17 @@ export default function Home() {
         setConsumed({ calories: 0, caloriesBurned: 0, carbs: 0, protein: 0, fat: 0, water: 0 });
         setActivities([]);
       }
-      // Mark initial load complete after first Firestore response
       setIsInitialLoad(false);
     });
 
     getStreakCount(user.id, targets.calories, targets.water * 1000).then(setStreak);
 
-    // Initial Coach Triggers and Scheduling
     const now = new Date();
+    const waterReminderShown = useRef(false);
 
     // Smart Water Reminder (Legacy UI Toast)
-    if (now.getHours() >= 16 && consumed.water < 1000) {
+    if (now.getHours() >= 16 && consumed.water < 1000 && !waterReminderShown.current) {
+      waterReminderShown.current = true;
       const t = setTimeout(() => {
         showSmartToast({ message: "You're behind on water today! 🚰", icon: 'water' });
       }, 5000);
@@ -199,7 +198,6 @@ export default function Home() {
 
   const runSamosaDemo = async () => {
     if (!user?.id) return;
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     const dateStr = selectedDate.toISOString().split('T')[0];
     const demoFood = {
         id: Date.now().toString(),
@@ -326,8 +324,8 @@ export default function Home() {
           >
             <TouchableOpacity 
               activeOpacity={1} 
-              onLongPress={runSamosaDemo} 
-              delayLongPress={3000}
+              onLongPress={__DEV__ ? runSamosaDemo : undefined} 
+              delayLongPress={__DEV__ ? 3000 : undefined}
             >
               <HomeHeader />
             </TouchableOpacity>
@@ -380,30 +378,26 @@ export default function Home() {
                                 style={[styles.deckButton, { backgroundColor: theme.primary }]}
                                 onPress={() => {
                                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                                    if (!isPro) router.push('/subscription');
-                                    else setShowSuggestModal(true);
+                                    setShowSuggestModal(true);
                                 }}
                             >
                                 <View style={styles.deckIconBg}>
                                     <Ionicons name="sparkles" size={18} color="#fff" />
                                 </View>
                                 <Text style={styles.deckButtonText}>Smart Picks</Text>
-                                {!isPro && <Ionicons name="lock-closed" size={14} color="#fff" style={{ marginLeft: 6 }} />}
                             </TouchableOpacity>
 
                             <TouchableOpacity 
                                 style={[styles.deckButton, { backgroundColor: theme.card, borderColor: theme.border, borderWidth: 1 }]}
                                 onPress={() => {
                                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                                    if (!isPro) router.push('/subscription');
-                                    else router.push('/combo-builder');
+                                    router.push('/combo-builder');
                                 }}
                             >
                                 <View style={[styles.deckIconBg, { backgroundColor: theme.surfaceMuted }]}>
                                     <Ionicons name="color-wand" size={18} color={theme.text} />
                                 </View>
                                 <Text style={[styles.deckButtonText, { color: theme.text }]}>Combo Builder</Text>
-                                {!isPro && <Ionicons name="lock-closed" size={14} color={theme.text} style={{ marginLeft: 6 }} />}
                             </TouchableOpacity>
                         </View>
 
@@ -482,11 +476,6 @@ export default function Home() {
             )}
           </View>
         </ScrollView>
-
-        {/* Floating Voice Coach Button */}
-        <View style={{ position: 'absolute', bottom: 24, right: 24, zIndex: 100 }}>
-            <VoiceCoachButton />
-        </View>
 
       </Animated.View>
 

@@ -5,6 +5,7 @@ import { tokenCache } from "../utils/cache";
 import { SyncUserToFirestore } from "../utils/SyncUserToFirestore";
 import { ThemeProvider } from "../context/ThemeContext";
 import SmartToast from "../components/SmartToast";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -39,8 +40,10 @@ export default function RootLayout() {
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ThemeProvider>
         <SyncUserToFirestore />
-        <InitialLayout />
-        <SmartToast />
+        <ErrorBoundary>
+          <InitialLayout />
+          <SmartToast />
+        </ErrorBoundary>
       </ThemeProvider>
     </ClerkProvider>
   );

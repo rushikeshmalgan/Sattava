@@ -176,7 +176,6 @@ export const addActivityLog = async (
                 waterAmount = 250; // Default to 250ml
             }
             updateData.totalWater = increment(waterAmount);
-            updateData.waterIntake = increment(waterAmount); 
         }
 
         await setDoc(logDocRef, updateData, { merge: true });
