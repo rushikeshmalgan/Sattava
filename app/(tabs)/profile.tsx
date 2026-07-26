@@ -311,10 +311,6 @@ export default function Profile() {
                 </View>
             )}
 
-            {/* Achievements Section */}
-            <View style={{ marginTop: 24 }}>
-                <AchievementSection stats={userStats} />
-            </View>
 
             {/* Profile Settings Section */}
             <View style={styles.section}>
