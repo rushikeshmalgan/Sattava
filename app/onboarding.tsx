@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
         borderColor: 'transparent',
     },
     selectedCard: {
-        backgroundColor: `${Colors.PRIMARY}15`, 
+        backgroundColor: Colors.PRIMARY_LIGHT, 
         borderColor: Colors.PRIMARY,
     },
     genderText: {

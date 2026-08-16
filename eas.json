@@ -33,7 +33,7 @@
   "submit": {
     "production": {
       "android": {
-        "serviceAccountKeyPath": "./google-service-account.json",
+        "serviceAccountKeyPath": "REPLACE_WITH_PATH_TO_GOOGLE_SERVICE_ACCOUNT_JSON",
         "track": "internal"
       },
       "ios": {
