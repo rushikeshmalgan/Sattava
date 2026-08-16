@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
@@ -22,7 +22,7 @@ import { saveDishLocally, Ingredient } from '../../services/dishService';
 import { addActivityLog } from '../../services/userService';
 
 const GharKaKhanaScreen = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const router = useRouter();
     const insets = useSafeAreaInsets();
 
@@ -128,11 +128,11 @@ const GharKaKhanaScreen = () => {
             await saveDishLocally(dishData);
 
             // 2. Log to tracker (Firestore)
-            if (user?.id) {
+            if (user?.uid) {
                 const dateString = new Date().toISOString().split('T')[0];
                 const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 
-                await addActivityLog(user.id, dateString, {
+                await addActivityLog(user.uid, dateString, {
                     id: dishId,
                     name: dishName,
                     calories: Number(calories) || 0,

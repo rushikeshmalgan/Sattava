@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { doc, setDoc } from 'firebase/firestore';
@@ -23,7 +23,7 @@ type StepStatus = 'pending' | 'loading' | 'completed';
 export default function GeneratingProfile() {
   const { data } = useLocalSearchParams();
   const router = useRouter();
-  const { user } = useUser();
+  const { user } = useAuth();
 
   const progress = useRef(new Animated.Value(0)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
@@ -98,7 +98,27 @@ export default function GeneratingProfile() {
     try {
       animateProgress(0.2, 600);
 
-      const prompt = `
+      let aiData: any;
+      if (!model) {
+        console.warn('[Profile] AI model unavailable — using default plan');
+        aiData = {
+          dailyCalories: profileData.gender === 'Female' ? 1800 : 2200,
+          macros: { carbs: '250g', protein: '60g', fats: '70g' },
+          waterIntake: '2.5L',
+          planSummary: 'A balanced Indian diet plan with traditional foods to support your health goals.',
+          fitnessTips: ['Morning yoga for 15 minutes', 'Evening walk for 30 minutes'],
+          ayurvedicTip: 'Eat your largest meal at lunch when digestion is strongest.',
+          indianMealTiming: {
+            morning: 'Warm water with lemon',
+            breakfast: 'Oats/upma with fruits',
+            lunch: 'Roti, dal, sabzi, curd',
+            dinner: 'Khichdi or light meal before 8pm',
+          },
+          recommendedIndianFoods: ['Dal', 'Roti', 'Sabzi', 'Curd', 'Fruits'],
+          foodsToAvoid: ['Processed snacks', 'Sugary drinks', 'Fried foods'],
+        };
+      } else {
+        const prompt = `
 You are a certified Indian nutritionist and Ayurvedic wellness expert specializing in traditional Indian diets.
 
 User profile:
@@ -141,9 +161,10 @@ Guidelines:
 `;
 
       const result = await model.generateContent(prompt);
-      const text = result.response.text();
-      const cleanJson = text.replace(/```json|```/g, '').trim();
-      const aiData = JSON.parse(cleanJson);
+        const text = result.response.text();
+        const cleanJson = text.replace(/```json|```/g, '').trim();
+        aiData = JSON.parse(cleanJson);
+      }
 
       updateStep(3, 'completed');
       updateStep(4, 'loading');
@@ -162,9 +183,9 @@ Guidelines:
 
       await saveUserProfileToStorage(finalProfile);
 
-      if (user?.id) {
+      if (user?.uid) {
         await setDoc(
-          doc(db, 'users', user.id),
+          doc(db, 'users', user.uid),
           {
             onboardingCompleted: true,
             isSetupCompleted: true,
@@ -180,7 +201,7 @@ Guidelines:
               weightKg: profileData.weightKg,
             },
 
-            imageUrl: user.imageUrl || '',
+            imageUrl: user?.photoURL || '',
             onboardingCompletedAt: new Date(),
             lastUpdated: new Date(),
           },

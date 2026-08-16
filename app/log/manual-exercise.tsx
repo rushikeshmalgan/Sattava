@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -17,14 +17,14 @@ import { Colors } from '../../constants/Colors';
 import { addExerciseLog } from '../../services/logService';
 
 const ManualCaloriesScreen = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const router = useRouter();
     const insets = useSafeAreaInsets();
     const [calories, setCalories] = useState('');
     const [isLogging, setIsLogging] = useState(false);
 
     const handleLog = async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
 
         if (!calories || isNaN(Number(calories))) {
             alert("Please enter a valid number for calories");
@@ -35,7 +35,7 @@ const ManualCaloriesScreen = () => {
         try {
             const dateString = new Date().toISOString().split('T')[0];
 
-            await addExerciseLog(user.id, dateString, {
+            await addExerciseLog(user.uid, dateString, {
                 id: Date.now().toString(),
                 type: 'manual',
                 name: 'Manual Exercise',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../context/AuthContext';
 import { Colors } from '../constants/Colors';
 import { showSmartToast } from './SmartToast';
 import { Alert } from 'react-native';
@@ -14,8 +14,8 @@ function getGreeting(name: string): { text: string; emoji: string } {
 }
 
 export default function HomeHeader() {
-  const { user } = useUser();
-  const firstName = user?.firstName || user?.emailAddresses?.[0]?.emailAddress?.split('@')[0] || 'Swasth';
+  const { user } = useAuth();
+  const firstName = user?.displayName?.split(' ')[0] || user?.email?.split('@')[0] || 'Sattva';
   const { text, emoji } = getGreeting(firstName);
 
   return (
@@ -32,8 +32,8 @@ export default function HomeHeader() {
         </TouchableOpacity>
 
         {/* Avatar */}
-        {user?.imageUrl ? (
-          <Image source={{ uri: user.imageUrl }} style={styles.avatar} />
+        {user?.photoURL ? (
+          <Image source={{ uri: user.photoURL }} style={styles.avatar} />
         ) : (
           <View style={styles.avatarFallback}>
             <Text style={styles.avatarInitial}>{firstName[0]?.toUpperCase()}</Text>

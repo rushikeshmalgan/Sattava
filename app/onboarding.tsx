@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { doc, setDoc } from 'firebase/firestore';
@@ -23,7 +23,7 @@ const TOTAL_STEPS = 5;
 
 export default function Onboarding() {
     const router = useRouter();
-    const { user } = useUser();
+    const { user } = useAuth();
     const [currentStep, setCurrentStep] = useState(1);
 
     const [gender, setGender] = useState('');
@@ -84,7 +84,7 @@ export default function Onboarding() {
     };
 
     const completeOnboarding = async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
 
         const profileData: UserProfileData = {
             gender,
@@ -102,7 +102,7 @@ export default function Onboarding() {
 
         try {
             await setDoc(
-                doc(db, 'users', user.id),
+                doc(db, 'users', user.uid),
                 {
                     physicalProfile: profileData,
                     updatedAt: new Date(),

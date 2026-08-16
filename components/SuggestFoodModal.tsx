@@ -5,7 +5,7 @@ import { ThemeType } from '../constants/theme';
 import { getFoodSuggestions, Mood, Preference, SuggestionResult } from '../services/foodSuggestionService';
 import { Colors } from '../constants/Colors';
 import { addFoodLog } from '../services/logService';
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../context/AuthContext';
 import OrderHealthyCard from './OrderHealthyCard';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function SuggestFoodModal({ visible, onClose, theme, userGoal }: Props) {
-    const { user } = useUser();
+    const { user } = useAuth();
     const [preference, setPreference] = useState<Preference>('Veg');
     const [mood, setMood] = useState<Mood>('Light');
     const [suggestions, setSuggestions] = useState<SuggestionResult[]>([]);
@@ -40,11 +40,11 @@ export default function SuggestFoodModal({ visible, onClose, theme, userGoal }: 
     };
 
     const handleLogFood = async (result: SuggestionResult) => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
         setLoggingId(result.food.id);
         const dateStr = new Date().toISOString().split('T')[0];
         try {
-            await addFoodLog(user.id, dateStr, {
+            await addFoodLog(user.uid, dateStr, {
                 id: result.food.id,
                 name: result.food.name,
                 calories: result.food.calories,

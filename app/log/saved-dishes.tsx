@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ import { getLocalDishes, deleteDishLocally, GharKaKhanaDish } from '../../servic
 import { addActivityLog } from '../../services/userService';
 
 const SavedDishesScreen = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const router = useRouter();
     const insets = useSafeAreaInsets();
     
@@ -43,14 +43,14 @@ const SavedDishesScreen = () => {
     };
 
     const handleLogRepeat = async (dish: GharKaKhanaDish) => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
         
         setLoggingId(dish.id);
         try {
             const dateString = new Date().toISOString().split('T')[0];
             const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
-            await addActivityLog(user.id, dateString, {
+            await addActivityLog(user.uid, dateString, {
                 id: Date.now().toString(),
                 name: dish.name,
                 calories: dish.calories || 0,

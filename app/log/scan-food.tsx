@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import {
   BarcodeScanningResult,
@@ -104,7 +104,7 @@ const applyQuantityMultiplier = (
 };
 
 const ScanFoodScreen = () => {
-  const { user } = useUser();
+  const { user } = useAuth();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { theme } = useTheme();
@@ -384,7 +384,7 @@ const ScanFoodScreen = () => {
   };
 
   const handleSaveFood = async () => {
-    if (!user?.id) {
+    if (!user?.uid) {
       Alert.alert('Sign in required', 'Please sign in to log food.');
       return;
     }
@@ -421,7 +421,7 @@ const ScanFoodScreen = () => {
         const quantity = Math.max(1, selectedPortionCounts[item.id] || 1);
         const finalizedItem = applyQuantityMultiplier(resolvedItem, quantity);
 
-        await addFoodLog(user.id, dateString, finalizedItem.foodData);
+        await addFoodLog(user.uid, dateString, finalizedItem.foodData);
       }
 
       setShowSaveSuccess(true);

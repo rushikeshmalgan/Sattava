@@ -2,7 +2,7 @@
  * SwasthBharat — Yoga & Wellness Screen
  * Surya Namaskar counter, Pranayama timer, calorie burn log
  */
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
@@ -55,7 +55,7 @@ type Screen = 'home' | 'surya' | 'pranayama';
 export default function YogaScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { user } = useUser();
+  const { user } = useAuth();
 
   const [screen, setScreen] = useState<Screen>('home');
   const [rounds, setRounds] = useState(0);
@@ -139,9 +139,9 @@ export default function YogaScreen() {
   const finishSurya = async () => {
     setIsRunning(false);
     const totalCalories = Math.round(rounds * SURYA_NAMASKAR_POSES.length * 0.6);
-    if (user?.id && rounds > 0) {
+    if (user?.uid && rounds > 0) {
       const dateStr = new Date().toISOString().split('T')[0];
-      await addActivityLog(user.id, dateStr, {
+      await addActivityLog(user.uid, dateStr, {
         id: Date.now().toString(),
         name: `Surya Namaskar (${rounds} round${rounds > 1 ? 's' : ''})`,
         calories: totalCalories,
@@ -159,9 +159,9 @@ export default function YogaScreen() {
   const finishPranayama = async () => {
     setPranayamaRunning(false);
     const totalCalories = Math.round((totalPranayamaTime / 60) * YOGA_BURN_RATES['Pranayama']);
-    if (user?.id && totalPranayamaTime > 30) {
+    if (user?.uid && totalPranayamaTime > 30) {
       const dateStr = new Date().toISOString().split('T')[0];
-      await addActivityLog(user.id, dateStr, {
+      await addActivityLog(user.uid, dateStr, {
         id: Date.now().toString(),
         name: `${selectedPranayama.name} (${Math.round(totalPranayamaTime / 60)} min)`,
         calories: totalCalories,

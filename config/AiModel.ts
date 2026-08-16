@@ -1,17 +1,20 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY ?? '';
+let genAI: GoogleGenerativeAI | null = null;
 
-if (!apiKey) {
-    throw new Error("Missing Gemini API Key. Please set EXPO_PUBLIC_GEMINI_API_KEY in your .env file.");
+if (apiKey) {
+    genAI = new GoogleGenerativeAI(apiKey);
+} else {
+    console.warn('[AI] Missing EXPO_PUBLIC_GEMINI_API_KEY — AI features disabled');
 }
 
-const genAI = new GoogleGenerativeAI(apiKey);
-
-export const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
-    generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.7,
-    }
-});
+export const model: ReturnType<GoogleGenerativeAI['getGenerativeModel']> | null = genAI
+    ? genAI.getGenerativeModel({
+        model: "gemini-2.0-flash",
+        generationConfig: {
+          responseMimeType: "application/json",
+          temperature: 0.7,
+        }
+      })
+    : null;

@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -18,7 +18,7 @@ import { Colors } from '../../constants/Colors';
 import { addActivityLog } from '../../services/userService';
 
 const ManualFoodLogScreen = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const router = useRouter();
     const insets = useSafeAreaInsets();
 
@@ -31,7 +31,7 @@ const ManualFoodLogScreen = () => {
     const [isLogging, setIsLogging] = useState(false);
 
     const handleLog = async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
 
         if (!name) {
             alert("Please enter a name for the food");
@@ -62,7 +62,7 @@ const ManualFoodLogScreen = () => {
             const dateString = new Date().toISOString().split('T')[0];
             const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            await addActivityLog(user.id, dateString, {
+            await addActivityLog(user.uid, dateString, {
                 id: Date.now().toString(),
                 name: name,
                 calories: Number(calories),

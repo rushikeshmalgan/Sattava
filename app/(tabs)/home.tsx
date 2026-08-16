@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
@@ -51,7 +51,7 @@ import { getTodaysSchedule } from '../../services/mealSchedulerService';
 import { ScheduledMeal } from '../../data/mealPlans';
 
 export default function Home() {
-  const { user } = useUser();
+  const { user } = useAuth();
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -81,6 +81,7 @@ export default function Home() {
     AsyncStorage.getItem('isPro').then(val => setIsPro(val === 'true'));
   }, []);
   const stopTrackingRef = useRef<(() => void) | null>(null);
+  const waterReminderShownRef = useRef(false);
 
   // Meal plan
   const [todaysMeals, setTodaysMeals] = useState<ScheduledMeal[]>([]);
@@ -114,9 +115,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!user?.uid) return;
 
-    const unsubUser = onSnapshot(doc(db, 'users', user.id), (snap) => {
+    const unsubUser = onSnapshot(doc(db, 'users', user.uid), (snap) => {
       if (!snap.exists()) return;
       const data = snap.data();
       if (data.userProfile?.goal) {
@@ -142,7 +143,7 @@ export default function Home() {
     });
 
     const dateStr = selectedDate.toISOString().split('T')[0];
-    const unsubLogs = onSnapshot(doc(db, 'users', user.id, 'dailyLogs', dateStr), (snap) => {
+    const unsubLogs = onSnapshot(doc(db, 'users', user.uid, 'dailyLogs', dateStr), (snap) => {
       if (snap.exists()) {
         const d = snap.data();
         setConsumed({
@@ -161,14 +162,13 @@ export default function Home() {
       setIsInitialLoad(false);
     });
 
-    getStreakCount(user.id, targets.calories, targets.water * 1000).then(setStreak);
+    getStreakCount(user.uid, targets.calories, targets.water * 1000).then(setStreak);
 
     const now = new Date();
-    const waterReminderShown = useRef(false);
 
     // Smart Water Reminder (Legacy UI Toast)
-    if (now.getHours() >= 16 && consumed.water < 1000 && !waterReminderShown.current) {
-      waterReminderShown.current = true;
+    if (now.getHours() >= 16 && consumed.water < 1000 && !waterReminderShownRef.current) {
+      waterReminderShownRef.current = true;
       const t = setTimeout(() => {
         showSmartToast({ message: "You're behind on water today! 🚰", icon: 'water' });
       }, 5000);
@@ -176,9 +176,9 @@ export default function Home() {
     }
 
     return () => { unsubUser(); unsubLogs(); };
-  }, [user?.id, selectedDate]);
+  }, [user?.uid, selectedDate]);
 
-  useEffect(() => { fetchTip(); }, [user?.id]);
+  useEffect(() => { fetchTip(); }, [user?.uid]);
 
   const fetchTip = async () => {
     setLoadingTip(true);
@@ -197,7 +197,7 @@ export default function Home() {
   };
 
   const runSamosaDemo = async () => {
-    if (!user?.id) return;
+    if (!user?.uid) return;
     const dateStr = selectedDate.toISOString().split('T')[0];
     const demoFood = {
         id: Date.now().toString(),
@@ -210,7 +210,7 @@ export default function Home() {
         unit: 'pieces',
         timestamp: new Date().toISOString()
     };
-    await addActivityLog(user.id, dateStr, { type: 'food', ...demoFood } as any);
+    await addActivityLog(user.uid, dateStr, { type: 'food', ...demoFood } as any);
     Alert.alert("Demo Mode", "Logged 4 Samosas (1200 kcal).");
   };
 
@@ -238,10 +238,10 @@ export default function Home() {
   };
 
   const handleSaveTargets = async () => {
-    if (!user?.id) return;
+    if (!user?.uid) return;
     setIsSaving(true);
     try {
-      await updateUserTargets(user.id, {
+      await updateUserTargets(user.uid, {
         calories: Number(editableTargets.calories),
         macros: {
           carbs:   `${editableTargets.carbs}g`,
@@ -259,12 +259,12 @@ export default function Home() {
   };
 
   const handleAddWater = async () => {
-    if (!user?.id) return;
+    if (!user?.uid) return;
     const dateStr = selectedDate.toISOString().split('T')[0];
 
     const logWater = async () => {
         try {
-            await addActivityLog(user.id!, dateStr, {
+            await addActivityLog(user.uid!, dateStr, {
               id:       Date.now().toString(),
               name:     'Paani (Water)',
               calories: 0,
@@ -282,9 +282,9 @@ export default function Home() {
   };
 
   const handleSelectCoach = async (type: CoachType) => {
-      if (!user?.id) return;
+      if (!user?.uid) return;
       try {
-          await updateUserProfile(user.id, { 'userProfile.coachType': type });
+          await updateUserProfile(user.uid, { 'userProfile.coachType': type });
           setCoachType(type);
           setShowCoachModal(false);
       } catch (err) {
@@ -463,10 +463,10 @@ export default function Home() {
                 <RecentActivity
                   activities={activities}
                   onDelete={async (activity) => {
-                    if (!user?.id) return;
+                    if (!user?.uid) return;
                     const dateStr = selectedDate.toISOString().split('T')[0];
                     try {
-                      await deleteFoodLog(user.id, dateStr, activity as any);
+                      await deleteFoodLog(user.uid, dateStr, activity as any);
                     } catch {
                       // Firestore listener reverts UI automatically
                     }

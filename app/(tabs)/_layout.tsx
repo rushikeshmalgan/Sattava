@@ -7,7 +7,7 @@ import AddLogModal from '../../components/AddLogModal';
 import { Colors } from '../../constants/Colors';
 import { BlurView } from 'expo-blur';
 import { useTheme } from '../../context/ThemeContext';
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 
 // Tab config: [route name, active icon, inactive icon, label]
 const TAB_CONFIG = [
@@ -120,7 +120,7 @@ function CustomTabBar({ state, descriptors, navigation, onAddPress }: any) {
 }
 
 export default function TabLayout() {
-  const { user } = useUser();
+  const { user } = useAuth();
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
 
   return (
@@ -144,7 +144,7 @@ export default function TabLayout() {
       <AddLogModal
         isVisible={isAddModalVisible}
         onClose={() => setIsAddModalVisible(false)}
-        userId={user?.id}
+        userId={user?.uid}
       />
     </>
   );

@@ -21,7 +21,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { doc, onSnapshot } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -233,7 +233,7 @@ function ChatBubble({ message }: { message: Message }) {
 }
 
 export default function ChatScreen() {
-  const { user } = useUser();
+  const { user } = useAuth();
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -320,12 +320,12 @@ export default function ChatScreen() {
   }, []);
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!user?.uid) return;
 
     const dateStr = new Date().toISOString().split('T')[0];
 
     const unsubUser = onSnapshot(
-      doc(db, 'users', user.id),
+      doc(db, 'users', user.uid),
       async snap => {
         if (!snap.exists()) return;
 
@@ -354,7 +354,7 @@ export default function ChatScreen() {
 
         try {
           const streakCount = await getStreakCount(
-            user.id,
+            user.uid,
             dailyCalories,
             waterTarget
           );
@@ -373,7 +373,7 @@ export default function ChatScreen() {
     );
 
     const unsubLog = onSnapshot(
-      doc(db, 'users', user.id, 'dailyLogs', dateStr),
+      doc(db, 'users', user.uid, 'dailyLogs', dateStr),
       snap => {
         if (!snap.exists()) {
           setUserCtx(prev => ({
@@ -434,7 +434,7 @@ export default function ChatScreen() {
       unsubUser();
       unsubLog();
     };
-  }, [user?.id]);
+  }, [user?.uid]);
 
   useEffect(() => {
     if (messages.length > 0 && !isLoading) {

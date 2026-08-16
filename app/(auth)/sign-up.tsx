@@ -1,8 +1,5 @@
-import { useOAuth, useSignUp, useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import * as Linking from "expo-linking";
 import { Link, useRouter } from 'expo-router';
-import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
@@ -16,103 +13,60 @@ import {
     View
 } from 'react-native';
 import { Colors } from '../../constants/Colors';
-
-
-WebBrowser.maybeCompleteAuthSession();
+import { useAuth } from '../../context/AuthContext';
 
 export default function SignUp() {
-    const { isLoaded, signUp, setActive } = useSignUp();
-    const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
-    const { isSignedIn } = useAuth();
+    const { user, signUp, signInWithGoogle } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        if (isSignedIn) {
+        if (user) {
             router.replace('/');
         }
-    }, [isSignedIn, router]);
+    }, [user, router]);
 
     const [name, setName] = useState('');
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
     const [pendingVerification, setPendingVerification] = useState(false);
-    const [code, setCode] = useState('');
     const [loading, setLoading] = useState(false);
-    const [secureText, setSecureText] = useState(true);
 
-    // Email/Password Sign Up
     const onSignUpPress = async () => {
-        if (!isLoaded || isSignedIn) return;
         setLoading(true);
         try {
-            await signUp.create({
-                emailAddress,
-                password,
-                firstName: name.split(' ')[0] || '',
-                lastName: name.split(' ')[1] || '',
-            });
-            // Send the OTP
-            await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+            await signUp(emailAddress, password);
             setPendingVerification(true);
         } catch (err: any) {
-            alert(err.errors[0]?.message || 'Sign up failed');
+            alert(err.message || 'Sign up failed');
         } finally {
             setLoading(false);
         }
     };
 
-    // Verify Email OTP
     const onPressVerify = async () => {
-        if (!isLoaded || isSignedIn) return;
         setLoading(true);
         try {
-            const completeSignUp = await signUp.attemptEmailAddressVerification({
-                code,
-            });
-
-            if (completeSignUp.status === 'complete') {
-                await setActive({ session: completeSignUp.createdSessionId });
-
-            } else {
-                console.error(JSON.stringify(completeSignUp, null, 2));
+            const { sendEmailVerification } = await import('firebase/auth');
+            const { auth } = await import('../../firebaseConfig');
+            if (auth?.currentUser) {
+                await sendEmailVerification(auth.currentUser);
+                alert('Verification email sent. Please check your inbox.');
             }
+            router.replace('/');
         } catch (err: any) {
-            alert(err.errors[0]?.message || 'Verification failed');
+            console.error('[AUTH] Verification error:', err);
+            alert(err?.message || 'Verification failed');
         } finally {
             setLoading(false);
         }
     };
 
-    // Google OAuth Sign In/Up
     const onPressGoogle = async () => {
-        if (!isLoaded) return;
-        
-        // If already signed in, redirect immediately
-        if (isSignedIn) {
-            router.replace('/');
-            return;
-        }
-        
         try {
-            const { createdSessionId, setActive } = await startOAuthFlow({
-                redirectUrl: Linking.createURL('/'),
-            });
-
-            if (createdSessionId) {
-                if (setActive) { await setActive({ session: createdSessionId }); }
-            } else {
-                // No new session created  check if user became signed in
-                router.replace('/');
-            }
+            await signInWithGoogle();
+            router.replace('/');
         } catch (err: any) {
-            const message = err?.message?.toLowerCase() || '';
-            if (message.includes('already') || message.includes('session')) {
-                // Session already exists  user is signed in, redirect to home
-                router.replace('/');
-                return;
-            }
-            console.error('OAuth error', err);
-            alert(err?.errors?.[0]?.message || err?.message || 'Google sign-in failed. Please try again.');
+            alert(err.message || 'Google sign-in failed. Please try again.');
         }
     };
 
@@ -130,11 +84,10 @@ export default function SignUp() {
                         <Ionicons name="keypad-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
                         <TextInput
                             style={styles.input}
-                            value={code}
-                            placeholder="Verification Code"
+                            value={name}
+                            placeholder="Full Name"
                             placeholderTextColor={Colors.TEXT_MUTED}
-                            keyboardType="numeric"
-                            onChangeText={(code) => setCode(code)}
+                            onChangeText={(n) => setName(n)}
                         />
                     </View>
 
@@ -162,7 +115,6 @@ export default function SignUp() {
             </View>
 
             <View style={styles.formContainer}>
-                {/* Name Input */}
                 <View style={styles.inputWrapper}>
                     <Ionicons name="person-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
                     <TextInput
@@ -174,7 +126,6 @@ export default function SignUp() {
                     />
                 </View>
 
-                {/* Email Input */}
                 <View style={styles.inputWrapper}>
                     <Ionicons name="mail-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
                     <TextInput
@@ -187,7 +138,6 @@ export default function SignUp() {
                     />
                 </View>
 
-                {/* Password Input */}
                 <View style={styles.inputWrapper}>
                     <Ionicons name="lock-closed-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
                     <TextInput
@@ -195,15 +145,11 @@ export default function SignUp() {
                         value={password}
                         placeholder="Password"
                         placeholderTextColor={Colors.TEXT_MUTED}
-                        secureTextEntry={secureText}
+                        secureTextEntry={true}
                         onChangeText={(password) => setPassword(password)}
                     />
-                    <TouchableOpacity onPress={() => setSecureText(!secureText)} style={styles.eyeIcon}>
-                        <Ionicons name={secureText ? "eye-off-outline" : "eye-outline"} size={20} color={Colors.TEXT_MUTED} />
-                    </TouchableOpacity>
                 </View>
 
-                {/* Sign Up Button */}
                 <TouchableOpacity style={styles.primaryButton} onPress={onSignUpPress} disabled={loading}>
                     {loading ? (
                         <ActivityIndicator color="#fff" />
@@ -218,7 +164,6 @@ export default function SignUp() {
                     <View style={styles.divider} />
                 </View>
 
-                {/* Google OAuth Button */}
                 <TouchableOpacity style={styles.googleButton} onPress={onPressGoogle}>
                     <Ionicons name="logo-google" size={20} color="#DB4437" />
                     <Text style={styles.googleButtonText}>Continue with Google</Text>
@@ -246,12 +191,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 80,
         paddingBottom: 30,
-    },
-    logo: {
-        width: 80,
-        height: 80,
-        marginBottom: 20,
-        borderRadius: 20,
     },
     iconSpaced: {
         marginBottom: 20,
@@ -285,9 +224,6 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 10,
-    },
-    eyeIcon: {
-        padding: 10,
     },
     input: {
         flex: 1,
@@ -357,5 +293,11 @@ const styles = StyleSheet.create({
         color: Colors.PRIMARY,
         fontSize: 15,
         fontWeight: '600',
+    },
+    logo: {
+        width: 80,
+        height: 80,
+        marginBottom: 20,
+        borderRadius: 20,
     },
 });

@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { doc, getDoc } from 'firebase/firestore';
@@ -26,7 +26,7 @@ const MET_VALUES: any = {
 };
 
 const ExerciseDetailsScreen = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const router = useRouter();
     const insets = useSafeAreaInsets();
     const { title, description, type } = useLocalSearchParams();
@@ -60,7 +60,7 @@ const ExerciseDetailsScreen = () => {
     }, [intensity, containerWidth]);
 
     const handleContinue = async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
 
         const finalDuration = Number(manualDuration || duration);
         if (isNaN(finalDuration) || finalDuration <= 0) {
@@ -71,7 +71,7 @@ const ExerciseDetailsScreen = () => {
         setIsSaving(true);
         try {
             // 1. Fetch User Profile for Weight
-            const userDoc = await getDoc(doc(db, 'users', user.id));
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
             if (!userDoc.exists()) {
                 throw new Error("User profile not found");
             }

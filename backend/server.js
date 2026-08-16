@@ -2,7 +2,6 @@ require('dotenv').config({ path: '../.env' }); // Load .env from root
 const express = require('express');
 const cors = require('cors');
 const os = require('os');
-const { verifyToken } = require('@clerk/backend');
 
 const app = express();
 app.use(cors());
@@ -108,118 +107,9 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
     process.exit(1);
 }
 
-// ── Firebase Admin (for minting custom tokens) ────────────────────────────────
-// Requires FIREBASE_SERVICE_ACCOUNT_KEY in .env as a JSON string.
-// Generate one at: Firebase Console → Project Settings → Service Accounts
-const admin = require('firebase-admin');
-let firebaseAdminApp = null;
-
-try {
-    const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-    if (!serviceAccountJson) {
-        throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY is not set in environment variables.');
-    }
-    const serviceAccount = JSON.parse(serviceAccountJson);
-    firebaseAdminApp = admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-    });
-    console.log('[Firebase Admin] Initialized successfully');
-} catch (err) {
-    console.error('[Firebase Admin] Failed to initialize — custom-token endpoint will be unavailable:', err.message);
-}
-
-let cachedToken = null;
-let tokenExpiry = null;
-
-const getBasicAuthString = () => {
-    return Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
-};
-
-const getToken = async () => {
-    if (cachedToken && tokenExpiry && Date.now() < tokenExpiry) {
-        return cachedToken;
-    }
-
-    const response = await fetch('https://oauth.fatsecret.com/connect/token', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Basic ${getBasicAuthString()}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'grant_type=client_credentials&scope=basic',
-    });
-
-    if (!response.ok) {
-        const err = await response.text();
-        console.error('FatSecret Token Error:', err);
-        throw new Error('Failed to fetch FatSecret token');
-    }
-
-    const data = await response.json();
-    cachedToken = data.access_token;
-    tokenExpiry = Date.now() + (data.expires_in - 300) * 1000; // 5 min buffer
-    return cachedToken;
-};
-
-// ── Fetch public IP so the user knows what to whitelist in FatSecret ──
-const fetchPublicIp = async () => {
-    const services = [
-        'https://api.ipify.org?format=json',
-        'https://httpbin.org/ip',
-        'https://api.my-ip.io/v2/ip.json',
-    ];
-
-    for (const url of services) {
-        try {
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 5000);
-            const res = await fetch(url, { signal: controller.signal });
-            clearTimeout(timeout);
-            const data = await res.json();
-            // Different services use different keys
-            return data.ip || data.origin || null;
-        } catch {
-            continue; // Try next service
-        }
-    }
-    return null;
-};
-
 // ── Health check — lets the app verify the proxy is reachable ──
 app.get('/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-// ── Firebase Auth: exchange Clerk session token for Firebase custom token ──
-// The mobile app authenticates with Clerk only. Firestore security rules require
-// Firebase Auth, so we mint a Firebase custom token here to bridge the two.
-app.post('/api/auth/firebase-token', async (req, res) => {
-    if (!firebaseAdminApp) {
-        return res.status(503).json({ error: 'Firebase Admin is not configured on the server.' });
-    }
-
-    const authHeader = req.headers.authorization || '';
-    const token = authHeader.replace('Bearer ', '').trim();
-
-    if (!token) {
-        return res.status(401).json({ error: 'Missing Authorization header. Expected: Bearer <clerk_session_token>' });
-    }
-
-    try {
-        const payload = await verifyToken(token, {
-            secretKey: process.env.CLERK_SECRET_KEY,
-        });
-
-        if (!payload?.sub) {
-            return res.status(401).json({ error: 'Invalid token payload.' });
-        }
-
-        const customToken = await admin.auth().createCustomToken(payload.sub);
-        res.json({ firebaseCustomToken: customToken });
-    } catch (err) {
-        console.error('[Firebase Auth] Token exchange failed:', err);
-        res.status(401).json({ error: 'Invalid or expired Clerk session token.' });
-    }
 });
 
 // ── Food search endpoint ──

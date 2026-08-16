@@ -2,7 +2,7 @@
  * SwasthBharat — Diet Tab
  * Smart Indian Meal Planning Screen
  */
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator, Alert, FlatList, Modal, ScrollView, StyleSheet, Text,
@@ -74,7 +74,7 @@ function FoodSearchItem({ food, theme }: { food: IndianFood; theme: ThemeType })
 }
 
 export default function DietScreen() {
-  const { user } = useUser();
+  const { user } = useAuth();
   const insets = useSafeAreaInsets();
   const { theme } = useTheme();
   const styles = getStyles(theme);

@@ -2,7 +2,7 @@
  * Sattva — Insights Dashboard
  * Real weekly data from Firestore · SVG circular progress · Indian Diet Score
  */
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -138,7 +138,7 @@ function getLast7Days(): { label: string; dateStr: string }[] {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function Analytics() {
-    const { user } = useUser();
+    const { user } = useAuth();
     const insets = useSafeAreaInsets();
     const { theme, isDark } = useTheme();
 
@@ -166,10 +166,10 @@ export default function Analytics() {
 
     // Today's data – live Firestore listener
     useEffect(() => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
         const dateStr = new Date().toISOString().split('T')[0];
 
-        const unsub1 = onSnapshot(doc(db, 'users', user.id), (snap) => {
+        const unsub1 = onSnapshot(doc(db, 'users', user.uid), (snap) => {
             if (!snap.exists()) return;
             const plan = snap.data().generatedPlan;
             if (plan) {
@@ -183,7 +183,7 @@ export default function Analytics() {
             }
         });
 
-        const unsub2 = onSnapshot(doc(db, 'users', user.id, 'dailyLogs', dateStr), (snap) => {
+        const unsub2 = onSnapshot(doc(db, 'users', user.uid, 'dailyLogs', dateStr), (snap) => {
             if (!snap.exists()) return;
             const d = snap.data();
             setTodayData({
@@ -197,11 +197,11 @@ export default function Analytics() {
         });
 
         return () => { unsub1(); unsub2(); };
-    }, [user?.id]);
+    }, [user?.uid]);
 
     // Weekly data – reads last 7 days from Firestore
     const loadWeeklyData = useCallback(async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
         setWeeklyLoading(true);
         setWeeklyError(null);
         try {
@@ -209,7 +209,7 @@ export default function Analytics() {
             const results: DayStats[] = await Promise.all(
                 days.map(async ({ label, dateStr }) => {
                     try {
-                        const snap = await getDoc(doc(db, 'users', user.id!, 'dailyLogs', dateStr));
+                        const snap = await getDoc(doc(db, 'users', user.uid!, 'dailyLogs', dateStr));
                         if (snap.exists()) {
                             const d = snap.data();
                             return {
@@ -233,7 +233,7 @@ export default function Analytics() {
         } finally {
             setWeeklyLoading(false);
         }
-    }, [user?.id]);
+    }, [user?.uid]);
 
     // Load weekly data on mount and when tab switches to week
     useEffect(() => {

@@ -1,4 +1,4 @@
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth } from "../context/AuthContext";
 import { useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -7,21 +7,30 @@ import { Colors } from "../constants/Colors";
 import { db } from "../firebaseConfig";
 
 export default function Index() {
-  const { user, isLoaded } = useUser();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (loading) {
+      console.log("[INDEX] Waiting for Firebase auth...");
+      return;
+    }
+
+    console.log("[INDEX] Firebase state:", { loading, userId: user?.uid });
+
+    if (!user) {
+      console.log("[INDEX] User is not authenticated → navigating to /(auth)/sign-in");
+      router.replace("/(auth)/sign-in");
+      return;
+    }
+
+    console.log("[INDEX] Authenticated user:", user.uid);
+    console.log("[INDEX] Checking Firestore for user:", user.uid);
 
     const checkOnboardingStatus = async () => {
       try {
-        if (!user?.id) {
-          setIsChecking(false);
-          return;
-        }
-
-        const userRef = doc(db, "users", user.id);
+        const userRef = doc(db, "users", user.uid);
 
         const userDoc = await getDoc(userRef);
 
@@ -36,15 +45,19 @@ export default function Index() {
           );
 
           if (hasOnboardingData) {
-            router.replace("/home");
+            console.log("[INDEX] Onboarding complete → navigating to /(tabs)/home");
+            router.replace("/(tabs)/home");
           } else {
+            console.log("[INDEX] Onboarding not complete → navigating to /onboarding");
             router.replace("/onboarding");
           }
         } else {
+          console.log("[INDEX] No user doc found → navigating to /onboarding");
           router.replace("/onboarding");
         }
       } catch (error) {
-        console.error("[Index] Error:", error);
+        console.error("[INDEX] Firestore check failed:", error);
+        console.log("[INDEX] Firestore error — redirecting to /onboarding as fallback");
         router.replace("/onboarding");
       } finally {
         setIsChecking(false);
@@ -52,9 +65,9 @@ export default function Index() {
     };
 
     checkOnboardingStatus();
-  }, [isLoaded, user?.id]);
+  }, [loading, user?.uid, router]);
 
-  if (isChecking || !isLoaded) {
+  if (isChecking || loading) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color={Colors.PRIMARY} />

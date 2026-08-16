@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -14,7 +14,7 @@ import { Colors } from '../../constants/Colors';
 import { addExerciseLog } from '../../services/logService';
 
 const ExerciseSummaryScreen = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const router = useRouter();
     const insets = useSafeAreaInsets();
     const { calories, title, type, intensity, duration } = useLocalSearchParams() as {
@@ -28,13 +28,13 @@ const ExerciseSummaryScreen = () => {
     const [isSaving, setIsSaving] = useState(false);
 
     const handleLog = async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
 
         setIsSaving(true);
         try {
             const dateString = new Date().toISOString().split('T')[0];
 
-            await addExerciseLog(user.id, dateString, {
+            await addExerciseLog(user.uid, dateString, {
                 id: Date.now().toString(),
                 type: type,
                 name: title,

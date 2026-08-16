@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
@@ -28,7 +28,7 @@ import { db } from '../firebaseConfig';
 import * as Haptics from 'expo-haptics';
 
 const FoodSearchScreen = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const router = useRouter();
     const { theme } = useTheme();
     const styles = getStyles(theme);
@@ -84,7 +84,7 @@ const FoodSearchScreen = () => {
     };
 
     const handleSelectFood = (food: UnifiedFoodResult) => {
-        if (!user?.id) {
+        if (!user?.uid) {
             Alert.alert('Error', 'Please sign in to log food.');
             return;
         }
@@ -99,7 +99,7 @@ const FoodSearchScreen = () => {
     };
 
     const handleAddFood = async (multiplier: number, portionUnit: string) => {
-        if (!user?.id || !selectedFoodForPortion) return;
+        if (!user?.uid || !selectedFoodForPortion) return;
         
         const food = selectedFoodForPortion;
         setAddingId(food.id);
@@ -119,7 +119,7 @@ const FoodSearchScreen = () => {
         
         const logData = async () => {
             try {
-                await addFoodLog(user.id!, dateString, {
+                await addFoodLog(user.uid!, dateString, {
                     id: food.id,
                     name: food.name,
                     calories: loggedCalories,

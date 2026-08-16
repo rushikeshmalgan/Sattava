@@ -1,52 +1,71 @@
-import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { Stack, useRouter, useSegments } from "expo-router";
-import { useEffect } from "react";
-import { tokenCache } from "../utils/cache";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
+import { Ionicons } from "@expo/vector-icons";
 import { SyncUserToFirestore } from "../utils/SyncUserToFirestore";
 import { ThemeProvider } from "../context/ThemeContext";
+import { AuthProvider, useAuth } from "../context/AuthContext";
 import SmartToast from "../components/SmartToast";
 import { ErrorBoundary } from "../components/ErrorBoundary";
+import { Colors } from "../constants/Colors";
 
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
-if (!publishableKey) {
-  throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in .env");
+function ConfigErrorScreen() {
+  useEffect(() => {
+    SplashScreen.hideAsync().catch(() => {});
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.iconWrap}>
+        <Ionicons name="warning-outline" size={48} color={Colors.ACCENT_DARK} />
+      </View>
+      <Text style={styles.title}>App isn't configured correctly</Text>
+      <Text style={styles.subtitle}>
+        A required setting is missing from this build. Please reinstall the
+        latest version, or contact support if this keeps happening.
+      </Text>
+    </View>
+  );
 }
 
 const InitialLayout = () => {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { user, loading } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    console.log('[BOOT] useAuth state — isLoaded:', isLoaded, 'isSignedIn:', isSignedIn);
-    if (!isLoaded) return;
+    if (loading) return;
 
-    const clerkTimeout = setTimeout(() => {
-      console.error('[BOOT] TIMEOUT: Clerk useAuth did not respond in 10s');
-    }, 10000);
+    SplashScreen.hideAsync().catch(() => {});
 
-    const inTabsGroup = segments[0] === "(auth)";
+    const currentSegment = segments[0];
+    const isAuthRoute = currentSegment === "(auth)";
+    const isProtectedRoute = !isAuthRoute;
 
-    // If signed in and in an auth screen, redirect to root
-    if (isSignedIn && inTabsGroup) {
+    console.log("[ROUTER] segments:", segments);
+    console.log("[ROUTER] loading:", loading);
+    console.log("[ROUTER] user:", user?.uid);
+    console.log("[ROUTER] auth route:", isAuthRoute);
+    console.log("[ROUTER] protected route:", isProtectedRoute);
+
+    if (user && isAuthRoute) {
+      console.log("[ROUTER] Signed in + on auth route → navigating to /");
       router.replace("/");
-    } else if (!isSignedIn && !inTabsGroup) {
-      // If not signed in and NOT in the auth group, redirect to sign-in
+    } else if (!user && isProtectedRoute) {
+      console.log("[ROUTER] Not signed in + on protected route → navigating to sign-in");
       router.replace("/(auth)/sign-in");
     }
-
-    return () => clearTimeout(clerkTimeout);
-  }, [isSignedIn, isLoaded, segments]);
+  }, [user, loading, segments, router]);
 
   return <Stack screenOptions={{ headerShown: false }} />;
 };
 
 export default function RootLayout() {
-  console.log('[BOOT] Layout mounting, publishableKey present:', !!publishableKey);
-
   return (
-    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+    <AuthProvider>
       <ThemeProvider>
         <SyncUserToFirestore />
         <ErrorBoundary>
@@ -54,6 +73,50 @@ export default function RootLayout() {
           <SmartToast />
         </ErrorBoundary>
       </ThemeProvider>
-    </ClerkProvider>
+    </AuthProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 32,
+    backgroundColor: Colors.BACKGROUND,
+  },
+  iconWrap: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: `${Colors.ACCENT}20`,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: Colors.TEXT_MAIN,
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 14,
+    color: Colors.TEXT_MUTED,
+    textAlign: "center",
+    lineHeight: 22,
+    marginBottom: 12,
+  },
+  devError: {
+    fontSize: 11,
+    color: "#FF6B6B",
+    fontFamily: "monospace",
+    backgroundColor: "rgba(255,107,107,0.1)",
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 8,
+    textAlign: "left",
+    width: "100%",
+  },
+});

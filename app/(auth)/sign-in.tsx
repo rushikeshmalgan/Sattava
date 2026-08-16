@@ -1,8 +1,5 @@
-import { useOAuth, useSignIn, useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import * as Linking from "expo-linking";
 import { Link, useRouter } from 'expo-router';
-import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
@@ -16,50 +13,44 @@ import {
     View
 } from 'react-native';
 import { Colors } from '../../constants/Colors';
+import { useAuth } from '../../context/AuthContext';
+import type { ConfirmationResult } from 'firebase/auth';
 
-
-WebBrowser.maybeCompleteAuthSession();
+type AuthMode = 'email' | 'phone';
 
 export default function SignIn() {
-    const { signIn, setActive, isLoaded } = useSignIn();
-    const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
-    const { isSignedIn } = useAuth();
+    const { user, signIn, signInWithGoogle, signInWithPhone, verifyPhoneCode } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        if (isSignedIn) {
+        if (user) {
             router.replace('/');
         }
-    }, [isSignedIn, router]);
+    }, [user, router]);
 
+    const [authMode, setAuthMode] = useState<AuthMode>('email');
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [verificationCode, setVerificationCode] = useState('');
+    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [isSendingReset, setIsSendingReset] = useState(false);
     const [secureText, setSecureText] = useState(true);
 
-    // Email/Password Sign in
     const onSignInPress = async () => {
-        if (!isLoaded || isSignedIn) return;
         setLoading(true);
         try {
-            const completeSignIn = await signIn.create({
-                identifier: emailAddress,
-                password,
-            });
-            // This indicates the user is signed in
-            await setActive({ session: completeSignIn.createdSessionId });
-
+            await signIn(emailAddress, password);
+            router.replace('/');
         } catch (err: any) {
-            alert(err?.errors?.[0]?.message || err?.message || 'Sign in failed');
+            alert(err.message || 'Sign in failed');
         } finally {
             setLoading(false);
         }
     };
 
     const onForgotPasswordPress = async () => {
-        if (!isLoaded || isSignedIn) return;
-
         if (!emailAddress.trim()) {
             alert('Please enter your email first to reset password.');
             return;
@@ -67,51 +58,158 @@ export default function SignIn() {
 
         setIsSendingReset(true);
         try {
-            await signIn.create({
-                strategy: 'reset_password_email_code',
-                identifier: emailAddress.trim(),
-            } as any);
-
-            alert('Password reset code sent to your email. Please follow the reset flow in Clerk.');
+            const { sendPasswordResetEmail } = await import('firebase/auth');
+            const { auth: authInstance } = await import('../../firebaseConfig');
+            if (!authInstance) throw new Error('Firebase Auth not initialized');
+            await sendPasswordResetEmail(authInstance, emailAddress.trim());
+            alert('Password reset email sent. Please follow the instructions in your email.');
         } catch (err: any) {
-            alert(err?.errors?.[0]?.message || err?.message || 'Failed to send password reset code');
+            console.error('[AUTH] Password reset error:', err);
+            alert(err?.message || 'Failed to send password reset email');
         } finally {
             setIsSendingReset(false);
         }
     };
 
-    // Google OAuth Sign In
     const onPressGoogle = async () => {
-        if (!isLoaded) return;
-        
-        // If already signed in, redirect immediately
-        if (isSignedIn) {
-            router.replace('/');
-            return;
-        }
-        
         try {
-            const { createdSessionId, setActive } = await startOAuthFlow({
-                redirectUrl: Linking.createURL('/'),
-            });
-
-            if (createdSessionId) {
-                if (setActive) { await setActive({ session: createdSessionId }); }
-            } else {
-                // No new session created  check if user became signed in
-                router.replace('/');
-            }
+            await signInWithGoogle();
+            router.replace('/');
         } catch (err: any) {
-            const message = err?.message?.toLowerCase() || '';
-            if (message.includes('already') || message.includes('session')) {
-                // Session already exists  user is signed in, redirect to home
-                router.replace('/');
-                return;
-            }
-            console.error('OAuth error', err);
-            alert(err?.errors?.[0]?.message || err?.message || 'Google sign-in failed. Please try again.');
+            alert(err.message || 'Google sign-in failed. Please try again.');
         }
     };
+
+    const onSendOtp = async () => {
+        if (!phoneNumber.trim()) {
+            alert('Please enter your phone number.');
+            return;
+        }
+        setLoading(true);
+        try {
+            const result = await signInWithPhone(phoneNumber);
+            setConfirmationResult(result);
+            alert('OTP sent to ' + phoneNumber);
+        } catch (err: any) {
+            alert(err.message || 'Failed to send OTP');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const onVerifyOtp = async () => {
+        if (!confirmationResult || !verificationCode.trim()) {
+            alert('Please enter the verification code.');
+            return;
+        }
+        setLoading(true);
+        try {
+            await verifyPhoneCode(confirmationResult, verificationCode);
+            router.replace('/');
+        } catch (err: any) {
+            alert(err.message || 'Invalid verification code');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const renderEmailForm = () => (
+        <>
+            <View style={styles.inputWrapper}>
+                <Ionicons name="mail-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
+                <TextInput
+                    style={styles.input}
+                    autoCapitalize="none"
+                    value={emailAddress}
+                    placeholder="Email Address"
+                    placeholderTextColor={Colors.TEXT_MUTED}
+                    onChangeText={(email) => setEmailAddress(email)}
+                />
+            </View>
+
+            <View style={styles.inputWrapper}>
+                <Ionicons name="lock-closed-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
+                <TextInput
+                    style={styles.input}
+                    value={password}
+                    placeholder="Password"
+                    placeholderTextColor={Colors.TEXT_MUTED}
+                    secureTextEntry={secureText}
+                    onChangeText={(password) => setPassword(password)}
+                />
+                <TouchableOpacity onPress={() => setSecureText(!secureText)} style={styles.eyeIcon}>
+                    <Ionicons name={secureText ? "eye-off-outline" : "eye-outline"} size={20} color={Colors.TEXT_MUTED} />
+                </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity style={styles.forgotPassword} onPress={onForgotPasswordPress} disabled={isSendingReset}>
+                <Text style={styles.forgotPasswordText}>
+                    {isSendingReset ? 'Sending reset code...' : 'Forgot Password?'}
+                </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.signInButton} onPress={onSignInPress} disabled={loading}>
+                {loading ? (
+                    <ActivityIndicator color="#fff" />
+                ) : (
+                    <Text style={styles.signInButtonText}>Sign In</Text>
+                )}
+            </TouchableOpacity>
+        </>
+    );
+
+    const renderPhoneForm = () => (
+        <>
+            {!confirmationResult ? (
+                <>
+                    <Text style={styles.phoneHelper}>Enter your phone number to receive a verification code.</Text>
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="call-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            value={phoneNumber}
+                            placeholder="Phone Number"
+                            placeholderTextColor={Colors.TEXT_MUTED}
+                            keyboardType="phone-pad"
+                            onChangeText={(phone) => setPhoneNumber(phone)}
+                        />
+                    </View>
+                    <TouchableOpacity style={styles.signInButton} onPress={onSendOtp} disabled={loading}>
+                        {loading ? (
+                            <ActivityIndicator color="#fff" />
+                        ) : (
+                            <Text style={styles.signInButtonText}>Send OTP</Text>
+                        )}
+                    </TouchableOpacity>
+                </>
+            ) : (
+                <>
+                    <Text style={styles.phoneHelper}>Enter the 6-digit code sent to {phoneNumber}</Text>
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="keypad-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            value={verificationCode}
+                            placeholder="Verification Code"
+                            placeholderTextColor={Colors.TEXT_MUTED}
+                            keyboardType="number-pad"
+                            onChangeText={(code) => setVerificationCode(code)}
+                        />
+                    </View>
+                    <TouchableOpacity style={styles.signInButton} onPress={onVerifyOtp} disabled={loading}>
+                        {loading ? (
+                            <ActivityIndicator color="#fff" />
+                        ) : (
+                            <Text style={styles.signInButtonText}>Verify</Text>
+                        )}
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.backButton} onPress={() => { setConfirmationResult(null); setVerificationCode(''); }}>
+                        <Text style={styles.backButtonText}>Change Phone Number</Text>
+                    </TouchableOpacity>
+                </>
+            )}
+        </>
+    );
 
     return (
         <KeyboardAvoidingView
@@ -129,49 +227,22 @@ export default function SignIn() {
             </View>
 
             <View style={styles.formContainer}>
-                {/* Email Input */}
-                <View style={styles.inputWrapper}>
-                    <Ionicons name="mail-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
-                    <TextInput
-                        style={styles.input}
-                        autoCapitalize="none"
-                        value={emailAddress}
-                        placeholder="Email Address"
-                        placeholderTextColor={Colors.TEXT_MUTED}
-                        onChangeText={(email) => setEmailAddress(email)}
-                    />
-                </View>
-
-                {/* Password Input */}
-                <View style={styles.inputWrapper}>
-                    <Ionicons name="lock-closed-outline" size={20} color={Colors.TEXT_MUTED} style={styles.icon} />
-                    <TextInput
-                        style={styles.input}
-                        value={password}
-                        placeholder="Password"
-                        placeholderTextColor={Colors.TEXT_MUTED}
-                        secureTextEntry={secureText}
-                        onChangeText={(password) => setPassword(password)}
-                    />
-                    <TouchableOpacity onPress={() => setSecureText(!secureText)} style={styles.eyeIcon}>
-                        <Ionicons name={secureText ? "eye-off-outline" : "eye-outline"} size={20} color={Colors.TEXT_MUTED} />
+                <View style={styles.tabContainer}>
+                    <TouchableOpacity
+                        style={[styles.tab, authMode === 'email' && styles.activeTab]}
+                        onPress={() => setAuthMode('email')}
+                    >
+                        <Text style={[styles.tabText, authMode === 'email' && styles.activeTabText]}>Email</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.tab, authMode === 'phone' && styles.activeTab]}
+                        onPress={() => setAuthMode('phone')}
+                    >
+                        <Text style={[styles.tabText, authMode === 'phone' && styles.activeTabText]}>Phone</Text>
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.forgotPassword} onPress={onForgotPasswordPress} disabled={isSendingReset}>
-                    <Text style={styles.forgotPasswordText}>
-                        {isSendingReset ? 'Sending reset code...' : 'Forgot Password?'}
-                    </Text>
-                </TouchableOpacity>
-
-                {/* Sign In Button */}
-                <TouchableOpacity style={styles.signInButton} onPress={onSignInPress} disabled={loading}>
-                    {loading ? (
-                        <ActivityIndicator color="#fff" />
-                    ) : (
-                        <Text style={styles.signInButtonText}>Sign In</Text>
-                    )}
-                </TouchableOpacity>
+                {authMode === 'email' ? renderEmailForm() : renderPhoneForm()}
 
                 <View style={styles.dividerContainer}>
                     <View style={styles.divider} />
@@ -179,7 +250,6 @@ export default function SignIn() {
                     <View style={styles.divider} />
                 </View>
 
-                {/* Google OAuth Button */}
                 <TouchableOpacity style={styles.googleButton} onPress={onPressGoogle}>
                     <Ionicons name="logo-google" size={20} color="#DB4437" />
                     <Text style={styles.googleButtonText}>Continue with Google</Text>
@@ -227,6 +297,31 @@ const styles = StyleSheet.create({
     formContainer: {
         paddingHorizontal: 24,
     },
+    tabContainer: {
+        flexDirection: 'row',
+        marginBottom: 24,
+        backgroundColor: Colors.SURFACE,
+        borderRadius: 12,
+        padding: 4,
+    },
+    tab: {
+        flex: 1,
+        height: 44,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
+    activeTab: {
+        backgroundColor: Colors.PRIMARY,
+    },
+    tabText: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: Colors.TEXT_MUTED,
+    },
+    activeTabText: {
+        color: '#FFFFFF',
+    },
     inputWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -248,6 +343,12 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         color: Colors.TEXT_MAIN,
+    },
+    phoneHelper: {
+        fontSize: 14,
+        color: Colors.TEXT_MUTED,
+        marginBottom: 12,
+        textAlign: 'center',
     },
     forgotPassword: {
         alignSelf: 'flex-end',
@@ -272,6 +373,15 @@ const styles = StyleSheet.create({
     signInButtonText: {
         color: '#FFFFFF',
         fontSize: 16,
+        fontWeight: '600',
+    },
+    backButton: {
+        marginTop: 12,
+        alignItems: 'center',
+    },
+    backButtonText: {
+        color: Colors.PRIMARY,
+        fontSize: 14,
         fontWeight: '600',
     },
     dividerContainer: {

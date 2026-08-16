@@ -1,4 +1,4 @@
-import { useAuth, useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
@@ -19,8 +19,7 @@ const GOAL_OPTIONS = ['Lose Weight', 'Maintain Weight', 'Gain Weight'];
 const ACTIVITY_LEVEL_OPTIONS = ['2-3 Days / Week', '3-4 Days / Week', '5-6 Days / Week'];
 
 export default function Profile() {
-    const { user } = useUser();
-    const { signOut } = useAuth();
+    const { user, signOut } = useAuth();
     const insets = useSafeAreaInsets();
     const router = useRouter();
     const { theme, mode, setMode, isDark } = useTheme();
@@ -52,19 +51,19 @@ export default function Profile() {
     const [showPlanModal, setShowPlanModal] = useState(false);
 
     const currentName =
-        userPlan?.userProfile?.name || userPlan?.physicalProfile?.name || user?.fullName || 'User';
+        userPlan?.userProfile?.name || userPlan?.physicalProfile?.name || user?.displayName || 'User';
     const currentGoal = userPlan?.userProfile?.goal || userPlan?.physicalProfile?.goal || '';
     const currentActivityLevel =
         userPlan?.userProfile?.activityLevel || userPlan?.physicalProfile?.activityLevel || '';
     const isPlanStale = Boolean(userPlan?.generatedPlanStale);
 
     useEffect(() => {
-        if (!user?.id) {
+        if (!user?.uid) {
             setLoading(false);
             return;
         }
 
-        const docRef = doc(db, 'users', user.id);
+        const docRef = doc(db, 'users', user.uid);
         const unsubscribe = onSnapshot(
             docRef,
             (docSnap) => {
@@ -82,13 +81,13 @@ export default function Profile() {
         );
 
         return () => unsubscribe();
-    }, [user?.id]);
+    }, [user?.uid]);
 
     const handleSaveGoal = async () => {
-        if (!user?.id || !tempGoal) return;
+        if (!user?.uid || !tempGoal) return;
         setIsSavingGoal(true);
         try {
-            const docRef = doc(db, 'users', user.id);
+            const docRef = doc(db, 'users', user.uid);
             await updateDoc(docRef, {
                 'userProfile.goal': tempGoal,
                 generatedPlanStale: true,
@@ -111,14 +110,14 @@ export default function Profile() {
 
     const handleSaveName = async () => {
         const trimmedName = tempName.trim();
-        if (!user?.id || !trimmedName) {
+        if (!user?.uid || !trimmedName) {
             Alert.alert('Required', 'Please enter a valid name');
             return;
         }
 
         setIsSavingName(true);
         try {
-            const docRef = doc(db, 'users', user.id);
+            const docRef = doc(db, 'users', user.uid);
             await updateDoc(docRef, {
                 'userProfile.name': trimmedName,
                 lastUpdated: new Date(),
@@ -140,10 +139,10 @@ export default function Profile() {
     };
 
     const handleSaveActivity = async () => {
-        if (!user?.id || !tempActivity) return;
+        if (!user?.uid || !tempActivity) return;
         setIsSavingActivity(true);
         try {
-            const docRef = doc(db, 'users', user.id);
+            const docRef = doc(db, 'users', user.uid);
             await updateDoc(docRef, {
                 'userProfile.activityLevel': tempActivity,
                 generatedPlanStale: true,
@@ -182,10 +181,10 @@ export default function Profile() {
     };
 
     const handleLoadDemo = async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
         setIsDemoLoading(true);
         try {
-            await loadDemoData(user.id);
+            await loadDemoData(user.uid);
             Alert.alert('Demo Mode Activated 🚀', '7 days of perfect nutrition data has been loaded. Your profile is now presentation-ready!');
         } catch (error) {
             Alert.alert('Error', 'Failed to load demo data.');
@@ -239,13 +238,13 @@ export default function Profile() {
                 <View style={styles.userInfoHeader}>
                     <View style={styles.userInitials}>
                         <Text style={styles.initialsText}>
-                            {user?.firstName?.charAt(0) || 'U'}
-                            {user?.lastName?.charAt(0) || 'S'}
+                            {user?.displayName?.charAt(0) || 'U'}
+                            {user?.displayName?.split(' ')[1]?.charAt(0) || 'S'}
                         </Text>
                     </View>
                     <View style={styles.userDetails}>
                         <Text style={styles.userName}>{currentName}</Text>
-                        <Text style={styles.userEmail}>{user?.primaryEmailAddress?.emailAddress || 'No email'}</Text>
+                        <Text style={styles.userEmail}>{user?.email || 'No email'}</Text>
                     </View>
                 </View>
             </View>

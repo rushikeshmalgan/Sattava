@@ -6,14 +6,14 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '../context/ThemeContext';
 import { generateMealCombo, MealCombo } from '../services/mealComboService';
 import { addFoodLog } from '../services/logService';
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../context/AuthContext';
 import OrderHealthyCard from '../components/OrderHealthyCard';
 
 export default function ComboBuilderScreen() {
     const { theme, isDark } = useTheme();
     const insets = useSafeAreaInsets();
     const router = useRouter();
-    const { user } = useUser();
+    const { user } = useAuth();
 
     const [targetCal, setTargetCal] = useState('400');
     const [prioritizeProtein, setPrioritizeProtein] = useState(false);
@@ -37,23 +37,23 @@ export default function ComboBuilderScreen() {
     };
 
     const handleLogCombo = async (combo: MealCombo, index: number) => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
         setLoggingIndex(index);
         const dateStr = new Date().toISOString().split('T')[0];
         const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         try {
             // Log Main
-            await addFoodLog(user.id, dateStr, {
+            await addFoodLog(user.uid, dateStr, {
                 id: combo.main.id + '-' + Date.now(), name: combo.main.name, calories: combo.main.calories, carbs: combo.main.carbs, protein: combo.main.protein, fat: combo.main.fat, fiber: combo.main.fiber, servingSize: '1 serving'
             });
             // Log Side
-            await addFoodLog(user.id, dateStr, {
+            await addFoodLog(user.uid, dateStr, {
                 id: combo.side.id + '-' + Date.now(), name: combo.side.name, calories: combo.side.calories, carbs: combo.side.carbs, protein: combo.side.protein, fat: combo.side.fat, fiber: combo.side.fiber, servingSize: '1 serving'
             });
             // Log Extra
             if (combo.extra) {
-                await addFoodLog(user.id, dateStr, {
+                await addFoodLog(user.uid, dateStr, {
                     id: combo.extra.id + '-' + Date.now(), name: combo.extra.name, calories: combo.extra.calories, carbs: combo.extra.carbs, protein: combo.extra.protein, fat: combo.extra.fat, fiber: combo.extra.fiber, servingSize: '1 serving'
                 });
             }

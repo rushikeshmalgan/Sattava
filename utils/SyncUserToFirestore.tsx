@@ -1,29 +1,29 @@
-import { useUser } from "@clerk/clerk-expo";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useEffect } from "react";
 import { db } from "../firebaseConfig";
+import { useAuth } from "../context/AuthContext";
 
 export function SyncUserToFirestore() {
-    const { user, isLoaded } = useUser();
+    const { user } = useAuth();
 
     useEffect(() => {
         console.log('[BOOT] SyncUserToFirestore running');
-        if (!isLoaded || !user) return;
+        if (!user) return;
 
         const syncUser = async () => {
             try {
-                const userRef = doc(db, "users", user.id);
+                const userRef = doc(db, "users", user.uid);
                 const existing = await Promise.race([
                     getDoc(userRef),
                     new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT: getDoc did not respond in 10s')), 10000))
                 ]) as any;
 
                 const baseData: any = {
-                    id: user.id,
-                    email: user.primaryEmailAddress?.emailAddress ?? "",
-                    name: `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim(),
-                    photo: user.imageUrl ?? "",
-                    provider: user.externalAccounts[0]?.provider ?? "email",
+                    id: user.uid,
+                    email: user.email ?? "",
+                    name: user.displayName ?? "",
+                    photo: user.photoURL ?? "",
+                    provider: user.providerData[0]?.providerId ?? "email",
                     lastLoginAt: serverTimestamp(),
                 };
 
@@ -47,7 +47,7 @@ export function SyncUserToFirestore() {
         };
 
         syncUser();
-    }, [isLoaded, user]);
+    }, [user]);
 
     return null;
 }

@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -16,7 +16,7 @@ import { Colors } from '../../constants/Colors';
 import { addActivityLog } from '../../services/userService';
 
 const WaterIntakeScreen = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const router = useRouter();
     const insets = useSafeAreaInsets();
 
@@ -40,7 +40,7 @@ const WaterIntakeScreen = () => {
     };
 
     const handleLogWater = async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
         if (waterAmount <= 0) {
             alert("Please add some water first!");
             return;
@@ -54,7 +54,7 @@ const WaterIntakeScreen = () => {
             // Amount in ml for DB consistency
             const amountMl = waterAmount;
 
-            await addActivityLog(user.id, dateString, {
+            await addActivityLog(user.uid, dateString, {
                 id: Date.now().toString(),
                 name: 'Water Intake',
                 calories: 0,

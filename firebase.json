@@ -1,0 +1,21 @@
+{
+  "auth": {
+    "authorizedDomains": [
+      "localhost",
+      "sattava-ee416.firebaseapp.com",
+      "sattava-ee416.web.app"
+    ],
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Sattava",
+        "supportEmail": "rushikeshmalgan@gmail.com"
+      },
+      "phone": true
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

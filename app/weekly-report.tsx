@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../context/ThemeContext';
 import { db } from '../firebaseConfig';
 import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
-import { useUser } from '@clerk/clerk-expo';
+import { useAuth } from '../context/AuthContext';
 import { generateText } from '../services/geminiVisionService';
 import { Colors } from '../constants/Colors';
 import { LineChart } from 'react-native-gifted-charts';
@@ -15,7 +15,7 @@ export default function WeeklyReportScreen() {
     const { theme, isDark } = useTheme();
     const insets = useSafeAreaInsets();
     const router = useRouter();
-    const { user } = useUser();
+    const { user } = useAuth();
 
     const [loading, setLoading] = useState(true);
     const [reportText, setReportText] = useState<string | null>(null);
@@ -23,14 +23,14 @@ export default function WeeklyReportScreen() {
 
     useEffect(() => {
         generateReport();
-    }, [user?.id]);
+    }, [user?.uid]);
 
     const generateReport = async () => {
-        if (!user?.id) return;
+        if (!user?.uid) return;
         setLoading(true);
         try {
             // Fetch all logs from Firestore without index to bypass index requirement
-            const logsRef = collection(db, 'users', user.id, 'dailyLogs');
+            const logsRef = collection(db, 'users', user.uid, 'dailyLogs');
             const snap = await getDocs(logsRef);
 
             let days: any[] = [];
