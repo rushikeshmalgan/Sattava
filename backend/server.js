@@ -1,6 +1,7 @@
 require('dotenv').config({ path: '../.env' }); // Load .env from root
 const express = require('express');
 const cors = require('cors');
+const https = require('https');
 const os = require('os');
 
 const app = express();
@@ -105,6 +106,55 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
         '   Set FATSECRET_CLIENT_ID and FATSECRET_CLIENT_SECRET in your .env file.'
     );
     process.exit(1);
+}
+
+// ── FatSecret OAuth 2 token (client_credentials, cached) ─────────────────────
+// Fetches a new token only when the cached one is within 30 s of expiry.
+let _tokenCache = { token: null, expiresAt: 0 };
+
+async function getToken() {
+    if (_tokenCache.token && Date.now() < _tokenCache.expiresAt - 30_000) {
+        return _tokenCache.token;
+    }
+    const creds = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
+    const response = await fetch('https://oauth.fatsecret.com/connect/token', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Basic ${creds}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'grant_type=client_credentials&scope=basic',
+    });
+    if (!response.ok) throw new Error(`FatSecret token fetch failed: ${response.status}`);
+    const data = await response.json();
+    _tokenCache = {
+        token: data.access_token,
+        expiresAt: Date.now() + (data.expires_in ?? 86400) * 1000,
+    };
+    return _tokenCache.token;
+}
+
+// ── Public IP detector (startup diagnostics + error hints) ───────────────────
+// Uses Node built-in https — no new dependency.
+// Always resolves (never rejects); returns null on timeout or any failure.
+function fetchPublicIp() {
+    return new Promise((resolve) => {
+        const req = https.get(
+            'https://api.ipify.org?format=json',
+            { timeout: 5000 },
+            (res) => {
+                let raw = '';
+                res.on('data', (chunk) => { raw += chunk; });
+                res.on('end', () => {
+                    try { resolve(JSON.parse(raw).ip ?? null); }
+                    catch { resolve(null); }
+                });
+                res.on('error', () => resolve(null));
+            }
+        );
+        req.on('timeout', () => { req.destroy(); resolve(null); });
+        req.on('error', () => resolve(null));
+    });
 }
 
 // ── Health check — lets the app verify the proxy is reachable ──
