@@ -18,6 +18,8 @@ import {
 } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { UserProfileData } from '../utils/storage';
+import { Spacing } from '../constants/Spacing';
+import { Radii } from '../constants/Radii';
 
 const TOTAL_STEPS = 5;
 
@@ -391,9 +393,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 20,
+        paddingHorizontal: Spacing.xl,
         paddingTop: Platform.OS === 'android' ? 40 : 10,
-        paddingBottom: 20,
+        paddingBottom: Spacing.xl,
     },
     backButton: {
         width: 44,
@@ -409,19 +411,19 @@ const styles = StyleSheet.create({
     progressBarContainer: {
         height: 6,
         backgroundColor: Colors.SURFACE,
-        marginHorizontal: 24,
-        borderRadius: 3,
+        marginHorizontal: Spacing.xxl,
+        borderRadius: Radii.xs,
         overflow: 'hidden',
-        marginBottom: 30,
+        marginBottom: Spacing.xxxl,
     },
     progressBarFill: {
         height: '100%',
         backgroundColor: Colors.PRIMARY,
-        borderRadius: 3,
+        borderRadius: Radii.xs,
     },
     scrollContent: {
         flexGrow: 1,
-        paddingHorizontal: 24,
+        paddingHorizontal: Spacing.xxl,
     },
     stepContainer: {
         flex: 1,
@@ -430,25 +432,25 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: '700',
         color: Colors.TEXT_MAIN,
-        marginBottom: 10,
+        marginBottom: Spacing.sm,
     },
     stepSubtitle: {
         fontSize: 16,
         color: Colors.TEXT_MUTED,
-        marginBottom: 40,
+        marginBottom: Spacing.huge,
         lineHeight: 24,
     },
     genderContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        gap: 20,
+        gap: Spacing.xl,
     },
     genderCard: {
         width: 140,
         height: 140,
         backgroundColor: Colors.SURFACE,
-        borderRadius: 24,
+        borderRadius: Radii.xl,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
@@ -459,7 +461,7 @@ const styles = StyleSheet.create({
         borderColor: Colors.PRIMARY,
     },
     genderText: {
-        marginTop: 12,
+        marginTop: Spacing.md,
         fontSize: 18,
         fontWeight: '600',
         color: Colors.TEXT_MUTED,
@@ -468,14 +470,14 @@ const styles = StyleSheet.create({
         color: Colors.PRIMARY,
     },
     listContainer: {
-        gap: 16,
+        gap: Spacing.lg,
     },
     listCard: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: Colors.SURFACE,
-        padding: 20,
-        borderRadius: 16,
+        padding: Spacing.xl,
+        borderRadius: Radii.lg,
         borderWidth: 2,
         borderColor: 'transparent',
     },
@@ -483,7 +485,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
         color: Colors.TEXT_MUTED,
-        marginLeft: 16,
+        marginLeft: Spacing.lg,
         flex: 1,
     },
     checkIcon: {
@@ -491,7 +493,7 @@ const styles = StyleSheet.create({
     },
     dateRow: {
         flexDirection: 'row',
-        gap: 16,
+        gap: Spacing.lg,
     },
     dateInputWrapper: {
         flex: 1,
@@ -500,26 +502,26 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '600',
         color: Colors.TEXT_MUTED,
-        marginBottom: 8,
+        marginBottom: Spacing.sm,
         textTransform: 'uppercase',
     },
     dateInput: {
         backgroundColor: Colors.SURFACE,
         height: 60,
-        borderRadius: 12,
+        borderRadius: Radii.md,
         fontSize: 24,
         fontWeight: '600',
         color: Colors.TEXT_MAIN,
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: Spacing.xl,
     },
     weightInputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: Colors.SURFACE,
         height: 60,
-        borderRadius: 12,
-        paddingHorizontal: 16,
+        borderRadius: Radii.md,
+        paddingHorizontal: Spacing.lg,
     },
     kgSuffix: {
         fontSize: 20,
@@ -527,24 +529,24 @@ const styles = StyleSheet.create({
         color: Colors.TEXT_MUTED,
     },
     measurementSection: {
-        marginBottom: 20,
+        marginBottom: Spacing.xl,
     },
     sectionTitle: {
         fontSize: 20,
         fontWeight: '600',
         color: Colors.TEXT_MAIN,
-        marginBottom: 16,
+        marginBottom: Spacing.lg,
     },
     footer: {
-        paddingHorizontal: 24,
-        paddingBottom: Platform.OS === 'ios' ? 0 : 24,
-        paddingTop: 16,
+        paddingHorizontal: Spacing.xxl,
+        paddingBottom: Platform.OS === 'ios' ? 0 : Spacing.xxl,
+        paddingTop: Spacing.lg,
         backgroundColor: Colors.BACKGROUND,
     },
     nextButton: {
         backgroundColor: Colors.PRIMARY,
         height: 56,
-        borderRadius: 28,
+        borderRadius: Radii.pill,
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: Colors.PRIMARY,

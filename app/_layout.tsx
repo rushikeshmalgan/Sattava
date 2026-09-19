@@ -9,6 +9,8 @@ import { AuthProvider, useAuth } from "../context/AuthContext";
 import SmartToast from "../components/SmartToast";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { Colors } from "../constants/Colors";
+import { useFonts, Outfit_400Regular, Outfit_600SemiBold, Outfit_700Bold, Outfit_800ExtraBold } from '@expo-google-fonts/outfit';
+import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from '@expo-google-fonts/inter';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -64,6 +66,20 @@ const InitialLayout = () => {
 };
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+    Outfit_800ExtraBold,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <AuthProvider>
       <ThemeProvider>

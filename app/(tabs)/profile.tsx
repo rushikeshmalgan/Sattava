@@ -13,6 +13,8 @@ import AchievementSection from '../../components/AchievementSection';
 
 import { ThemeType } from '../../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Spacing } from '../../constants/Spacing';
+import { Radii } from '../../constants/Radii';
 
 const GOAL_OPTIONS = ['Lose Weight', 'Maintain Weight', 'Gain Weight'];
 const ACTIVITY_LEVEL_OPTIONS = ['2-3 Days / Week', '3-4 Days / Week', '5-6 Days / Week'];
@@ -779,7 +781,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         backgroundColor: theme.background,
     },
     scrollContent: {
-        paddingHorizontal: 16,
+        paddingHorizontal: Spacing.lg,
     },
     loadingContainer: {
         flex: 1,
@@ -788,7 +790,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         backgroundColor: theme.background,
     },
     header: {
-        marginBottom: 24,
+        marginBottom: Spacing.xxl,
     },
     pageTitle: {
         fontSize: 28,
@@ -797,9 +799,9 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     },
     card: {
         backgroundColor: theme.card,
-        borderRadius: 22,
+        borderRadius: Radii.xl,
         overflow: 'hidden',
-        marginBottom: 16,
+        marginBottom: Spacing.lg,
         ...theme.shadow,
         borderWidth: 1,
         borderColor: theme.border,
@@ -807,16 +809,16 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     userInfoHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 16,
+        padding: Spacing.lg,
     },
     userInitials: {
         width: 52,
         height: 52,
-        borderRadius: 26,
+        borderRadius: Radii.pill,
         backgroundColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12,
+        marginRight: Spacing.md,
     },
     initialsText: {
         fontSize: 20,
@@ -837,17 +839,17 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         marginTop: 4,
     },
     section: {
-        marginBottom: 24,
+        marginBottom: Spacing.xxl,
     },
     staleBanner: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: `${theme.error}18`,
-        borderRadius: 10,
-        paddingVertical: 8,
+        borderRadius: Radii.sm,
+        paddingVertical: Spacing.sm,
         paddingHorizontal: 10,
         marginBottom: 10,
-        gap: 8,
+        gap: Spacing.sm,
     },
     staleText: {
         color: theme.error,
@@ -858,12 +860,12 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         color: theme.textMuted,
-        marginBottom: 8,
+        marginBottom: Spacing.sm,
         textTransform: 'uppercase',
         letterSpacing: 0.5,
     },
     targetRow: {
-        padding: 16,
+        padding: Spacing.lg,
     },
     targetItem: {
         flexDirection: 'row',
@@ -906,13 +908,13 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     divider: {
         height: 1,
         backgroundColor: theme.border,
-        marginHorizontal: 16,
+        marginHorizontal: Spacing.lg,
     },
     settingRow: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 16,
+        padding: Spacing.lg,
     },
     settingContent: {
         flexDirection: 'row',

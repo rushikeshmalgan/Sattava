@@ -26,6 +26,8 @@ import { showSmartToast } from '../components/SmartToast';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import * as Haptics from 'expo-haptics';
+import { Spacing } from '../constants/Spacing';
+import { Radii } from '../constants/Radii';
 
 const FoodSearchScreen = () => {
     const { user } = useAuth();
@@ -336,14 +338,14 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: Spacing.lg,
+        paddingVertical: Spacing.md,
         backgroundColor: theme.background,
     },
     backButton: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: Radii.pill,
         backgroundColor: theme.card,
         justifyContent: 'center',
         alignItems: 'center',
@@ -360,16 +362,16 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: theme.card,
-        marginHorizontal: 16,
-        marginBottom: 16,
-        borderRadius: 12,
-        paddingHorizontal: 12,
+        marginHorizontal: Spacing.lg,
+        marginBottom: Spacing.lg,
+        borderRadius: Radii.md,
+        paddingHorizontal: Spacing.md,
         height: 48,
         borderWidth: 1,
         borderColor: theme.border,
     },
     searchIcon: {
-        marginRight: 8,
+        marginRight: Spacing.sm,
     },
     searchInput: {
         flex: 1,
@@ -380,16 +382,16 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     alternativeBanner: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginHorizontal: 16,
-        marginBottom: 16,
-        padding: 12,
-        borderRadius: 16,
+        marginHorizontal: Spacing.lg,
+        marginBottom: Spacing.lg,
+        padding: Spacing.md,
+        borderRadius: Radii.lg,
         borderWidth: 1,
     },
     alternativeIcon: {
         width: 32,
         height: 32,
-        borderRadius: 16,
+        borderRadius: Radii.pill,
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
@@ -397,7 +399,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     },
     alternativeTextContent: {
         flex: 1,
-        marginRight: 8,
+        marginRight: Spacing.sm,
     },
     alternativeTitle: {
         fontSize: 13,
@@ -409,9 +411,9 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         lineHeight: 14,
     },
     alternativeAction: {
-        paddingHorizontal: 12,
+        paddingHorizontal: Spacing.md,
         paddingVertical: 6,
-        borderRadius: 8,
+        borderRadius: Radii.sm,
     },
     alternativeActionText: {
         color: 'white',
@@ -425,19 +427,19 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 24,
-        gap: 12,
+        padding: Spacing.xxl,
+        gap: Spacing.md,
     },
     listContent: {
-        paddingHorizontal: 16,
-        paddingBottom: 24,
+        paddingHorizontal: Spacing.lg,
+        paddingBottom: Spacing.xxl,
     },
     card: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: theme.card,
-        borderRadius: 20,
-        padding: 16,
+        borderRadius: Radii.xl,
+        padding: Spacing.lg,
         marginVertical: 6,
         ...theme.shadow,
         borderWidth: 1,
@@ -445,7 +447,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     },
     cardContent: {
         flex: 1,
-        marginRight: 12,
+        marginRight: Spacing.md,
     },
     nameRow: {
         flexDirection: 'row',
@@ -463,7 +465,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         backgroundColor: theme.primary + '20',
         paddingHorizontal: 6,
         paddingVertical: 2,
-        borderRadius: 4,
+        borderRadius: Radii.xs,
         borderWidth: 1,
         borderColor: theme.primary + '40',
     },
@@ -491,7 +493,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     addButton: {
         width: 42,
         height: 42,
-        borderRadius: 21,
+        borderRadius: Radii.pill,
         backgroundColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',

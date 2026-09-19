@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { model } from '../config/AiModel';
+import { generateJson } from '../config/AiModel';
 import { Colors } from '../constants/Colors';
 import { db } from '../firebaseConfig';
 import { saveUserProfileToStorage, UserProfileData } from '../utils/storage';
@@ -99,26 +99,7 @@ export default function GeneratingProfile() {
       animateProgress(0.2, 600);
 
       let aiData: any;
-      if (!model) {
-        console.warn('[Profile] AI model unavailable — using default plan');
-        aiData = {
-          dailyCalories: profileData.gender === 'Female' ? 1800 : 2200,
-          macros: { carbs: '250g', protein: '60g', fats: '70g' },
-          waterIntake: '2.5L',
-          planSummary: 'A balanced Indian diet plan with traditional foods to support your health goals.',
-          fitnessTips: ['Morning yoga for 15 minutes', 'Evening walk for 30 minutes'],
-          ayurvedicTip: 'Eat your largest meal at lunch when digestion is strongest.',
-          indianMealTiming: {
-            morning: 'Warm water with lemon',
-            breakfast: 'Oats/upma with fruits',
-            lunch: 'Roti, dal, sabzi, curd',
-            dinner: 'Khichdi or light meal before 8pm',
-          },
-          recommendedIndianFoods: ['Dal', 'Roti', 'Sabzi', 'Curd', 'Fruits'],
-          foodsToAvoid: ['Processed snacks', 'Sugary drinks', 'Fried foods'],
-        };
-      } else {
-        const prompt = `
+      const prompt = `
 You are a certified Indian nutritionist and Ayurvedic wellness expert specializing in traditional Indian diets.
 
 User profile:
@@ -160,10 +141,27 @@ Guidelines:
 - fitnessTips should include at least 2 yoga/activity recommendations
 `;
 
-      const result = await model.generateContent(prompt);
-        const text = result.response.text();
-        const cleanJson = text.replace(/```json|```/g, '').trim();
-        aiData = JSON.parse(cleanJson);
+      const parsed = await generateJson(prompt);
+      if (!parsed) {
+        console.warn('[Profile] AI returned null — using default plan');
+        aiData = {
+          dailyCalories: profileData.gender === 'Female' ? 1800 : 2200,
+          macros: { carbs: '250g', protein: '60g', fats: '70g' },
+          waterIntake: '2.5L',
+          planSummary: 'A balanced Indian diet plan with traditional foods to support your health goals.',
+          fitnessTips: ['Morning yoga for 15 minutes', 'Evening walk for 30 minutes'],
+          ayurvedicTip: 'Eat your largest meal at lunch when digestion is strongest.',
+          indianMealTiming: {
+            morning: 'Warm water with lemon',
+            breakfast: 'Oats/upma with fruits',
+            lunch: 'Roti, dal, sabzi, curd',
+            dinner: 'Khichdi or light meal before 8pm',
+          },
+          recommendedIndianFoods: ['Dal', 'Roti', 'Sabzi', 'Curd', 'Fruits'],
+          foodsToAvoid: ['Processed snacks', 'Sugary drinks', 'Fried foods'],
+        };
+      } else {
+        aiData = parsed;
       }
 
       updateStep(3, 'completed');

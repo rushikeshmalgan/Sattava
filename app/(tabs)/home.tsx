@@ -42,6 +42,10 @@ import { getDailyHealthTip } from '../../services/geminiVisionService';
 import { Colors } from '../../constants/Colors';
 import { ThemeType } from '../../constants/theme';
 import { useTheme } from '../../context/ThemeContext';
+import { getHealthyAlternative } from '../constants/HealthyAlternatives';
+import { Spacing } from '../constants/Spacing';
+import { Radii } from '../constants/Radii';
+import { Typography } from '../constants/Typography';
 import { getCurrentFestival } from '../../constants/IndianFestivals';
 import { db } from '../../firebaseConfig';
 import { addActivityLog, updateUserTargets, updateUserProfile } from '../../services/userService';
@@ -589,33 +593,33 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
   mainContainer:      { flex: 1, backgroundColor: theme.background },
   container:          { flex: 1, backgroundColor: theme.background },
   scrollContent:      { flexGrow: 1 },
-  headerSection:      { paddingHorizontal: 16, paddingTop: 10, paddingBottom: 6 },
-  content:            { flex: 1, marginTop: 4, paddingHorizontal: 16 },
+  headerSection:      { paddingHorizontal: Spacing.lg, paddingTop: 10, paddingBottom: 6 },
+  content:            { flex: 1, marginTop: 4, paddingHorizontal: Spacing.lg },
   // Modal
-  modalOverlay:       { flex: 1, backgroundColor: 'rgba(0,0,0,0.55)', justifyContent: 'center', padding: 20 },
+  modalOverlay:       { flex: 1, backgroundColor: 'rgba(0,0,0,0.55)', justifyContent: 'center', padding: Spacing.xl },
   keyboardView:       { width: '100%' },
-  modalContent:       { backgroundColor: theme.card, borderRadius: 24, padding: 24, maxHeight: '90%', borderWidth: 1, borderColor: theme.border, ...theme.shadow },
-  modalHeader:        { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+  modalContent:       { backgroundColor: theme.card, borderRadius: Radii.xl, padding: Spacing.xxl, maxHeight: '90%', borderWidth: 1, borderColor: theme.border, ...theme.shadow },
+  modalHeader:        { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.xl },
   modalTitle:         { fontSize: 20, fontWeight: '800', color: theme.text },
-  strategyDeck:       { marginTop: 16, marginBottom: 8 },
-  deckTitle:          { fontSize: 14, fontWeight: '800', color: theme.text, marginBottom: 12, marginLeft: 4, letterSpacing: 0.5 },
-  deckRow:            { flexDirection: 'row', gap: 12 },
-  deckButton:         { flex: 1, flexDirection: 'row', alignItems: 'center', padding: 14, borderRadius: 18, gap: 10, ...theme.shadow },
+  strategyDeck:       { marginTop: Spacing.lg, marginBottom: Spacing.sm },
+  deckTitle:          { fontSize: 14, fontWeight: '800', color: theme.text, marginBottom: Spacing.md, marginLeft: Spacing.xs, letterSpacing: 0.5 },
+  deckRow:            { flexDirection: 'row', gap: Spacing.md },
+  deckButton:         { flex: 1, flexDirection: 'row', alignItems: 'center', padding: 14, borderRadius: Radii.lg, gap: 10, ...theme.shadow },
   deckIconBg:         { width: 32, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.2)' },
   deckButtonText:     { color: '#fff', fontSize: 13, fontWeight: '800' },
-  inputLabel:         { fontSize: 13, fontWeight: '600', color: theme.textSecondary, marginBottom: 8, marginTop: 12 },
-  inputWrapper:       { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.surfaceMuted, borderRadius: 12, paddingHorizontal: 12, borderWidth: 1, borderColor: theme.border },
+  inputLabel:         { fontSize: 13, fontWeight: '600', color: theme.textSecondary, marginBottom: Spacing.sm, marginTop: Spacing.md },
+  inputWrapper:       { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.surfaceMuted, borderRadius: Radii.md, paddingHorizontal: Spacing.md, borderWidth: 1, borderColor: theme.border },
   inputIcon:          { marginRight: 10 },
   input:              { flex: 1, height: 48, fontSize: 16, color: theme.text },
   inputContainer:     { marginBottom: 4 },
-  modalButtons:       { flexDirection: 'row', gap: 12, marginTop: 24, marginBottom: 10 },
-  modalButton:        { flex: 1, height: 50, borderRadius: 14, justifyContent: 'center', alignItems: 'center' },
+  modalButtons:       { flexDirection: 'row', gap: Spacing.md, marginTop: Spacing.xxl, marginBottom: 10 },
+  modalButton:        { flex: 1, height: 50, borderRadius: Radii.md, justifyContent: 'center', alignItems: 'center' },
   cancelButtonText:   { fontWeight: '600', fontSize: 14 },
   saveButtonText:     { color: 'white', fontWeight: '800', fontSize: 14 },
-  sectionTitle:       { fontSize: 16, fontWeight: '700', color: theme.text, marginBottom: 14, marginTop: 20 },
-  macroGrid:          { flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
-  macroBox:           { flex: 1, alignItems: 'center', gap: 8 },
+  sectionTitle:       { fontSize: 16, fontWeight: '700', color: theme.text, marginBottom: 14, marginTop: Spacing.xl },
+  macroGrid:          { flexDirection: 'row', justifyContent: 'space-between', gap: Spacing.md },
+  macroBox:           { flex: 1, alignItems: 'center', gap: Spacing.sm },
   macroBoxLabel:      { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
-  macroInputWrapper:  { width: '100%', height: 50, backgroundColor: theme.surfaceMuted, borderRadius: 12, justifyContent: 'center', paddingHorizontal: 10, borderWidth: 1, borderColor: theme.border },
+  macroInputWrapper:  { width: '100%', height: 50, backgroundColor: theme.surfaceMuted, borderRadius: Radii.md, justifyContent: 'center', paddingHorizontal: 10, borderWidth: 1, borderColor: theme.border },
   macroInput:         { fontSize: 16, fontWeight: '700', color: theme.text, textAlign: 'center' },
 });

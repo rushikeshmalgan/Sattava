@@ -8,23 +8,15 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
-
-// ── API Setup ───────────────────────────────────────────────────────────────
-const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY ?? '';
-
-// v1beta is required for gemini-2.0-flash vision capabilities
-// v1 does NOT support multimodal with the new model names
-const genAI = new GoogleGenerativeAI(apiKey);
-
-// Ordered fallback chain – fastest/cheapest first.
-// gemini-2.0-flash* and gemini-1.5-flash* have SEPARATE quota pools,
-// so if the 2.0 daily quota is exhausted, 1.5 models will still respond.
-const MODEL_PRIORITY = [
-  'gemini-2.0-flash',
-  'gemini-2.0-flash-lite',
-  'gemini-1.5-flash',
-  'gemini-1.5-flash-8b',
-];
+import {
+  MODEL_PRIORITY,
+  tryModels,
+  getGenerativeModel,
+  isRateLimit,
+  isApiKeyError,
+  isNetworkError,
+  getFailureCategory,
+} from './geminiClient';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 export type PortionCategory = 'small' | 'medium' | 'large' | '1 bowl' | '1 plate' | '1 piece';
@@ -118,16 +110,6 @@ function toCache(key: string, text: string): void {
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-const isRateLimit = (err: unknown): boolean => {
-  const msg = String((err as any)?.message ?? '');
-  return msg.includes('429') || msg.includes('quota') || msg.includes('RESOURCE_EXHAUSTED');
-};
-
-const isApiKeyError = (err: unknown): boolean => {
-  const msg = String((err as any)?.message ?? '');
-  return msg.includes('API_KEY') || msg.includes('401') || msg.includes('403') || msg.includes('invalid');
-};
-
 const stripFence = (text: string): string =>
   text
     .replace(/^```json\s*/im, '')
@@ -198,39 +180,6 @@ const normalizeAnalysis = (raw: any, modelUsed?: string): GeminiFoodAnalysis => 
   };
 };
 
-// ── Core: try models in priority order ───────────────────────────────────────
-async function tryModels(
-  promptFn: (modelName: string) => Promise<string>,
-  supportsVision = false,
-): Promise<string | null> {
-  if (!apiKey) {
-    console.warn('[Gemini] No API key — check EXPO_PUBLIC_GEMINI_API_KEY in .env');
-    return null;
-  }
-
-  for (const modelName of MODEL_PRIORITY) {
-    try {
-      const result = await promptFn(modelName);
-      console.log(`[Gemini] Success with model: ${modelName}`);
-      return result;
-    } catch (err) {
-      const errMsg = (err as any)?.message ?? String(err);
-      if (isApiKeyError(err)) {
-        console.error('[Gemini] API key invalid:', errMsg);
-        return null; // No point trying other models
-      }
-      if (isRateLimit(err)) {
-        // Rate-limited on this model — try the next one instead of stopping
-        console.warn(`[Gemini] Rate limit on ${modelName}, trying next model...`);
-        continue;
-      }
-      console.warn(`[Gemini] Model ${modelName} failed (${errMsg}), trying next...`);
-    }
-  }
-  console.error('[Gemini] All models failed — returning null');
-  return null;
-}
-
 // ── Public API ────────────────────────────────────────────────────────────────
 
 /**
@@ -279,40 +228,40 @@ Rules:
 - Estimate nutrition per the chosen portionCategory
 - Return confidence 0-1 (1 = very sure)`;
 
-  const result = await tryModels(async (modelName) => {
-    const model = genAI.getGenerativeModel({
-      model: modelName,
+  const { text, modelUsed, failureCategory } = await tryModels(
+    async (modelName) => {
+      const model = getGenerativeModel(modelName, { temperature: 0.1 });
       // Note: do NOT use responseMimeType here — some model versions reject it
       // and return an empty response, which causes JSON parse failures.
-      generationConfig: { temperature: 0.1 },
-    });
-    const res = await model.generateContent([
-      prompt,
-      { inlineData: { data: imageBase64, mimeType } },
-    ]);
-    const text = res.response.text();
-    if (!text || text.trim().length < 10) {
-      throw new Error('Empty response from model');
-    }
-    return text;
-  });
+      const res = await model.generateContent([
+        prompt,
+        { inlineData: { data: imageBase64, mimeType } },
+      ]);
+      const text = res.response.text();
+      if (!text || text.trim().length < 10) {
+        throw new Error('Empty response from model');
+      }
+      return text;
+    },
+    'analyzeFoodImage',
+  );
 
-  if (!result) {
-    console.warn('[Gemini] analyzeFoodImage: no result from any model — using default');
-    return DEFAULT_ANALYSIS;
+  if (!text) {
+    console.warn('[analyzeFoodImage] No result from any model — using default', { failureCategory });
+    return { ...DEFAULT_ANALYSIS, modelUsed: undefined };
   }
 
   try {
-    const stripped = stripFence(result);
-    console.log('[Gemini] Raw response preview:', stripped.slice(0, 200));
+    const stripped = stripFence(text);
+    console.log('[analyzeFoodImage] Raw response preview:', stripped.slice(0, 200));
     const parsed = JSON.parse(stripped);
-    const analysis = normalizeAnalysis(parsed);
-    console.log('[Gemini] Detected food:', analysis.itemName, '| confidence:', analysis.confidence);
+    const analysis = normalizeAnalysis(parsed, modelUsed ?? undefined);
+    console.log('[analyzeFoodImage] Detected food:', analysis.itemName, '| confidence:', analysis.confidence);
     return analysis;
   } catch (parseErr) {
-    console.warn('[Gemini] Failed to parse JSON response:', (parseErr as any)?.message);
-    console.warn('[Gemini] Raw response was:', result.slice(0, 300));
-    return DEFAULT_ANALYSIS;
+    console.warn('[analyzeFoodImage] Failed to parse JSON response:', (parseErr as any)?.message);
+    console.warn('[analyzeFoodImage] Raw response was:', text.slice(0, 300));
+    return { ...DEFAULT_ANALYSIS, modelUsed: undefined };
   }
 };
 
@@ -346,13 +295,20 @@ Line 3: Short encouragement
 
 No bullet points. No numbering. No markdown.`;
 
-  const result = await tryModels(async (modelName) => {
-    const model = genAI.getGenerativeModel({ model: modelName, generationConfig: { temperature: 0.7 } });
-    const res = await model.generateContent(prompt);
-    return res.response.text().trim();
-  });
+  const { text, failureCategory } = await tryModels(
+    async (modelName) => {
+      const model = getGenerativeModel(modelName, { temperature: 0.7 });
+      const res = await model.generateContent(prompt);
+      return res.response.text().trim();
+    },
+    'getDietScoreInsight',
+  );
 
-  const text = result ?? LOCAL_INSIGHTS[Math.floor(Math.random() * LOCAL_INSIGHTS.length)];
+  if (!text) {
+    console.warn('[getDietScoreInsight] No result from any model — using local fallback', { failureCategory });
+    return LOCAL_INSIGHTS[Math.floor(Math.random() * LOCAL_INSIGHTS.length)];
+  }
+
   toCache(cacheKey, text);
   return text;
 };
@@ -377,13 +333,20 @@ Stats: ${stats.calories} kcal eaten, ${stats.water}ml water, ${stats.steps} step
 Make it actionable and culturally relevant (mention Indian foods, habits, or ayurvedic wisdom).
 Reply with ONLY the tip sentence. No intro, no quotes, no punctuation at the start.`;
 
-  const result = await tryModels(async (modelName) => {
-    const model = genAI.getGenerativeModel({ model: modelName, generationConfig: { temperature: 0.8, maxOutputTokens: 80 } });
-    const res = await model.generateContent(prompt);
-    return res.response.text().trim();
-  });
+  const { text, failureCategory } = await tryModels(
+    async (modelName) => {
+      const model = getGenerativeModel(modelName, { temperature: 0.8, maxOutputTokens: 80 });
+      const res = await model.generateContent(prompt);
+      return res.response.text().trim();
+    },
+    'getDailyHealthTip',
+  );
 
-  const text = result ?? LOCAL_TIPS[Math.floor(Math.random() * LOCAL_TIPS.length)];
+  if (!text) {
+    console.warn('[getDailyHealthTip] No result from any model — using local fallback', { failureCategory });
+    return LOCAL_TIPS[Math.floor(Math.random() * LOCAL_TIPS.length)];
+  }
+
   toCache(cacheKey, text);
   return text;
 };
@@ -392,9 +355,17 @@ Reply with ONLY the tip sentence. No intro, no quotes, no punctuation at the sta
  * Generic text generation wrapper
  */
 export const generateText = async (prompt: string): Promise<string | null> => {
-  return tryModels(async (modelName) => {
-    const model = genAI.getGenerativeModel({ model: modelName, generationConfig: { temperature: 0.7 } });
-    const res = await model.generateContent(prompt);
-    return res.response.text().trim();
-  });
+  const { text, failureCategory } = await tryModels(
+    async (modelName) => {
+      const model = getGenerativeModel(modelName, { temperature: 0.7 });
+      const res = await model.generateContent(prompt);
+      return res.response.text().trim();
+    },
+    'generateText',
+  );
+
+  if (!text) {
+    console.warn('[generateText] No result from any model', { failureCategory });
+  }
+  return text;
 };

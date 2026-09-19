@@ -32,6 +32,8 @@ import { loadDailySteps } from '../../services/stepService';
 import { getStreakCount } from '../../services/logService';
 import { ChatSkeletonBubbles } from '../../components/Skeleton';
 import { safeAIReply } from '../../services/aiCoach';
+import { Spacing } from '../../constants/Spacing';
+import { Radii } from '../../constants/Radii';
 
 interface Message {
   id: string;
@@ -791,14 +793,14 @@ const typStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    gap: Spacing.sm,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
   },
   avatar: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    borderRadius: Radii.pill,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -807,7 +809,7 @@ const typStyles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    borderRadius: 18,
+    borderRadius: Radii.lg,
     backgroundColor: 'transparent',
   },
   dot: {
@@ -822,8 +824,8 @@ const bubStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     marginVertical: 4,
-    paddingHorizontal: 16,
-    gap: 8,
+    paddingHorizontal: Spacing.lg,
+    gap: Spacing.sm,
   },
   rowLeft: {
     justifyContent: 'flex-start',
@@ -834,7 +836,7 @@ const bubStyles = StyleSheet.create({
   avatar: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    borderRadius: Radii.pill,
     justifyContent: 'center',
     alignItems: 'center',
     flexShrink: 0,
@@ -843,14 +845,14 @@ const bubStyles = StyleSheet.create({
     maxWidth: '78%',
     paddingHorizontal: 14,
     paddingVertical: 10,
-    borderRadius: 18,
+    borderRadius: Radii.lg,
   },
   aiBubble: {
     borderWidth: 1,
-    borderBottomLeftRadius: 4,
+    borderBottomLeftRadius: Radii.xs,
   },
   userBubble: {
-    borderBottomRightRadius: 4,
+    borderBottomRightRadius: Radii.xs,
   },
   text: {
     fontSize: 14,
@@ -870,18 +872,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: Spacing.lg,
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: Spacing.md,
   },
   aiAvatar: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: Radii.pill,
     backgroundColor: 'rgba(255,255,255,0.25)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -898,20 +900,20 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   clearBtn: {
-    padding: 8,
+    padding: Spacing.sm,
   },
   quickRow: {
     borderBottomWidth: 1,
     paddingVertical: 10,
   },
   quickScroll: {
-    paddingHorizontal: 16,
-    gap: 8,
+    paddingHorizontal: Spacing.lg,
+    gap: Spacing.sm,
   },
   quickChip: {
     paddingHorizontal: 14,
     paddingVertical: 7,
-    borderRadius: 20,
+    borderRadius: Radii.xl,
     borderWidth: 1,
   },
   quickText: {
@@ -919,21 +921,21 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   messageList: {
-    paddingTop: 16,
+    paddingTop: Spacing.lg,
     gap: 2,
   },
   inputBar: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.lg,
     paddingTop: 10,
     borderTopWidth: 1,
     gap: 10,
   },
   input: {
     flex: 1,
-    borderRadius: 22,
-    paddingHorizontal: 16,
+    borderRadius: Radii.xl,
+    paddingHorizontal: Spacing.lg,
     paddingVertical: 10,
     fontSize: 14,
     maxHeight: 100,
@@ -942,7 +944,7 @@ const styles = StyleSheet.create({
   sendBtn: {
     width: 42,
     height: 42,
-    borderRadius: 21,
+    borderRadius: Radii.pill,
     justifyContent: 'center',
     alignItems: 'center',
     flexShrink: 0,

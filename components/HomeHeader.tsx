@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { Colors } from '../constants/Colors';
+import { Typography } from '../constants/Typography';
 import { showSmartToast } from './SmartToast';
 import { Alert } from 'react-native';
 
@@ -58,23 +59,23 @@ const styles = StyleSheet.create({
   },
   appName: {
     fontSize: 13,
-    fontWeight: '800',
     color: Colors.PRIMARY,
     letterSpacing: 1.5,
     textTransform: 'uppercase',
     marginBottom: 4,
+    ...Typography.subheading,
   },
   greetingText: {
     fontSize: 22,
-    fontWeight: '800',
     color: Colors.TEXT_MAIN,
     lineHeight: 28,
+    ...Typography.heading,
   },
   tagline: {
     fontSize: 12,
     color: Colors.TEXT_MUTED,
     marginTop: 2,
-    fontWeight: '500',
+    ...Typography.bodyMedium,
   },
   avatar: {
     width: 48,
