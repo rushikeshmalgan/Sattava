@@ -3,6 +3,7 @@ import path from 'node:path';
 import dotenv from 'dotenv';
 import { createApp } from './app';
 import { ConfigError, loadConfig } from './config';
+import { createGeminiRestProvider } from './ai/geminiRest';
 import { createFirebaseTokenVerifier } from './firebaseAdmin';
 import { createLogger } from './logger';
 import { fetchPublicIp } from './net/publicIp';
@@ -30,6 +31,7 @@ async function main(): Promise<void> {
     config,
     logger,
     verifyToken: createFirebaseTokenVerifier(config.firebaseProjectId),
+    provider: createGeminiRestProvider({ apiKey: config.geminiApiKey }),
   });
 
   app.listen(config.port, '0.0.0.0', async () => {

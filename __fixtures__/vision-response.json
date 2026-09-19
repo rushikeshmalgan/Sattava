@@ -1,0 +1,26 @@
+{
+  "analysis": {
+    "itemName": "Dal Makhani",
+    "searchHint": "dal makhani",
+    "portionCategory": "1 bowl",
+    "confidence": 0.9,
+    "isPackaged": false,
+    "imageNotes": "A bowl of dal with a swirl of cream",
+    "estimatedNutrition": { "calories": 320, "carbs": 30, "protein": 12, "fat": 16, "servingSize": "1 bowl" },
+    "items": [
+      {
+        "itemName": "Dal Makhani",
+        "portionCategory": "1 bowl",
+        "confidence": 0.9,
+        "estimatedNutrition": { "calories": 320, "carbs": 30, "protein": 12, "fat": 16, "servingSize": "1 bowl" }
+      },
+      {
+        "itemName": "Roti",
+        "portionCategory": "1 piece",
+        "confidence": 0.85,
+        "estimatedNutrition": { "calories": 100, "carbs": 18, "protein": 3, "fat": 2, "servingSize": "1 piece" }
+      }
+    ]
+  },
+  "meta": { "model": "gemini-3.6-flash", "cached": false, "promptVersion": "vision-v1", "requestId": "00000000-0000-4000-8000-000000000000" }
+}
