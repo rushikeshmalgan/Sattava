@@ -15,7 +15,8 @@ const EnvSchema = z.object({
   GEMINI_API_KEY: z.string().min(1, 'GEMINI_API_KEY is required'),
   GEMINI_MODEL_CHAIN: z
     .string()
-    .default('gemini-3.6-flash,gemini-3.5-flash,gemini-3.5-flash-lite,gemini-3.1-flash-lite'),
+    .default('gemini-3.6-flash,gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.5-flash'),
+  GEMINI_THINKING_LEVEL: z.enum(['minimal', 'low', 'off']).default('minimal'),
   GEMINI_ATTEMPT_TIMEOUT_MS: intWithDefault(12_000),
   AI_DEADLINE_MS: intWithDefault(30_000),
   AI_DAILY_ATTEMPT_BUDGET: intWithDefault(3_000),
@@ -42,6 +43,7 @@ export interface AppConfig {
   port: number;
   geminiApiKey: string;
   modelChain: string[];
+  thinkingLevel: 'minimal' | 'low' | 'off';
   attemptTimeoutMs: number;
   aiDeadlineMs: number;
   aiDailyAttemptBudget: number;
@@ -80,6 +82,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     port: e.PORT,
     geminiApiKey: e.GEMINI_API_KEY,
     modelChain,
+    thinkingLevel: e.GEMINI_THINKING_LEVEL,
     attemptTimeoutMs: e.GEMINI_ATTEMPT_TIMEOUT_MS,
     aiDeadlineMs: e.AI_DEADLINE_MS,
     aiDailyAttemptBudget: e.AI_DAILY_ATTEMPT_BUDGET,

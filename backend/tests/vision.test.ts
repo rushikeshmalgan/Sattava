@@ -269,7 +269,7 @@ describe('vision: Gemini fallback chain', () => {
     const img = makeImage('jpeg', 555);
     await authed(app, { image: img.base64, mimeType: img.mimeType });
     const req = provider.calls[0]!;
-    expect(req.generationConfig).toEqual({ temperature: 0.1 });
+    expect(req.generationConfig).toEqual({ temperature: 0.1, thinkingConfig: { thinkingLevel: 'minimal' } });
     expect(req.parts[0]).toHaveProperty('text');
     expect(req.parts[1]).toEqual({ inlineData: { mimeType: 'image/jpeg', data: img.base64 } });
   });

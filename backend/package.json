@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "jest",
     "check:models": "tsx scripts/check-gemini-models.ts",
-    "summarize:logs": "node scripts/summarize-ai-logs.js"
+    "summarize:logs": "node scripts/summarize-ai-logs.js",
+    "smoke:vision": "tsx scripts/smoke-vision.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",

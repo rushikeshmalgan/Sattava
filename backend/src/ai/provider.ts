@@ -20,6 +20,8 @@ export interface GenerationConfig {
   temperature?: number;
   maxOutputTokens?: number;
   responseMimeType?: 'application/json' | 'text/plain';
+  /** Gemini 3.x models otherwise spend ~1k hidden thought tokens (10s+) on simple extraction. */
+  thinkingConfig?: { thinkingLevel: 'minimal' | 'low' };
 }
 
 export interface GenerateRequest {

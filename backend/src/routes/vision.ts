@@ -8,6 +8,7 @@ import { summarizeIssues } from '../ai/json';
 import { parseVisionText } from '../ai/normalize/vision';
 import type { GenerativeProvider } from '../ai/provider';
 import { VisionRequestSchema, VisionResponseSchema, type VisionAnalysis } from '../ai/schemas/vision';
+import { visionGenerationConfig } from '../ai/generationConfig';
 import { VISION_PROMPT, VISION_PROMPT_VERSION } from '../ai/visionPrompt';
 import type { DailyBudget } from '../middleware/rateLimit';
 import { logAiRequest, type AiRequestEvent, type AttemptRecord } from '../observability';
@@ -84,9 +85,7 @@ export function createVisionRouter(deps: VisionRouterDeps): Router {
         chain: deps.config.modelChain,
         provider: deps.provider,
         parts: [{ text: VISION_PROMPT }, { inlineData: { mimeType: image.mimeType, data: body.data.image } }],
-        // responseMimeType is intentionally not set for vision: some model versions
-        // reject it and return an empty response. JSON is enforced by validation instead.
-        generationConfig: { temperature: 0.1 },
+        generationConfig: visionGenerationConfig(deps.config),
         parse: parseVisionText,
         attemptTimeoutMs: deps.config.attemptTimeoutMs,
         deadlineMs: deps.config.aiDeadlineMs,
