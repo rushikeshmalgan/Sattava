@@ -11,6 +11,7 @@ import { requireAuth } from './middleware/requireAuth';
 import { DailyBudget, SlidingWindowLimiter, byIp, byVerifiedUid, rateLimit } from './middleware/rateLimit';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { createFoodsRouter } from './routes/foods';
+import { createCoachRouter } from './routes/coach';
 import { createVisionRouter, type CachedVision } from './routes/vision';
 import './http/requestContext';
 
@@ -28,6 +29,9 @@ const DAY = 24 * 60 * MINUTE;
 
 // 5 MB decoded -> ~6.7 MB base64 (+ JSON envelope). Scoped to the vision route only.
 const VISION_BODY_LIMIT = '7mb';
+
+// Coach requests are small structured inputs (numbers/enums, one 300-char transcript).
+const COACH_BODY_LIMIT = '16kb';
 
 const VISION_CACHE_ENTRIES = 200;
 const VISION_CACHE_TTL_MS = 24 * 60 * MINUTE;
@@ -95,6 +99,13 @@ export function createApp(deps: AppDeps): Express {
       hashUid,
       now,
     }),
+  );
+  v1.use(
+    '/coach',
+    rateLimit({ limiter: new SlidingWindowLimiter(MINUTE, config.limits.coachPerMinute, now), key: byVerifiedUid, scope: 'coach-uid-minute' }),
+    rateLimit({ limiter: new SlidingWindowLimiter(DAY, config.limits.coachPerDay, now), key: byVerifiedUid, scope: 'coach-uid-day' }),
+    express.json({ limit: COACH_BODY_LIMIT }),
+    createCoachRouter({ config, provider: deps.provider, budget, hashUid, now }),
   );
   app.use('/api/v1', v1);
 

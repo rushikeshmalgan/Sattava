@@ -11,7 +11,8 @@
     "test": "jest",
     "check:models": "tsx scripts/check-gemini-models.ts",
     "summarize:logs": "node scripts/summarize-ai-logs.js",
-    "smoke:vision": "tsx scripts/smoke-vision.ts"
+    "smoke:vision": "tsx scripts/smoke-vision.ts",
+    "smoke:coach": "tsx scripts/smoke-coach.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
