@@ -4,8 +4,7 @@
  */
 export const VISION_PROMPT_VERSION = 'vision-v1';
 
-// Moved verbatim from the mobile app (services/geminiVisionService.ts). Server-owned
-// so a client can never supply prompt text for image analysis.
+// Server-owned so a client can never supply prompt text for image analysis.
 export const VISION_PROMPT = `You are an expert Indian nutrition assistant. Analyze the food in this image.
 
 Return ONLY valid JSON (no markdown, no explanation) with this exact shape:

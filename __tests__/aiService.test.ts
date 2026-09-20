@@ -42,7 +42,7 @@ describe('analyzeFoodImage', () => {
     mFood.mockResolvedValue(fixture);
     const out = await analyzeFoodImage({ imageBase64: 'IMG' });
     expect(out.itemName).toBe('Dal Makhani');
-    expect(out.modelUsed).toBe('gemini-3.6-flash');
+    expect(out.modelUsed).toBe('example-model');
     expect(out.items).toHaveLength(2);
     expect(mFood).toHaveBeenCalledWith('IMG', 'image/jpeg');
   });

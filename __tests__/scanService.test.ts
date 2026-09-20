@@ -49,7 +49,7 @@ const analysis = (over: Record<string, unknown> = {}, itemOver: Record<string, u
   isPackaged: false,
   estimatedNutrition: nutrition,
   items: [{ itemName: 'Dal Makhani', portionCategory: '1 bowl', confidence: 0.9, estimatedNutrition: nutrition, ...itemOver }],
-  modelUsed: 'gemini-3.6-flash',
+  modelUsed: 'example-model',
   ...over,
 });
 

@@ -44,7 +44,7 @@ const getProxyBaseUrl = (): string => {
     "[FatSecret] Cannot determine proxy URL.\n\n" +
       "For DEVELOPMENT:\n" +
       "  • Make sure your phone and computer are on the same Wi-Fi network.\n" +
-      "  • The proxy server should be running: cd backend && node server.js\n" +
+      "  • The backend should be running: cd backend && npm run dev\n" +
       "  • If auto-detection fails, set EXPO_PUBLIC_PROXY_BASE_URL in .env\n" +
       "    to your LAN IP, e.g.: EXPO_PUBLIC_PROXY_BASE_URL=http://192.168.1.5:3000\n\n" +
       "For PRODUCTION:\n" +

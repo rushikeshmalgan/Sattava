@@ -22,5 +22,5 @@
       }
     ]
   },
-  "meta": { "model": "gemini-3.6-flash", "cached": false, "promptVersion": "vision-v1", "requestId": "00000000-0000-4000-8000-000000000000" }
+  "meta": { "model": "example-model", "cached": false, "promptVersion": "vision-v1", "requestId": "00000000-0000-4000-8000-000000000000" }
 }

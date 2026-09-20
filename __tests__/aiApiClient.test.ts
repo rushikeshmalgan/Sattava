@@ -97,7 +97,7 @@ describe('requestFoodAnalysis', () => {
 
     const out = await requestFoodAnalysis('x', 'image/jpeg');
 
-    expect(out.meta.model).toBe('gemini-3.6-flash');
+    expect(out.meta.model).toBe('example-model');
     expect(getIdToken.mock.calls).toEqual([[false], [true]]);
     expect(fetchMock.mock.calls[0][1].headers.Authorization).toBe('Bearer stale');
     expect(fetchMock.mock.calls[1][1].headers.Authorization).toBe('Bearer fresh');
