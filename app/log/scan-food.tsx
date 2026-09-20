@@ -30,6 +30,7 @@ import { ScanErrorBoundary } from '../../components/ScanErrorBoundary';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeType } from '../../constants/theme';
 import { addFoodLog } from '../../services/logService';
+import { captureUploadablePhoto } from '../../services/photoCapture';
 import {
   describeScanFailure,
   isLoggableScanResolution,
@@ -348,15 +349,18 @@ const ScanFoodScreen = () => {
     setScanMessage('Analyzing food photo with Gemini...');
 
     try {
-      const photo = await cameraRef.current.takePictureAsync({
-        base64: true,
-        quality: 0.75,
-        skipProcessing: false,
-      });
-
-      if (!photo?.base64 || !photo?.uri) {
-        throw new Error('Missing camera image data.');
-      }
+      // Retakes at a lower JPEG quality if the photo would exceed the backend's upload limit.
+      const photo = await captureUploadablePhoto(
+        (quality) => {
+          if (!cameraRef.current) throw new Error('Camera not available.');
+          return cameraRef.current.takePictureAsync({ base64: true, quality, skipProcessing: false });
+        },
+        {
+          onAttempt: (attempt) => {
+            if (__DEV__) console.log('[scan] capture attempt', attempt);
+          },
+        },
+      );
 
       setCapturedImageUri(photo.uri);
 
