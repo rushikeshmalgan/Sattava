@@ -423,6 +423,25 @@ describe('daily log: legitimate app writes (real service functions)', () => {
     expect(day).toMatchObject({ consumedCalories: 0, caloriesBurned: 0, totalWater: 0 });
   });
 
+  it('deleteFoodLog also reverses cardio, weight and manual exercise entries', async () => {
+    // These are what addExerciseLog stores (its subtype is the entry type). Deleting one used to
+    // remove the log entry but leave its calories in caloriesBurned.
+    const db = asUser(ALICE);
+    await addExerciseLog(ALICE, DAY, { id: 'run', type: 'cardio', name: 'Running', duration: 30, calories: 300, intensity: 'Medium' });
+    await addExerciseLog(ALICE, DAY, { id: 'lift', type: 'weight', name: 'Squats', duration: 20, calories: 120, intensity: 'High' });
+    await addExerciseLog(ALICE, DAY, { id: 'manual', type: 'manual', name: 'Manual Exercise', duration: 0, calories: 150, intensity: 'N/A' });
+    expect((await readDoc(dayPath()))?.caloriesBurned).toBe(570);
+
+    const logs = (await getDoc(dayRef(db))).data()?.logs as Record<string, unknown>[];
+    expect(logs).toHaveLength(3);
+    for (const entry of logs) {
+      await assertSucceeds(deleteFoodLog(ALICE, DAY, entry as Parameters<typeof deleteFoodLog>[2]));
+    }
+    const day = await readDoc(dayPath());
+    expect(day?.logs).toHaveLength(0);
+    expect(day?.caloriesBurned).toBe(0);
+  });
+
   it('loadDemoData writes seven valid days', async () => {
     asUser(ALICE);
     await assertSucceeds(loadDemoData(ALICE));

@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
+import { isExerciseLogType } from '../utils/logEntryTypes';
 
 export interface Activity {
   id: string;
@@ -51,8 +52,8 @@ function ActivityRow({
       case 'water':   return 'water';
       case 'cardio':  return 'walk';
       case 'weight':  return 'barbell';
-      case 'food':
-      case 'manual':  return 'restaurant';
+      case 'manual':  return 'fitness';
+      case 'food':    return 'restaurant';
       default: {
         const n = (activity.name || '').toLowerCase();
         if (n.includes('walk') || n.includes('run')) return 'walk';
@@ -67,13 +68,13 @@ function ActivityRow({
       case 'water':  return theme.macroWater;
       case 'cardio': return theme.info;
       case 'weight': return theme.macroProtein;
-      case 'food':
-      case 'manual': return theme.success;
+      case 'manual': return theme.info;
+      case 'food':   return theme.success;
       default:       return theme.primary;
     }
   };
 
-  const isExercise = ['cardio', 'weight', 'exercise'].includes(activity.type);
+  const isExercise = isExerciseLogType(activity.type);
   const color = getColor();
 
   const confirmDelete = () => {

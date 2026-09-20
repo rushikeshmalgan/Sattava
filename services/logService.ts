@@ -1,5 +1,6 @@
 import { arrayRemove, arrayUnion, doc, getDoc, increment, setDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
+import { isExerciseLogType } from '../utils/logEntryTypes';
 
 export interface ExerciseData {
     id: string;
@@ -138,7 +139,7 @@ export const deleteFoodLog = async (
             if (logEntry.protein)  updateData.totalProtein = increment(-logEntry.protein);
             if (logEntry.fat)      updateData.totalFat     = increment(-logEntry.fat);
             if (logEntry.fiber)    updateData.totalFiber   = increment(-logEntry.fiber);
-        } else if (logEntry.type === 'exercise') {
+        } else if (isExerciseLogType(logEntry.type)) {
             if (logEntry.calories) updateData.caloriesBurned = increment(-logEntry.calories);
         } else if (logEntry.type === 'water') {
             const waterMl = logEntry.amount
@@ -227,7 +228,7 @@ export const getStreakCount = async (userId: string, targetCalories: number, tar
                 const waterMet = (data.totalWater || 0) >= targetWater * 0.8;
 
                 // Rule 3: Exercise logged
-                const exerciseLogs = data.logs?.filter((l: any) => l.type === 'exercise') || [];
+                const exerciseLogs = data.logs?.filter((l: any) => isExerciseLogType(l.type)) || [];
                 const exerciseMet = exerciseLogs.length > 0;
                 
                 if (calMet && waterMet && exerciseMet) {
