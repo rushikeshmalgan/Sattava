@@ -1,0 +1,111 @@
+name: CI
+
+# Runs on every pull request and on pushes to main. Deliberately does NOT build
+# native apps (no EAS build): that is slow, needs credentials, and is a manual
+# release step. Everything here is deterministic and needs no secrets.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # One Node version everywhere. The backend needs >= 20.3 (AbortSignal.any) and
+  # Expo SDK 54 / React Native 0.81 need >= 20.19, so 22 (current LTS) is safe.
+  NODE_VERSION: '22'
+  EXPO_NO_TELEMETRY: '1'
+
+jobs:
+  mobile:
+    name: Mobile (typecheck, lint, tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Tests
+        run: npm test -- --ci
+
+  backend:
+    name: Backend (typecheck, tests, build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Tests
+        run: npm test -- --ci
+      # The same build the Render service runs (see backend/README.md).
+      - name: Production build
+        run: npm run build
+
+  firestore-rules:
+    name: Firestore rules (emulator)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: package-lock.json
+      # The Firestore emulator is a Java program.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci --no-audit --no-fund
+      # Keep the version in the key in step with firebase-tools in the test:rules script.
+      - name: Cache the Firestore emulator download
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/firebase/emulators
+          key: firebase-emulators-${{ runner.os }}-firebase-tools-15.30.2
+      - name: Firestore security rules tests
+        run: npm run test:rules
+
+  security:
+    name: Security checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      # Gemini key, SDK and endpoint may exist only in backend/.
+      - name: AI boundary (no Gemini key, SDK or endpoint in the mobile app)
+        run: bash scripts/check-client-ai-boundary.sh
+      - name: No committed secret files
+        run: |
+          # .env.example templates are fine; real env files, keys and service-account JSON are not.
+          leaked="$(git ls-files | grep -Ei '(^|/)\.env(\..+)?$|service-?account.*\.json$|\.(pem|p12|jks|key)$' | grep -v '\.example$' || true)"
+          if [ -n "$leaked" ]; then
+            echo "::error::Secret-looking files are tracked by git:"
+            echo "$leaked"
+            exit 1
+          fi
