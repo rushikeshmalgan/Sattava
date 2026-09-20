@@ -37,7 +37,7 @@ Sattva starts from the other direction: the food database, the portion categorie
 ## Features
 
 ### 📷 AI Food Scan
-Photograph a dish and Gemini Vision (`gemini-2.0-flash`, with an ordered fallback chain down to `gemini-1.5-flash-8b`) returns a structured JSON payload: item name, up to 5 detected items per photo, a portion category, a confidence score, and estimated calories/carbs/protein/fat. Every parse is defensive — numbers are coerced and clamped, unknown portion strings fall back to `medium`, and a hand-written rule forces roti/chapati/paratha/naan/kulcha to always report as `"1 piece"` regardless of what the model returns.
+Photograph a dish and the backend sends it to Gemini Vision through an ordered model fallback chain. The response is validated into a structured payload: item name, up to 5 detected items per photo, a portion category, a confidence score, and estimated calories/carbs/protein/fat. Nothing is trusted blindly: output is schema-validated and bounds-checked, unusable output falls through to the next model, and a hand-written rule forces roti/chapati/paratha/naan/kulcha to always report as `"1 piece"`. If analysis fails, the scan shows an explicit error and nothing is logged.
 
 ### 🔍 Barcode Scan
 Packaged foods are looked up against the OpenFoodFacts API directly from the client (no backend involved) for barcode-based nutrition lookup.
@@ -58,7 +58,7 @@ Given a target calorie count, the combo generator keyword-matches local foods in
 A 0–100 diet score is computed from a fixed formula weighted across protein adequacy, fiber, calorie balance, hydration, and macro ratio — each benchmarked against ICMR (Indian Council of Medical Research) daily recommended values rather than generic Western RDAs. 7-day history charts are rendered with `react-native-gifted-charts`.
 
 ### 💬 AI Coach
-A chat-style coach that responds to messages about water, protein, hunger, fatigue, progress, and "cheat day" guilt. **This is intent-matched template text, not an LLM call** — see the honesty note below. Separately, Gemini *is* used (with local-template fallback) to generate a 3-line daily insight and a one-line daily health tip based on the user's actual logged stats.
+A chat-style coach that responds to messages about water, protein, hunger, fatigue, progress, and "cheat day" guilt. **This is intent-matched template text, not an LLM call** — see the honesty note below. Separately, Gemini *is* used (via the backend, with local-copy fallback) for the daily insight and tip, the diet-score explanation, the weekly report, the voice-coach reply, and the onboarding plan.
 
 ### 🔥 Streaks, Missions & Achievements
 Daily logging streaks, hydration and step-count missions, and an achievements screen for gamified consistency.
@@ -74,49 +74,65 @@ A generated user profile (goal, diet type, region, calorie/macro targets) drives
 
 ## Technical Highlights
 
-- **Client-does-almost-everything architecture.** Gemini Vision, Firebase, OpenFoodFacts, and Clerk are all called directly from the Expo client. The only backend that exists is a narrow Express proxy for one thing: FatSecret's OAuth client-credentials flow.
-- **Model fallback chain, not a single point of failure.** Every Gemini call tries `gemini-2.0-flash` → `gemini-2.0-flash-lite` → `gemini-1.5-flash` → `gemini-1.5-flash-8b` in order, skipping ahead on rate limits (`gemini-2.0-*` and `gemini-1.5-*` draw from separate quota pools) and stopping immediately on an API-key error rather than burning through the whole chain pointlessly.
-- **Every Gemini-touching function is designed to never throw.** Parsing failures, empty responses, and exhausted quota all resolve to typed defaults or a pool of local template strings, so a flaky AI call degrades the UI rather than crashing it.
-- **Content-addressed caching for scans.** Image scan results are cached by a SHA-256 hash of (a sample of) the image bytes, and barcode results by the barcode itself — so re-scanning the same photo or product doesn't re-spend an API call. Deliberately, a result whose label is `"Unknown food"` is *never* cached, so a transient Gemini failure doesn't get permanently baked in for that image.
-- **A hand-rolled rate limiter with no external dependency.** The backend proxy implements its own sliding-window limiter (30 requests/minute/IP) using a `Map` of timestamps, purged periodically so memory doesn't grow unbounded — no `express-rate-limit` or Redis needed for a single-endpoint proxy.
-- **Offline-first food search.** The primary food search path never leaves the device — it queries the bundled CSV/curated datasets — so search works with no connectivity and no external quota.
+- **Thin client, one authenticated backend for AI.** Firebase and OpenFoodFacts are called directly from the Expo client. Every Gemini call runs on the Express/TypeScript backend (`backend/`), which verifies the caller's Firebase ID token first. The mobile bundle contains no AI provider SDK and no provider key; a Jest guard (`__tests__/noClientGemini.test.ts`) fails the build if either reappears.
+- **Model fallback chain, validated inside each attempt.** Requests try an ordered list of Gemini models (`GEMINI_MODEL_CHAIN`) and fall through on failure. Failures are classified from the HTTP status and structured error fields rather than message substrings, and only an invalid API key aborts the whole chain. Output validation runs *inside* each attempt, so malformed or out-of-range output from one model falls through to the next instead of ending the request. `npm run check:models` probes every chain model against the live provider, because models get retired (the original `gemini-2.0` / `gemini-1.5` chain had been).
+- **Two-layer output validation.** Model text goes through JSON extraction, then a Zod structural schema, then domain normalization (rounding, roti-as-`1 piece`, sanitising text that may have come from the photo), then hard bounds. Out-of-range nutrition is *rejected*, never clamped or defaulted. The mobile client re-checks every response with its own runtime guards.
+- **A failed scan can never become a nutrition record.** There is no placeholder result: `analyzeFoodImage` throws, the scan screen shows an explicit failure message, and `isLoggableScanResolution` blocks any unnamed or out-of-range AI result before it reaches Firestore.
+- **Content-addressed caching in two places.** The client caches scan results by the SHA-256 of the *full* image (7-day TTL); the server keeps a small in-memory LRU keyed on image hash, MIME type and prompt version (24 h). Only validated successes are ever cached.
+- **Rate limiting and cost guards with no external infrastructure.** An in-memory sliding-window limiter applies per verified user (per minute and per day) and per IP, plus a global daily cap on Gemini attempts. Correct for a single instance; see Honest Limitations.
+- **Structured AI observability.** Each AI request emits one JSON log line (request ID, hashed user ID, models tried and their outcomes, latency, cache hit/miss, validation warnings) and never images, prompts or keys. `npm run summarize:logs` turns those lines into failure rate, fallback distribution, latency percentiles, validation-rejection rate and cache hit rate.
+- **Offline-first food search.** The primary food search path never leaves the device: it queries the bundled CSV/curated datasets, so search works with no connectivity and no external quota.
 
 ## System Architecture
 
 ```mermaid
 flowchart TD
-    User(["👤 User"]) --> App["Expo App (React Native + Expo Router)"]
+    User(["User"]) --> App["Expo App (React Native + Expo Router)"]
 
-    App -->|"food photo"| Gemini["Gemini Vision API\n(gemini-2.0-flash → fallback chain)"]
-    App -->|"barcode"| OFF["OpenFoodFacts API"]
-    App -->|"sign in / sign up"| Clerk["Clerk Auth"]
+    App -->|"sign in / sign up"| Auth["Firebase Auth"]
     App -->|"read/write logs, user profile"| Firestore[("Firebase Firestore")]
-    App -->|"local search, meal plans, streaks"| Local[("AsyncStorage +\nbundled CSV datasets")]
-    App -->|"food search text query"| Backend["Express Proxy\n(backend/server.js)"]
+    App -->|"barcode"| OFF["OpenFoodFacts API"]
+    App -->|"local search, meal plans, streaks"| Local[("AsyncStorage +<br/>bundled CSV datasets")]
+    App -->|"AI requests + Firebase ID token"| API["Express API (backend/)<br/>verify token, validate, rate limit"]
 
-    Backend -->|"OAuth client-credentials\n+ cached bearer token"| FatSecret["FatSecret API"]
+    API -->|"verify ID token"| Auth
+    API -->|"server-side key, model fallback chain"| Gemini["Gemini API"]
+    API -->|"OAuth client-credentials"| FatSecret["FatSecret API"]
 
-    style Backend fill:#fef3c7,stroke:#d97706
+    style API fill:#fef3c7,stroke:#d97706
     style Gemini fill:#e0f2fe,stroke:#0284c7
     style Firestore fill:#fff7ed,stroke:#ea580c
 ```
 
-The Express backend is intentionally minimal — it is **not** a general-purpose API. FatSecret issues OAuth 2.0 client-credentials that must not be embedded in a distributed app binary, so the proxy exists solely to fetch, cache, and forward that bearer token behind the single `/api/foods/search` route it exposes (plus a `/health` check). Everything else — Gemini, Firestore, OpenFoodFacts, Clerk — is called straight from the client with no server in between.
+The backend exists because two integrations cannot safely run inside a distributed app binary: the Gemini API key and FatSecret's OAuth client secret (anyone can decompile an APK and read bundled strings). It also gives AI traffic one place to enforce authentication, validation, rate limits and observability.
+
+| Route | Auth | Purpose |
+|---|---|---|
+| `POST /api/v1/vision/analyze-food` | Firebase ID token | Food photo to validated nutrition analysis |
+| `POST /api/v1/coach/generate` | Firebase ID token | Server-owned text/JSON tasks: insight, tip, diet-score explanation, weekly report, voice coach, onboarding plan |
+| `GET /api/foods/search` | none (IP rate limited) | FatSecret proxy (legacy contract; currently unused by the search screen) |
+| `GET /health` | none | Liveness check |
+
+All `/api/v1` errors use one envelope, `{ "error": { "code", "message", "requestId" } }`, with safe fixed messages; provider errors are logged internally and never returned. Clients send only validated numbers and enums for the coach tasks, never prompt text, so the endpoint is not a general-purpose LLM proxy.
 
 ## Data Flow — Photo to Dashboard
 
 ```mermaid
 flowchart LR
-    Photo["📷 Food photo\n(base64)"] --> Hash["SHA-256 hash\n(cache key)"]
-    Hash --> Cache{"Cached\nresult?"}
+    Photo["Food photo<br/>(base64)"] --> Hash["SHA-256 of full image<br/>(client cache key)"]
+    Hash --> Cache{"Cached<br/>result?"}
     Cache -- yes --> Resolution
-    Cache -- no --> Gemini["Gemini Vision\nanalyzeFoodImage()"]
-    Gemini --> Parse["Strip markdown fences\nJSON.parse + normalize\n(clamp numbers, force roti→1 piece)"]
-    Parse --> Resolution["ScanResolution\n(1-5 detected items,\nportion options, macros)"]
-    Resolution -->|"not 'Unknown food'"| SetCache["Write to scan cache"]
-    Resolution --> Log["logService →\nFirestore dailyLogs/{userId}"]
-    Log --> Dashboard["Home dashboard\n(calorie ring, macro bars)"]
-    Dashboard --> Analytics["7-day charts +\nIndian Diet Score"]
+    Cache -- no --> Api["POST /api/v1/vision/analyze-food<br/>Bearer Firebase ID token"]
+    Api --> Server["Server: validate image, LRU cache,<br/>Gemini model chain, Zod +<br/>normalization + bounds"]
+    Server -->|"200 validated analysis"| Guard["Client response guards"]
+    Server -->|"error envelope"| Failed["Explicit failed state<br/>(nothing is logged)"]
+    Guard --> Resolution["ScanResolution<br/>(1-5 detected items,<br/>portion options, macros)"]
+    Resolution --> Loggable{"isLoggable-<br/>ScanResolution?"}
+    Loggable -- no --> Failed
+    Loggable -- yes --> SetCache["Write to scan cache"]
+    SetCache --> Log["logService to<br/>Firestore dailyLogs/{userId}"]
+    Log --> Dashboard["Home dashboard<br/>(calorie ring, macro bars)"]
+    Dashboard --> Analytics["7-day charts +<br/>Indian Diet Score"]
 ```
 
 ## Project Structure
@@ -124,7 +140,7 @@ flowchart LR
 ```
 Sattava-main/
 ├── app/                          # Expo Router file-based routes
-│   ├── (auth)/                   # sign-in, sign-up (Clerk)
+│   ├── (auth)/                   # sign-in, sign-up (Firebase Auth)
 │   ├── (tabs)/                   # home, analytics, diet, chat, profile
 │   ├── log/                      # scan-food, manual-calories, manual-exercise,
 │   │                             #   water-intake, yoga, ghar-ka-khana, saved-dishes
@@ -135,9 +151,10 @@ Sattava-main/
 │   └── subscription.tsx          # "Sattva Pro" paywall UI (see Honest Limitations)
 ├── components/                   # ~30 reusable UI components (cards, modals, widgets)
 ├── services/                     # All API calls and business logic — no logic in screens
-│   ├── geminiVisionService.ts    # Gemini calls, model fallback, JSON normalization
+│   ├── aiService.ts              # AI facade: calls the backend; vision throws on failure, text falls back locally
+│   ├── aiApiClient.ts            # Authenticated API client (Firebase ID token) + aiContract.ts response guards
 │   ├── scanService.ts            # Orchestrates barcode/Gemini scan → ScanResolution
-│   ├── scanCache.ts              # SHA-256 keyed cache for scan results
+│   ├── scanCache.ts              # Scan-result cache (SHA-256 of the full image, schema v4)
 │   ├── fatSecretService.ts       # Client for the backend FatSecret proxy
 │   ├── openFoodFactsService.ts   # Direct OpenFoodFacts barcode/text lookup
 │   ├── csvFoodService.ts / localFoodService.ts / foodSearchService.ts
@@ -155,12 +172,13 @@ Sattava-main/
 │                                  #   indianFoods.ts (curated), mealPlans.ts (templates)
 ├── constants/                    # Colors, theme, Indian regions/festivals, healthy alternatives
 ├── context/                      # ThemeContext (light/dark)
-├── backend/
-│   ├── server.js                 # Express proxy: FatSecret OAuth + rate limiting only
-│   └── package.json
+├── backend/                      # TypeScript/Express API (see backend/README.md)
+│   ├── src/                      # app factory, auth, rate limiting, AI (model chain, schemas, cache), routes
+│   ├── tests/                    # Jest + supertest; Gemini and Firebase are faked
+│   └── scripts/                  # check-gemini-models, smoke-vision, summarize-ai-logs
 ├── scripts/processCsv.js         # One-time script: raw CSV → data/indianFoodsDatabase.ts
-├── __tests__/                    # Jest suites for fatSecretService, geminiVisionService,
-│                                  #   mealSchedulerService (all external deps mocked)
+├── __tests__/                    # Jest suites: aiApiClient, aiService, scanService, fatSecretService,
+│                                  #   mealSchedulerService, no-client-Gemini guard (externals mocked)
 ├── firestore.rules               # Per-user ownership security rules
 ├── .env.example                  # Required environment variables template
 └── app.json / eas.json           # Expo config + EAS Build profiles
@@ -173,18 +191,18 @@ Sattava-main/
 | App framework | [Expo](https://expo.dev) ~54, [Expo Router](https://expo.github.io/router) ~6 | File-based routing, typed routes, React Compiler enabled |
 | Language | TypeScript (strict mode) | |
 | UI | React Native 0.81, React 19.1 | `react-native-reanimated` 4, `expo-blur`, `expo-linear-gradient` |
-| Auth | [Clerk](https://clerk.com) (`@clerk/clerk-expo`) | Client-side auth session management |
+| Auth | Firebase Authentication | Email/password, Google, phone; the backend verifies ID tokens with the Firebase Admin SDK |
 | Database | Firebase Firestore v12 | Per-user document + subcollections |
-| AI / Vision | Google Gemini API (`@google/generative-ai`) | `gemini-2.0-flash` primary, 3-model fallback chain |
+| AI / Vision | Google Gemini API (REST, backend only) | Ordered model chain from `GEMINI_MODEL_CHAIN`, checked by `npm run check:models` |
 | Food search (online) | FatSecret API (via Express proxy), OpenFoodFacts API (direct) | |
 | Food search (offline) | Bundled CSV + curated TypeScript datasets | No network required |
 | Local storage | `@react-native-async-storage/async-storage` | Meal plans, saved dishes, steps, preferences |
 | Charts | `react-native-gifted-charts` | |
 | Notifications | `expo-notifications` | Meal & hydration reminders |
 | Motion sensing | `expo-sensors` (Accelerometer) | Custom peak-detection step algorithm |
-| Backend | Node.js + Express | Single-purpose OAuth/rate-limit proxy |
-| Testing | Jest + `jest-expo` | Service-layer unit tests, all externals mocked |
-| Icons | `@expo/vector-icons`, `@hugeicons/react-native` | |
+| Backend | Node.js 20+, Express, TypeScript, Zod, pino, Firebase Admin | Authenticated AI gateway + FatSecret proxy |
+| Testing | Jest + `jest-expo` (app), Jest + `ts-jest` + supertest (backend) | External services are always faked |
+| Icons | `@expo/vector-icons` | |
 
 ## Engineering Decisions
 
@@ -192,7 +210,7 @@ Sattava-main/
 Camera, sensors, notifications, secure storage, and OTA updates are all first-party Expo modules here — writing and maintaining native modules for each would be significant overhead for a project at this stage, and Expo Router's file-based routing keeps the `(auth)` / `(tabs)` / `log` split in the project structure directly mirroring the URL structure.
 
 **Why a backend at all, if everything else is client-direct?**
-Because FatSecret's OAuth client-credentials flow requires a secret that must never ship inside an app binary — anyone can decompile an APK and pull out bundled strings. Firebase, Gemini, and Clerk all support scoped, client-safe keys/tokens by design; FatSecret does not, so it's the one integration that needed a server in front of it.
+Because two integrations need secrets that must never ship inside an app binary (anyone can decompile an APK and pull out bundled strings): the Gemini API key and FatSecret's OAuth client secret. Firebase supports scoped, client-safe config by design, so it stays client-direct. A backend also gives AI traffic one place to verify identity (Firebase ID token), validate input and output, rate-limit, cache, and log operational metadata. It is deliberately one small service rather than several: an earlier Python/FastAPI AI service was archived (`archive/ai-service` branch) instead of running two backends for one job.
 
 **Why Firebase/Firestore over a custom backend + SQL database?**
 Real-time sync (calorie ring updates live as logs are written), no server to provision for reads/writes, and security rules that map cleanly onto "a user can only touch their own subtree" — which is exactly the access pattern this app needs.
@@ -204,22 +222,29 @@ There's no comprehensive nutrition API for photographed *Indian* home-cooked foo
 These are per-device, low-stakes, and don't need to sync across devices or survive a reinstall — putting them in Firestore would mean extra reads/writes and security-rule surface area for data that doesn't benefit from being there.
 
 **Why is the AI Coach a rule engine instead of an LLM call?**
-It's a deliberate choice, made explicit here rather than left implicit: intent-matched template responses respond instantly, cost nothing per message, and never fail from a quota or network error — which matters for a chat surface a user might open dozens of times a day. The trade-off is that it can't handle anything outside its matched intents (water, protein, hunger, fatigue, progress, "cheat day" guilt) as gracefully as a real model would. Gemini is reserved for the two places in the app where its cost and latency are worth it: the daily insight and the daily tip, both computed once per changed-stat set and cached for five minutes.
+It's a deliberate choice, made explicit here rather than left implicit: intent-matched template responses respond instantly, cost nothing per message, and never fail from a quota or network error — which matters for a chat surface a user might open dozens of times a day. The trade-off is that it can't handle anything outside its matched intents (water, protein, hunger, fatigue, progress, "cheat day" guilt) as gracefully as a real model would. Gemini is reserved for places where a generated answer is worth its cost and latency: photo analysis, the daily insight and tip, the diet-score explanation, the weekly report, and the onboarding plan. Each goes through the authenticated backend, is validated, and has a local fallback.
 
 ## Challenges Solved
 
-- **Getting structured JSON reliably out of an LLM.** Gemini responses are stripped of markdown code fences, JSON-parsed defensively, and every field is coerced/clamped rather than trusted — a missing `confidence` becomes `0.5`, a non-numeric `calories` string gets its first numeric substring extracted, and an unrecognized portion string falls back to `medium`.
+- **Getting structured JSON reliably out of an LLM.** Model text is extracted (fences and surrounding prose stripped), validated against a Zod schema, normalized (rounded, portion/roti rules applied, text sanitised), and bounds-checked. Known quirks such as `"250 kcal"` strings are tolerated, but missing nutrition is rejected rather than replaced with invented defaults. Because validation runs inside each attempt, one model's bad output falls through to the next model.
 - **Roti/paratha/naan don't scale like an amorphous plate of food.** A dedicated rule intercepts these dish names and forces their portion category to `"1 piece"` regardless of what the model returns, because "medium roti" isn't how anyone thinks about bread.
-- **FatSecret's IP allowlisting in a dev environment with a rotating IP.** The proxy detects and logs the server's public IP on startup (trying three fallback IP-lookup services) and, on the specific "invalid IP" error code from FatSecret, surfaces step-by-step whitelisting instructions in the server console rather than a bare error.
+- **FatSecret's IP allowlisting in a dev environment with a rotating IP.** The proxy logs the server's public IP on startup and, on FatSecret's "invalid IP" error, returns a `502 IP_RESTRICTED` and logs whitelisting hints rather than a bare error.
 - **Avoiding duplicate results across two local food datasets.** The unified Indian food search merges the curated dataset and the CSV-derived dataset while de-duplicating by lowercased name, so the same dish surfaced from both sources doesn't appear twice.
-- **Preventing a bad scan from being permanently cached.** Results are cached by content hash, except when Gemini returns an "Unknown food" fallback — that specific case is deliberately excluded from the cache so a transient failure doesn't haunt that exact photo forever.
-- **Bounded memory for the rate limiter without a database.** The in-memory `Map` used for per-IP rate limiting is swept every 10 minutes to drop IPs with no recent requests, so a long-running proxy process doesn't leak memory from one-off visitors.
+- **Preventing a bad scan from being cached or logged.** Only validated successes are cached (client and server), and `analyzeFoodImage` has no placeholder result: a failed analysis throws. The old "Unknown food / 250 kcal" default, which could previously have been logged as real nutrition, no longer exists.
+- **Bounded memory for the rate limiter without a database.** Each key holds at most `max` timestamps and stale keys are swept opportunistically inside `check()` (no timers), so a long-running process doesn't leak memory from one-off visitors.
+- **Gemini 3.x "thinking" made a simple extraction take about 10 seconds.** Measured live: roughly 900 hidden reasoning tokens per vision request. `thinkingLevel: minimal` returned the same output in about 2.5 s and is accepted by every model in the chain (`GEMINI_THINKING_LEVEL` changes it).
 
 ## Honest Limitations & Mocked Features
 
 In the spirit of not overselling this repo:
 
-> **AI Coach chat responses are not LLM-generated.** They're deterministic keyword/intent matching against template string arrays (`services/aiCoach.ts`), with an artificial 800ms delay added purely to feel conversational. Real Gemini calls in this app are limited to food-photo analysis, the daily insight, and the daily tip.
+> **AI Coach chat responses are not LLM-generated.** They're deterministic keyword/intent matching against template string arrays (`services/aiCoach.ts`), with an artificial 800ms delay added purely to feel conversational. Real Gemini calls (all via the backend) are limited to photo analysis, the daily insight and tip, the diet-score explanation, the weekly report, the voice-coach reply, and the onboarding plan.
+
+> **The voice coach uses a hard-coded sample transcript.** `components/VoiceCoachButton.tsx` sends a fixed sentence ("I ate 2 rotis and a bowl of dal"); there is no speech recognition yet.
+
+> **Rate limits and the server cache live in the memory of a single instance.** They reset on restart and would not be shared across instances; scaling out would need shared state (for example Redis), which is deliberately not introduced yet.
+
+> **Photo scans need the backend, and there is no accuracy evaluation yet.** Hosting cold-start behaviour and real-world latency have not been measured in production, and there is no labelled photo set to quantify recognition accuracy. The validation guards against implausible output, not against plausible-but-wrong estimates.
 
 > **The "Sattva Pro" subscription screen (`app/subscription.tsx`) is UI only.** Tapping subscribe sets a local `isPro` flag in AsyncStorage and shows a success alert — there is no payment processor, App Store/Play Store IAP, or server-side entitlement check wired up. No feature in the codebase currently gates on that flag either.
 
@@ -231,18 +256,21 @@ In the spirit of not overselling this repo:
 
 ## Security Considerations
 
-- **Environment variables split by trust boundary.** `EXPO_PUBLIC_*` variables are bundled into the client at build time and are effectively public; `FATSECRET_CLIENT_ID`/`FATSECRET_CLIENT_SECRET` deliberately omit that prefix so they only ever live on the backend process.
-- **Firestore security rules scope all reads/writes to `request.auth.uid == userId`,** including a wildcard rule covering all subcollections under a user's document — so a user can only ever touch their own data. Note that this is ownership-based access control, not field-level validation: the rules don't currently constrain what shape of data can be written within a user's own subtree.
-- **Backend input validation and sanitization.** Search queries are length-capped (100 chars) and stripped of characters with no legitimate place in a search string (`<>'"`;\{}[]`) before being forwarded to FatSecret.
-- **Backend rate limiting.** A per-IP sliding-window limiter (30 requests/minute) sits in front of the FatSecret proxy route, returning a `429` with a `Retry-After` header rather than an unbounded pass-through.
-- **No secrets logged or returned to the client.** FatSecret errors are translated into generic, actionable messages (e.g. "IP address blocked by FatSecret") rather than the raw upstream error body.
+- **Environment variables split by trust boundary.** `EXPO_PUBLIC_*` variables are bundled into the client at build time and are effectively public (Firebase web config, the API URL). The Gemini key, FatSecret credentials and the log-hashing salt live only in the backend's environment (`backend/.env.example`).
+- **No AI key in the app.** All Gemini traffic originates from the backend. `__tests__/noClientGemini.test.ts` fails if the SDK, the endpoint, or a key-shaped string appears in mobile source, and the exported Android bundle was checked for the key value.
+- **Identity comes only from a verified Firebase ID token.** The backend verifies the token with the Firebase Admin SDK (project ID only; no service-account credential is stored). Request bodies are strict schemas: a client-supplied `userId`/`uid` is rejected, and rate limits and logs use the verified UID.
+- **Request and image validation.** Bodies are parsed only after authentication and per-user limits; images are size-capped (5 MB decoded), must be valid base64, and their magic bytes must match the claimed type.
+- **Untrusted model output.** Output is schema-validated and bounds-checked, and text that may originate from the photo is stripped of control/invisible characters and length-capped. Prompts are server-owned and user free text is limited to a short, delimited voice transcript.
+- **Rate limiting.** Per verified user (per minute and per day), per IP (`trust proxy` is configured so `X-Forwarded-For` cannot be spoofed), plus a global daily cap on provider attempts. 429 responses carry `Retry-After`.
+- **No secrets or provider errors leak.** Logs redact credentials and never contain images or prompts; clients only ever see fixed error messages.
+- **Firestore security rules scope all reads/writes to `request.auth.uid == userId`,** including all subcollections. This is ownership-based access control, not field-level validation: the rules do not constrain what values a user writes within their own data.
 
 ## Performance Optimizations
 
 - **Offline-first local search** avoids a network round trip and external API quota entirely for the common case of searching the Indian food database.
-- **Content-addressed caching** (SHA-256 for images, raw barcode as key) skips redundant Gemini/OpenFoodFacts calls for repeat scans.
-- **5-minute in-memory caching** for Gemini's insight/tip text, keyed by the exact stat values, so re-rendering the dashboard doesn't re-trigger an API call for unchanged stats.
-- **Model fallback ordered by cost/speed,** so the app tries the cheapest, fastest model first and only falls back on failure rather than always calling a heavier model.
+- **Content-addressed caching** (SHA-256 of the full image on the client; image hash + MIME type + prompt version on the server; raw barcode as the key) skips redundant Gemini/OpenFoodFacts calls for repeat scans.
+- **5-minute in-memory caching** of insight/tip text on the client, keyed by the exact stat values, so re-rendering the dashboard doesn't trigger a new request for unchanged stats.
+- **Model chain ordered by measured latency and reliability,** with `thinkingLevel: minimal` for extraction (about 4x faster than default reasoning in a live measurement), so the common path is one fast call and fallbacks only run on failure.
 - **Local-first storage** (AsyncStorage) for meal plans, saved dishes, and step counts keeps frequently-read, per-device data off the Firestore read path.
 
 ## Future Improvements
@@ -254,6 +282,8 @@ Realistic next steps, not a wishlist:
 - Replace the accelerometer-based step counter with the platform pedometer API (`expo-sensors` Pedometer or `CMPedometer`/`Google Fit`) where available, for better accuracy.
 - Expand AI Coach beyond keyword matching — either a small set of additional intents, or an opt-in LLM-backed mode for open-ended questions.
 - Add integration/E2E tests beyond the current service-layer unit tests (scan flow, meal scheduler UI, auth flow).
+- Build a small labelled Indian-food photo set to measure recognition accuracy, and track it per prompt version.
+- Measure real cold-start and inference latency after deploying the backend, and optimise from that evidence.
 
 ## Local Development
 
@@ -273,19 +303,23 @@ cd backend && npm install && cd ..
 ### 2. Configure environment variables
 
 ```bash
-cp .env.example .env
+cp .env.example .env               # app: Firebase web config + the API URL (public values only)
+cp backend/.env.example backend/.env   # backend: Gemini key, Firebase project ID, log salt (secret)
 ```
 
-Then fill in real values — see `.env.example` for the full list (Clerk publishable key, Firebase config, Gemini API key, FatSecret client ID/secret). `EXPO_PUBLIC_*` variables are bundled into the app at build time; `FATSECRET_CLIENT_ID`/`FATSECRET_CLIENT_SECRET` must **not** carry that prefix — they're server-only.
+`EXPO_PUBLIC_*` variables are bundled into the app at build time, so they must never hold secrets. The Gemini key, FatSecret credentials and `LOG_SALT` go only in `backend/.env`.
 
-### 3. Run the backend proxy
+### 3. Run the backend
 
 ```bash
 cd backend
-node server.js
+npm run check:models   # verify GEMINI_MODEL_CHAIN against the live provider
+npm run dev            # start with reload; prints phone-reachable LAN URLs
 ```
 
-This prints the server's LAN IP (for your phone to reach it during development) and public IP (which needs to be whitelisted at [platform.fatsecret.com](https://platform.fatsecret.com) → your app → IP Restrictions).
+In development the app auto-detects the backend on your LAN (same Wi-Fi as your phone). To use a deployed backend, set `EXPO_PUBLIC_PROXY_BASE_URL`. If you use the FatSecret proxy, whitelist the public IP the server logs at startup at [platform.fatsecret.com](https://platform.fatsecret.com).
+
+Other backend commands: `npm test`, `npm run typecheck`, `npm run smoke:vision -- photo.jpg` (real Gemini, no login needed), `npm run summarize:logs < logs.txt`.
 
 ### 4. Run the Expo app
 
@@ -305,15 +339,18 @@ eas build --platform android --profile preview
 eas build --platform all --profile production
 ```
 
-Before a real production build: set your own `android.package` / `ios.bundleIdentifier` in `app.json`, add your own `projectId` from `eas init`, and set all `EXPO_PUBLIC_*` secrets in your EAS environment.
+Before a real production build: set your own `android.package` / `ios.bundleIdentifier` in `app.json`, add your own `projectId` from `eas init`, set `EXPO_PUBLIC_*` values in your EAS environment (Firebase config and the API URL only), and deploy the backend (see `backend/README.md`).
 
 ## Testing
 
 ```bash
-npm test
+npm test                      # app: Jest + jest-expo
+cd backend && npm test        # backend: Jest + ts-jest + supertest
 ```
 
-Jest (`jest-expo` preset) covers the service layer: `fatSecretService`, `geminiVisionService`, and `mealSchedulerService`. All external dependencies — `fetch`, the `@google/generative-ai` SDK, `expo-constants`, `AsyncStorage` — are mocked, so tests run with no network access and no real API keys.
+**App** covers `aiApiClient` (auth header, token refresh, error mapping, response guards), `aiService`, `scanService` (cache key, failed-scan guard), `fatSecretService`, `mealSchedulerService`, and the no-client-Gemini guard.
+
+**Backend** covers authentication, request/image validation, the model fallback chain, the failure classifier, output validation and normalization, caching, rate limiting, the error envelope, log hygiene (no keys, images or prompts), and the log summarizer. Gemini and Firebase are always faked, so no test needs network access or credentials.
 
 ## Contributing
 
