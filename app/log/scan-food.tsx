@@ -31,6 +31,8 @@ import { useTheme } from '../../context/ThemeContext';
 import { ThemeType } from '../../constants/theme';
 import { addFoodLog } from '../../services/logService';
 import {
+  describeScanFailure,
+  isLoggableScanResolution,
   PortionCategory,
   resolveBarcodeScan,
   resolveDetectedItemForPortion,
@@ -369,10 +371,12 @@ const ScanFoodScreen = () => {
 
       applyResolution(resolution);
     } catch (error) {
+      // Explicit failed state: analysis errors carry no placeholder food, so nothing can be logged.
       console.error('Photo scan failed:', error);
+      const message = describeScanFailure(error);
       setCapturedImageUri(null);
-      setScanMessage('Photo scan failed. Try again or use manual search.');
-      Alert.alert('Scan failed', 'We could not analyze that image. Please try again.');
+      setScanMessage(message);
+      Alert.alert('Scan failed', message);
     } finally {
       setIsResolving(false);
     }
@@ -391,6 +395,11 @@ const ScanFoodScreen = () => {
 
     if (!scanResult) {
       Alert.alert('No food selected', 'Please scan or choose a food first.');
+      return;
+    }
+
+    if (!isLoggableScanResolution(scanResult)) {
+      Alert.alert('Cannot log this scan', 'This scan did not produce reliable nutrition data. Please retry or search manually.');
       return;
     }
 

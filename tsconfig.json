@@ -8,6 +8,7 @@
       ]
     }
   },
+  "exclude": ["node_modules", "backend", ".kilo"],
   "include": [
     "**/*.ts",
     "**/*.tsx",

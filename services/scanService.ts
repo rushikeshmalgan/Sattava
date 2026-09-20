@@ -4,7 +4,8 @@ import {
   analyzeFoodImage,
   GeminiFoodAnalysis,
   PortionCategory,
-} from './geminiVisionService';
+} from './aiService';
+import { AiApiError } from './aiApiClient';
 import { normalizePortionCategory } from '../utils/portionUtils';
 import {
   getCachedBarcodeResult,
@@ -56,7 +57,53 @@ const PORTION_MULTIPLIERS: Record<PortionCategory, number> = {
   '1 piece': 1,
 };
 
-const IMAGE_HASH_SAMPLE_LENGTH = 10 * 1024;
+
+const UNKNOWN_LABEL = /^unknown(?![a-z])/i;
+const MAX_LOGGABLE_CALORIES = 3000;
+
+const hasSaneNutrition = (food: FoodData): boolean =>
+  [food.calories, food.carbs, food.protein, food.fat].every((n) => Number.isFinite(n) && n >= 0) &&
+  food.calories <= MAX_LOGGABLE_CALORIES;
+
+/**
+ * Last line of defence before Firestore: an AI-sourced scan may only be logged
+ * if every detected item has a real name and sane nutrition. Barcode and manual
+ * results (curated external data) are not affected.
+ */
+export const isLoggableScanResolution = (resolution: ScanResolution): boolean => {
+  if (resolution.source !== 'gemini') return true;
+  const items = resolution.detectedItems ?? [];
+  return (
+    items.length > 0 &&
+    items.every((item) => !UNKNOWN_LABEL.test(item.label.trim()) && hasSaneNutrition(item.foodData))
+  );
+};
+
+/** Plain-language, actionable copy for a failed photo scan. Never exposes internals. */
+export const describeScanFailure = (error: unknown): string => {
+  const code = error instanceof AiApiError ? error.code : undefined;
+  switch (code) {
+    case 'RATE_LIMITED':
+      return "You've scanned a lot in a short time. Please wait a minute and try again.";
+    case 'IMAGE_TOO_LARGE':
+    case 'PAYLOAD_TOO_LARGE':
+      return 'That photo is too large to analyze. Try again, or use manual search.';
+    case 'INVALID_IMAGE':
+      return 'That photo could not be read. Please try again.';
+    case 'AI_INVALID_OUTPUT':
+      return "We couldn't identify the food in that photo. Try a clearer photo or use manual search.";
+    case 'NOT_SIGNED_IN':
+    case 'UNAUTHENTICATED':
+    case 'INVALID_TOKEN':
+    case 'TOKEN_EXPIRED':
+      return 'Please sign in again to scan food.';
+    case 'NETWORK':
+    case 'TIMEOUT':
+      return 'Could not reach the food analysis service. Check your connection and try again.';
+    default:
+      return 'Food analysis is temporarily unavailable. Try again shortly or use manual search.';
+  }
+};
 
 const isValidFoodData = (value: any): value is FoodData => {
   return Boolean(
@@ -78,7 +125,8 @@ const isValidScanResolution = (value: any): value is ScanResolution => {
     typeof value.source === 'string' &&
     typeof value.label === 'string' &&
     typeof value.confidence === 'number' &&
-    isValidFoodData(value.foodData)
+    isValidFoodData(value.foodData) &&
+    isLoggableScanResolution(value as ScanResolution)
   );
 };
 
@@ -274,6 +322,13 @@ export const resolveBarcodeScan = async (barcode: string): Promise<ScanResolutio
   return resolution;
 };
 
+/**
+ * Resolves a photo to a scan result via the backend.
+ *
+ * Throws AiApiError when analysis fails (or yields nothing loggable). There is
+ * deliberately no placeholder result: callers show an explicit failed state and
+ * nothing fabricated can reach the log.
+ */
 export const resolveImageScan = async ({
   imageBase64,
   imageUri,
@@ -281,8 +336,9 @@ export const resolveImageScan = async ({
   imageBase64: string;
   imageUri?: string;
 }): Promise<ScanResolution> => {
-  const hashInput = imageBase64.slice(0, IMAGE_HASH_SAMPLE_LENGTH);
-  const cacheKey = await digestStringAsync(CryptoDigestAlgorithm.SHA256, hashInput);
+  // Content address over the FULL image. The old key hashed only the first 10 KB,
+  // which for a JPEG is mostly headers and could collide across different photos.
+  const cacheKey = await digestStringAsync(CryptoDigestAlgorithm.SHA256, imageBase64);
   const cached = await getCachedImageResult<ScanResolution>(cacheKey);
   if (cached && isValidScanResolution(cached)) {
     return cached;
@@ -291,15 +347,11 @@ export const resolveImageScan = async ({
   const analysis = await analyzeFoodImage({ imageBase64 });
   const resolution = buildGeminiResolution(analysis, imageUri);
 
-  // Do NOT cache "Unknown food" results — they indicate a transient Gemini failure.
-  // If we cached them, the user would see "Unknown food" forever for that image.
-  const isUnknown = resolution.label?.toLowerCase().includes('unknown');
-  if (!isUnknown) {
-    await setCachedImageResult(cacheKey, resolution);
-  } else {
-    console.warn('[ScanService] Skipping cache for unknown-food result');
+  if (!isLoggableScanResolution(resolution)) {
+    throw new AiApiError('AI_INVALID_OUTPUT');
   }
 
+  await setCachedImageResult(cacheKey, resolution);
   return resolution;
 };
 

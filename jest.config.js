@@ -13,6 +13,9 @@ module.exports = {
     '**/__tests__/**/*.test.tsx',
   ],
 
+  // The backend has its own Jest config (node env, ts-jest); .kilo is a stray worktree copy.
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/backend/', '<rootDir>/.kilo/'],
+
   // Map the @/* alias from tsconfig.json paths
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',

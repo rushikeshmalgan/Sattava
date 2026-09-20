@@ -38,7 +38,7 @@ import CoachSelectionModal, { CoachType } from '../../components/CoachSelectionM
 import SuggestFoodModal from '../../components/SuggestFoodModal';
 import { showSmartToast } from '../../components/SmartToast';
 import { ActivityListSkeleton, CaloriesCardSkeleton, QuickStatsRowSkeleton } from '../../components/Skeleton';
-import { getDailyHealthTip } from '../../services/geminiVisionService';
+import { getDailyHealthTip } from '../../services/aiService';
 import { Colors } from '../../constants/Colors';
 import { ThemeType } from '../../constants/theme';
 import { useTheme } from '../../context/ThemeContext';

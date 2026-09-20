@@ -7,7 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import { db } from '../firebaseConfig';
 import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
-import { generateText } from '../services/geminiVisionService';
+import { generateCoachText } from '../services/aiService';
 import { Colors } from '../constants/Colors';
 import { LineChart } from 'react-native-gifted-charts';
 
@@ -70,22 +70,13 @@ export default function WeeklyReportScreen() {
             })).reverse(); // Oldest to newest
             setStats({ avgCals, daysLogged: days.length, highestProteinDay: maxProteinDay, chartData });
 
-            // Generate AI Summary
-            const prompt = `
-            You are a premium AI Nutrition Coach for an Indian fitness app.
-            Analyze this user's last ${days.length} days of data:
-            - Average Daily Calories: ${avgCals} kcal
-            - Highest Protein Day: ${maxProtein}g on ${maxProteinDay}
-            - Days Logged: ${days.length}/7
-
-            Write a 3-paragraph weekly summary. 
-            Paragraph 1: Celebrate their consistency.
-            Paragraph 2: Point out macro trends (too much carb, great protein, etc) and relate it to Indian foods.
-            Paragraph 3: Give 2 actionable, highly specific diet tips for next week.
-            Do not use markdown headers, just plain text paragraphs separated by double newlines.
-            `;
-
-            const aiResponse = await generateText(prompt);
+            // Generate AI Summary (prompt is owned by the backend; only numbers are sent)
+            const aiResponse = await generateCoachText('weekly_report', {
+                daysLogged: days.length,
+                avgCals,
+                highestProteinGrams: maxProtein,
+                highestProteinDay: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(maxProteinDay) ? maxProteinDay : null,
+            });
             setReportText(aiResponse || "Great job logging this week! Keep it up to see deeper AI insights.");
 
         } catch (error) {

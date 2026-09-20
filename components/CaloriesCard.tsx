@@ -5,7 +5,7 @@ import { Colors } from '../constants/Colors';
 import { SegmentedHalfCircleProgress } from './SegmentedHalfCircleProgress';
 import { useTheme } from '../context/ThemeContext';
 import { ThemeType } from '../constants/theme';
-import { getDietScoreInsight } from '../services/geminiVisionService';
+import { getDietScoreInsight } from '../services/aiService';
 
 interface CaloriesCardProps {
     consumed: number;

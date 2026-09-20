@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CACHE_PREFIX = 'scan-cache-v3';
-const CACHE_SCHEMA_VERSION = 3;
+const CACHE_PREFIX = 'scan-cache-v4';
+const CACHE_SCHEMA_VERSION = 4;
 const DEFAULT_TTL_MS = 1000 * 60 * 60 * 24 * 7;
 
 type CacheEnvelope<T> = {

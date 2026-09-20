@@ -12,7 +12,7 @@ import * as Speech from 'expo-speech';
 
 import { useTheme } from '../context/ThemeContext';
 import { showSmartToast } from './SmartToast';
-import { generateText } from '../services/geminiVisionService';
+import { generateCoachText } from '../services/aiService';
 
 const MOCK_TRANSCRIPT = 'I ate 2 rotis and a bowl of dal';
 
@@ -76,25 +76,13 @@ export default function VoiceCoachButton() {
   };
 
   const getGeminiCoachResponse = async () => {
-    const prompt = `
-You are Sattva, a friendly Indian AI nutrition coach.
-
-The user said: "${MOCK_TRANSCRIPT}"
-
-Reply in 2 short spoken-style sentences.
-Estimate calories around 280 to 350 kcal.
-Praise the dal for protein and the rotis for energy.
-Keep it natural, supportive, and easy to understand.
-Do not use markdown or bullet points.
-`;
-
     try {
       const timeoutPromise = new Promise<string>((_, reject) => {
         setTimeout(() => reject(new Error('Gemini timeout')), 12000);
       });
 
       const response = await Promise.race([
-        generateText(prompt),
+        generateCoachText('voice_coach', { transcript: MOCK_TRANSCRIPT }),
         timeoutPromise,
       ]);
 

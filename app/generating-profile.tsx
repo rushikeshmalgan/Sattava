@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { generateJson } from '../config/AiModel';
+import { generateProfilePlan } from '../services/aiService';
 import { Colors } from '../constants/Colors';
 import { db } from '../firebaseConfig';
 import { saveUserProfileToStorage, UserProfileData } from '../utils/storage';
@@ -99,49 +99,16 @@ export default function GeneratingProfile() {
       animateProgress(0.2, 600);
 
       let aiData: any;
-      const prompt = `
-You are a certified Indian nutritionist and Ayurvedic wellness expert specializing in traditional Indian diets.
-
-User profile:
-Gender: ${profileData.gender}
-Goal: ${profileData.goal}
-Activity Level: ${profileData.activityLevel}
-Birthdate: ${profileData.birthdate.day}/${profileData.birthdate.month}/${profileData.birthdate.year}
-Height: ${profileData.heightFeet}'${profileData.heightInches}"
-Weight: ${profileData.weightKg}kg
-
-Create a personalized Indian wellness plan. Return ONLY valid JSON:
-{
-  "dailyCalories": number,
-  "macros": {
-    "carbs": string,
-    "protein": string,
-    "fats": string
-  },
-  "waterIntake": string,
-  "planSummary": string,
-  "fitnessTips": string[],
-  "ayurvedicTip": string,
-  "indianMealTiming": {
-    "morning": string,
-    "breakfast": string,
-    "lunch": string,
-    "dinner": string
-  },
-  "recommendedIndianFoods": string[],
-  "foodsToAvoid": string[]
-}
-
-Guidelines:
-- Base calorie recommendations on ICMR Indian RDA standards
-- Prefer Indian foods: roti, dal, rice, sabzi, curd, sprouts, paneer
-- Include Indian meal timing (breakfast 7-9am, lunch 12-2pm, dinner 7-9pm)
-- Suggest wellness tips relevant to their current goals
-- planSummary should be 2-3 sentences in a highly professional yet warm English tone. Strictly no Hinglish.
-- fitnessTips should include at least 2 yoga/activity recommendations
-`;
-
-      const parsed = await generateJson(prompt);
+      // The prompt is owned by the backend; only the validated profile fields are sent.
+      const parsed = await generateProfilePlan({
+        gender: profileData.gender,
+        goal: profileData.goal,
+        activityLevel: profileData.activityLevel,
+        birthdate: profileData.birthdate,
+        heightFeet: profileData.heightFeet,
+        heightInches: profileData.heightInches,
+        weightKg: profileData.weightKg,
+      });
       if (!parsed) {
         console.warn('[Profile] AI returned null — using default plan');
         aiData = {

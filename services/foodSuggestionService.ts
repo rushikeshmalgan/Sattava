@@ -3,7 +3,6 @@
  * Uses Gemini (not OpenAI) to generate personalised Indian food suggestions.
  * Falls back to a curated local list when Gemini quota is exhausted.
  */
-import { generateText } from './geminiVisionService';
 
 export type UserGoal = 'Lose Weight' | 'Maintain Weight' | 'Gain Weight';
 export type Preference = 'Veg' | 'Non-Veg' | 'Any';
