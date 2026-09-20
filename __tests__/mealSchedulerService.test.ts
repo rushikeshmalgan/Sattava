@@ -56,6 +56,24 @@ const makeMeal = (id: string, time: string): ScheduledMeal => ({
   mealCategory: 'breakfast',
 });
 
+// Pin the wall clock to local midday. These tests build "N minutes from now" times from the current
+// time; near midnight those wrap into tomorrow and flip past/upcoming, failing the suite for about an
+// hour every day. Only Date is faked, so timers and promises behave normally.
+beforeAll(() => {
+  jest.useFakeTimers({
+    now: new Date(2026, 0, 5, 12, 0, 0),
+    doNotFake: [
+      'hrtime', 'nextTick', 'performance', 'queueMicrotask', 'requestAnimationFrame', 'cancelAnimationFrame',
+      'requestIdleCallback', 'cancelIdleCallback', 'setImmediate', 'clearImmediate',
+      'setInterval', 'clearInterval', 'setTimeout', 'clearTimeout',
+    ],
+  });
+});
+
+afterAll(() => {
+  jest.useRealTimers();
+});
+
 /** Build a time string for "now + offsetMinutes" */
 const timeOffset = (offsetMinutes: number): string => {
   const d = new Date();
