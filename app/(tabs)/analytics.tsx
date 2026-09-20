@@ -490,7 +490,7 @@ export default function Analytics() {
                         ) : weeklyError ? (
                             <View style={[styles.emptyState, { backgroundColor: theme.card, borderColor: theme.border }]}>
                                 <Text style={[styles.emptyIcon]}>⚠️</Text>
-                                <Text style={[styles.emptyTitle, { color: theme.text }]}>Couldn't load weekly data</Text>
+                                <Text style={[styles.emptyTitle, { color: theme.text }]}>Couldn&apos;t load weekly data</Text>
                                 <Text style={[styles.emptySub, { color: theme.textMuted }]}>{weeklyError}</Text>
                                 <TouchableOpacity
                                     onPress={loadWeeklyData}

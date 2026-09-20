@@ -294,7 +294,7 @@ const FoodSearchScreen = () => {
                     {!loading && !error && !showHint && query.trim().length >= 3 && results.length === 0 && (
                         <View style={styles.centerContainer}>
                             <Ionicons name="restaurant-outline" size={48} color={Colors.TEXT_MUTED} />
-                            <Text style={styles.emptyText}>No results found for "{query}"</Text>
+                            <Text style={styles.emptyText}>No results found for &quot;{query}&quot;</Text>
                             <Text style={styles.emptySubtext}>Try a different spelling or a more common name</Text>
                         </View>
                     )}

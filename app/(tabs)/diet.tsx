@@ -209,7 +209,7 @@ export default function DietScreen() {
           ) : planError ? (
             <View style={styles.emptyState}>
               <Text style={styles.emptyEmoji}>⚠️</Text>
-              <Text style={styles.emptyTitle}>Couldn't Load Plan</Text>
+              <Text style={styles.emptyTitle}>Couldn&apos;t Load Plan</Text>
               <Text style={styles.emptySubtitle}>{planError}</Text>
               <TouchableOpacity style={styles.emptyBtn} onPress={loadPlan}>
                 <Text style={styles.emptyBtnText}>↩ Retry</Text>

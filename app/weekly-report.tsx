@@ -135,7 +135,7 @@ export default function WeeklyReportScreen() {
                         <View style={[styles.reportCard, { backgroundColor: theme.card, borderColor: theme.border }]}>
                             <View style={styles.reportHeader}>
                                 <Ionicons name="sparkles" size={24} color={theme.primary} />
-                                <Text style={[styles.reportTitle, { color: theme.primary }]}>Coach's Summary</Text>
+                                <Text style={[styles.reportTitle, { color: theme.primary }]}>Coach&apos;s Summary</Text>
                             </View>
                             <Text style={[styles.reportText, { color: theme.text }]}>
                                 {reportText}

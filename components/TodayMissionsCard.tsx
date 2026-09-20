@@ -44,7 +44,7 @@ export default function TodayMissionsCard({ waterMl, calories, targetCalories, m
 
     return (
         <View style={[styles.container, { backgroundColor: theme.card, borderColor: theme.border }]}>
-            <Text style={[styles.title, { color: theme.text }]}>Today's Missions</Text>
+            <Text style={[styles.title, { color: theme.text }]}>Today&apos;s Missions</Text>
             
             <View style={styles.missionsList}>
                 {missions.map(mission => (

@@ -154,7 +154,7 @@ const SavedDishesScreen = () => {
                 <View style={styles.centerContainer}>
                     <Ionicons name="folder-open-outline" size={60} color={Colors.TEXT_LIGHT} />
                     <Text style={styles.emptyTitle}>No saved dishes yet</Text>
-                    <Text style={styles.emptySubtitle}>Dishes you create in "Ghar Ka Khana" will appear here.</Text>
+                    <Text style={styles.emptySubtitle}>Dishes you create in &quot;Ghar Ka Khana&quot; will appear here.</Text>
                     <TouchableOpacity 
                         style={styles.createButton}
                         onPress={() => router.back()}

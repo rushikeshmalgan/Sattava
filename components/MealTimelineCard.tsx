@@ -15,7 +15,7 @@ export default function MealTimelineCard({ meals, onLogMeal }: MealTimelineCardP
   return (
     <View style={styles.container}>
       <Text style={styles.title}>📅 Today Meal Plan</Text>
-      <Text style={styles.subtitle}>Today's Indian Meal Schedule</Text>
+      <Text style={styles.subtitle}>Today&apos;s Indian Meal Schedule</Text>
 
       <ScrollView showsVerticalScrollIndicator={false} style={styles.list} nestedScrollEnabled={true}>
         {meals.map((meal, idx) => {

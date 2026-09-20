@@ -183,7 +183,7 @@ const RecentActivity = React.memo(({ activities, onDelete }: RecentActivityProps
   return (
     <View style={styles.container}>
       <View style={styles.titleRow}>
-        <Text style={[styles.title, { color: theme.text }]}>Today's Log</Text>
+        <Text style={[styles.title, { color: theme.text }]}>Today&apos;s Log</Text>
         {activities.length > 0 && (
           <View style={[styles.countBadge, { backgroundColor: theme.primary + '20' }]}>
             <Text style={[styles.countText, { color: theme.primary }]}>
@@ -225,6 +225,8 @@ const RecentActivity = React.memo(({ activities, onDelete }: RecentActivityProps
     </View>
   );
 });
+
+RecentActivity.displayName = 'RecentActivity';
 
 export default RecentActivity;
 

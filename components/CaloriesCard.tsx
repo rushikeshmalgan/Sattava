@@ -135,6 +135,8 @@ const CaloriesCard = React.memo(({
     );
 });
 
+CaloriesCard.displayName = 'CaloriesCard';
+
 export default CaloriesCard;
 
 const getStyles = (theme: ThemeType) => StyleSheet.create({

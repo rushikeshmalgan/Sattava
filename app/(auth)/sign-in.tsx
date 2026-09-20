@@ -256,7 +256,7 @@ export default function SignIn() {
                 </TouchableOpacity>
 
                 <View style={styles.footerContainer}>
-                    <Text style={styles.footerText}>Don't have an account? </Text>
+                    <Text style={styles.footerText}>Don&apos;t have an account? </Text>
                     <Link href="/(auth)/sign-up" asChild>
                         <TouchableOpacity>
                             <Text style={styles.signUpText}>Sign Up</Text>

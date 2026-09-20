@@ -24,7 +24,7 @@ function ConfigErrorScreen() {
       <View style={styles.iconWrap}>
         <Ionicons name="warning-outline" size={48} color={Colors.ACCENT_DARK} />
       </View>
-      <Text style={styles.title}>App isn't configured correctly</Text>
+      <Text style={styles.title}>App isn&apos;t configured correctly</Text>
       <Text style={styles.subtitle}>
         A required setting is missing from this build. Please reinstall the
         latest version, or contact support if this keeps happening.
