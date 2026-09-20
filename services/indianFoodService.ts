@@ -33,27 +33,8 @@ export const searchLocalIndianFoods = (query: string, limit = 25): IndianFood[] 
     if (combined.length >= limit) break;
   }
   
-  if (combined.length === 0) {
-    return [{
-      id: "fallback",
-      name: query,
-      nameHindi: query,
-      calories: 150,
-      protein: 6,
-      carbs: 20,
-      fat: 5,
-      fiber: 2,
-      servingSize: "1 serving",
-      servingGrams: 100,
-      tags: [],
-      mealType: [],
-      dietType: "Veg",
-      healthRating: "Moderate",
-      region: "Pan-India",
-      nature: "Neutral",
-    }];
-  }
-
+  // No match is a real answer: return an empty list so the screen shows its
+  // "No results found" state, never an invented food with made-up nutrition.
   return combined.slice(0, limit);
 };
 
