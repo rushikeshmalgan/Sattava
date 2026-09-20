@@ -82,6 +82,8 @@ A generated user profile (goal, diet type, region, calorie/macro targets) drives
 - **Rate limiting and cost guards with no external infrastructure.** An in-memory sliding-window limiter applies per verified user (per minute and per day) and per IP, plus a global daily cap on Gemini attempts. Correct for a single instance; see Honest Limitations.
 - **Structured AI observability.** Each AI request emits one JSON log line (request ID, hashed user ID, models tried and their outcomes, latency, cache hit/miss, validation warnings) and never images, prompts or keys. `npm run summarize:logs` turns those lines into failure rate, fallback distribution, latency percentiles, validation-rejection rate and cache hit rate.
 - **Offline-first food search.** The primary food search path never leaves the device: it queries the bundled CSV/curated datasets, so search works with no connectivity and no external quota.
+- **Firestore rules that validate values, not just ownership, tested against the real emulator.** Only the two paths the app uses are allowed; daily totals and appended entries must be in range and correctly typed; and the app's real write functions run against the rules in tests, which caught a first draft that would have exceeded Firestore's per-request evaluation limit and made food logging fail.
+- **CI on every pull request** (GitHub Actions, no secrets): typecheck, lint and tests for both packages, the backend production build, the Firestore emulator suite, and a guard that fails if a Gemini key, SDK or endpoint appears outside `backend/`.
 
 ## System Architecture
 
@@ -155,6 +157,7 @@ Sattava-main/
 │   ├── aiApiClient.ts            # Authenticated API client (Firebase ID token) + aiContract.ts response guards
 │   ├── scanService.ts            # Orchestrates barcode/Gemini scan → ScanResolution
 │   ├── scanCache.ts              # Scan-result cache (SHA-256 of the full image, schema v4)
+│   ├── photoCapture.ts           # Retakes oversized photos at a lower JPEG quality before upload
 │   ├── fatSecretService.ts       # Client for the backend FatSecret proxy
 │   ├── openFoodFactsService.ts   # Direct OpenFoodFacts barcode/text lookup
 │   ├── csvFoodService.ts / localFoodService.ts / foodSearchService.ts
@@ -176,10 +179,15 @@ Sattava-main/
 │   ├── src/                      # app factory, auth, rate limiting, AI (model chain, schemas, cache), routes
 │   ├── tests/                    # Jest + supertest; Gemini and Firebase are faked
 │   └── scripts/                  # check-gemini-models, smoke-vision, summarize-ai-logs
-├── scripts/processCsv.js         # One-time script: raw CSV → data/indianFoodsDatabase.ts
-├── __tests__/                    # Jest suites: aiApiClient, aiService, scanService, fatSecretService,
+├── scripts/
+│   ├── processCsv.js             # One-time script: raw CSV → data/indianFoodsDatabase.ts
+│   └── check-client-ai-boundary.sh  # CI guard: no Gemini key/SDK/endpoint outside backend/
+├── __tests__/                    # Jest suites: aiApiClient, aiService, scanService, photoCapture, fatSecretService,
 │                                  #   mealSchedulerService, no-client-Gemini guard (externals mocked)
-├── firestore.rules               # Per-user ownership security rules
+├── firestore.rules               # Ownership + value-integrity security rules (deployed manually)
+├── firestore-tests/              # Rules tests against the Firestore emulator (npm run test:rules)
+├── firebase.json                 # Firestore rules path + emulator config
+├── .github/workflows/ci.yml      # CI: mobile, backend, rules tests, AI-boundary check
 ├── .env.example                  # Required environment variables template
 └── app.json / eas.json           # Expo config + EAS Build profiles
 ```
@@ -192,7 +200,7 @@ Sattava-main/
 | Language | TypeScript (strict mode) | |
 | UI | React Native 0.81, React 19.1 | `react-native-reanimated` 4, `expo-blur`, `expo-linear-gradient` |
 | Auth | Firebase Authentication | Email/password, Google, phone; the backend verifies ID tokens with the Firebase Admin SDK |
-| Database | Firebase Firestore v12 | Per-user document + subcollections |
+| Database | Firebase Firestore v12 | Per-user documents; ownership and value-integrity rules |
 | AI / Vision | Google Gemini API (REST, backend only) | Ordered model chain from `GEMINI_MODEL_CHAIN`, checked by `npm run check:models` |
 | Food search (online) | FatSecret API (via Express proxy), OpenFoodFacts API (direct) | |
 | Food search (offline) | Bundled CSV + curated TypeScript datasets | No network required |
@@ -201,7 +209,7 @@ Sattava-main/
 | Notifications | `expo-notifications` | Meal & hydration reminders |
 | Motion sensing | `expo-sensors` (Accelerometer) | Custom peak-detection step algorithm |
 | Backend | Node.js 20+, Express, TypeScript, Zod, pino, Firebase Admin | Authenticated AI gateway + FatSecret proxy |
-| Testing | Jest + `jest-expo` (app), Jest + `ts-jest` + supertest (backend) | External services are always faked |
+| Testing | Jest + `jest-expo` (app), Jest + `ts-jest` + supertest (backend), Firestore emulator (rules) | External services are faked; CI on GitHub Actions |
 | Icons | `@expo/vector-icons` | |
 
 ## Engineering Decisions
@@ -246,6 +254,10 @@ In the spirit of not overselling this repo:
 
 > **Photo scans need the backend, and there is no accuracy evaluation yet.** Hosting cold-start behaviour and real-world latency have not been measured in production, and there is no labelled photo set to quantify recognition accuracy. The validation guards against implausible output, not against plausible-but-wrong estimates.
 
+> **Nothing here has been validated on a physical device, in an EAS native build, or against production.** Verified so far: unit and integration tests with fake providers, the Firestore rules against the local emulator, a real Gemini call from the backend, and a JavaScript bundle export. Not yet verified: a photo scan and Firestore logging on a real phone, an EAS/native build, the Render deployment (cold start, `TRUST_PROXY_HOPS`, real SIGTERM handling), the rules deployed to the production Firebase project, and a production Gemini call authenticated with a real Firebase ID token.
+
+> **Photo size on high-resolution phones is unmeasured.** The app retakes an oversized photo at JPEG quality 0.5, then 0.3, before uploading, but no real-device photo sizes have been measured, so it is unknown whether the highest-resolution phones fit under the 5 MB limit. Measurement gate: in a development build, take photos on representative devices (especially 48 MP and above) and read the `[scan] capture attempt` log lines. If 0.3 is not enough, consider `pictureSize` (Android, changes the preview geometry so it needs on-device checking) or `expo-image-manipulator` (a native dependency, so a new build).
+
 > **The "Sattva Pro" subscription screen (`app/subscription.tsx`) is UI only.** Tapping subscribe sets a local `isPro` flag in AsyncStorage and shows a success alert — there is no payment processor, App Store/Play Store IAP, or server-side entitlement check wired up. No feature in the codebase currently gates on that flag either.
 
 > **The Meal Combo Generator and meal plan templates are rule-based, not ML.** Combos are built by keyword-categorizing the local food dataset into main/side/extra buckets, picking randomly within a category, and linearly scaling macros to hit a target calorie count — there's no optimization or learning involved. Meal plans are fixed templates keyed by goal and diet type, not generated per-user.
@@ -257,13 +269,18 @@ In the spirit of not overselling this repo:
 ## Security Considerations
 
 - **Environment variables split by trust boundary.** `EXPO_PUBLIC_*` variables are bundled into the client at build time and are effectively public (Firebase web config, the API URL). The Gemini key, FatSecret credentials and the log-hashing salt live only in the backend's environment (`backend/.env.example`).
-- **No AI key in the app.** All Gemini traffic originates from the backend. `__tests__/noClientGemini.test.ts` fails if the SDK, the endpoint, or a key-shaped string appears in mobile source, and the exported Android bundle was checked for the key value.
-- **Identity comes only from a verified Firebase ID token.** The backend verifies the token with the Firebase Admin SDK (project ID only; no service-account credential is stored). Request bodies are strict schemas: a client-supplied `userId`/`uid` is rejected, and rate limits and logs use the verified UID.
-- **Request and image validation.** Bodies are parsed only after authentication and per-user limits; images are size-capped (5 MB decoded), must be valid base64, and their magic bytes must match the claimed type.
+- **The Gemini key is backend-only, and CI enforces it.** All Gemini traffic originates from the backend. `scripts/check-client-ai-boundary.sh` (run in CI) and `__tests__/noClientGemini.test.ts` fail if the key variable, a Gemini SDK, or the Gemini endpoint appears anywhere outside `backend/`.
+- **Every AI request needs a signed-in Firebase user.** The mobile app sends the user's Firebase ID token as a Bearer token, and the backend verifies it with the Firebase Admin SDK (project ID only; no service-account credential is stored). The backend's `FIREBASE_PROJECT_ID` must be the same Firebase project the app signs in against, or every token is rejected. Identity comes only from the verified token: request bodies are strict schemas, a client-supplied `userId`/`uid` is rejected, and rate limits and logs use the verified UID.
+- **Request and image validation.** Bodies are parsed only after authentication and per-user limits; images are size-capped (5 MB decoded), must be valid base64, and their magic bytes must match the claimed type. The app retakes an oversized photo at a lower JPEG quality before uploading (see Honest Limitations for what is still unmeasured).
 - **Untrusted model output.** Output is schema-validated and bounds-checked, and text that may originate from the photo is stripped of control/invisible characters and length-capped. Prompts are server-owned and user free text is limited to a short, delimited voice transcript.
 - **Rate limiting.** Per verified user (per minute and per day), per IP (`trust proxy` is configured so `X-Forwarded-For` cannot be spoofed), plus a global daily cap on provider attempts. 429 responses carry `Retry-After`.
-- **No secrets or provider errors leak.** Logs redact credentials and never contain images or prompts; clients only ever see fixed error messages.
-- **Firestore security rules scope all reads/writes to `request.auth.uid == userId`,** including all subcollections. This is ownership-based access control, not field-level validation: the rules do not constrain what values a user writes within their own data.
+- **No secrets or provider errors leak.** Logs redact credentials and never contain images, prompts or tokens; clients only ever see fixed error messages.
+- **Firestore rules enforce ownership and value integrity** (`firestore.rules`, tested against the emulator):
+  - Only `users/{uid}` and `users/{uid}/dailyLogs/{YYYY-MM-DD}` are allowed, and only for the signed-in owner; every other path is denied.
+  - `users/{uid}.id` is the only stored ownership field and can only ever hold the owner's uid.
+  - Daily totals (calories, macros, water, calories burned) must be numbers in `[0, cap]` after the write, the entry an append adds to `foods`/`exercises`/`logs` is type- and range-checked, unknown fields and malformed dates are rejected, and entry lists are length-capped.
+  - The limits are sanity bounds (for example 30,000 kcal per day and 10,000 kcal per entry), not nutrition advice. Rules cannot iterate lists, so only the appended entry is checked, not every existing one.
+  - **Deploying is a separate, manual step** (`firebase deploy --only firestore:rules`); merging does not change production. Deploy it after the app version that can produce valid writes is live, and keep the previous rules handy to roll back.
 
 ## Performance Optimizations
 
@@ -278,14 +295,21 @@ In the spirit of not overselling this repo:
 Realistic next steps, not a wishlist:
 
 - Wire the `isPro` flag to an actual payment provider (RevenueCat or native IAP) and gate the features the subscription screen currently advertises.
-- Add field-level Firestore validation (e.g. `request.resource.data` shape checks) on top of the existing per-user ownership rules.
 - Replace the accelerometer-based step counter with the platform pedometer API (`expo-sensors` Pedometer or `CMPedometer`/`Google Fit`) where available, for better accuracy.
 - Expand AI Coach beyond keyword matching — either a small set of additional intents, or an opt-in LLM-backed mode for open-ended questions.
 - Add integration/E2E tests beyond the current service-layer unit tests (scan flow, meal scheduler UI, auth flow).
+- Validate OpenFoodFacts values for plausibility before offering them to log (the Firestore rules now refuse an absurd entry, but the user only sees a failed save), and reject negative numbers in the manual calorie and exercise forms for the same reason.
 - Build a small labelled Indian-food photo set to measure recognition accuracy, and track it per prompt version.
 - Measure real cold-start and inference latency after deploying the backend, and optimise from that evidence.
 
 ## Local Development
+
+### Prerequisites
+
+- **Node.js 22** (CI uses 22; the backend needs 20.3 or newer, Expo SDK 54 needs 20.19 or newer) and npm.
+- **Java 21 or newer**, only for the Firestore rules tests (the emulator is a Java program).
+- A **Firebase project** with Authentication and Firestore enabled. Sign-in is required to use any AI feature, so the app and the backend must point at the same project.
+- A **Gemini API key** (Google AI Studio), used only by the backend.
 
 ### 1. Clone & install
 
@@ -293,33 +317,47 @@ Realistic next steps, not a wishlist:
 git clone <repo-url>
 cd Sattava-main
 
-# App dependencies
-npm install
-
-# Backend dependencies
-cd backend && npm install && cd ..
+npm install                       # mobile app
+cd backend && npm install && cd ..  # backend
 ```
 
 ### 2. Configure environment variables
 
 ```bash
-cp .env.example .env               # app: Firebase web config + the API URL (public values only)
-cp backend/.env.example backend/.env   # backend: Gemini key, Firebase project ID, log salt (secret)
+cp .env.example .env                   # mobile: public values only
+cp backend/.env.example backend/.env   # backend: secrets
 ```
 
-`EXPO_PUBLIC_*` variables are bundled into the app at build time, so they must never hold secrets. The Gemini key, FatSecret credentials and `LOG_SALT` go only in `backend/.env`.
+**Mobile `.env`** (everything here is bundled into the app, so it must not hold secrets):
+
+| Variable | Purpose |
+|---|---|
+| `EXPO_PUBLIC_FIREBASE_*` | Firebase web config (API key, auth domain, project ID, ...). The web API key is public by design; access is controlled by Auth and Firestore rules |
+| `EXPO_PUBLIC_GOOGLE_*_CLIENT_ID` | Google sign-in (optional) |
+| `EXPO_PUBLIC_PROXY_BASE_URL` | URL of the deployed backend. In development it can be omitted: the app auto-detects the backend on your LAN |
+
+**Backend `backend/.env`** (server-side only):
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `GEMINI_API_KEY` | yes | Gemini key. Never put it in the app or in EAS variables |
+| `FIREBASE_PROJECT_ID` | yes | Firebase project used to verify ID tokens; must match the app |
+| `LOG_SALT` | yes | 16+ random characters; user IDs are HMAC'd with it before logging |
+| `GEMINI_MODEL_CHAIN` | no | Ordered model list. The default lives in `backend/src/config.ts` |
+| `GEMINI_THINKING_LEVEL` | no | `minimal` (default), `low` or `off` |
+| `TRUST_PROXY_HOPS` | no | Proxies in front of the server (default `1`, correct for Render) |
+| `CORS_ORIGINS` | no | Browser origins allowed by CORS; native apps need none |
+| `PORT`, rate limits, timeouts, `FATSECRET_*` | no | See `backend/.env.example` |
+
+The backend refuses to start on invalid configuration and reports variable names only, never values.
 
 ### 3. Run the backend
 
 ```bash
 cd backend
-npm run check:models   # verify GEMINI_MODEL_CHAIN against the live provider
+npm run check:models   # verify the model chain against the live provider
 npm run dev            # start with reload; prints phone-reachable LAN URLs
 ```
-
-In development the app auto-detects the backend on your LAN (same Wi-Fi as your phone). To use a deployed backend, set `EXPO_PUBLIC_PROXY_BASE_URL`. If you use the FatSecret proxy, whitelist the public IP the server logs at startup at [platform.fatsecret.com](https://platform.fatsecret.com).
-
-Other backend commands: `npm test`, `npm run typecheck`, `npm run smoke:vision -- photo.jpg` (real Gemini, no login needed), `npm run summarize:logs < logs.txt`.
 
 ### 4. Run the Expo app
 
@@ -327,9 +365,21 @@ Other backend commands: `npm test`, `npm run typecheck`, `npm run smoke:vision -
 npx expo start
 ```
 
-Scan the QR code with Expo Go, or press `a` / `i` for an Android/iOS emulator.
+Scan the QR code with Expo Go, or press `a` / `i` for an Android/iOS emulator. Your phone and computer must be on the same Wi-Fi network for the LAN auto-detection to work.
 
-### 5. Production build (EAS)
+### 5. Deploy the backend (Render)
+
+| Setting | Value |
+|---|---|
+| Root directory | `backend` |
+| Build command | `npm ci --include=dev && npm run build` |
+| Start command | `npm start` |
+| Health check path | `/health` |
+| Environment | `GEMINI_API_KEY`, `FIREBASE_PROJECT_ID`, `LOG_SALT`, `TRUST_PROXY_HOPS=1`, and `NODE_VERSION` (20.3 or newer) |
+
+Details, a release checklist and the key-rotation order are in `backend/README.md`. The old start command (`node server.js`) no longer exists.
+
+### 6. Production app build (EAS)
 
 ```bash
 npm install -g eas-cli
@@ -339,29 +389,44 @@ eas build --platform android --profile preview
 eas build --platform all --profile production
 ```
 
-Before a real production build: set your own `android.package` / `ios.bundleIdentifier` in `app.json`, add your own `projectId` from `eas init`, set `EXPO_PUBLIC_*` values in your EAS environment (Firebase config and the API URL only), and deploy the backend (see `backend/README.md`).
+Before a real production build: set your own `android.package` / `ios.bundleIdentifier` in `app.json`, add your own `projectId` from `eas init`, and set the `EXPO_PUBLIC_*` values (Firebase config and the API URL only) in your EAS environment. No native EAS build has been run against these changes yet; see Honest Limitations.
 
 ## Testing
 
-```bash
-npm test                      # app: Jest + jest-expo
-cd backend && npm test        # backend: Jest + ts-jest + supertest
-```
+| What | Command | Notes |
+|---|---|---|
+| Mobile typecheck | `npm run typecheck` | `tsc --noEmit` |
+| Mobile lint | `npm run lint` | `expo lint`; 0 errors, some pre-existing warnings |
+| Mobile tests | `npm test` | Jest + `jest-expo`; all external services faked |
+| Backend typecheck | `cd backend && npm run typecheck` | |
+| Backend tests | `cd backend && npm test` | Jest + supertest; Gemini and Firebase faked |
+| Firestore rules tests | `npm run test:rules` | Starts the Firestore emulator (needs Java 21+) |
+| AI boundary check | `bash scripts/check-client-ai-boundary.sh` | No Gemini key, SDK or endpoint outside `backend/` |
 
-**App** covers `aiApiClient` (auth header, token refresh, error mapping, response guards), `aiService`, `scanService` (cache key, failed-scan guard), `fatSecretService`, `mealSchedulerService`, and the no-client-Gemini guard.
+None of the default test commands needs network access or credentials. The rules tests download the emulator once (about 60 MB, cached), and on Windows a previous run can leave the emulator's `java.exe` holding port 8088; stop it before re-running.
 
-**Backend** covers authentication, request/image validation, the model fallback chain, the failure classifier, output validation and normalization, caching, rate limiting, the error envelope, log hygiene (no keys, images or prompts), and the log summarizer. Gemini and Firebase are always faked, so no test needs network access or credentials.
+**App tests** cover `aiApiClient` (auth header, token refresh, error mapping, response guards), `aiService`, `scanService` (cache key, failed-scan guard), `photoCapture`, `fatSecretService`, `mealSchedulerService`, and the no-client-Gemini guard.
+
+**Backend tests** cover authentication, request/image validation, the model fallback chain and its time bounds, the failure classifier, output validation and normalization, caching, rate limiting, the error envelope, config validation, graceful shutdown, log hygiene (no keys, images or prompts), and the log summarizer.
+
+**Firestore rules tests** run against the real emulator with two layers: a rule matrix (ownership, the `id` field, negative/absurd/malformed values, unknown fields) and the app's real write functions (`logService`, `userService`), so a change to either the rules or the app's writes that would break logging fails here. One test writes every field at once to guard Firestore's 1,000-expression evaluation limit.
+
+### Continuous integration
+
+`.github/workflows/ci.yml` runs on every pull request and every push to `main`, on Node 22, with no secrets. It deliberately does not run an EAS/native build.
+
+| Job | Runs |
+|---|---|
+| `mobile` | `npm ci`, typecheck, lint, tests |
+| `backend` | `npm ci`, typecheck, tests, and the production build Render runs |
+| `firestore-rules` | The emulator test suite (Java 21, emulator download cached) |
+| `security` | `scripts/check-client-ai-boundary.sh`, plus a check that no `.env`, service-account or key files are tracked |
 
 ## Contributing
 
-Pull requests are welcome. Before submitting:
+PRs welcome. CI must pass: it runs the same typecheck, lint and test commands listed under Testing. Run them locally first, plus `npm run test:rules` if you touch `firestore.rules` or how the app writes to Firestore.
 
-```bash
-npm run lint
-npm test
-```
-
-The project uses ESLint with `eslint-config-expo`. Please keep new service-layer logic in `services/`, not in screen components, consistent with the rest of the codebase.
+The project uses ESLint with `eslint-config-expo`. Please keep service-layer logic in `services/` rather than in screens. When the app starts writing a new Firestore field, add it to `userFields()`/`dayFields()` in `firestore.rules` and cover it in `firestore-tests/`, or the write will be denied.
 
 ## License
 
