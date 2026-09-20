@@ -8,7 +8,8 @@ const csv = (value: string): string[] =>
 
 const intWithDefault = (def: number) => z.coerce.number().int().positive().default(def);
 
-const EnvSchema = z.object({
+// Exported so a test can check that .env.example documents exactly these variables.
+export const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: intWithDefault(3000),
 
