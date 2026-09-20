@@ -52,6 +52,16 @@ const parseServingSizeGrams = (servingSize?: string, quantity?: string): number 
   return Number(match[1]) || 100;
 };
 
+// Open Food Facts is crowd-sourced: it has kJ entered as kcal, misplaced decimals and negative numbers.
+// No food has more than about 900 kcal, or more than 100 g of any macronutrient, per 100 g, so a value
+// past these limits is a data error rather than a product. Offering it would put an absurd number in the
+// user's daily log (the Firestore rules only refuse the extreme cases), so such a product is treated as not found.
+const MAX_KCAL_PER_100G = 1000;
+const MAX_GRAMS_PER_100G = 105; // 100 g plus rounding slack
+
+const isPlausible = (value: number, max: number): boolean =>
+  Number.isFinite(value) && value >= 0 && value <= max;
+
 const scaleNutrition = (per100gValue: number, servingGrams: number): number => {
   if (!Number.isFinite(per100gValue) || per100gValue <= 0) {
     return 0;
@@ -90,6 +100,15 @@ const normalizeProduct = (
     parseNumber(nutriments['fat_100g']) ||
     parseNumber(nutriments['fat']) ||
     parseNumber(nutriments['fat_serving']);
+
+  if (
+    !isPlausible(caloriesPer100g, MAX_KCAL_PER_100G) ||
+    !isPlausible(carbsPer100g, MAX_GRAMS_PER_100G) ||
+    !isPlausible(proteinPer100g, MAX_GRAMS_PER_100G) ||
+    !isPlausible(fatPer100g, MAX_GRAMS_PER_100G)
+  ) {
+    return null;
+  }
 
   return {
     id: String(product?.code || name),
