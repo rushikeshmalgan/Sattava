@@ -79,6 +79,8 @@ Static checks, tests and a local run of the built server all pass, but these can
 
 ## Release checklist
 
+This is the short version. `docs/RELEASE_RUNBOOK.md` in the repository root has the exact commands, the device and backend checks, the Firestore rules deploy, the key-rotation sequence and the rollbacks.
+
 1. `npm test` and `npm run typecheck` pass; `npm run check:models` reports every chain model usable.
 2. Deploy the backend first. The routes are additive, so builds already in the field keep working.
 3. Deploy the Firestore rules (`firebase deploy --only firestore:rules`) once `npm run test:rules` passes. Merging does not deploy them. They accept exactly what the current app writes, so they suit old and new app builds, but log a meal, delete it and edit your targets against a non-production Firebase project first if you have one. To roll back, redeploy the previous `firestore.rules` from git.

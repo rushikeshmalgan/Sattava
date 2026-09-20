@@ -377,7 +377,7 @@ Scan the QR code with Expo Go, or press `a` / `i` for an Android/iOS emulator. Y
 | Health check path | `/health` |
 | Environment | `GEMINI_API_KEY`, `FIREBASE_PROJECT_ID`, `LOG_SALT`, `TRUST_PROXY_HOPS=1`, and `NODE_VERSION` (20.3 or newer) |
 
-Details, a release checklist and the key-rotation order are in `backend/README.md`. The old start command (`node server.js`) no longer exists.
+Details, a release checklist and the key-rotation order are in `backend/README.md`; the step-by-step version, with exact commands, the device checks, the rules deploy and rollbacks, is in `docs/RELEASE_RUNBOOK.md`. The old start command (`node server.js`) no longer exists.
 
 ### 6. Production app build (EAS)
 
