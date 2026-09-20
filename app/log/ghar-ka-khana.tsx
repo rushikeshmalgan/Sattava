@@ -20,6 +20,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/Colors';
 import { saveDishLocally, Ingredient } from '../../services/dishService';
 import { addActivityLog } from '../../services/userService';
+import { MAX_KCAL_PER_ENTRY, parseNumberField } from '../../utils/nutritionInput';
 
 const GharKaKhanaScreen = () => {
     const { user } = useAuth();
@@ -112,6 +113,12 @@ const GharKaKhanaScreen = () => {
             return;
         }
 
+        const caloriesField = parseNumberField(calories, 'calories', MAX_KCAL_PER_ENTRY);
+        if ('error' in caloriesField) {
+            Alert.alert('Error', caloriesField.error);
+            return;
+        }
+
         setIsSaving(true);
         try {
             const dishId = Date.now().toString();
@@ -119,7 +126,7 @@ const GharKaKhanaScreen = () => {
                 id: dishId,
                 name: dishName,
                 ingredients: validIngredients,
-                calories: calories ? Number(calories) : undefined,
+                calories: calories.trim() ? caloriesField.value : undefined,
                 imageUri: imageUri || undefined,
                 createdAt: new Date().toISOString(),
             };
@@ -135,7 +142,7 @@ const GharKaKhanaScreen = () => {
                 await addActivityLog(user.uid, dateString, {
                     id: dishId,
                     name: dishName,
-                    calories: Number(calories) || 0,
+                    calories: caloriesField.value,
                     time: timeString,
                     type: 'food',
                     createdAt: new Date(),

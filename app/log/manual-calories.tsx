@@ -16,6 +16,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/Colors';
 import { addActivityLog } from '../../services/userService';
+import { MAX_GRAMS_PER_ENTRY, MAX_KCAL_PER_ENTRY, parseNumberField } from '../../utils/nutritionInput';
 
 const ManualFoodLogScreen = () => {
     const { user } = useAuth();
@@ -33,27 +34,30 @@ const ManualFoodLogScreen = () => {
     const handleLog = async () => {
         if (!user?.uid) return;
 
-        if (!name) {
+        if (!name.trim()) {
             alert("Please enter a name for the food");
             return;
         }
 
-        if (!calories || isNaN(Number(calories))) {
-            alert("Please enter a valid number for calories");
+        // Plain non-negative numbers within what Firestore accepts per entry. The macros are optional.
+        const caloriesField = parseNumberField(calories, 'calories', MAX_KCAL_PER_ENTRY, { required: true });
+        if ('error' in caloriesField) {
+            alert(caloriesField.error);
             return;
         }
-
-        // Validate optional macro fields - only allow empty or valid numbers
-        if (protein && isNaN(Number(protein))) {
-            alert("Please enter a valid number for protein");
+        const proteinField = parseNumberField(protein, 'protein', MAX_GRAMS_PER_ENTRY);
+        if ('error' in proteinField) {
+            alert(proteinField.error);
             return;
         }
-        if (carbs && isNaN(Number(carbs))) {
-            alert("Please enter a valid number for carbs");
+        const carbsField = parseNumberField(carbs, 'carbs', MAX_GRAMS_PER_ENTRY);
+        if ('error' in carbsField) {
+            alert(carbsField.error);
             return;
         }
-        if (fat && isNaN(Number(fat))) {
-            alert("Please enter a valid number for fat");
+        const fatField = parseNumberField(fat, 'fat', MAX_GRAMS_PER_ENTRY);
+        if ('error' in fatField) {
+            alert(fatField.error);
             return;
         }
 
@@ -64,14 +68,14 @@ const ManualFoodLogScreen = () => {
 
             await addActivityLog(user.uid, dateString, {
                 id: Date.now().toString(),
-                name: name,
-                calories: Number(calories),
+                name: name.trim(),
+                calories: caloriesField.value,
                 time: timeString,
                 type: 'food',
                 macros: {
-                    protein: Number(protein) || 0,
-                    carbs: Number(carbs) || 0,
-                    fat: Number(fat) || 0
+                    protein: proteinField.value,
+                    carbs: carbsField.value,
+                    fat: fatField.value
                 }
             });
 

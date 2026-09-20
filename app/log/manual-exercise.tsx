@@ -15,6 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/Colors';
 import { addExerciseLog } from '../../services/logService';
+import { MAX_KCAL_PER_ENTRY, parseNumberField } from '../../utils/nutritionInput';
 
 const ManualCaloriesScreen = () => {
     const { user } = useAuth();
@@ -26,8 +27,9 @@ const ManualCaloriesScreen = () => {
     const handleLog = async () => {
         if (!user?.uid) return;
 
-        if (!calories || isNaN(Number(calories))) {
-            alert("Please enter a valid number for calories");
+        const caloriesField = parseNumberField(calories, 'calories', MAX_KCAL_PER_ENTRY, { required: true });
+        if ('error' in caloriesField) {
+            alert(caloriesField.error);
             return;
         }
 
@@ -40,7 +42,7 @@ const ManualCaloriesScreen = () => {
                 type: 'manual',
                 name: 'Manual Exercise',
                 duration: 0, // Manual entry might not have duration
-                calories: Number(calories),
+                calories: caloriesField.value,
                 intensity: 'N/A'
             });
 
