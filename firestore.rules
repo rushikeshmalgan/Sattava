@@ -1,16 +1,214 @@
 rules_version = '2';
+
+// Sattava Firestore rules.
+//
+// Data model: the only paths the app uses. Everything else is denied.
+//   users/{uid}                    profile, onboarding data, generated plan
+//   users/{uid}/dailyLogs/{date}   one document per day (YYYY-MM-DD): running totals + entry lists
+//
+// OWNERSHIP comes from the document path: only the signed-in user whose uid
+// equals {userId} can read or write. The one stored ownership field is `id` on
+// the user document (written by SyncUserToFirestore); it may only ever hold the
+// owner's uid.
+//
+// INTEGRITY: the app writes daily totals with increment() and entries with
+// arrayUnion(). Firestore resolves those transforms before evaluating rules, so
+// the checks validate the value the document WOULD hold after the write. Only
+// fields a write touches are validated, so an old value never blocks an
+// unrelated write. Rules cannot loop over lists, so for the entry lists
+// (foods / exercises / logs) only the entry a write appends (always the last
+// element) is checked, plus the list's length.
+//
+// EVALUATION BUDGET: Firestore denies a request once it has evaluated 1,000
+// expressions, and a simple range check costs ~20. addFoodLog, the heaviest
+// write the app makes, touches 8 fields and appends 2 entries, so the checks are
+// deliberately narrow: nothing is evaluated for a field the write does not
+// change, and each entry list checks only the fields that matter for it.
+// Measured when this was written: addFoodLog creating a new day uses ~660 of the
+// 1,000 (an update ~200); a synthetic write touching every field uses ~860. The
+// test suite includes that every-field write, so a rule change that eats the
+// remaining headroom fails there instead of failing real logging.
+//
+// Limits are sanity bounds, not nutrition advice: generous enough that any real
+// logging passes, tight enough that absurd or malformed values are rejected.
+// When the app starts writing a new field, add it to userFields()/dayFields().
 service cloud.firestore {
   match /databases/{database}/documents {
-    
+
+    // ── Identity ────────────────────────────────────────────────────────────
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── Limits ──────────────────────────────────────────────────────────────
+    function maxKcalPerEntry()  { return 10000; }
+    function maxKcalPerDay()    { return 30000; }
+    function maxGramsPerEntry() { return 1000; }
+    function maxGramsPerDay()   { return 3000; }
+    function maxWaterPerDay()   { return 20000; }  // millilitres
+    function maxListEntries()   { return 500; }
+    function maxDurationMin()   { return 1440; }
+
+    // ── Field checks ────────────────────────────────────────────────────────
+    // `after` is the document as it would be stored; `before` is the stored
+    // document ({} on create); `changed` is the set of top-level keys this write
+    // changes. The *Ok functions cost almost nothing for a field the write leaves alone.
+
+    function stringValid(v, maxLen) { return v is string && v.size() <= maxLen; }
+    function stringOk(after, changed, field, maxLen) {
+      return !(field in changed) || stringValid(after.get(field, ''), maxLen);
+    }
+
+    function boolOk(after, changed, field) {
+      return !(field in changed) || after.get(field, false) is bool;
+    }
+
+    function timestampOk(after, changed, field) {
+      return !(field in changed) || after.get(field, request.time) is timestamp;
+    }
+
+    function mapValid(v) { return v is map && v.size() <= 40; }
+    function mapOk(after, changed, field) {
+      return !(field in changed) || mapValid(after.get(field, {}));
+    }
+
+    // A running total, checked on the value AFTER the write: a number in [0, perDay].
+    // Deleting an entry decrements a total, and floating-point error can leave it a hair
+    // below zero, hence the small negative tolerance.
+    function totalValid(v, perDay) { return v is number && v >= -0.001 && v <= perDay; }
+    function totalOk(after, changed, field, perDay) {
+      return !(field in changed) || totalValid(after.get(field, 0), perDay);
+    }
+
+    // Optional members of a nested map: absent (the default passes), or the right type and range.
+    function stringIn(m, key, maxLen) {
+      let v = m.get(key, '');
+      return v is string && v.size() <= maxLen;
+    }
+
+    function numberIn(m, key, max) {
+      let v = m.get(key, 0);
+      return v is number && v >= 0 && v <= max;
+    }
+
+    // ── users/{uid} ─────────────────────────────────────────────────────────
+    function userFields() {
+      return ['id', 'email', 'name', 'photo', 'provider', 'imageUrl',
+              'createdAt', 'lastLoginAt', 'lastUpdated', 'updatedAt', 'onboardingCompletedAt',
+              'onboardingCompleted', 'isSetupCompleted', 'generatedPlanStale',
+              'physicalProfile', 'userProfile', 'generatedPlan'];
+    }
+
+    function userProfileValid(p) {
+      return p is map && p.size() <= 40
+        && stringIn(p, 'name', 200) && stringIn(p, 'goal', 200)
+        && stringIn(p, 'activityLevel', 200) && stringIn(p, 'coachType', 200);
+    }
+
+    // The user's daily targets. dailyCalories is a target, so it must be a real number in a sane range.
+    function planValid(plan) {
+      let calories = plan.get('dailyCalories', 2000);
+      let macros = plan.get('macros', {});
+      return plan is map
+        && calories is number && calories >= 100 && calories <= 20000
+        && stringIn(plan, 'waterIntake', 16)
+        && macros is map
+        && stringIn(macros, 'carbs', 16) && stringIn(macros, 'protein', 16) && stringIn(macros, 'fats', 16);
+    }
+
+    function validUser(userId, before) {
+      let after = request.resource.data;
+      let changed = after.diff(before).affectedKeys();
+      return changed.hasOnly(userFields())
+        // `id` is the only ownership field: it can only ever hold the owner's uid, so it cannot be repointed.
+        && after.get('id', userId) == userId
+        && stringOk(after, changed, 'email', 320)
+        && stringOk(after, changed, 'name', 200)
+        && stringOk(after, changed, 'photo', 2048)
+        && stringOk(after, changed, 'provider', 100)
+        && stringOk(after, changed, 'imageUrl', 2048)
+        && timestampOk(after, changed, 'createdAt')
+        && timestampOk(after, changed, 'lastLoginAt')
+        && timestampOk(after, changed, 'lastUpdated')
+        && timestampOk(after, changed, 'updatedAt')
+        && timestampOk(after, changed, 'onboardingCompletedAt')
+        && boolOk(after, changed, 'onboardingCompleted')
+        && boolOk(after, changed, 'isSetupCompleted')
+        && boolOk(after, changed, 'generatedPlanStale')
+        && mapOk(after, changed, 'physicalProfile')
+        && (!('userProfile' in changed) || userProfileValid(after.userProfile))
+        && (!('generatedPlan' in changed) || planValid(after.generatedPlan));
+    }
+
+    // ── users/{uid}/dailyLogs/{date} ────────────────────────────────────────
+    function dayFields() {
+      return ['consumedCalories', 'caloriesBurned', 'totalCarbs', 'totalProtein', 'totalFat',
+              'totalFiber', 'totalWater', 'foods', 'exercises', 'logs', 'lastUpdated'];
+    }
+
+    function validDayId(day) {
+      return day.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
+    }
+
+    // One appended entry. Every entry carries calories, a name and a creation time;
+    // `kind` adds what matters for that list: macros for foods (FoodData), a duration
+    // for exercises, and the optional macros map for activity-log entries.
+    function entryOk(kind, entry) {
+      return entry is map
+        && numberIn(entry, 'calories', maxKcalPerEntry())
+        && stringIn(entry, 'name', 500)
+        && entry.get('createdAt', request.time) is timestamp
+        && (kind == 'foods'
+              ? numberIn(entry, 'protein', maxGramsPerEntry()) && numberIn(entry, 'carbs', maxGramsPerEntry())
+                && numberIn(entry, 'fat', maxGramsPerEntry()) && numberIn(entry, 'fiber', maxGramsPerEntry())
+            : kind == 'exercises'
+              ? numberIn(entry, 'duration', maxDurationMin())
+            : entry.get('macros', {}) is map
+              && numberIn(entry.get('macros', {}), 'protein', maxGramsPerEntry())
+              && numberIn(entry.get('macros', {}), 'carbs', maxGramsPerEntry())
+              && numberIn(entry.get('macros', {}), 'fat', maxGramsPerEntry()));
+    }
+
+    // An entry list: bounded length, and any entry this write appended is valid.
+    // arrayUnion appends, arrayRemove shrinks, so growth means the last element is new.
+    function listValid(kind, items, previousSize) {
+      return items is list
+        && items.size() <= maxListEntries()
+        && (items.size() <= previousSize || entryOk(kind, items[items.size() - 1]));
+    }
+    function listOk(after, before, changed, kind) {
+      return !(kind in changed) || listValid(kind, after.get(kind, []), before.get(kind, []).size());
+    }
+
+    function validDay(before) {
+      let after = request.resource.data;
+      let changed = after.diff(before).affectedKeys();
+      return changed.hasOnly(dayFields())
+        && totalOk(after, changed, 'consumedCalories', maxKcalPerDay())
+        && totalOk(after, changed, 'caloriesBurned', maxKcalPerDay())
+        && totalOk(after, changed, 'totalCarbs', maxGramsPerDay())
+        && totalOk(after, changed, 'totalProtein', maxGramsPerDay())
+        && totalOk(after, changed, 'totalFat', maxGramsPerDay())
+        && totalOk(after, changed, 'totalFiber', maxGramsPerDay())
+        && totalOk(after, changed, 'totalWater', maxWaterPerDay())
+        && listOk(after, before, changed, 'foods')
+        && listOk(after, before, changed, 'exercises')
+        && listOk(after, before, changed, 'logs')
+        && timestampOk(after, changed, 'lastUpdated');
+    }
+
+    // ── Rules ───────────────────────────────────────────────────────────────
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-      
-      match /dailyLogs/{logId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-      
-      match /{document=**} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && validUser(userId, {});
+      allow update: if isOwner(userId) && validUser(userId, resource.data);
+      allow delete: if isOwner(userId);
+
+      match /dailyLogs/{day} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && validDayId(day) && validDay({});
+        allow update: if isOwner(userId) && validDay(resource.data);
+        allow delete: if isOwner(userId);
       }
     }
   }
