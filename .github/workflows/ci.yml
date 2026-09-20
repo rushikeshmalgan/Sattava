@@ -103,7 +103,7 @@ jobs:
       - name: No committed secret files
         run: |
           # .env.example templates are fine; real env files, keys and service-account JSON are not.
-          leaked="$(git ls-files | grep -Ei '(^|/)\.env(\..+)?$|service-?account.*\.json$|\.(pem|p12|jks|key)$' | grep -v '\.example$' || true)"
+          leaked="$(git ls-files | grep -Ei '(^|/)\.env(\..+)?$|service-?account.*\.json$|firebase-adminsdk.*\.json$|\.(pem|p12|jks|key)$' | grep -v '\.example$' || true)"
           if [ -n "$leaked" ]; then
             echo "::error::Secret-looking files are tracked by git:"
             echo "$leaked"

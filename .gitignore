@@ -55,3 +55,8 @@ Documentation/
 firestore-debug.log
 firebase-debug.log
 ui-debug.log
+
+# Google/Firebase service-account keys. The backend needs only FIREBASE_PROJECT_ID, never a key file.
+*-firebase-adminsdk-*.json
+*service-account*.json
+*serviceAccount*.json
