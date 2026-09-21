@@ -42,7 +42,7 @@ setup; this is the short version, and the same commands CI runs.
 # 1. MongoDB. Either a local server (Windows: the "MongoDB" service; macOS/Linux: mongod or Docker)
 #    or an Atlas cluster (section 6). Then, in backend/.env:
 #      MONGODB_URI=mongodb://127.0.0.1:27017        # local
-#      MONGODB_URI=mongodb+srv://user:pass@cluster/ # Atlas: URL-encode the password
+#      MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/  # Atlas: URL-encode the password
 cd backend && npm run smoke:data   # proves the string end to end; uses a scratch database and drops it
 npm run dev                        # or: npm run dev:memory  (no MongoDB at all; data is lost on exit)
 
