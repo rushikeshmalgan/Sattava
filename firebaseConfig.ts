@@ -2,26 +2,39 @@ import { initializeApp } from 'firebase/app';
 import type { Auth } from 'firebase/auth';
 import { Platform } from 'react-native';
 
-// ── Environment variable validation ─────────────────────────────────────────
-// Firebase will silently fail with undefined values if keys are missing.
-// We fail fast here so misconfiguration is caught immediately.
-const REQUIRED_FIREBASE_VARS = [
-  'EXPO_PUBLIC_FIREBASE_API_KEY',
-  'EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN',
-  'EXPO_PUBLIC_FIREBASE_PROJECT_ID',
-  'EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET',
-  'EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',
-  'EXPO_PUBLIC_FIREBASE_APP_ID',
-] as const;
+// Your web app's Firebase configuration.
+//
+// Each value must be read as a literal member expression on process.env: the bundler replaces
+// exactly that shape with the value at build time. A computed read (`process.env[name]`) is NOT replaced, and
+// at runtime process.env is an empty object, so anything checked that way looks missing whether it is or not.
+const firebaseConfig = {
+    apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
+};
 
-const missingVars = REQUIRED_FIREBASE_VARS.filter(
-  (key) => !process.env[key]
-);
+// ── Configuration check ─────────────────────────────────────────────────────
+// Firebase fails in confusing ways when a value is undefined, so say so plainly instead. This inspects the
+// object built above, so it sees what the bundler actually baked in.
+const ENV_NAME_OF: Record<string, string> = {
+  apiKey: 'EXPO_PUBLIC_FIREBASE_API_KEY',
+  authDomain: 'EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN',
+  projectId: 'EXPO_PUBLIC_FIREBASE_PROJECT_ID',
+  storageBucket: 'EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET',
+  messagingSenderId: 'EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',
+  appId: 'EXPO_PUBLIC_FIREBASE_APP_ID',
+};
+
+const missingVars = Object.keys(ENV_NAME_OF).filter((key) => !firebaseConfig[key as keyof typeof firebaseConfig]);
 
 if (missingVars.length > 0) {
   const message =
     `[Firebase] Missing required environment variables:\n` +
-    missingVars.map((k) => `  • ${k}`).join('\n') +
+    missingVars.map((k) => `  • ${ENV_NAME_OF[k]}`).join('\n') +
     `\n\nCopy .env.example to .env and fill in your Firebase project values, ` +
     `or (in production) register them as EAS environment variables and rebuild.`;
 
@@ -35,17 +48,6 @@ if (missingVars.length > 0) {
   // blocks (e.g. SyncUser) already handle and log failures.
   console.error(message);
 }
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-    apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
-    measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
-};
 
 // Initialize Firebase. Wrapped defensively: some Firebase SDK calls can
 // throw synchronously on malformed config (e.g. missing projectId), which

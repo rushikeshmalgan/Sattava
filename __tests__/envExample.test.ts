@@ -38,8 +38,14 @@ describe('.env.example (mobile)', () => {
   it('documents every EXPO_PUBLIC_ variable the app reads', () => {
     const used = new Map<string, string>();
     for (const file of files) {
-      for (const match of readFileSync(file, 'utf8').matchAll(/process\.env\.(EXPO_PUBLIC_[A-Z0-9_]+)/g)) {
-        used.set(match[1]!, file.replace(ROOT, '').replace(/\\/g, '/'));
+      for (const line of readFileSync(file, 'utf8').split(/\r?\n/)) {
+        // A variable named in a comment is being described, not read. Skipping whole comment lines is
+        // enough here and, unlike stripping "//" anywhere, cannot swallow a URL inside a string.
+        const trimmed = line.trim();
+        if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*')) continue;
+        for (const match of line.matchAll(/process\.env\.(EXPO_PUBLIC_[A-Z0-9_]+)/g)) {
+          used.set(match[1]!, file.replace(ROOT, '').replace(/\\/g, '/'));
+        }
       }
     }
 
