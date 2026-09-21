@@ -14,10 +14,8 @@ import {
   type ScanResolution,
 } from '../services/scanService';
 
-jest.mock('../firebaseConfig', () => ({ auth: { currentUser: null }, db: {} }));
-jest.mock('firebase/firestore', () => ({
-  arrayRemove: jest.fn(), arrayUnion: jest.fn(), doc: jest.fn(), getDoc: jest.fn(), increment: jest.fn(), setDoc: jest.fn(),
-}));
+// Keeps the real Firebase SDK (ESM) out of this suite; scanService reaches it through the API client.
+jest.mock('../firebaseConfig', () => ({ auth: { currentUser: null } }));
 jest.mock('expo-crypto', () => ({
   CryptoDigestAlgorithm: { SHA256: 'SHA-256' },
   // Deterministic stand-in that depends on the FULL input, like a real hash.

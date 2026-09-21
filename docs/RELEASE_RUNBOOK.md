@@ -10,12 +10,13 @@ Verified on a developer machine (Windows, Node 22), from a clean clone of the co
 
 | Area | Result |
 |---|---|
-| Mobile | typecheck passes; lint has 0 errors (75 warnings, none in files added by the migration); 20 suites, 312 tests pass |
-| Backend | typecheck passes; 24 suites, 410 tests pass, stable across repeated runs, including on a cold clean clone; the production build passes |
+| Mobile | typecheck passes; lint has 0 errors (72 warnings, all pre-existing: unused symbols and hook dependency hints); 22 suites, 325 tests pass |
+| Backend | typecheck passes; 24 suites, 412 tests pass, stable across repeated runs, including on a cold clean clone; the production build passes |
 | Data API | The tests run against a real in-memory MongoDB (atomic totals, caps under concurrency, deletes, isolation between users, injection attempts). A smoke run of the whole flow against a local MongoDB 8 service also passed |
-| Trust boundary | no Gemini key, SDK or endpoint, and no MongoDB driver, connection string or variable, outside `backend/` (a script and two Jest guards, each shown to fail when violated); no secret files tracked |
+| Trust boundary | no Gemini key, SDK or endpoint, and no MongoDB driver, connection string or variable, outside `backend/` (a script and two Jest guards, each shown to fail when violated); no secret files tracked; the mobile `.env.example` documents every `EXPO_PUBLIC_` the app reads and names no server-side secret (a guard, shown to fail when violated) |
+| Authentication | every route that costs money or touches user data rejects a request with no token and one with a bad token, including the FatSecret proxy, which does not reach FatSecret at all without a verified caller. The owner of a document is always the token's uid; no body, query or path carries an identity |
 | App bundle | an Android export of the final code contains no Gemini endpoint, variable name or SDK marker, no MongoDB driver, connection string or variable, and no Firestore client. Its only Google-key-shaped string is the public Firebase web key. Neither the local Gemini key nor the local FatSecret credentials appear in it, and it contains the backend URL from the local `.env` |
-| Built server | started with `node dist/index.js` against a local MongoDB 8: `/health` is 200 and `/health/ready` reports `database: ok`; an unauthenticated or malformed-token request is 401; an unknown path is 404; a missing or unreachable `MONGODB_URI` exits 1 without printing the string; invalid config exits 1 naming variables only; no key, token or connection-string text reached the log |
+| Built server | started with `node dist/index.js` against a local MongoDB 8: `/health` is 200 and `/health/ready` reports `database: ok`; an unauthenticated request to a data route, and to the food proxy, is 401 (UNAUTHENTICATED) and a malformed token is 401 (INVALID_TOKEN); an unknown path is 404; a missing or unreachable `MONGODB_URI` exits 1 without printing the string; invalid config exits 1 naming variables only; no key, token or connection-string text reached the log |
 | Provider | at 2026-09-20 19:57 UTC all four chain models answered a real vision request |
 
 **Not verified** (this is what the rest of the file is for): a GitHub Actions run, a physical device, an EAS build or update, a Render deployment, a MongoDB Atlas cluster, a real Firebase ID token against the deployed backend, a real SIGTERM, cold-start time, real photo sizes on high-resolution phones, and recognition accuracy.
@@ -31,6 +32,40 @@ Verified on a developer machine (Windows, Node 22), from a clean clone of the co
 7. Retire the old Gemini key (section 7).
 
 The backend routes are additive, but the new app keeps its data in MongoDB while older installs keep using Firestore, so ship the app to everyone in one step and expect the history not to carry over. MongoDB comes before the deploy because the backend will not start without it. The old Gemini key goes last because installed older builds may still call Gemini directly with it.
+
+## 0. Run it locally first
+
+Nothing below is worth doing until the release candidate runs on your own machine. The README has the full
+setup; this is the short version, and the same commands CI runs.
+
+```bash
+# 1. MongoDB. Either a local server (Windows: the "MongoDB" service; macOS/Linux: mongod or Docker)
+#    or an Atlas cluster (section 6). Then, in backend/.env:
+#      MONGODB_URI=mongodb://127.0.0.1:27017        # local
+#      MONGODB_URI=mongodb+srv://user:pass@cluster/ # Atlas: URL-encode the password
+cd backend && npm run smoke:data   # proves the string end to end; uses a scratch database and drops it
+npm run dev                        # or: npm run dev:memory  (no MongoDB at all; data is lost on exit)
+
+# 2. The app, in another terminal, from the repo root.
+#    Leave EXPO_PUBLIC_PROXY_BASE_URL unset (or commented out) in .env, or the app calls the deployed
+#    backend instead of yours.
+npx expo start -c                  # phone: Expo Go on the same Wi-Fi; browser: press w
+
+# 3. The checks CI runs.
+npm run typecheck && npm run lint && npm test          # app
+cd backend && npm run typecheck && npm test && npm run build
+bash scripts/check-client-boundary.sh                  # trust boundary (from the repo root)
+```
+
+**Firebase Auth.** The app and the backend must name the same Firebase project: `EXPO_PUBLIC_FIREBASE_PROJECT_ID`
+in `.env` and `FIREBASE_PROJECT_ID` in `backend/.env`. In the Firebase console, Authentication must have the
+sign-in providers you use enabled (Email/Password is the one the app is verified with), and for Expo web the
+origin you open must be in Authentication → Settings → Authorized domains (`localhost` is there by default).
+The backend needs no service-account key: it verifies ID tokens against Google's public certificates.
+
+**CORS.** Native apps do not use CORS. In development the backend allows the Expo web origins
+(`http://localhost:8081`, `http://localhost:19006`) with no configuration. In production it allows no browser
+origin unless `CORS_ORIGINS` lists it, and setting `CORS_ORIGINS` replaces the development default.
 
 ## 1. Exposed legacy credentials
 

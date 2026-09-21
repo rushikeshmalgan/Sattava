@@ -114,7 +114,7 @@ The backend exists because three things cannot safely run inside a distributed a
 | `POST /api/v1/coach/generate` | Firebase ID token | Server-owned text/JSON tasks: insight, tip, diet-score explanation, weekly report, voice coach, onboarding plan |
 | `GET` / `PATCH /api/v1/me`, `POST /api/v1/me/sync` | Firebase ID token | The signed-in user's profile: sign-in sync, onboarding, targets, goal |
 | `GET /api/v1/logs`, `GET /api/v1/logs/:date`, `POST /api/v1/logs/:date/entries`, `DELETE /api/v1/logs/:date/entries/:entryId` | Firebase ID token | Daily logs: read a day or a range, add an entry, delete an entry (the totals move atomically) |
-| `GET /api/foods/search` | none (IP rate limited) | FatSecret proxy (legacy contract; currently unused by the search screen) |
+| `GET /api/foods/search` | Firebase ID token | FatSecret proxy (legacy response contract; currently unused by the search screen, which reads the bundled dataset). Authenticated because it spends the server's FatSecret quota |
 | `GET /health`, `GET /health/ready` | none | Liveness, and readiness (checks the database) |
 
 All `/api/v1` errors use one envelope, `{ "error": { "code", "message", "requestId" } }`, with safe fixed messages; provider errors are logged internally and never returned. Clients send only validated numbers and enums for the coach tasks, never prompt text, so the endpoint is not a general-purpose LLM proxy.
@@ -275,6 +275,7 @@ In the spirit of not overselling this repo:
 ## Security Considerations
 
 - **Environment variables split by trust boundary.** `EXPO_PUBLIC_*` variables are bundled into the client at build time and are effectively public (Firebase web config, the API URL). The Gemini key, the MongoDB connection string, FatSecret credentials and the log-hashing salt live only in the backend's environment (`backend/.env.example`).
+- **Every route that costs money or touches user data needs a verified token.** Vision, coach, the whole data API and the FatSecret food proxy all run `requireAuth` first, and the owner of a document is always the token's uid: no request body, query or path carries an identity. A per-IP limit runs before token verification so an anonymous flood is cheap to refuse.
 - **The Gemini key and the database credential are backend-only, and CI enforces it.** All Gemini and MongoDB traffic originates from the backend. `scripts/check-client-boundary.sh` (run in CI) and `__tests__/noClientGemini.test.ts` / `__tests__/noClientDatabase.test.ts` fail if a key variable, a Gemini SDK or endpoint, a MongoDB driver, connection string or variable, or a Firestore client appears anywhere outside `backend/`.
 - **Every AI and data request needs a signed-in Firebase user.** The mobile app sends the user's Firebase ID token as a Bearer token, and the backend verifies it with the Firebase Admin SDK (project ID only; no service-account credential is stored). The backend's `FIREBASE_PROJECT_ID` must be the same Firebase project the app signs in against, or every token is rejected. Identity comes only from the verified token: request bodies are strict schemas, a client-supplied `userId`/`uid` is rejected, and rate limits and logs use the verified UID.
 - **Request and image validation.** Bodies are parsed only after authentication and per-user limits; images are size-capped (5 MB decoded), must be valid base64, and their magic bytes must match the claimed type. The app retakes an oversized photo at a lower JPEG quality before uploading (see Honest Limitations for what is still unmeasured).
@@ -439,4 +440,4 @@ The project uses ESLint with `eslint-config-expo`. Please keep service-layer log
 
 ## License
 
-MIT — see `LICENSE` (add one at the repo root if it isn't there yet; this repository doesn't currently include a `LICENSE` file).
+MIT — see [`LICENSE`](LICENSE).
