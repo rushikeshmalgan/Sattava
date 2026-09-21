@@ -22,7 +22,7 @@ Verified on a developer machine (Windows, Node 22), from a clean clone of the co
 | Built server | started with `node dist/index.js` against a local MongoDB 8: `/health` is 200 and `/health/ready` reports `database: ok`; an unauthenticated request to a data route, and to the food proxy, is 401 (UNAUTHENTICATED) and a malformed token is 401 (INVALID_TOKEN); an unknown path is 404; a missing or unreachable `MONGODB_URI` exits 1 without printing the string; invalid config exits 1 naming variables only; no key, token or connection-string text reached the log |
 | Provider | at 2026-09-20 19:57 UTC all four chain models answered a real vision request |
 
-**Not verified** (this is what the rest of the file is for): a physical device, an EAS build or update, a Render deployment, a MongoDB Atlas cluster, a real Firebase ID token against the deployed backend, a real SIGTERM, cold-start time, real photo sizes on high-resolution phones, and recognition accuracy.
+**Not verified** (this is what the rest of the file is for): a GitHub Actions run, a physical device, the camera and scan flow in the interface, an EAS build or update, a Render deployment, a MongoDB Atlas cluster, a real Firebase ID token against the deployed backend, a real SIGTERM, cold-start time, real photo sizes on high-resolution phones, and recognition accuracy.
 
 ## Order of operations
 
