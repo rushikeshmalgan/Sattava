@@ -21,10 +21,63 @@ Point your camera at a dish, and Sattva identifies it, estimates calories and ma
 - [Security Considerations](#security-considerations)
 - [Performance Optimizations](#performance-optimizations)
 - [Future Improvements](#future-improvements)
+- [Quick Start](#quick-start)
 - [Local Development](#local-development)
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
+
+---
+
+## Quick Start
+
+Two processes: the backend (Express + MongoDB) and the Expo app. The app will not load or save anything
+without the backend, because it has no database of its own.
+
+**You need:** Node 22, and either a local MongoDB or a MongoDB Atlas connection string (or neither — see
+step 3). Plus a Firebase project with Authentication enabled, and a Gemini API key for the AI features.
+
+```bash
+# 1. Install (two package trees)
+npm install
+cd backend && npm install && cd ..
+
+# 2. Configure
+cp .env.example .env                    # app: public values only (Firebase web config)
+cp backend/.env.example backend/.env    # server: GEMINI_API_KEY, FIREBASE_PROJECT_ID, LOG_SALT, MONGODB_URI
+```
+
+In `backend/.env`, set `MONGODB_URI` to `mongodb://127.0.0.1:27017` for a local server, or to your
+`mongodb+srv://...` string for Atlas (URL-encode the password). In `.env`, leave
+`EXPO_PUBLIC_PROXY_BASE_URL` commented out: the app then finds the backend on your Wi-Fi network by itself,
+and a browser uses `http://localhost:3000`. If it is set, that address wins and your local backend is ignored.
+
+```bash
+# 3. Start the backend  (terminal 1)
+cd backend
+npm run smoke:data     # optional: proves MONGODB_URI works, using a scratch database it drops afterwards
+npm run dev            # http://localhost:3000, and prints the LAN URL your phone can reach
+# No MongoDB to hand? npm run dev:memory  — same server on a throwaway in-memory database.
+
+# 4. Start the app  (terminal 2, repo root)
+npx expo start -c
+```
+
+Then scan the QR code with **Expo Go** (phone and computer on the same Wi-Fi), press **a** for an Android
+emulator, or press **w** for the browser. Sign up with an email and password, complete onboarding, and log
+a meal. Sign-in is required: every AI and data feature needs a Firebase ID token.
+
+**If the app shows "Cannot reach Sattava":** the backend is not running, `EXPO_PUBLIC_PROXY_BASE_URL` points
+somewhere else, or (on a phone) the two devices are on different networks.
+
+```bash
+# The checks CI runs, if you want them
+npm run typecheck && npm run lint && npm test          # app
+cd backend && npm run typecheck && npm test && npm run build
+```
+
+[Local Development](#local-development) has the full version: every environment variable, deployment to
+Render, and production builds with EAS.
 
 ---
 
