@@ -1,4 +1,5 @@
 import { Stack, useRouter, useSegments } from "expo-router";
+import Head from "expo-router/head";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { SyncUser } from "../utils/SyncUser";
@@ -50,6 +51,10 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
+      {/* The router manages the document title on web; without this it renders empty. */}
+      <Head>
+        <title>Sattva — Indian nutrition coach</title>
+      </Head>
       <ThemeProvider>
         <SyncUser />
         <ErrorBoundary>
