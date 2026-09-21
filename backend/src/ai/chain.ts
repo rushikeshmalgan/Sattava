@@ -57,7 +57,15 @@ export async function runModelChain<T>(opts: ChainOptions<T>): Promise<ChainResu
     }
 
     const started = now();
-    const signal = AbortSignal.any([AbortSignal.timeout(opts.attemptTimeoutMs), deadline]);
+    // An explicit timer, not AbortSignal.timeout(): on Node 22 a timeout signal nothing references can be garbage
+    // collected inside AbortSignal.any() and then never fires, which silently drops the per-attempt cap. The timer
+    // is a strong reference and is cleared when the attempt ends.
+    const attemptController = new AbortController();
+    const attemptTimer = setTimeout(
+      () => attemptController.abort(new DOMException('The attempt timed out.', 'TimeoutError')),
+      opts.attemptTimeoutMs,
+    );
+    const signal = AbortSignal.any([attemptController.signal, deadline]);
 
     try {
       const { text } = await opts.provider.generate({
@@ -97,6 +105,8 @@ export async function runModelChain<T>(opts: ChainOptions<T>): Promise<ChainResu
         reason: 'UNEXPECTED_EXCEPTION',
         detail: scrub(err instanceof Error ? err.message : String(err), opts.secrets ?? [], 160),
       });
+    } finally {
+      clearTimeout(attemptTimer);
     }
   }
 
