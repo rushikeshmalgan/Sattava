@@ -178,7 +178,7 @@ Use a physical phone on mobile data, not your development network, with the rele
 6. **Manual calories validation.** `-500`, `0x10`, `1e3`, `Infinity` and `10001` are all refused with a clear message. `250` with macros saves.
 7. **Manual exercise validation.** Same refusals; a valid value saves, shows a flame icon and "cal burned".
 8. **Photo scan.** A well-lit Indian dish gives a result; log it. Record the time from tap to result, and check the backend `ai.request` line (check 9 in section 3).
-9. **Photo of a non-food object.** An explicit failure message, and nothing is logged.
+9. **Photo of a non-food object.** Record what happens. The pipeline refuses an unnamed or impossible result but has no confidence cut-off: on a synthetic test image the model still named a food, with confidence between 0.3 and 0.85. The app labels confidence (high from 0.85, medium from 0.65, otherwise low) and only logs when you tap save, so expect either an explicit failure or a low-confidence result you can reject.
 10. **Photo scan in airplane mode.** A network failure message; after reconnecting, retry works.
 11. **Highest-resolution phone you have.** Read the `[scan] capture attempt` lines (`adb logcat -s ReactNativeJS` on Android). Record photo size and the quality used, and confirm no image-too-large failure. This is the measurement the README lists as missing.
 12. **Barcode.** A packaged product gives plausible values scaled to its serving and can be logged. An unknown barcode says "No barcode match found".
