@@ -145,7 +145,7 @@ export default function Home() {
       } else {
           setShowCoachModal(true);
       }
-    });
+    }, (error) => console.error('[home] Could not refresh the profile:', error));
 
     const dateStr = selectedDate.toISOString().split('T')[0];
     const unsubLogs = subscribeToDailyLog(dateStr, (day) => {
@@ -164,6 +164,10 @@ export default function Home() {
         setConsumed({ calories: 0, caloriesBurned: 0, carbs: 0, protein: 0, fat: 0, water: 0 });
         setActivities([]);
       }
+      setIsInitialLoad(false);
+    }, (error) => {
+      // Show the empty state instead of a skeleton that never goes away; the next poll tries again.
+      console.error('[home] Could not refresh the day:', error);
       setIsInitialLoad(false);
     });
 
