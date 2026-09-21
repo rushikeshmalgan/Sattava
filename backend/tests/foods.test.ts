@@ -86,6 +86,23 @@ describe('GET /api/foods/search (legacy contract)', () => {
     expect(res.body.code).toBe('FATSECRET_NOT_CONFIGURED');
   });
 
+  it('reports rejected FatSecret credentials as such, not as a generic server error', async () => {
+    const refuseToken = jest.fn(async (url: string | URL | Request) => {
+      if (String(url).includes('oauth.fatsecret.com')) return json({ error: 'invalid_client' }, false, 400);
+      return json({ foods: {} });
+    }) as unknown as typeof fetch;
+    const { app, sink } = makeTestApp({ env: fatSecretEnv, fetchImpl: refuseToken });
+
+    const res = await request(app).get('/api/foods/search').set(...AUTH).query({ query: 'roti' });
+
+    expect(res.status).toBe(502);
+    expect(res.body.code).toBe('FATSECRET_AUTH_FAILED');
+    // The operator has to be able to tell this apart from a bug in the server.
+    const line = sink.lines().find((l) => l.event === 'foods.auth_failed');
+    expect(line?.upstreamStatus).toBe(400);
+    expect(sink.raw()).not.toContain('secret');
+  });
+
   // The proxy spends the operator's FatSecret quota, so it may not be usable anonymously.
   it('rejects a caller with no token, and never asks FatSecret for anything', async () => {
     const upstream = fakeFatSecret({ foods: {} });

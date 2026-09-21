@@ -21,6 +21,14 @@ const DANGEROUS_CHARS_RE = /[<>'"`;\\{}[\]]/g;
 
 type QueryValidation = { valid: true; sanitized: string } | { valid: false; error: string };
 
+/** FatSecret refused our client credentials. Not the caller's fault, and not a generic server bug. */
+class FatSecretAuthError extends Error {
+  constructor(public readonly status: number) {
+    super(`FatSecret token fetch failed: ${status}`);
+    this.name = 'FatSecretAuthError';
+  }
+}
+
 export function validateSearchQuery(raw: unknown): QueryValidation {
   if (!raw || typeof raw !== 'string') return { valid: false, error: 'Query parameter is required' };
   const trimmed = raw.trim();
@@ -58,7 +66,7 @@ export function createFoodsRouter(deps: FoodsRouterDeps): Router {
       headers: { Authorization: `Basic ${basic}`, 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'grant_type=client_credentials&scope=basic',
     });
-    if (!response.ok) throw new Error(`FatSecret token fetch failed: ${response.status}`);
+    if (!response.ok) throw new FatSecretAuthError(response.status);
     const data = (await response.json()) as { access_token: string; expires_in?: number };
     tokenCache = { token: data.access_token, expiresAt: now() + (data.expires_in ?? 86400) * 1000 };
     return data.access_token;
@@ -135,6 +143,18 @@ export function createFoodsRouter(deps: FoodsRouterDeps): Router {
         if (!Array.isArray(foods)) foods = [foods];
         res.json(foods);
       } catch (error) {
+        if (error instanceof FatSecretAuthError) {
+          // 400/401 here means the client id or secret is wrong, revoked, or not yet active.
+          req.log.error({
+            event: 'foods.auth_failed',
+            upstreamStatus: error.status,
+            hint: 'Check FATSECRET_CLIENT_ID and FATSECRET_CLIENT_SECRET, or unset both to disable food search',
+          });
+          return res.status(502).json({
+            error: 'Online food search is unavailable: the server\'s FatSecret credentials were rejected.',
+            code: 'FATSECRET_AUTH_FAILED',
+          });
+        }
         req.log.error({ event: 'foods.proxy_error', message: error instanceof Error ? error.message : String(error) });
         res.status(500).json({ error: 'Internal server error. Please try again shortly.', code: 'SERVER_ERROR' });
       }
