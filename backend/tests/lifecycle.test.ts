@@ -67,11 +67,17 @@ describe('configureServerTimeouts', () => {
 
 describe('createShutdown', () => {
   it('lets an in-flight request finish before exiting 0', async () => {
-    const { server, port } = await listen((_req, res) => setTimeout(() => res.end('finished'), 150));
+    // Wait for the request to actually arrive rather than for a fixed delay: on a loaded machine 40 ms is not enough.
+    let arrived: () => void = () => undefined;
+    const requestArrived = new Promise<void>((resolve) => (arrived = resolve));
+    const { server, port } = await listen((_req, res) => {
+      arrived();
+      setTimeout(() => res.end('finished'), 150);
+    });
     const { shutdown, exit, sink } = newShutdown(server);
 
     const inFlight = get(port);
-    await wait(40); // request is now being handled
+    await requestArrived; // request is now being handled
     const shutdownDone = shutdown('SIGTERM');
     expect(exit).not.toHaveBeenCalled(); // still draining
 
@@ -86,11 +92,16 @@ describe('createShutdown', () => {
   });
 
   it('stops accepting new connections once shutdown has started', async () => {
-    const { server, port } = await listen((_req, res) => setTimeout(() => res.end('ok'), 100));
+    let arrived: () => void = () => undefined;
+    const requestArrived = new Promise<void>((resolve) => (arrived = resolve));
+    const { server, port } = await listen((_req, res) => {
+      arrived();
+      setTimeout(() => res.end('ok'), 100);
+    });
     const { shutdown } = newShutdown(server);
 
     const inFlight = get(port);
-    await wait(30);
+    await requestArrived;
     const done = shutdown('SIGTERM');
     await expect(get(port)).rejects.toMatchObject({ code: expect.stringMatching(/ECONNREFUSED|ECONNRESET/) });
     await inFlight;

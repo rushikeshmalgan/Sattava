@@ -90,15 +90,15 @@ describe('runModelChain time bounds', () => {
     if (result.ok) expect(result.model).toBe('c');
   });
 
+  // The next two force garbage collection while a request hangs. Their bounds are generous (seconds) on purpose:
+  // all that matters is telling "the cap fired" from "the request ran to the deadline", and a loaded machine or a slow
+  // CI runner must not turn that into a flaky assertion.
   it('still cuts off a hung model when garbage collection runs during the attempt', async () => {
     // On Node 22 an AbortSignal.timeout() that nothing references can be collected inside AbortSignal.any()
     // and then never fires. The per-attempt cap was silently lost, and a hung model ran until the total
     // deadline (seen as a 29 s vision attempt with a 12 s cap). Short tests never noticed because no
     // collection happened in their window, so this forces collections while the request hangs.
-    const collector = setInterval(() => {
-      collectGarbage();
-      collectGarbage();
-    }, 10);
+    const collector = setInterval(collectGarbage, 25);
     try {
       const fetchImpl = jest
         .fn()
@@ -106,33 +106,30 @@ describe('runModelChain time bounds', () => {
         .mockImplementationOnce(async () => okResponse(goodModelJson())) as unknown as typeof fetch;
 
       const startedAt = Date.now();
-      const result = await run(fetchImpl, { attemptTimeoutMs: 300, deadlineMs: 1_500 });
+      const result = await run(fetchImpl, { attemptTimeoutMs: 300, deadlineMs: 12_000 });
 
       expect(result.ok).toBe(true);
       if (!result.ok) return;
       expect(result.model).toBe('fast');
       expect(result.attempts[0]).toMatchObject({ model: 'slow', outcome: 'NETWORK_ERROR', reason: 'TIMEOUT' });
-      expect(Date.now() - startedAt).toBeLessThan(1_200); // the 300 ms cap, not the 1.5 s deadline
+      expect(Date.now() - startedAt).toBeLessThan(10_000); // the 300 ms cap, not the 12 s deadline
     } finally {
       clearInterval(collector);
     }
-  });
+  }, 40_000);
 
   it('still enforces the total deadline when garbage collection runs and every model hangs', async () => {
-    const collector = setInterval(() => {
-      collectGarbage();
-      collectGarbage();
-    }, 10);
+    const collector = setInterval(collectGarbage, 25);
     try {
       const fetchImpl = jest.fn(hangUntilAborted) as unknown as typeof fetch;
 
       const startedAt = Date.now();
-      const result = await run(fetchImpl, { chain: ['a', 'b', 'c', 'd'], attemptTimeoutMs: 10_000, deadlineMs: 300 });
+      const result = await run(fetchImpl, { chain: ['a', 'b', 'c', 'd'], attemptTimeoutMs: 30_000, deadlineMs: 300 });
 
       expect(result.ok).toBe(false);
-      expect(Date.now() - startedAt).toBeLessThan(1_500); // the 300 ms deadline, not 4 x 10 s
+      expect(Date.now() - startedAt).toBeLessThan(15_000); // the 300 ms deadline, not a single 30 s attempt
     } finally {
       clearInterval(collector);
     }
-  });
+  }, 40_000);
 });

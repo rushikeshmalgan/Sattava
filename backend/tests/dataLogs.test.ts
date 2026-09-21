@@ -230,13 +230,33 @@ describe('daily limits', () => {
 
   it('holds at most 500 entries a day', async () => {
     const { user1 } = makeApi();
-    for (let i = 0; i < 500; i++) {
-      await db.repo.addEntry('user-1', DAY, { type: 'food', name: `Item ${i}`, calories: 0 });
-    }
+    // Fill the day to one below the limit directly: 500 requests would test the network, not the limit.
+    const filler = (i: number) => ({
+      id: `00000000-0000-4000-8000-${String(i).padStart(12, '0')}`,
+      type: 'food',
+      name: `Item ${i}`,
+      calories: 0,
+      createdAt: new Date(),
+    });
+    await db.db.collection('dailyLogs').insertOne({
+      uid: 'user-1',
+      date: DAY,
+      consumedCalories: 0,
+      caloriesBurned: 0,
+      totalCarbs: 0,
+      totalProtein: 0,
+      totalFat: 0,
+      totalFiber: 0,
+      totalWater: 0,
+      logs: Array.from({ length: 499 }, (_, i) => filler(i)),
+      lastUpdated: new Date(),
+    });
 
+    expect((await user1.post(entries()).send({ type: 'food', name: 'The 500th', calories: 0 })).status).toBe(200);
     const res = await user1.post(entries()).send({ type: 'food', name: 'One too many', calories: 0 });
 
     expect(res.status).toBe(422);
+    expect(res.body.error.code).toBe('DAY_LIMIT_EXCEEDED');
     expect((await user1.get(`/api/v1/logs/${DAY}`)).body.log.logs).toHaveLength(500);
   });
 });

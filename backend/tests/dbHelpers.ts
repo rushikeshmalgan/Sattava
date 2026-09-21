@@ -5,6 +5,14 @@ import { connectDatabase, type Database } from '../src/db/mongo';
 /** A generous ceiling for starting the in-memory server (the first start on a machine can be slow). */
 export const DB_START_TIMEOUT_MS = 120_000;
 
+/**
+ * Every test that imports this helper talks to a real database, so give each one more than Jest's 5 s. A test that
+ * times out does not stop its own work: it carries on in the background and can corrupt the next test, which is
+ * exactly how a slow first run on a cold machine once turned one timeout into three failures.
+ */
+export const DB_TEST_TIMEOUT_MS = 30_000;
+jest.setTimeout(DB_TEST_TIMEOUT_MS);
+
 export interface TestDatabase extends Database {
   uri: string;
   repo: DataRepository;
