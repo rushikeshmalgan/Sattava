@@ -11,26 +11,17 @@ export function SyncUser() {
     const uid = user?.uid;
 
     useEffect(() => {
-        console.log('[BOOT] SyncUser running');
         if (!user) return;
 
-        let cancelled = false;
         syncCurrentUser({
             email: user.email ?? "",
             name: user.displayName ?? "",
             photo: user.photoURL ?? "",
             provider: user.providerData[0]?.providerId ?? "email",
-        })
-            .then(() => {
-                if (!cancelled) console.log("✅ User synced");
-            })
-            .catch((err) => {
-                console.error("❌ User sync failed", err);
-            });
-
-        return () => {
-            cancelled = true;
-        };
+        }).catch((err) => {
+            // Not fatal: the profile is created on the first write as well, and the next sign-in tries again.
+            console.error("[SyncUser] Could not register the sign-in with the backend:", err);
+        });
         // Once per sign-in, not on every token refresh.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uid]);

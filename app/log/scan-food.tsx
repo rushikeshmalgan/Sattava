@@ -357,6 +357,7 @@ const ScanFoodScreen = () => {
         },
         {
           onAttempt: (attempt) => {
+            // eslint-disable-next-line no-console -- development only, stripped by the __DEV__ guard in release builds
             if (__DEV__) console.log('[scan] capture attempt', attempt);
           },
         },

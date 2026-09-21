@@ -66,8 +66,6 @@ try {
     const { getAuth } = require('firebase/auth');
     auth = getAuth(app);
   }
-
-  console.log('[BOOT] Firebase app initialized');
 } catch (err) {
   console.error('[Firebase] Failed to initialize — sign-in will be unavailable:', err);
 }

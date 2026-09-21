@@ -13,9 +13,9 @@ import {
   signInWithPhoneNumber,
   RecaptchaVerifier,
   ConfirmationResult,
-  AuthError,
 } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
+import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 
 interface AuthContextType {
@@ -74,10 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     if (!auth) throw new Error('Firebase Auth is not initialized');
-    console.log('[AUTH] Email sign-in started');
     try {
-      const credential = await signInWithEmailAndPassword(auth, email, password);
-      console.log('[AUTH] Email sign-in successful:', credential.user.uid);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (err: any) {
       console.error('[AUTH] Email sign-in error:', err);
       throw new Error(getFriendlyAuthError(err));
@@ -86,12 +84,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string): Promise<User> => {
     if (!auth) throw new Error('Firebase Auth is not initialized');
-    console.log('[AUTH] Email sign-up started');
     try {
       const credential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('[AUTH] Email sign-up successful:', credential.user.uid);
       await sendEmailVerification(credential.user);
-      console.log('[AUTH] Verification email sent');
       return credential.user;
     } catch (err: any) {
       console.error('[AUTH] Email sign-up error:', err);
@@ -101,20 +96,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInWithGoogle = async () => {
     if (!auth) throw new Error('Firebase Auth is not initialized');
-    console.log('[AUTH] Google sign-in started');
 
     try {
       if (Platform.OS === 'web') {
-        const provider = new GoogleAuthProvider();
-        const credential = await signInWithPopup(auth, provider);
-        console.log('[AUTH] Google sign-in successful:', credential.user.uid);
+        await signInWithPopup(auth, new GoogleAuthProvider());
       } else {
         const webClientId = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
         if (!webClientId) {
           throw new Error('Google Web Client ID is not configured');
         }
 
-        const redirectUri = 'sattava://';
+        // Derived from the app's own scheme (app.json "scheme"), never written out by hand: a literal that
+        // does not match the installed app means the browser never comes back and sign-in hangs.
+        // The same URI must be registered as an authorized redirect URI for this client in the Google console.
+        const redirectUri = Linking.createURL('');
         const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(webClientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=openid%20email%20profile`;
 
         const result = await WebBrowser.openAuthSessionAsync(googleAuthUrl, redirectUri);
@@ -125,9 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (!accessToken) {
             throw new Error('Failed to get Google access token');
           }
-          const credential = GoogleAuthProvider.credential(null, accessToken);
-          const userCredential = await signInWithCredential(auth, credential);
-          console.log('[AUTH] Google sign-in successful:', userCredential.user.uid);
+          await signInWithCredential(auth, GoogleAuthProvider.credential(null, accessToken));
         } else if (result.type === 'cancel') {
           throw new Error('Google sign-in was cancelled');
         } else {
@@ -142,12 +135,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInWithPhone = async (phoneNumber: string): Promise<ConfirmationResult> => {
     if (!auth) throw new Error('Firebase Auth is not initialized');
-    console.log('[AUTH] Phone sign-in started:', phoneNumber);
     try {
       const verifier = createRecaptchaVerifier();
-      const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, verifier);
-      console.log('[AUTH] Phone OTP sent');
-      return confirmationResult;
+      return await signInWithPhoneNumber(auth, phoneNumber, verifier);
     } catch (err: any) {
       console.error('[AUTH] Phone sign-in error:', err);
       throw new Error(getFriendlyAuthError(err));
@@ -156,10 +146,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const verifyPhoneCode = async (confirmationResult: ConfirmationResult, code: string) => {
     if (!auth) throw new Error('Firebase Auth is not initialized');
-    console.log('[AUTH] Phone OTP verification started');
     try {
-      const credential = await confirmationResult.confirm(code);
-      console.log('[AUTH] Phone sign-in successful:', credential.user.uid);
+      await confirmationResult.confirm(code);
     } catch (err: any) {
       console.error('[AUTH] Phone verification error:', err);
       throw new Error(getFriendlyAuthError(err));
@@ -167,11 +155,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOutAsync = async () => {
-    if (auth) {
-      console.log('[AUTH] Sign-out started');
-      await firebaseSignOut(auth);
-      console.log('[AUTH] Sign-out successful');
-    }
+    if (auth) await firebaseSignOut(auth);
   };
 
   return (

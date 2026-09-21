@@ -92,7 +92,7 @@ export default function VoiceCoachButton() {
 
       return FALLBACK_RESPONSE;
     } catch (error) {
-      console.log('[VoiceCoachButton] Gemini failed:', error);
+      console.error('[VoiceCoachButton] Gemini failed:', error);
       return FALLBACK_RESPONSE;
     }
   };
@@ -120,14 +120,14 @@ export default function VoiceCoachButton() {
           setIsThinking(false);
         },
         onError: error => {
-          console.log('[VoiceCoachButton] Speech error:', error);
+          console.error('[VoiceCoachButton] Speech error:', error);
           if (!mountedRef.current) return;
           setIsThinking(false);
           Alert.alert('Voice Error', 'Could not play the coach response.');
         },
       });
     } catch (error) {
-      console.log('[VoiceCoachButton] Speech failed:', error);
+      console.error('[VoiceCoachButton] Speech failed:', error);
       if (!mountedRef.current) return;
       setIsThinking(false);
       Alert.alert('Voice Error', 'Could not start voice response.');
@@ -170,7 +170,7 @@ export default function VoiceCoachButton() {
 
       await speakCoachResponse(response);
     } catch (error) {
-      console.log('[VoiceCoachButton] Failed:', error);
+      console.error('[VoiceCoachButton] Failed:', error);
 
       if (!mountedRef.current) return;
 
