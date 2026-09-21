@@ -45,7 +45,7 @@ describe('loadConfig: defaults', () => {
       trustProxyHops: 1,
       corsOrigins: [],
       fatSecret: null,
-      limits: { visionPerMinute: 6, visionPerDay: 60, coachPerMinute: 20, coachPerDay: 200, aiIpPerMinute: 60, foodsIpPerMinute: 30 },
+      limits: { visionPerMinute: 6, visionPerDay: 60, coachPerMinute: 20, coachPerDay: 200, aiIpPerMinute: 300, foodsIpPerMinute: 30 },
     });
   });
 

@@ -32,7 +32,9 @@ export const EnvSchema = z.object({
   VISION_RATE_PER_DAY: intWithDefault(60),
   COACH_RATE_PER_MINUTE: intWithDefault(20),
   COACH_RATE_PER_DAY: intWithDefault(200),
-  AI_IP_RATE_PER_MINUTE: intWithDefault(60),
+  // Per client IP, for ALL /api/v1 traffic including the data API, checked before the token. Many people can share
+  // one address (a campus or office network), so this is a coarse backstop; the per-user limits do the fine work.
+  AI_IP_RATE_PER_MINUTE: intWithDefault(300),
   FOODS_IP_RATE_PER_MINUTE: intWithDefault(30),
   DATA_RATE_PER_MINUTE: intWithDefault(120),
 
