@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, type RequestHandler } from 'express';
 import type { Logger } from '../logger';
 import { fetchPublicIp } from '../net/publicIp';
 import { SlidingWindowLimiter, byIp, rateLimit } from '../middleware/rateLimit';
@@ -7,9 +7,13 @@ import '../http/requestContext';
 /*
  * FatSecret search proxy.
  *
- * LEGACY CONTRACT (unchanged on purpose): the mobile fatSecretService parses
- * error bodies as `{ error: string, code: string }`, so this router does NOT
- * use the /api/v1 error envelope.
+ * Calls here spend the operator's FatSecret quota, so a verified Firebase ID token is required, exactly as
+ * for the AI and data routes. The cheap per-IP limit runs first, so an anonymous flood never reaches token
+ * verification.
+ *
+ * LEGACY CONTRACT (unchanged on purpose): the mobile fatSecretService parses error bodies as
+ * `{ error: string, code: string }`, so this router does NOT use the /api/v1 error envelope. The one
+ * exception is a rejected token, which the shared error handler answers with the /api/v1 envelope.
  */
 
 const MAX_QUERY_LENGTH = 100;
@@ -31,6 +35,8 @@ export function validateSearchQuery(raw: unknown): QueryValidation {
 
 export interface FoodsRouterDeps {
   fatSecret: { clientId: string; clientSecret: string } | null;
+  /** Establishes req.auth from the Bearer token, or fails the request. */
+  requireAuth: RequestHandler;
   ipRatePerMinute: number;
   logger: Logger;
   fetchImpl?: typeof fetch;
@@ -75,6 +81,7 @@ export function createFoodsRouter(deps: FoodsRouterDeps): Router {
         });
       },
     }),
+    deps.requireAuth,
     async (req, res) => {
       if (!deps.fatSecret) {
         return res

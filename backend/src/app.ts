@@ -92,6 +92,7 @@ export function createApp(deps: AppDeps): Express {
     '/api/foods',
     createFoodsRouter({
       fatSecret: config.fatSecret,
+      requireAuth: requireAuth(deps.verifyToken),
       ipRatePerMinute: config.limits.foodsIpPerMinute,
       logger,
       fetchImpl: deps.fetchImpl,

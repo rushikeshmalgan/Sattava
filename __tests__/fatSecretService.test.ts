@@ -1,7 +1,7 @@
 /**
  * Tests for services/fatSecretService.ts
  *
- * All fetch calls and expo-constants are mocked so no network is needed.
+ * All fetch calls, expo-constants and Firebase are mocked so no network is needed.
  */
 
 // ── Mock expo-constants before importing the service ─────────────────────────
@@ -13,6 +13,13 @@ jest.mock('expo-constants', () => ({
     manifest: null,
   },
 }));
+
+// The proxy requires a verified Firebase ID token; this stands in for a signed-in user.
+const mockGetIdToken = jest.fn(async () => 'id-token-123');
+const mockAuth: { currentUser: { getIdToken: () => Promise<string> } | null } = {
+  currentUser: { getIdToken: mockGetIdToken },
+};
+jest.mock('../firebaseConfig', () => ({ get auth() { return mockAuth; } }));
 
 // ── Mock global fetch ─────────────────────────────────────────────────────────
 const mockFetch = jest.fn();
@@ -42,6 +49,8 @@ const errResponse = (status: number, body: unknown) =>
 describe('fatSecretService — searchFoods', () => {
   beforeEach(() => {
     mockFetch.mockReset();
+    mockGetIdToken.mockClear();
+    mockAuth.currentUser = { getIdToken: mockGetIdToken };
   });
 
   it('returns an array of food items on success', async () => {
@@ -59,6 +68,29 @@ describe('fatSecretService — searchFoods', () => {
       expect.stringContaining('/api/foods/search?query=dal'),
       expect.objectContaining({ method: 'GET' })
     );
+  });
+
+  it('sends the signed-in user\'s ID token, because the proxy spends the server\'s quota', async () => {
+    mockFetch.mockReturnValue(okResponse([]));
+
+    await searchFoods('dal');
+
+    expect(mockGetIdToken).toHaveBeenCalled();
+    const headers = mockFetch.mock.calls[0]![1].headers;
+    expect(headers.Authorization).toBe('Bearer id-token-123');
+  });
+
+  it('does not call the proxy at all when nobody is signed in', async () => {
+    mockAuth.currentUser = null;
+
+    await expect(searchFoods('dal')).rejects.toThrow(/sign in/i);
+    expect(mockFetch).not.toHaveBeenCalled();
+  });
+
+  it('asks a user whose session ended to sign in again', async () => {
+    mockFetch.mockReturnValue(errResponse(401, { error: { code: 'UNAUTHENTICATED' } }));
+
+    await expect(searchFoods('dal')).rejects.toThrow(/session has ended/i);
   });
 
   it('returns an empty array when the backend returns []', async () => {

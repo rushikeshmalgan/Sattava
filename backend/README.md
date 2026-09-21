@@ -10,7 +10,7 @@ TypeScript/Express API for the Sattava app. It is the only place the Gemini API 
 | `GET /api/v1/logs`, `GET /api/v1/logs/:date` | Firebase ID token | Daily logs: a range (newest first) or one day |
 | `POST /api/v1/logs/:date/entries`, `DELETE /api/v1/logs/:date/entries/:entryId` | Firebase ID token | Add an entry, or delete one. The day's totals move atomically and a delete takes back exactly what the entry added |
 | `POST /api/v1/demo-data` | Firebase ID token | Replace the last seven days with sample data (for presentations) |
-| `GET /api/foods/search` | none, IP rate limited | FatSecret proxy (legacy response shapes) |
+| `GET /api/foods/search` | Firebase ID token | FatSecret proxy (legacy response shapes). It spends the server's FatSecret quota, so it is not anonymous; the per-IP limit is checked before the token |
 | `GET /health` | none | Liveness. Independent of the database, so a database blip does not restart a healthy server |
 | `GET /health/ready` | none | Readiness: 200 when the database answers, 503 when it does not |
 

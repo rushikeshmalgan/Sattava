@@ -1,4 +1,5 @@
-import Constants from "expo-constants";
+import { getApiBaseUrl } from "../config/api";
+import { auth } from "../firebaseConfig";
 
 export interface FoodSearchItem {
   food_id: string;
@@ -9,57 +10,46 @@ export interface FoodSearchItem {
   brand_name?: string;
 }
 
-const PROXY_PORT = 3000;
 const REQUEST_TIMEOUT_MS = 20000; // 20s to tolerate Render cold-start
 const MAX_RETRIES = 1;
 
 /**
- * Resolves the proxy base URL using a 3-tier strategy:
- *
- * 1. **Explicit env var** (best for production / deployed proxy)
- * 2. **Auto-detect from Expo debugger host** (development)
- * 3. **Fail fast** with a clear error if neither is available.
+ * Where the backend is. One resolver for the whole app (config/api.ts): the configured URL, else the LAN
+ * address of the development machine, else localhost in a browser.
  */
 const getProxyBaseUrl = (): string => {
-  const configuredUrl = process.env.EXPO_PUBLIC_PROXY_BASE_URL?.trim();
-  if (configuredUrl) {
-    return configuredUrl;
+  try {
+    return getApiBaseUrl();
+  } catch {
+    throw new Error(
+      "[FatSecret] Cannot determine proxy URL.\n\n" +
+        "For DEVELOPMENT:\n" +
+        "  • Make sure your phone and computer are on the same Wi-Fi network.\n" +
+        "  • The backend should be running: cd backend && npm run dev\n" +
+        "  • If auto-detection fails, set EXPO_PUBLIC_PROXY_BASE_URL in .env\n" +
+        "    to your LAN IP, e.g.: EXPO_PUBLIC_PROXY_BASE_URL=http://192.168.1.5:3000\n\n" +
+        "For PRODUCTION:\n" +
+        "  • Deploy the backend proxy and set EXPO_PUBLIC_PROXY_BASE_URL to its URL.\n"
+    );
   }
-
-  const debuggerHost =
-    Constants.expoConfig?.hostUri ??
-    (Constants.manifest2?.extra?.expoGo?.debuggerHost as string | undefined) ??
-    (Constants.manifest as any)?.debuggerHost;
-
-  if (debuggerHost) {
-    const lanIp = debuggerHost.split(":")[0];
-    if (lanIp && lanIp !== "localhost" && lanIp !== "127.0.0.1") {
-      const autoUrl = `http://${lanIp}:${PROXY_PORT}`;
-      console.log(`[FatSecret] Auto-detected proxy URL: ${autoUrl}`);
-      return autoUrl;
-    }
-  }
-
-  throw new Error(
-    "[FatSecret] Cannot determine proxy URL.\n\n" +
-      "For DEVELOPMENT:\n" +
-      "  • Make sure your phone and computer are on the same Wi-Fi network.\n" +
-      "  • The backend should be running: cd backend && npm run dev\n" +
-      "  • If auto-detection fails, set EXPO_PUBLIC_PROXY_BASE_URL in .env\n" +
-      "    to your LAN IP, e.g.: EXPO_PUBLIC_PROXY_BASE_URL=http://192.168.1.5:3000\n\n" +
-      "For PRODUCTION:\n" +
-      "  • Deploy the backend proxy and set EXPO_PUBLIC_PROXY_BASE_URL to its URL.\n"
-  );
 };
 
+/** The proxy spends the server's FatSecret quota, so it only answers a signed-in caller. */
+async function authHeaders(): Promise<Record<string, string>> {
+  const user = auth?.currentUser;
+  if (!user) throw new Error("Sign in to search foods online.");
+  return { Accept: "application/json", Authorization: `Bearer ${await user.getIdToken()}` };
+}
+
 async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response> {
+  const headers = await authHeaders();
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const response = await fetch(url, {
       method: "GET",
-      headers: { Accept: "application/json" },
+      headers,
       signal: controller.signal,
     });
     return response;
@@ -81,7 +71,6 @@ export const searchFoods = async (
   const proxyBaseUrl = getProxyBaseUrl();
   const proxyUrl = `${proxyBaseUrl}/api/foods/search?query=${encodeURIComponent(query)}`;
 
-  console.log("[FatSecret] Requesting:", proxyUrl);
 
   let lastError: string | undefined;
 
@@ -95,6 +84,10 @@ export const searchFoods = async (
           errorBody = await response.json();
         } catch {
           // Not JSON — fall through to generic error
+        }
+
+        if (response.status === 401) {
+          throw new Error("Your session has ended. Sign in again to search foods.");
         }
 
         if (errorBody?.code === "IP_RESTRICTED") {
