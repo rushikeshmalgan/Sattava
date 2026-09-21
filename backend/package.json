@@ -12,7 +12,9 @@
     "check:models": "tsx scripts/check-gemini-models.ts",
     "summarize:logs": "tsx scripts/summarize-ai-logs.ts",
     "smoke:vision": "tsx scripts/smoke-vision.ts",
-    "smoke:coach": "tsx scripts/smoke-coach.ts"
+    "smoke:coach": "tsx scripts/smoke-coach.ts",
+    "smoke:data": "tsx scripts/smoke-data.ts",
+    "dev:memory": "tsx scripts/dev-memory.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
