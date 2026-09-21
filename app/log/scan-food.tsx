@@ -434,7 +434,7 @@ const ScanFoodScreen = () => {
         const quantity = Math.max(1, selectedPortionCounts[item.id] || 1);
         const finalizedItem = applyQuantityMultiplier(resolvedItem, quantity);
 
-        await addFoodLog(user.uid, dateString, finalizedItem.foodData);
+        await addFoodLog(dateString, finalizedItem.foodData);
       }
 
       setShowSaveSuccess(true);

@@ -39,7 +39,7 @@ const ManualFoodLogScreen = () => {
             return;
         }
 
-        // Plain non-negative numbers within what Firestore accepts per entry. The macros are optional.
+        // Plain non-negative numbers within what the API accepts per entry. The macros are optional.
         const caloriesField = parseNumberField(calories, 'calories', MAX_KCAL_PER_ENTRY, { required: true });
         if ('error' in caloriesField) {
             alert(caloriesField.error);
@@ -66,7 +66,7 @@ const ManualFoodLogScreen = () => {
             const dateString = new Date().toISOString().split('T')[0];
             const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            await addActivityLog(user.uid, dateString, {
+            await addActivityLog(dateString, {
                 id: Date.now().toString(),
                 name: name.trim(),
                 calories: caloriesField.value,

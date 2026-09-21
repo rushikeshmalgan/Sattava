@@ -44,7 +44,7 @@ export default function SuggestFoodModal({ visible, onClose, theme, userGoal }: 
         setLoggingId(result.food.id);
         const dateStr = new Date().toISOString().split('T')[0];
         try {
-            await addFoodLog(user.uid, dateStr, {
+            await addFoodLog(dateStr, {
                 id: result.food.id,
                 name: result.food.name,
                 calories: result.food.calories,

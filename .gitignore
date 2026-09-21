@@ -51,10 +51,11 @@ Documentation/
 # python virtualenvs
 .venv*/
 
-# Firebase emulator logs
-firestore-debug.log
+# MongoDB binary the backend tests download in CI
+.mongodb-binaries/
+
+# Firebase CLI log
 firebase-debug.log
-ui-debug.log
 
 # Google/Firebase service-account keys. The backend needs only FIREBASE_PROJECT_ID, never a key file.
 *-firebase-adminsdk-*.json

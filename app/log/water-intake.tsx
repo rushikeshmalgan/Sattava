@@ -54,7 +54,7 @@ const WaterIntakeScreen = () => {
             // Amount in ml for DB consistency
             const amountMl = waterAmount;
 
-            await addActivityLog(user.uid, dateString, {
+            await addActivityLog(dateString, {
                 id: Date.now().toString(),
                 name: 'Water Intake',
                 calories: 0,

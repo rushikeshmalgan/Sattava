@@ -1,31 +1,25 @@
-import { getDoc, setDoc } from 'firebase/firestore';
-import { deleteFoodLog, getStreakCount } from '../services/logService';
+import { addLogEntry, fetchDailyLogs, loadDemoDays, removeLogEntry } from '../services/dataApi';
+import { addExerciseLog, addFoodLog, deleteLogEntry, getStreakCount, loadDemoData } from '../services/logService';
+import type { DailyLogDoc, LogEntryDoc } from '../types/data';
 import { EXERCISE_LOG_TYPES, isExerciseLogType } from '../utils/logEntryTypes';
 
-jest.mock('../firebaseConfig', () => ({ db: {} }));
-
-jest.mock('firebase/firestore', () => ({
-  arrayRemove: jest.fn((value: unknown) => ({ op: 'arrayRemove', value })),
-  arrayUnion: jest.fn((value: unknown) => ({ op: 'arrayUnion', value })),
-  doc: jest.fn((...segments: unknown[]) => ({ path: segments.slice(1).join('/') })),
-  getDoc: jest.fn(),
-  increment: jest.fn((n: number) => ({ op: 'increment', n })),
-  setDoc: jest.fn(async () => undefined),
+jest.mock('../services/dataApi', () => ({
+  addLogEntry: jest.fn(),
+  fetchDailyLogs: jest.fn(),
+  loadDemoDays: jest.fn(),
+  removeLogEntry: jest.fn(),
 }));
 
-const mockedGetDoc = getDoc as unknown as jest.Mock;
-const mockedSetDoc = setDoc as unknown as jest.Mock;
-
-// A day that meets the calorie and water rules, with the given log entries.
-const daySnapshot = (logs: { type: string }[]) => ({
-  exists: () => true,
-  data: () => ({ consumedCalories: 2000, totalWater: 2000, logs }),
-});
-const noSnapshot = { exists: () => false, data: () => undefined };
+const mockedAdd = addLogEntry as jest.Mock;
+const mockedFetchDays = fetchDailyLogs as jest.Mock;
+const mockedRemove = removeLogEntry as jest.Mock;
+const mockedDemo = loadDemoDays as jest.Mock;
 
 beforeEach(() => {
-  mockedGetDoc.mockReset();
-  mockedSetDoc.mockClear();
+  mockedAdd.mockReset().mockResolvedValue({});
+  mockedFetchDays.mockReset();
+  mockedRemove.mockReset().mockResolvedValue({});
+  mockedDemo.mockReset().mockResolvedValue(undefined);
 });
 
 describe('isExerciseLogType', () => {
@@ -51,117 +45,191 @@ describe('isExerciseLogType', () => {
   });
 });
 
-describe('getStreakCount', () => {
-  it.each(['exercise', 'cardio', 'weight', 'manual'])(
-    'counts a day whose exercise was logged as %s',
-    async (type) => {
-      mockedGetDoc.mockResolvedValueOnce(daySnapshot([{ type }])).mockResolvedValue(noSnapshot);
+describe('addFoodLog', () => {
+  const dal = { id: 'csv-12', name: 'Dal', calories: 300, carbs: 40, protein: 15, fat: 8, servingSize: '1 bowl' };
 
-      expect(await getStreakCount('user-1', 2000, 2000)).toBe(1);
-    }
-  );
+  it('sends the food as a log entry for that day, with the device time and no user id', async () => {
+    await addFoodLog('2026-01-15', { ...dal, fiber: 6 });
 
-  it('counts consecutive days across different exercise types', async () => {
-    mockedGetDoc
-      .mockResolvedValueOnce(daySnapshot([{ type: 'cardio' }]))
-      .mockResolvedValueOnce(daySnapshot([{ type: 'weight' }]))
-      .mockResolvedValueOnce(daySnapshot([{ type: 'manual' }]))
-      .mockResolvedValue(noSnapshot);
-
-    expect(await getStreakCount('user-1', 2000, 2000)).toBe(3);
-  });
-
-  it('does not count a day that only has food and water entries', async () => {
-    mockedGetDoc
-      .mockResolvedValueOnce(daySnapshot([{ type: 'food' }, { type: 'water' }]))
-      .mockResolvedValue(noSnapshot);
-
-    expect(await getStreakCount('user-1', 2000, 2000)).toBe(0);
-  });
-
-  it('still requires the calorie and water rules, even with an exercise logged', async () => {
-    const underWater = {
-      exists: () => true,
-      data: () => ({ consumedCalories: 2000, totalWater: 100, logs: [{ type: 'cardio' }] }),
-    };
-    mockedGetDoc.mockResolvedValueOnce(underWater).mockResolvedValue(noSnapshot);
-
-    expect(await getStreakCount('user-1', 2000, 2000)).toBe(0);
-  });
-
-  it('returns 0 instead of throwing when Firestore fails', async () => {
-    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => undefined);
-    mockedGetDoc.mockRejectedValue(new Error('offline'));
-
-    expect(await getStreakCount('user-1', 2000, 2000)).toBe(0);
-    consoleError.mockRestore();
-  });
-});
-
-describe('deleteFoodLog', () => {
-  const written = () => {
-    expect(mockedSetDoc).toHaveBeenCalledTimes(1);
-    const [ref, payload, options] = mockedSetDoc.mock.calls[0];
-    return { ref, payload, options };
-  };
-
-  it.each(['exercise', 'cardio', 'weight', 'manual'])(
-    'takes the calories back off the burned total when a %s entry is removed',
-    async (type) => {
-      const entry = { id: 'e1', name: 'Morning run', calories: 250, type, time: '07:00 AM' };
-
-      await deleteFoodLog('user-1', '2026-01-05', entry);
-
-      const { ref, payload, options } = written();
-      expect(ref).toEqual({ path: 'users/user-1/dailyLogs/2026-01-05' });
-      expect(options).toEqual({ merge: true });
-      expect(payload.logs).toEqual({ op: 'arrayRemove', value: entry });
-      expect(payload.caloriesBurned).toEqual({ op: 'increment', n: -250 });
-      expect(payload).not.toHaveProperty('consumedCalories');
-    }
-  );
-
-  it('reverses consumed calories and macros for a food entry, not calories burned', async () => {
-    await deleteFoodLog('user-1', '2026-01-05', {
-      id: 'f1',
+    expect(mockedAdd).toHaveBeenCalledTimes(1);
+    const [date, entry] = mockedAdd.mock.calls[0];
+    expect(date).toBe('2026-01-15');
+    expect(entry).toMatchObject({
+      type: 'food',
+      itemId: 'csv-12',
       name: 'Dal',
       calories: 300,
       carbs: 40,
       protein: 15,
       fat: 8,
       fiber: 6,
-      type: 'food',
+      servingSize: '1 bowl',
     });
-
-    const { payload } = written();
-    expect(payload.consumedCalories).toEqual({ op: 'increment', n: -300 });
-    expect(payload.totalCarbs).toEqual({ op: 'increment', n: -40 });
-    expect(payload.totalProtein).toEqual({ op: 'increment', n: -15 });
-    expect(payload.totalFat).toEqual({ op: 'increment', n: -8 });
-    expect(payload.totalFiber).toEqual({ op: 'increment', n: -6 });
-    expect(payload).not.toHaveProperty('caloriesBurned');
+    expect(typeof entry.time).toBe('string');
+    expect(entry).not.toHaveProperty('userId');
+    expect(entry).not.toHaveProperty('uid');
   });
 
-  it('treats an entry with no type as food', async () => {
-    await deleteFoodLog('user-1', '2026-01-05', { id: 'f2', name: 'Roti', calories: 120 });
+  it('leaves fiber out when the food has none, and defaults the serving size', async () => {
+    await addFoodLog('2026-01-15', { ...dal, servingSize: '' });
 
-    const { payload } = written();
-    expect(payload.consumedCalories).toEqual({ op: 'increment', n: -120 });
-    expect(payload).not.toHaveProperty('caloriesBurned');
+    const [, entry] = mockedAdd.mock.calls[0];
+    expect(entry).not.toHaveProperty('fiber');
+    expect(entry.servingSize).toBe('1 serving');
   });
 
-  it('reverses the water total for a water entry', async () => {
-    await deleteFoodLog('user-1', '2026-01-05', {
-      id: 'w1',
-      name: 'Paani',
-      calories: 0,
-      type: 'water',
-      amount: '500ml',
-    });
+  it('passes a failure on to the screen, which shows it', async () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    mockedAdd.mockRejectedValue(new Error('offline'));
 
-    const { payload } = written();
-    expect(payload.totalWater).toEqual({ op: 'increment', n: -500 });
-    expect(payload).not.toHaveProperty('caloriesBurned');
-    expect(payload).not.toHaveProperty('consumedCalories');
+    await expect(addFoodLog('2026-01-15', dal)).rejects.toThrow('offline');
+    consoleError.mockRestore();
+  });
+});
+
+describe('addExerciseLog', () => {
+  it.each(['cardio', 'weight', 'manual'] as const)('sends a %s exercise as that type', async (type) => {
+    await addExerciseLog('2026-01-15', { id: 'x', type, name: 'Running', duration: 30, calories: 250, intensity: 'Medium' });
+
+    expect(mockedAdd.mock.calls[0][1]).toMatchObject({
+      type,
+      itemId: 'x',
+      name: 'Running',
+      calories: 250,
+      duration: 30,
+      intensity: 'Medium',
+    });
+  });
+
+  it('never sends a negative duration', async () => {
+    await addExerciseLog('2026-01-15', { id: 'x', type: 'manual', name: 'Manual Exercise', duration: -5, calories: 100, intensity: 'N/A' });
+
+    expect(mockedAdd.mock.calls[0][1].duration).toBe(0);
+  });
+});
+
+describe('deleteLogEntry', () => {
+  it('removes the entry by its own id', async () => {
+    await deleteLogEntry('2026-01-15', 'entry-1');
+
+    expect(mockedRemove).toHaveBeenCalledWith('2026-01-15', 'entry-1');
+  });
+
+  it('passes a failure on so the screen can put the row back', async () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    mockedRemove.mockRejectedValue(new Error('offline'));
+
+    await expect(deleteLogEntry('2026-01-15', 'entry-1')).rejects.toThrow('offline');
+    consoleError.mockRestore();
+  });
+});
+
+describe('loadDemoData', () => {
+  it('asks the server for the sample week', async () => {
+    await loadDemoData();
+    expect(mockedDemo).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('getStreakCount', () => {
+  // Only Date is faked; the promises in these tests need real scheduling.
+  beforeAll(() => {
+    jest.useFakeTimers({
+      now: new Date(2026, 0, 15, 12, 0, 0),
+      doNotFake: [
+        'hrtime', 'nextTick', 'performance', 'queueMicrotask', 'requestAnimationFrame', 'cancelAnimationFrame',
+        'requestIdleCallback', 'cancelIdleCallback', 'setImmediate', 'clearImmediate', 'setInterval', 'clearInterval',
+        'setTimeout', 'clearTimeout',
+      ],
+    });
+  });
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  const dateAgo = (daysAgo: number): string => {
+    const d = new Date();
+    d.setDate(new Date().getDate() - daysAgo);
+    return d.toISOString().split('T')[0]!;
+  };
+
+  const entry = (type: LogEntryDoc['type']): LogEntryDoc => ({ id: `id-${type}`, type, name: type, createdAt: '2026-01-15T10:00:00.000Z' });
+
+  /** A day that meets the calorie and water rules (target 2,000 kcal and 2,000 ml), with these entries. */
+  const day = (daysAgo: number, types: LogEntryDoc['type'][], over: Partial<DailyLogDoc> = {}): DailyLogDoc => ({
+    date: dateAgo(daysAgo),
+    consumedCalories: 2000,
+    caloriesBurned: 0,
+    totalCarbs: 0,
+    totalProtein: 0,
+    totalFat: 0,
+    totalFiber: 0,
+    totalWater: 2000,
+    logs: types.map(entry),
+    lastUpdated: '2026-01-15T10:00:00.000Z',
+    ...over,
+  });
+
+  it.each(['exercise', 'cardio', 'weight', 'manual'] as const)('counts a day whose exercise was logged as %s', async (type) => {
+    mockedFetchDays.mockResolvedValue([day(0, [type])]);
+
+    expect(await getStreakCount(2000, 2000)).toBe(1);
+  });
+
+  it('counts consecutive days across different exercise types', async () => {
+    mockedFetchDays.mockResolvedValue([day(0, ['cardio']), day(1, ['weight']), day(2, ['manual'])]);
+
+    expect(await getStreakCount(2000, 2000)).toBe(3);
+  });
+
+  it('does not count a day that only has food and water entries', async () => {
+    mockedFetchDays.mockResolvedValue([day(0, ['food', 'water'])]);
+
+    expect(await getStreakCount(2000, 2000)).toBe(0);
+  });
+
+  it('still requires the calorie and water rules, even with an exercise logged', async () => {
+    mockedFetchDays.mockResolvedValue([day(0, ['cardio'], { totalWater: 100 })]);
+    expect(await getStreakCount(2000, 2000)).toBe(0);
+
+    mockedFetchDays.mockResolvedValue([day(0, ['cardio'], { consumedCalories: 3000 })]);
+    expect(await getStreakCount(2000, 2000)).toBe(0);
+  });
+
+  it('gives today until the day is over: an unfinished today does not break the streak', async () => {
+    mockedFetchDays.mockResolvedValue([day(0, ['food']), day(1, ['cardio']), day(2, ['cardio'])]);
+
+    expect(await getStreakCount(2000, 2000)).toBe(2);
+  });
+
+  it('stops at the first missing or unmet earlier day', async () => {
+    mockedFetchDays.mockResolvedValue([day(0, ['cardio']), day(1, ['cardio']), day(3, ['cardio'])]);
+    expect(await getStreakCount(2000, 2000)).toBe(2);
+
+    mockedFetchDays.mockResolvedValue([day(0, ['cardio']), day(1, ['food']), day(2, ['cardio'])]);
+    expect(await getStreakCount(2000, 2000)).toBe(1);
+  });
+
+  it('asks for the whole 30-day window in one request', async () => {
+    mockedFetchDays.mockResolvedValue([]);
+
+    await getStreakCount(2000, 2000);
+
+    expect(mockedFetchDays).toHaveBeenCalledTimes(1);
+    expect(mockedFetchDays).toHaveBeenCalledWith({ from: dateAgo(29), to: dateAgo(0), limit: 30 });
+  });
+
+  it('is 0 with no data', async () => {
+    mockedFetchDays.mockResolvedValue([]);
+
+    expect(await getStreakCount(2000, 2000)).toBe(0);
+  });
+
+  it('returns 0 instead of throwing when the request fails', async () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    mockedFetchDays.mockRejectedValue(new Error('offline'));
+
+    expect(await getStreakCount(2000, 2000)).toBe(0);
+    consoleError.mockRestore();
   });
 });

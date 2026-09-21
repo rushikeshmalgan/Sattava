@@ -43,9 +43,13 @@ jobs:
         run: npm test -- --ci
 
   backend:
-    name: Backend (typecheck, tests, build)
+    name: Backend (typecheck, tests against MongoDB, build)
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      # The tests run against a real MongoDB (an in-memory mongod). npm ci downloads its binary into this
+      # directory, which is cached below so later runs do not download it again.
+      MONGOMS_DOWNLOAD_DIR: ${{ github.workspace }}/.mongodb-binaries
     defaults:
       run:
         working-directory: backend
@@ -56,6 +60,11 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: backend/package-lock.json
+      - name: Cache the MongoDB binary used by the tests
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.mongodb-binaries
+          key: mongodb-binary-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
       - run: npm ci --no-audit --no-fund
       - name: Typecheck
         run: npm run typecheck
@@ -65,41 +74,15 @@ jobs:
       - name: Production build
         run: npm run build
 
-  firestore-rules:
-    name: Firestore rules (emulator)
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-          cache-dependency-path: package-lock.json
-      # The Firestore emulator is a Java program.
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-      - run: npm ci --no-audit --no-fund
-      # Keep the version in the key in step with firebase-tools in the test:rules script.
-      - name: Cache the Firestore emulator download
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/firebase/emulators
-          key: firebase-emulators-${{ runner.os }}-firebase-tools-15.30.2
-      - name: Firestore security rules tests
-        run: npm run test:rules
-
   security:
     name: Security checks
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      # Gemini key, SDK and endpoint may exist only in backend/.
-      - name: AI boundary (no Gemini key, SDK or endpoint in the mobile app)
-        run: bash scripts/check-client-ai-boundary.sh
+      # The Gemini key, SDK and endpoint, and the MongoDB driver and connection string, may exist only in backend/.
+      - name: Trust boundary (no Gemini or MongoDB access in the mobile app)
+        run: bash scripts/check-client-boundary.sh
       - name: No committed secret files
         run: |
           # .env.example templates are fine; real env files, keys and service-account JSON are not.

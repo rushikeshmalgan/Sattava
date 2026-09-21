@@ -23,8 +23,6 @@ import { useTheme } from '../context/ThemeContext';
 import { ThemeType } from '../constants/theme';
 import PortionSelectorModal from '../components/PortionSelectorModal';
 import { showSmartToast } from '../components/SmartToast';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
 import * as Haptics from 'expo-haptics';
 import { Spacing } from '../constants/Spacing';
 import { Radii } from '../constants/Radii';
@@ -121,7 +119,7 @@ const FoodSearchScreen = () => {
         
         const logData = async () => {
             try {
-                await addFoodLog(user.uid!, dateString, {
+                await addFoodLog(dateString, {
                     id: food.id,
                     name: food.name,
                     calories: loggedCalories,

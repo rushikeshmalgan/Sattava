@@ -1,6 +1,6 @@
 import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { subscribeToDailyLog, subscribeToUser } from '../../services/liveData';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
 import {
@@ -47,9 +47,9 @@ import { Spacing } from '../../constants/Spacing';
 import { Radii } from '../../constants/Radii';
 import { Typography } from '../../constants/Typography';
 import { getCurrentFestival } from '../../constants/IndianFestivals';
-import { db } from '../../firebaseConfig';
+import { activityFromEntry } from '../../utils/activityFromEntry';
 import { addActivityLog, updateUserTargets, updateUserProfile } from '../../services/userService';
-import { deleteFoodLog, getStreakCount } from '../../services/logService';
+import { deleteLogEntry, getStreakCount } from '../../services/logService';
 import { startStepCounting, loadDailySteps, StepData } from '../../services/stepService';
 import { getTodaysSchedule } from '../../services/mealSchedulerService';
 import { ScheduledMeal } from '../../data/mealPlans';
@@ -84,6 +84,7 @@ export default function Home() {
   useEffect(() => {
     AsyncStorage.getItem('isPro').then(val => setIsPro(val === 'true'));
   }, []);
+  const [activityListVersion, setActivityListVersion] = useState(0);
   const stopTrackingRef = useRef<(() => void) | null>(null);
   const waterReminderShownRef = useRef(false);
 
@@ -121,9 +122,9 @@ export default function Home() {
   useEffect(() => {
     if (!user?.uid) return;
 
-    const unsubUser = onSnapshot(doc(db, 'users', user.uid), (snap) => {
-      if (!snap.exists()) return;
-      const data = snap.data();
+    const unsubUser = subscribeToUser((profile) => {
+      if (!profile) return;
+      const data = profile;
       if (data.userProfile?.goal) {
           setUserGoal(data.userProfile.goal);
       }
@@ -132,10 +133,10 @@ export default function Home() {
       if (plan) {
         setTargets({
           calories: plan.dailyCalories || 2000,
-          carbs:    parseInt(plan.macros?.carbs)    || 250,
-          protein:  parseInt(plan.macros?.protein)  || 60,
-          fat:      parseInt(plan.macros?.fats)     || 70,
-          water:    parseFloat(plan.waterIntake)    || 2.0,
+          carbs:    parseInt(plan.macros?.carbs ?? '')    || 250,
+          protein:  parseInt(plan.macros?.protein ?? '')  || 60,
+          fat:      parseInt(plan.macros?.fats ?? '')     || 70,
+          water:    parseFloat(plan.waterIntake ?? '')    || 2.0,
         });
       }
       
@@ -147,9 +148,9 @@ export default function Home() {
     });
 
     const dateStr = selectedDate.toISOString().split('T')[0];
-    const unsubLogs = onSnapshot(doc(db, 'users', user.uid, 'dailyLogs', dateStr), (snap) => {
-      if (snap.exists()) {
-        const d = snap.data();
+    const unsubLogs = subscribeToDailyLog(dateStr, (day) => {
+      if (day) {
+        const d = day;
         setConsumed({
           calories:       d.consumedCalories || 0,
           caloriesBurned: d.caloriesBurned   || 0,
@@ -158,7 +159,7 @@ export default function Home() {
           fat:            d.totalFat         || 0,
           water:          d.totalWater       || 0,
         });
-        setActivities([...d.logs || []].reverse());
+        setActivities(d.logs.map(activityFromEntry).reverse());
       } else {
         setConsumed({ calories: 0, caloriesBurned: 0, carbs: 0, protein: 0, fat: 0, water: 0 });
         setActivities([]);
@@ -166,7 +167,7 @@ export default function Home() {
       setIsInitialLoad(false);
     });
 
-    getStreakCount(user.uid, targets.calories, targets.water * 1000).then(setStreak);
+    getStreakCount(targets.calories, targets.water * 1000).then(setStreak);
 
     const now = new Date();
 
@@ -214,7 +215,7 @@ export default function Home() {
         unit: 'pieces',
         timestamp: new Date().toISOString()
     };
-    await addActivityLog(user.uid, dateStr, { type: 'food', ...demoFood } as any);
+    await addActivityLog(dateStr, { type: 'food', ...demoFood } as any);
     Alert.alert("Demo Mode", "Logged 4 Samosas (1200 kcal).");
   };
 
@@ -245,7 +246,7 @@ export default function Home() {
     if (!user?.uid) return;
     setIsSaving(true);
     try {
-      await updateUserTargets(user.uid, {
+      await updateUserTargets({
         calories: Number(editableTargets.calories),
         macros: {
           carbs:   `${editableTargets.carbs}g`,
@@ -268,7 +269,7 @@ export default function Home() {
 
     const logWater = async () => {
         try {
-            await addActivityLog(user.uid!, dateStr, {
+            await addActivityLog(dateStr, {
               id:       Date.now().toString(),
               name:     'Paani (Water)',
               calories: 0,
@@ -288,7 +289,7 @@ export default function Home() {
   const handleSelectCoach = async (type: CoachType) => {
       if (!user?.uid) return;
       try {
-          await updateUserProfile(user.uid, { 'userProfile.coachType': type });
+          await updateUserProfile({ userProfile: { coachType: type } });
           setCoachType(type);
           setShowCoachModal(false);
       } catch (err) {
@@ -465,14 +466,17 @@ export default function Home() {
 
                 {/* Recent Activity Feed */}
                 <RecentActivity
+                  key={activityListVersion}
                   activities={activities}
                   onDelete={async (activity) => {
                     if (!user?.uid) return;
                     const dateStr = selectedDate.toISOString().split('T')[0];
                     try {
-                      await deleteFoodLog(user.uid, dateStr, activity as any);
+                      await deleteLogEntry(dateStr, activity.id);
                     } catch {
-                      // Firestore listener reverts UI automatically
+                      // The row has already slid away; rebuild the list so a failed delete puts it back.
+                      setActivityListVersion((v) => v + 1);
+                      Alert.alert('Error', 'Could not remove that entry. Please try again.');
                     }
                   }}
                 />

@@ -1,7 +1,7 @@
 import { useAuth } from '../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { doc, setDoc } from 'firebase/firestore';
+import { patchCurrentUser } from '../services/dataApi';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -15,7 +15,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { generateProfilePlan } from '../services/aiService';
 import { Colors } from '../constants/Colors';
-import { db } from '../firebaseConfig';
 import { saveUserProfileToStorage, UserProfileData } from '../utils/storage';
 
 type StepStatus = 'pending' | 'loading' | 'completed';
@@ -149,29 +148,21 @@ export default function GeneratingProfile() {
       await saveUserProfileToStorage(finalProfile);
 
       if (user?.uid) {
-        await setDoc(
-          doc(db, 'users', user.uid),
-          {
-            onboardingCompleted: true,
-            isSetupCompleted: true,
-
-            generatedPlan: finalProfile.generatedPlan,
-            physicalProfile: {
-              gender: profileData.gender,
-              goal: profileData.goal,
-              activityLevel: profileData.activityLevel,
-              birthdate: profileData.birthdate,
-              heightFeet: profileData.heightFeet,
-              heightInches: profileData.heightInches,
-              weightKg: profileData.weightKg,
-            },
-
-            imageUrl: user?.photoURL || '',
-            onboardingCompletedAt: new Date(),
-            lastUpdated: new Date(),
+        await patchCurrentUser({
+          onboardingCompleted: true,
+          isSetupCompleted: true,
+          generatedPlan: finalProfile.generatedPlan,
+          physicalProfile: {
+            gender: profileData.gender,
+            goal: profileData.goal,
+            activityLevel: profileData.activityLevel,
+            birthdate: profileData.birthdate,
+            heightFeet: profileData.heightFeet,
+            heightInches: profileData.heightInches,
+            weightKg: profileData.weightKg,
           },
-          { merge: true }
-        );
+          imageUrl: user?.photoURL || '',
+        });
       }
 
       updateStep(4, 'completed');

@@ -105,6 +105,8 @@ export type ServerErrorCode =
   | 'AI_INVALID_OUTPUT'
   | 'AI_UNAVAILABLE'
   | 'NOT_FOUND'
+  | 'DAY_LIMIT_EXCEEDED'
+  | 'DATABASE_UNAVAILABLE'
   | 'INTERNAL_ERROR';
 
 /** Failures that originate on the device. */

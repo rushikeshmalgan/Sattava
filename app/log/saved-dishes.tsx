@@ -50,13 +50,12 @@ const SavedDishesScreen = () => {
             const dateString = new Date().toISOString().split('T')[0];
             const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
-            await addActivityLog(user.uid, dateString, {
+            await addActivityLog(dateString, {
                 id: Date.now().toString(),
                 name: dish.name,
                 calories: dish.calories || 0,
                 time: timeString,
                 type: 'food',
-                createdAt: new Date(),
             });
 
             Alert.alert('Logged!', `${dish.name} has been added to your daily tracker.`, [

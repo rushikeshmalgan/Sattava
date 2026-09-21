@@ -1,12 +1,12 @@
 import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
-import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { subscribeToUser } from '../../services/liveData';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Colors } from '../../constants/Colors';
-import { db } from '../../firebaseConfig';
+import { updateUserProfile } from '../../services/userService';
 import { useTheme } from '../../context/ThemeContext';
 import { loadDemoData } from '../../services/logService';
 import AchievementSection from '../../components/AchievementSection';
@@ -64,15 +64,9 @@ export default function Profile() {
             return;
         }
 
-        const docRef = doc(db, 'users', user.uid);
-        const unsubscribe = onSnapshot(
-            docRef,
-            (docSnap) => {
-                if (docSnap.exists()) {
-                    setUserPlan(docSnap.data());
-                } else {
-                    setUserPlan(null);
-                }
+        const unsubscribe = subscribeToUser(
+            (profile) => {
+                setUserPlan(profile);
                 setLoading(false);
             },
             (error) => {
@@ -88,12 +82,7 @@ export default function Profile() {
         if (!user?.uid || !tempGoal) return;
         setIsSavingGoal(true);
         try {
-            const docRef = doc(db, 'users', user.uid);
-            await updateDoc(docRef, {
-                'userProfile.goal': tempGoal,
-                generatedPlanStale: true,
-                lastUpdated: new Date(),
-            });
+            await updateUserProfile({ userProfile: { goal: tempGoal }, generatedPlanStale: true });
             setUserPlan((prev: any) => ({
                 ...prev,
                 userProfile: { ...prev?.userProfile, goal: tempGoal },
@@ -118,11 +107,7 @@ export default function Profile() {
 
         setIsSavingName(true);
         try {
-            const docRef = doc(db, 'users', user.uid);
-            await updateDoc(docRef, {
-                'userProfile.name': trimmedName,
-                lastUpdated: new Date(),
-            });
+            await updateUserProfile({ userProfile: { name: trimmedName } });
 
             setUserPlan((prev: any) => ({
                 ...prev,
@@ -143,12 +128,7 @@ export default function Profile() {
         if (!user?.uid || !tempActivity) return;
         setIsSavingActivity(true);
         try {
-            const docRef = doc(db, 'users', user.uid);
-            await updateDoc(docRef, {
-                'userProfile.activityLevel': tempActivity,
-                generatedPlanStale: true,
-                lastUpdated: new Date(),
-            });
+            await updateUserProfile({ userProfile: { activityLevel: tempActivity }, generatedPlanStale: true });
             setUserPlan((prev: any) => ({
                 ...prev,
                 userProfile: { ...prev?.userProfile, activityLevel: tempActivity },
@@ -185,7 +165,7 @@ export default function Profile() {
         if (!user?.uid) return;
         setIsDemoLoading(true);
         try {
-            await loadDemoData(user.uid);
+            await loadDemoData();
             Alert.alert('Demo Mode Activated 🚀', '7 days of perfect nutrition data has been loaded. Your profile is now presentation-ready!');
         } catch (error) {
             Alert.alert('Error', 'Failed to load demo data.');

@@ -34,7 +34,7 @@ const ExerciseSummaryScreen = () => {
         try {
             const dateString = new Date().toISOString().split('T')[0];
 
-            await addExerciseLog(user.uid, dateString, {
+            await addExerciseLog(dateString, {
                 id: Date.now().toString(),
                 type: type,
                 name: title,

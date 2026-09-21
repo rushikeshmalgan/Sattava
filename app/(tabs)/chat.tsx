@@ -22,10 +22,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../context/AuthContext';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { subscribeToDailyLog, subscribeToUser } from '../../services/liveData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { db } from '../../firebaseConfig';
 import { useTheme } from '../../context/ThemeContext';
 import { Gradients } from '../../constants/Colors';
 import { loadDailySteps } from '../../services/stepService';
@@ -326,17 +325,16 @@ export default function ChatScreen() {
 
     const dateStr = new Date().toISOString().split('T')[0];
 
-    const unsubUser = onSnapshot(
-      doc(db, 'users', user.uid),
-      async snap => {
-        if (!snap.exists()) return;
+    const unsubUser = subscribeToUser(
+      async profile => {
+        if (!profile) return;
 
-        const data = snap.data();
+        const data = profile;
         const plan = data.generatedPlan;
 
         const dailyCalories = Number(plan?.dailyCalories) || 2000;
-        const proteinTarget = parseInt(plan?.macros?.protein, 10) || 60;
-        const waterTarget = parseFloat(plan?.waterIntake) * 1000 || 2000;
+        const proteinTarget = parseInt(plan?.macros?.protein ?? '', 10) || 60;
+        const waterTarget = parseFloat(plan?.waterIntake ?? '') * 1000 || 2000;
 
         setUserCtx(prev => ({
           ...prev,
@@ -347,17 +345,12 @@ export default function ChatScreen() {
             data.userProfile?.goal ||
             data.physicalProfile?.goal ||
             'Maintain Weight',
-          diet:
-            data.userProfile?.dietType ||
-            data.physicalProfile?.dietType ||
-            'Veg',
+          diet: data.userProfile?.dietType || 'Veg',
           coachType: data.userProfile?.coachType || 'Friendly',
         }));
 
         try {
-          const streakCount = await getStreakCount(
-            user.uid,
-            dailyCalories,
+          const streakCount = await getStreakCount(dailyCalories,
             waterTarget
           );
 
@@ -374,10 +367,10 @@ export default function ChatScreen() {
       }
     );
 
-    const unsubLog = onSnapshot(
-      doc(db, 'users', user.uid, 'dailyLogs', dateStr),
-      snap => {
-        if (!snap.exists()) {
+    const unsubLog = subscribeToDailyLog(
+      dateStr,
+      day => {
+        if (!day) {
           setUserCtx(prev => ({
             ...prev,
             calories: 0,
@@ -392,13 +385,9 @@ export default function ChatScreen() {
           return;
         }
 
-        const data = snap.data();
+        const data = day;
 
-        const foodLogs = Array.isArray(data.foodLogs)
-          ? data.foodLogs
-          : Array.isArray(data.logs)
-            ? data.logs.filter((item: any) => item.type === 'food')
-            : [];
+        const foodLogs = data.logs.filter(item => item.type === 'food');
 
         const recentFoods = foodLogs
           .slice(-3)

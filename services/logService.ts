@@ -1,6 +1,5 @@
-import { arrayRemove, arrayUnion, doc, getDoc, increment, setDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
 import { isExerciseLogType } from '../utils/logEntryTypes';
+import { addLogEntry, fetchDailyLogs, loadDemoDays, removeLogEntry } from './dataApi';
 
 export interface ExerciseData {
     id: string;
@@ -12,35 +11,23 @@ export interface ExerciseData {
     createdAt?: Date;
 }
 
+/** The time shown next to a log entry: the device's own clock, which only the device knows. */
+const currentTime = (): string => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
 /**
- * Adds an exercise log entry and updates the daily calories burned total.
+ * Adds an exercise entry. The server raises the day's calories burned by exactly this entry's calories.
  */
-export const addExerciseLog = async (
-    userId: string,
-    dateString: string,
-    exerciseData: ExerciseData
-) => {
+export const addExerciseLog = async (dateString: string, exerciseData: ExerciseData) => {
     try {
-        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
-        const timestamp = new Date();
-        
-        const fullExerciseData = {
-            ...exerciseData,
-            createdAt: timestamp
-        };
-
-        const updateData: any = {
-            exercises: arrayUnion(fullExerciseData),
-            logs: arrayUnion({
-                ...fullExerciseData,
-                time: timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                amount: `${exerciseData.duration > 0 ? exerciseData.duration : 0} min`
-            }),
-            caloriesBurned: increment(exerciseData.calories),
-            lastUpdated: timestamp
-        };
-
-        await setDoc(logDocRef, updateData, { merge: true });
+        await addLogEntry(dateString, {
+            type: exerciseData.type,
+            itemId: exerciseData.id,
+            name: exerciseData.name,
+            calories: exerciseData.calories,
+            duration: Math.max(0, exerciseData.duration),
+            intensity: exerciseData.intensity,
+            time: currentTime(),
+        });
         return { success: true };
     } catch (error) {
         console.error("Error adding exercise log:", error);
@@ -61,40 +48,22 @@ export interface FoodData {
 }
 
 /**
- * Adds a food log entry and updates the daily calories consumed total.
+ * Adds a food entry. The server raises the day's calories and macros by exactly what this entry holds.
  */
-export const addFoodLog = async (
-    userId: string,
-    dateString: string,
-    foodData: FoodData
-) => {
+export const addFoodLog = async (dateString: string, foodData: FoodData) => {
     try {
-        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
-        const timestamp = new Date();
-
-        const fullFoodData = { ...foodData, createdAt: timestamp };
-
-        const updateData: any = {
-    foods: arrayUnion(fullFoodData),
-    logs: arrayUnion({
-        id: foodData.id,
-        type: 'food',
-        name: foodData.name,
-        calories: foodData.calories,
-        amount: foodData.servingSize || '1 serving',
-        time: timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        createdAt: timestamp,
-    }),
-
-    consumedCalories: increment(foodData.calories),
-    totalCarbs: increment(foodData.carbs),
-    totalProtein: increment(foodData.protein),
-    totalFat: increment(foodData.fat),
-    ...(foodData.fiber !== undefined ? { totalFiber: increment(foodData.fiber) } : {}),
-    lastUpdated: timestamp
-};
-
-        await setDoc(logDocRef, updateData, { merge: true });
+        await addLogEntry(dateString, {
+            type: 'food',
+            itemId: foodData.id,
+            name: foodData.name,
+            calories: foodData.calories,
+            carbs: foodData.carbs,
+            protein: foodData.protein,
+            fat: foodData.fat,
+            ...(foodData.fiber !== undefined ? { fiber: foodData.fiber } : {}),
+            servingSize: foodData.servingSize || '1 serving',
+            time: currentTime(),
+        });
         return { success: true };
     } catch (error) {
         console.error("Error adding food log:", error);
@@ -102,95 +71,25 @@ export const addFoodLog = async (
     }
 };
 
-// ── Delete a food log entry and reverse its nutritional contribution ─────────
-
-export const deleteFoodLog = async (
-    userId: string,
-    dateString: string,
-    logEntry: {
-        id: string;
-        name: string;
-        calories: number;
-        carbs?: number;
-        protein?: number;
-        fat?: number;
-        fiber?: number;
-        servingSize?: string;
-        type?: string;
-        amount?: string;
-        time?: string;
-        createdAt?: Date;
-    }
-): Promise<void> => {
+/**
+ * Deletes one entry of a day. The server takes back exactly what the entry added (calories, macros,
+ * calories burned or water), so the totals stay equal to the sum of what is left.
+ */
+export const deleteLogEntry = async (dateString: string, entryId: string): Promise<void> => {
     try {
-        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
-
-        // We need to remove the exact object stored in the logs array.
-        // arrayRemove uses deep equality, so we must pass the matching shape.
-        const updateData: any = {
-            logs: arrayRemove(logEntry),
-            lastUpdated: new Date(),
-        };
-
-        // Reverse the nutritional totals
-        if (logEntry.type === 'food' || !logEntry.type) {
-            if (logEntry.calories) updateData.consumedCalories = increment(-logEntry.calories);
-            if (logEntry.carbs)    updateData.totalCarbs   = increment(-logEntry.carbs);
-            if (logEntry.protein)  updateData.totalProtein = increment(-logEntry.protein);
-            if (logEntry.fat)      updateData.totalFat     = increment(-logEntry.fat);
-            if (logEntry.fiber)    updateData.totalFiber   = increment(-logEntry.fiber);
-        } else if (isExerciseLogType(logEntry.type)) {
-            if (logEntry.calories) updateData.caloriesBurned = increment(-logEntry.calories);
-        } else if (logEntry.type === 'water') {
-            const waterMl = logEntry.amount
-                ? parseFloat(logEntry.amount)
-                : 250;
-            updateData.totalWater = increment(-waterMl);
-        }
-
-        await setDoc(logDocRef, updateData, { merge: true });
+        await removeLogEntry(dateString, entryId);
     } catch (error) {
-        console.error('Error deleting food log:', error);
+        console.error('Error deleting log entry:', error);
         throw error;
     }
 };
 
 /**
- * Loads 7 days of perfect demo data for the presentation.
+ * Replaces the last 7 days with balanced sample data for the presentation.
  */
-export const loadDemoData = async (userId: string) => {
+export const loadDemoData = async () => {
     try {
-        const batch = [];
-        const today = new Date();
-        
-        for (let i = 0; i < 7; i++) {
-            const d = new Date();
-            d.setDate(today.getDate() - i);
-            const dateStr = d.toISOString().split('T')[0];
-            const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateStr);
-            
-            // Perfect balance: 1800-2200 cals, high protein, low fat, 2L water
-            const demoData = {
-                consumedCalories: 2000 - (i * 50),
-                totalProtein: 65 + (i % 3),
-                totalCarbs: 220 - (i * 10),
-                totalFat: 55 + (i * 2),
-                totalWater: 2000 + (i * 100),
-                caloriesBurned: 300 + (i * 20),
-                logs: [
-                    { id: `demo-f1-${i}`, type: 'food', name: 'Oatmeal with Fruits', calories: 350, protein: 12, carbs: 60, fat: 5, amount: '1 bowl', time: '08:30 AM', createdAt: d },
-                    { id: `demo-f2-${i}`, type: 'food', name: 'Grilled Paneer Salad', calories: 450, protein: 25, carbs: 15, fat: 20, amount: '1 plate', time: '01:15 PM', createdAt: d },
-                    { id: `demo-f3-${i}`, type: 'food', name: 'Dal Tadka & Brown Rice', calories: 550, protein: 18, carbs: 80, fat: 12, amount: '1 plate', time: '08:00 PM', createdAt: d },
-                    { id: `demo-w-${i}`, type: 'water', name: 'Paani', calories: 0, amount: '2000ml', time: '09:00 PM', createdAt: d },
-                    { id: `demo-e-${i}`, type: 'exercise', name: 'Morning Yoga', calories: 200, duration: 30, intensity: 'Medium', time: '07:00 AM', createdAt: d }
-                ],
-                lastUpdated: new Date()
-            };
-            
-            batch.push(setDoc(logDocRef, demoData, { merge: true }));
-        }
-        
-        await Promise.all(batch);
+        await loadDemoDays();
         return { success: true };
     } catch (error) {
         console.error("Error loading demo data:", error);
@@ -205,32 +104,36 @@ export const loadDemoData = async (userId: string) => {
  * - Water must be at least 80% of target.
  * - At least 1 exercise must be logged.
  */
-export const getStreakCount = async (userId: string, targetCalories: number, targetWater: number) => {
+export const getStreakCount = async (targetCalories: number, targetWater: number) => {
     try {
-        let streak = 0;
         const today = new Date();
-        
+        const dates: string[] = [];
         for (let i = 0; i < 30; i++) {
             const d = new Date();
             d.setDate(today.getDate() - i);
-            const dateStr = d.toISOString().split('T')[0];
-            const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateStr);
-            const snap = await getDoc(logDocRef);
-            
-            if (snap.exists()) {
-                const data = snap.data();
+            dates.push(d.toISOString().split('T')[0]!);
+        }
+
+        // One request for the whole window instead of one per day.
+        const days = await fetchDailyLogs({ from: dates[dates.length - 1]!, to: dates[0]!, limit: 30 });
+        const byDate = new Map(days.map((day) => [day.date, day]));
+
+        let streak = 0;
+        for (let i = 0; i < dates.length; i++) {
+            const data = byDate.get(dates[i]!);
+
+            if (data) {
                 const consumedCals = data.consumedCalories || 0;
-                
+
                 // Rule 1: Calories between 80% and 120% of target
                 const calMet = consumedCals >= targetCalories * 0.8 && consumedCals <= targetCalories * 1.2;
-                
+
                 // Rule 2: Water at least 80%
                 const waterMet = (data.totalWater || 0) >= targetWater * 0.8;
 
                 // Rule 3: Exercise logged
-                const exerciseLogs = data.logs?.filter((l: any) => isExerciseLogType(l.type)) || [];
-                const exerciseMet = exerciseLogs.length > 0;
-                
+                const exerciseMet = data.logs.some((entry) => isExerciseLogType(entry.type));
+
                 if (calMet && waterMet && exerciseMet) {
                     streak++;
                 } else if (i === 0) {

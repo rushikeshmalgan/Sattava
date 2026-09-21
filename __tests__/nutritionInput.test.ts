@@ -74,25 +74,25 @@ describe('parseNumberField', () => {
   });
 });
 
-describe('limits match firestore.rules', () => {
-  // The rules are the source of truth: a form that allows more than they do
+describe('limits match the backend', () => {
+  // The backend is the source of truth: a form that allows more than it does
   // would let the user type a value that then fails to save.
-  const rules = fs.readFileSync(path.join(__dirname, '..', 'firestore.rules'), 'utf8');
-  const limit = (fn: string): number => {
-    const match = new RegExp(`function ${fn}\\(\\)\\s*\\{\\s*return\\s+(\\d+);`).exec(rules);
-    if (!match) throw new Error(`${fn}() not found in firestore.rules`);
-    return Number(match[1]);
+  const source = fs.readFileSync(path.join(__dirname, '..', 'backend', 'src', 'data', 'limits.ts'), 'utf8');
+  const limit = (name: string): number => {
+    const match = new RegExp(`export const ${name} = ([0-9_]+);`).exec(source);
+    if (!match) throw new Error(`${name} not found in backend/src/data/limits.ts`);
+    return Number(String(match[1]).replace(/_/g, ''));
   };
 
   it('per-entry calories', () => {
-    expect(MAX_KCAL_PER_ENTRY).toBe(limit('maxKcalPerEntry'));
+    expect(MAX_KCAL_PER_ENTRY).toBe(limit('MAX_KCAL_PER_ENTRY'));
   });
 
   it('per-entry grams', () => {
-    expect(MAX_GRAMS_PER_ENTRY).toBe(limit('maxGramsPerEntry'));
+    expect(MAX_GRAMS_PER_ENTRY).toBe(limit('MAX_GRAMS_PER_ENTRY'));
   });
 
   it('exercise duration', () => {
-    expect(MAX_DURATION_MIN).toBe(limit('maxDurationMin'));
+    expect(MAX_DURATION_MIN).toBe(limit('MAX_DURATION_MIN'));
   });
 });

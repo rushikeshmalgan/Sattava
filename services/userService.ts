@@ -1,11 +1,10 @@
-import { arrayUnion, doc, increment, setDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import type { NewLogEntry, UserPatch } from '../types/data';
+import { addLogEntry, patchCurrentUser } from './dataApi';
 
 /**
- * Updates the daily nutritional targets for a user in Firestore.
+ * Updates the daily nutritional targets. Only these fields change; the rest of the plan (summary, tips) is kept.
  */
 export const updateUserTargets = async (
-    userId: string,
     targets: {
         calories: number;
         macros: {
@@ -17,14 +16,16 @@ export const updateUserTargets = async (
     }
 ) => {
     try {
-        const userDocRef = doc(db, 'users', userId);
-        await updateDoc(userDocRef, {
-            'generatedPlan.dailyCalories': targets.calories,
-            'generatedPlan.macros.protein': targets.macros.protein,
-            'generatedPlan.macros.fats': targets.macros.fats,
-            'generatedPlan.macros.carbs': targets.macros.carbs,
-            'generatedPlan.waterIntake': targets.waterIntake,
-            lastUpdated: new Date(),
+        await patchCurrentUser({
+            generatedPlan: {
+                dailyCalories: targets.calories,
+                macros: {
+                    protein: targets.macros.protein,
+                    fats: targets.macros.fats,
+                    carbs: targets.macros.carbs,
+                },
+                waterIntake: targets.waterIntake,
+            },
         });
         return { success: true };
     } catch (error) {
@@ -34,19 +35,11 @@ export const updateUserTargets = async (
 };
 
 /**
- * Updates generic user profile fields in Firestore.
+ * Updates profile fields. Nested objects are merged field by field, so `{ userProfile: { goal } }` never wipes the name.
  */
-export const updateUserProfile = async (
-    userId: string,
-    updates: Record<string, any>
-) => {
+export const updateUserProfile = async (updates: UserPatch) => {
     try {
-        const userDocRef = doc(db, 'users', userId);
-        const updateData = {
-            ...updates,
-            lastUpdated: new Date(),
-        };
-        await updateDoc(userDocRef, updateData);
+        await patchCurrentUser(updates);
         return { success: true };
     } catch (error) {
         console.error("Error updating user profile:", error);
@@ -55,130 +48,73 @@ export const updateUserProfile = async (
 };
 
 /**
- * Updates the consumed values for a specific date in Firestore.
+ * Millilitres in a water amount as the water screen writes it ("250ml", "1L", "1.5l"). No amount means a glass, 250 ml.
  */
-export const logConsumption = async (
-    userId: string,
-    dateString: string,
-    values: {
-        calories?: number;
+export const toWaterMl = (amount?: string): number => {
+    if (!amount) return 250;
+    const text = amount.trim().toLowerCase();
+    const value = text.endsWith('l') && !text.endsWith('ml') ? parseFloat(text) * 1000 : parseFloat(text);
+    return Number.isFinite(value) && value > 0 ? Math.min(Math.round(value), 20000) : 250;
+};
+
+export interface ActivityInput {
+    id: string;
+    name: string;
+    calories: number;
+    time: string;
+    type: 'food' | 'exercise' | 'water';
+    amount?: string;
+    macros?: {
         carbs?: number;
         protein?: number;
         fat?: number;
-        water?: number;
+    };
+    intensity?: string;
+    duration?: number;
+    /** Some callers put macros at the top level instead of under `macros`. */
+    carbs?: number;
+    protein?: number;
+    fat?: number;
+}
+
+/** Turns what a log screen collected into the entry the API accepts; fields the API does not know are left out. */
+export const activityToEntry = (activity: ActivityInput): NewLogEntry => {
+    const base = { itemId: activity.id, name: activity.name, time: activity.time };
+
+    if (activity.type === 'water') {
+        return { ...base, type: 'water', amountMl: toWaterMl(activity.amount), ...(activity.amount ? { amount: activity.amount } : {}) };
     }
-) => {
-    try {
-        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
-        await setDoc(logDocRef, {
-            consumedCalories: values.calories ?? 0,
-            totalCarbs: values.carbs ?? 0,
-            totalProtein: values.protein ?? 0,
-            totalFat: values.fat ?? 0,
-            totalWater: values.water ?? 0,
-            lastUpdated: new Date(),
-        }, { merge: true });
-        return { success: true };
-    } catch (error) {
-        console.error("Error logging consumption:", error);
-        throw error;
+
+    if (activity.type === 'exercise') {
+        return {
+            ...base,
+            type: 'exercise',
+            calories: activity.calories,
+            ...(activity.duration !== undefined ? { duration: activity.duration } : {}),
+            ...(activity.intensity ? { intensity: activity.intensity } : {}),
+        };
     }
+
+    const carbs = activity.macros?.carbs ?? activity.carbs;
+    const protein = activity.macros?.protein ?? activity.protein;
+    const fat = activity.macros?.fat ?? activity.fat;
+    return {
+        ...base,
+        type: 'food',
+        calories: activity.calories,
+        ...(carbs ? { carbs } : {}),
+        ...(protein ? { protein } : {}),
+        ...(fat ? { fat } : {}),
+        ...(activity.amount ? { amount: activity.amount } : {}),
+    };
 };
 
 /**
- * Increments the consumed values for a specific date.
+ * Adds a food, exercise or water entry from the log screens. The server works out which totals it moves.
  */
-export const incrementConsumption = async (
-    userId: string,
-    dateString: string,
-    increments: {
-        calories?: number;
-        carbs?: number;
-        protein?: number;
-        fat?: number;
-        water?: number;
-    }
-) => {
+export const addActivityLog = async (dateString: string, activity: ActivityInput) => {
     try {
-        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
-        const updateData: any = {
-            lastUpdated: new Date(),
-        };
-        if (increments.calories !== undefined) updateData.consumedCalories = increment(increments.calories);
-        if (increments.carbs !== undefined) updateData.totalCarbs = increment(increments.carbs);
-        if (increments.protein !== undefined) updateData.totalProtein = increment(increments.protein);
-        if (increments.fat !== undefined) updateData.totalFat = increment(increments.fat);
-        if (increments.water !== undefined) {
-            updateData.totalWater = increment(increments.water);
-        }
-
-        await setDoc(logDocRef, updateData, { merge: true });
-        return { success: true };
-    } catch (error) {
-        console.error("Error incrementing consumption:", error);
-        throw error;
-    }
-};
-
-
-export const addActivityLog = async (
-    userId: string,
-    dateString: string,
-    activity: {
-        id: string;
-        name: string;
-        calories: number;
-        time: string;
-        type: 'food' | 'exercise' | 'water';
-        amount?: string;
-        macros?: {
-            carbs?: number;
-            protein?: number;
-            fat?: number;
-        };
-        intensity?: string;
-        duration?: number;
-        createdAt?: Date;
-    }
-) => {
-    try {
-        const logDocRef = doc(db, 'users', userId, 'dailyLogs', dateString);
-        const timestamp = activity.createdAt || new Date();
-
-        const updateData: any = {
-            logs: arrayUnion({
-                ...activity,
-                createdAt: timestamp
-            }),
-            lastUpdated: timestamp
-        };
-
-        if (activity.type === 'exercise') {
-            updateData.caloriesBurned = increment(activity.calories);
-        } else if (activity.type === 'food') {
-            updateData.consumedCalories = increment(activity.calories);
-
-            if (activity.macros) {
-                if (activity.macros.carbs) updateData.totalCarbs = increment(activity.macros.carbs);
-                if (activity.macros.protein) updateData.totalProtein = increment(activity.macros.protein);
-                if (activity.macros.fat) updateData.totalFat = increment(activity.macros.fat);
-            }
-        } else if (activity.type === 'water') {
-            let waterAmount = 0;
-            if (activity.amount) {
-                const amountStr = activity.amount.toLowerCase();
-                if (amountStr.endsWith('l') && !amountStr.endsWith('ml')) {
-                    waterAmount = parseFloat(amountStr) * 1000;
-                } else {
-                    waterAmount = parseFloat(amountStr);
-                }
-            } else {
-                waterAmount = 250; // Default to 250ml
-            }
-            updateData.totalWater = increment(waterAmount);
-        }
-
-        await setDoc(logDocRef, updateData, { merge: true });
+        await addLogEntry(dateString, activityToEntry(activity));
         return { success: true };
     } catch (error) {
         console.error("Error adding activity log:", error);

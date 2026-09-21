@@ -141,7 +141,7 @@ export default function YogaScreen() {
     const totalCalories = Math.round(rounds * SURYA_NAMASKAR_POSES.length * 0.6);
     if (user?.uid && rounds > 0) {
       const dateStr = new Date().toISOString().split('T')[0];
-      await addActivityLog(user.uid, dateStr, {
+      await addActivityLog(dateStr, {
         id: Date.now().toString(),
         name: `Surya Namaskar (${rounds} round${rounds > 1 ? 's' : ''})`,
         calories: totalCalories,
@@ -161,7 +161,7 @@ export default function YogaScreen() {
     const totalCalories = Math.round((totalPranayamaTime / 60) * YOGA_BURN_RATES['Pranayama']);
     if (user?.uid && totalPranayamaTime > 30) {
       const dateStr = new Date().toISOString().split('T')[0];
-      await addActivityLog(user.uid, dateStr, {
+      await addActivityLog(dateStr, {
         id: Date.now().toString(),
         name: `${selectedPranayama.name} (${Math.round(totalPranayamaTime / 60)} min)`,
         calories: totalCalories,

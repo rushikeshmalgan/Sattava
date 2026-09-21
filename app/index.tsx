@@ -1,10 +1,9 @@
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "expo-router";
-import { doc, getDoc } from "firebase/firestore";
+import { fetchCurrentUser } from "../services/dataApi";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { Colors } from "../constants/Colors";
-import { db } from "../firebaseConfig";
 
 export default function Index() {
   const { user, loading } = useAuth();
@@ -26,16 +25,16 @@ export default function Index() {
     }
 
     console.log("[INDEX] Authenticated user:", user.uid);
-    console.log("[INDEX] Checking Firestore for user:", user.uid);
+    console.log("[INDEX] Checking the profile for user:", user.uid);
 
     const checkOnboardingStatus = async () => {
       try {
-        const userRef = doc(db, "users", user.uid);
+        // The profile decides whether onboarding still has to be done.
 
-        const userDoc = await getDoc(userRef);
+        const userDoc = await fetchCurrentUser();
 
-        if (userDoc.exists()) {
-          const data = userDoc.data();
+        if (userDoc) {
+          const data = userDoc;
 
           const hasOnboardingData = !!(
             data.onboardingCompleted === true ||
@@ -56,8 +55,8 @@ export default function Index() {
           router.replace("/onboarding");
         }
       } catch (error) {
-        console.error("[INDEX] Firestore check failed:", error);
-        console.log("[INDEX] Firestore error — redirecting to /onboarding as fallback");
+        console.error("[INDEX] Profile check failed:", error);
+        console.log("[INDEX] Profile check failed — redirecting to /onboarding as fallback");
         router.replace("/onboarding");
       } finally {
         setIsChecking(false);

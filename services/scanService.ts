@@ -66,7 +66,7 @@ const hasSaneNutrition = (food: FoodData): boolean =>
   food.calories <= MAX_LOGGABLE_CALORIES;
 
 /**
- * Last line of defence before Firestore: an AI-sourced scan may only be logged
+ * Last line of defence before the log: an AI-sourced scan may only be logged
  * if every detected item has a real name and sane nutrition. Barcode and manual
  * results (curated external data) are not affected.
  */

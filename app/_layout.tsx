@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { Ionicons } from "@expo/vector-icons";
-import { SyncUserToFirestore } from "../utils/SyncUserToFirestore";
+import { SyncUser } from "../utils/SyncUser";
 import { ThemeProvider } from "../context/ThemeContext";
 import { AuthProvider, useAuth } from "../context/AuthContext";
 import SmartToast from "../components/SmartToast";
@@ -83,7 +83,7 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <SyncUserToFirestore />
+        <SyncUser />
         <ErrorBoundary>
           <InitialLayout />
           <SmartToast />

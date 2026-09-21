@@ -1,9 +1,9 @@
 /**
  * Sattva — Insights Dashboard
- * Real weekly data from Firestore · SVG circular progress · Indian Diet Score
+ * Real weekly data from the Sattava API · SVG circular progress · Indian Diet Score
  */
 import { useAuth } from '../../context/AuthContext';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { subscribeToDailyLog, subscribeToUser } from '../../services/liveData';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     Animated,
@@ -22,7 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import IndianDietScore from '../../components/IndianDietScore';
 import { Colors, Gradients } from '../../constants/Colors';
-import { db } from '../../firebaseConfig';
+import { fetchDailyLogs } from '../../services/dataApi';
 import { calculateIndianDietScore, ICMR_RDA } from '../../services/indianFoodService';
 import { loadDailySteps } from '../../services/stepService';
 import { getStreakCount } from '../../services/logService';
@@ -164,28 +164,27 @@ export default function Analytics() {
         loadDailySteps().then(setSteps);
     }, []);
 
-    // Today's data – live Firestore listener
+    // Today's data: refreshed live (services/liveData.ts)
     useEffect(() => {
         if (!user?.uid) return;
         const dateStr = new Date().toISOString().split('T')[0];
 
-        const unsub1 = onSnapshot(doc(db, 'users', user.uid), (snap) => {
-            if (!snap.exists()) return;
-            const plan = snap.data().generatedPlan;
+        const unsub1 = subscribeToUser((profile) => {
+            if (!profile) return;
+            const plan = profile.generatedPlan;
             if (plan) {
                 setTargets({
                     calories: plan.dailyCalories || 2000,
-                    protein: parseInt(plan.macros?.protein) || 60,
-                    carbs:   parseInt(plan.macros?.carbs)   || 250,
-                    fat:     parseInt(plan.macros?.fats)    || 50,
+                    protein: parseInt(plan.macros?.protein ?? '') || 60,
+                    carbs:   parseInt(plan.macros?.carbs ?? '')   || 250,
+                    fat:     parseInt(plan.macros?.fats ?? '')    || 50,
                     water:   2000,
                 });
             }
         });
 
-        const unsub2 = onSnapshot(doc(db, 'users', user.uid, 'dailyLogs', dateStr), (snap) => {
-            if (!snap.exists()) return;
-            const d = snap.data();
+        const unsub2 = subscribeToDailyLog(dateStr, (d) => {
+            if (!d) return;
             setTodayData({
                 calories: d.consumedCalories || 0,
                 protein:  d.totalProtein     || 0,
@@ -199,34 +198,29 @@ export default function Analytics() {
         return () => { unsub1(); unsub2(); };
     }, [user?.uid]);
 
-    // Weekly data – reads last 7 days from Firestore
+    // Weekly data: the last 7 days in one request
     const loadWeeklyData = useCallback(async () => {
         if (!user?.uid) return;
         setWeeklyLoading(true);
         setWeeklyError(null);
         try {
             const days = getLast7Days();
-            const results: DayStats[] = await Promise.all(
-                days.map(async ({ label, dateStr }) => {
-                    try {
-                        const snap = await getDoc(doc(db, 'users', user.uid!, 'dailyLogs', dateStr));
-                        if (snap.exists()) {
-                            const d = snap.data();
-                            return {
-                                label,
-                                dateStr,
-                                calories: d.consumedCalories || 0,
-                                protein:  d.totalProtein     || 0,
-                                carbs:    d.totalCarbs       || 0,
-                                fat:      d.totalFat         || 0,
-                                fiber:    d.totalFiber       || 0,
-                                water:    d.totalWater       || 0,
-                            };
-                        }
-                    } catch { /* skip individual missing day */ }
-                    return { label, dateStr, calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, water: 0 };
-                })
-            );
+            // One request for the whole week instead of one per day.
+            const logs = await fetchDailyLogs({ from: days[0]!.dateStr, to: days[days.length - 1]!.dateStr, limit: 7 });
+            const byDate = new Map(logs.map((log) => [log.date, log]));
+            const results: DayStats[] = days.map(({ label, dateStr }) => {
+                const d = byDate.get(dateStr);
+                return {
+                    label,
+                    dateStr,
+                    calories: d?.consumedCalories || 0,
+                    protein:  d?.totalProtein     || 0,
+                    carbs:    d?.totalCarbs       || 0,
+                    fat:      d?.totalFat         || 0,
+                    fiber:    d?.totalFiber       || 0,
+                    water:    d?.totalWater       || 0,
+                };
+            });
             setWeeklyData(results);
         } catch (err: any) {
             setWeeklyError(err?.message ?? 'Could not load weekly data. Check your connection.');

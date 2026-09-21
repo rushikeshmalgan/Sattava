@@ -134,18 +134,17 @@ const GharKaKhanaScreen = () => {
             // 1. Save locally
             await saveDishLocally(dishData);
 
-            // 2. Log to tracker (Firestore)
+            // 2. Log to tracker (the daily log)
             if (user?.uid) {
                 const dateString = new Date().toISOString().split('T')[0];
                 const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 
-                await addActivityLog(user.uid, dateString, {
+                await addActivityLog(dateString, {
                     id: dishId,
                     name: dishName,
                     calories: caloriesField.value,
                     time: timeString,
                     type: 'food',
-                    createdAt: new Date(),
                 });
             }
 

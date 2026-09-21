@@ -44,16 +44,16 @@ export default function ComboBuilderScreen() {
 
         try {
             // Log Main
-            await addFoodLog(user.uid, dateStr, {
+            await addFoodLog(dateStr, {
                 id: combo.main.id + '-' + Date.now(), name: combo.main.name, calories: combo.main.calories, carbs: combo.main.carbs, protein: combo.main.protein, fat: combo.main.fat, fiber: combo.main.fiber, servingSize: '1 serving'
             });
             // Log Side
-            await addFoodLog(user.uid, dateStr, {
+            await addFoodLog(dateStr, {
                 id: combo.side.id + '-' + Date.now(), name: combo.side.name, calories: combo.side.calories, carbs: combo.side.carbs, protein: combo.side.protein, fat: combo.side.fat, fiber: combo.side.fiber, servingSize: '1 serving'
             });
             // Log Extra
             if (combo.extra) {
-                await addFoodLog(user.uid, dateStr, {
+                await addFoodLog(dateStr, {
                     id: combo.extra.id + '-' + Date.now(), name: combo.extra.name, calories: combo.extra.calories, carbs: combo.extra.carbs, protein: combo.extra.protein, fat: combo.extra.fat, fiber: combo.extra.fiber, servingSize: '1 serving'
                 });
             }

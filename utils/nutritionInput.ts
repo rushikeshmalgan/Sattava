@@ -2,13 +2,12 @@
  * Validation for the numbers typed into the manual logging forms.
  *
  * `Number(text)` accepts much more than anyone means to type ("-500", "0x10",
- * "1e3", "Infinity"), and the Firestore rules refuse negative or absurd values
- * with a generic permission error, so the form has to say what is wrong before
- * it tries to save.
+ * "1e3", "Infinity"), and the API refuses negative or absurd values with a
+ * generic error, so the form has to say what is wrong before it tries to save.
  *
- * The maximums mirror the per-entry caps in firestore.rules (maxKcalPerEntry,
- * maxGramsPerEntry, maxDurationMin); __tests__/nutritionInput.test.ts fails if
- * they drift apart.
+ * The maximums mirror the per-entry caps the backend enforces
+ * (backend/src/data/limits.ts); __tests__/nutritionInput.test.ts fails if they
+ * drift apart.
  */
 export const MAX_KCAL_PER_ENTRY = 10000;
 export const MAX_GRAMS_PER_ENTRY = 1000;

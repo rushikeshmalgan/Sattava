@@ -1,7 +1,7 @@
 import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { doc, getDoc } from 'firebase/firestore';
+import { fetchCurrentUser } from '../../services/dataApi';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/Colors';
-import { db } from '../../firebaseConfig';
 
 import { Animated } from 'react-native';
 
@@ -71,12 +70,12 @@ const ExerciseDetailsScreen = () => {
         setIsSaving(true);
         try {
             // 1. Fetch User Profile for Weight
-            const userDoc = await getDoc(doc(db, 'users', user.uid));
-            if (!userDoc.exists()) {
+            const userDoc = await fetchCurrentUser();
+            if (!userDoc) {
                 throw new Error("User profile not found");
             }
 
-            const profile = userDoc.data().physicalProfile;
+            const profile = userDoc.physicalProfile;
             const weight = Number(profile?.weightKg) || 70; // Default to 70kg if not set
 
             // 2. Determine MET value

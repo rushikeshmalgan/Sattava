@@ -4,8 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../context/ThemeContext';
-import { db } from '../firebaseConfig';
-import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { fetchDailyLogs } from '../services/dataApi';
 import { useAuth } from '../context/AuthContext';
 import { generateCoachText } from '../services/aiService';
 import { Colors } from '../constants/Colors';
@@ -29,18 +28,8 @@ export default function WeeklyReportScreen() {
         if (!user?.uid) return;
         setLoading(true);
         try {
-            // Fetch all logs from Firestore without index to bypass index requirement
-            const logsRef = collection(db, 'users', user.uid, 'dailyLogs');
-            const snap = await getDocs(logsRef);
-
-            let days: any[] = [];
-            snap.forEach(doc => {
-                days.push({ date: doc.id, ...doc.data() });
-            });
-            
-            // Sort by date descending locally
-            days.sort((a, b) => b.date.localeCompare(a.date));
-            days = days.slice(0, 7); // take last 7 days
+            // The API returns days newest first; take the last 7 that have a log.
+            const days: any[] = await fetchDailyLogs({ limit: 7 });
 
             if (days.length === 0) {
                 setStats({ avgCals: 0, daysLogged: 0, highestProteinDay: '', chartData: [] });

@@ -1,8 +1,7 @@
 import { useAuth } from '../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { patchCurrentUser } from '../services/dataApi';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -103,14 +102,7 @@ export default function Onboarding() {
         };
 
         try {
-            await setDoc(
-                doc(db, 'users', user.uid),
-                {
-                    physicalProfile: profileData,
-                    updatedAt: new Date(),
-                },
-                { merge: true }
-            );
+            await patchCurrentUser({ physicalProfile: profileData });
 
             router.replace({
                 pathname: '/generating-profile',

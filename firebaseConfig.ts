@@ -1,5 +1,4 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
 import type { Auth } from 'firebase/auth';
 import { Platform } from 'react-native';
 
@@ -27,13 +26,13 @@ if (missingVars.length > 0) {
     `or (in production) register them as EAS environment variables and rebuild.`;
 
   // IMPORTANT: never throw here. This file is imported transitively from
-  // app/_layout.tsx (via SyncUserToFirestore) before that layout's own
+  // app/_layout.tsx (via SyncUser) before that layout's own
   // module code runs — including its SplashScreen.preventAutoHideAsync()
   // call. A throw at this point happens before anything has taken control
   // of the splash screen, so the app hangs on it forever with no visible
-  // error. Log loudly instead and let Firestore calls fail normally (as
+  // error. Log loudly instead and let API calls fail normally (as
   // rejected promises) at the point of use, where existing try/catch
-  // blocks (e.g. SyncUserToFirestore) already handle and log failures.
+  // blocks (e.g. SyncUser) already handle and log failures.
   console.error(message);
 }
 
@@ -53,11 +52,9 @@ const firebaseConfig = {
 // would otherwise crash the module — and, per the note above, crash before
 // the splash screen can be dismissed.
 let app;
-let firestoreDb;
 let auth: Auth | null = null;
 try {
   app = initializeApp(firebaseConfig);
-  firestoreDb = getFirestore(app);
 
   if (Platform.OS === 'android' || Platform.OS === 'ios') {
     const { initializeAuth, getReactNativePersistence } = require('firebase/auth');
@@ -72,14 +69,9 @@ try {
 
   console.log('[BOOT] Firebase app initialized');
 } catch (err) {
-  console.error('[Firebase] Failed to initialize — Firestore features will be unavailable:', err);
+  console.error('[Firebase] Failed to initialize — sign-in will be unavailable:', err);
 }
 
-// Initialize Cloud Firestore and get a reference to the service.
-// NOTE: if init failed above, this is `undefined`. Existing consumers call
-// Firestore functions (doc/getDoc/setDoc) inside try/catch blocks in async
-// handlers, so a bad `db` surfaces as a caught error there rather than a
-// hard crash — but any NEW consumer of `db` should still wrap its usage in
-// try/catch defensively.
-export const db = firestoreDb as ReturnType<typeof getFirestore>;
+// Firebase is used for sign-in only. Users and daily logs live in MongoDB and are reached through the backend API
+// (services/dataApi.ts), so there is no database client, and no database credential, in the app.
 export { app, auth };
