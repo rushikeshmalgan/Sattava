@@ -27,6 +27,8 @@ export interface ShutdownOptions {
   timeoutMs?: number;
   /** Injected so tests can observe the exit code instead of ending the process. */
   exit?: (code: number) => void;
+  /** Runs once connections have drained, before exit (for example, closing the database client). */
+  afterDrain?: () => Promise<void>;
 }
 
 /**
@@ -35,7 +37,7 @@ export interface ShutdownOptions {
  * are closed and the exit code is 1. Safe to call more than once.
  */
 export function createShutdown(server: Server, options: ShutdownOptions): (signal: string) => Promise<void> {
-  const { logger, timeoutMs = SHUTDOWN_GRACE_MS, exit = (code: number) => process.exit(code) } = options;
+  const { logger, timeoutMs = SHUTDOWN_GRACE_MS, exit = (code: number) => process.exit(code), afterDrain } = options;
   let inProgress: Promise<void> | null = null;
 
   return (signal: string) => {
@@ -66,7 +68,14 @@ export function createShutdown(server: Server, options: ShutdownOptions): (signa
         if (settled) return;
         if (err) logger.error({ event: 'server.shutdown_error', message: err.message });
         logger.info({ event: 'server.shutdown_complete' });
-        settle(err ? 1 : 0);
+        void Promise.resolve(afterDrain?.())
+          .catch((closeErr: unknown) =>
+            logger.error({
+              event: 'server.shutdown_cleanup_error',
+              message: closeErr instanceof Error ? closeErr.message : String(closeErr),
+            }),
+          )
+          .then(() => settle(err ? 1 : 0));
       });
       // Idle keep-alive sockets would otherwise hold server.close() open until they time out.
       server.closeIdleConnections();

@@ -13,6 +13,9 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { createFoodsRouter } from './routes/foods';
 import { createCoachRouter } from './routes/coach';
 import { createVisionRouter, type CachedVision } from './routes/vision';
+import { createDataRouter } from './routes/data';
+import type { DataRepository } from './data/repository';
+import { secretsFromUri } from './db/mongo';
 import './http/requestContext';
 
 export interface AppDeps {
@@ -20,6 +23,10 @@ export interface AppDeps {
   logger: Logger;
   verifyToken: TokenVerifier;
   provider: GenerativeProvider;
+  /** Users and daily logs. When absent the data routes are not mounted (the AI routes never need it). */
+  repo?: DataRepository;
+  /** Throws when the database cannot be reached; backs GET /health/ready. */
+  checkDatabase?: () => Promise<void>;
   fetchImpl?: typeof fetch;
   now?: () => number;
 }
@@ -32,6 +39,9 @@ const VISION_BODY_LIMIT = '7mb';
 
 // Coach requests are small structured inputs (numbers/enums, one 300-char transcript).
 const COACH_BODY_LIMIT = '16kb';
+
+// Data writes are a single small entry or profile patch.
+const DATA_BODY_LIMIT = '32kb';
 
 const VISION_CACHE_ENTRIES = 200;
 const VISION_CACHE_TTL_MS = 24 * 60 * MINUTE;
@@ -59,6 +69,18 @@ export function createApp(deps: AppDeps): Express {
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
+  // Liveness (/health) must not depend on the database, or a database blip restarts a healthy server.
+  // This one says whether the data routes can work right now.
+  app.get('/health/ready', async (_req, res) => {
+    if (!deps.checkDatabase) return res.json({ status: 'ok', database: 'not configured' });
+    try {
+      await deps.checkDatabase();
+      res.json({ status: 'ok', database: 'ok' });
+    } catch {
+      res.status(503).json({ status: 'unavailable', database: 'unreachable' });
+    }
   });
 
   app.use(
@@ -107,10 +129,20 @@ export function createApp(deps: AppDeps): Express {
     express.json({ limit: COACH_BODY_LIMIT }),
     createCoachRouter({ config, provider: deps.provider, budget, hashUid, now }),
   );
+  if (deps.repo) {
+    // The limiter and body parser are scoped to the data paths; the router itself is mounted without a prefix
+    // because Express strips a mount path, and its routes carry their full paths (/me, /logs/:date, ...).
+    v1.use(
+      ['/me', '/logs', '/demo-data'],
+      rateLimit({ limiter: new SlidingWindowLimiter(MINUTE, config.limits.dataPerMinute, now), key: byVerifiedUid, scope: 'data-uid-minute' }),
+      express.json({ limit: DATA_BODY_LIMIT }),
+    );
+    v1.use(createDataRouter({ repo: deps.repo, now }));
+  }
   app.use('/api/v1', v1);
 
   app.use(notFoundHandler);
-  app.use(errorHandler({ hashUid, secrets: [config.geminiApiKey] }));
+  app.use(errorHandler({ hashUid, secrets: [config.geminiApiKey, ...(config.mongo ? secretsFromUri(config.mongo.uri) : [])] }));
 
   return app;
 }

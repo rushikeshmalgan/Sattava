@@ -34,6 +34,21 @@ export const EnvSchema = z.object({
   COACH_RATE_PER_DAY: intWithDefault(200),
   AI_IP_RATE_PER_MINUTE: intWithDefault(60),
   FOODS_IP_RATE_PER_MINUTE: intWithDefault(30),
+  DATA_RATE_PER_MINUTE: intWithDefault(120),
+
+  // Optional in the schema so the AI scripts (check:models, smoke:*) run without a database; the server itself
+  // refuses to start without it (see index.ts). The value is a secret: it is never logged or echoed.
+  MONGODB_URI: z.preprocess(
+    (value) => (value === '' ? undefined : value),
+    z
+      .string()
+      .refine((uri) => /^mongodb(\+srv)?:\/\//.test(uri), 'MONGODB_URI must start with mongodb:// or mongodb+srv://')
+      .optional(),
+  ),
+  MONGODB_DB: z
+    .string()
+    .regex(/^[A-Za-z0-9_-]{1,63}$/, 'MONGODB_DB may contain only letters, digits, _ and -')
+    .default('sattava'),
 
   FATSECRET_CLIENT_ID: z.string().optional(),
   FATSECRET_CLIENT_SECRET: z.string().optional(),
@@ -59,7 +74,10 @@ export interface AppConfig {
     coachPerDay: number;
     aiIpPerMinute: number;
     foodsIpPerMinute: number;
+    dataPerMinute: number;
   };
+  /** Null when MONGODB_URI is not set. */
+  mongo: { uri: string; dbName: string } | null;
   fatSecret: { clientId: string; clientSecret: string } | null;
 }
 
@@ -98,7 +116,9 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
       coachPerDay: e.COACH_RATE_PER_DAY,
       aiIpPerMinute: e.AI_IP_RATE_PER_MINUTE,
       foodsIpPerMinute: e.FOODS_IP_RATE_PER_MINUTE,
+      dataPerMinute: e.DATA_RATE_PER_MINUTE,
     },
+    mongo: e.MONGODB_URI ? { uri: e.MONGODB_URI, dbName: e.MONGODB_DB } : null,
     fatSecret:
       e.FATSECRET_CLIENT_ID && e.FATSECRET_CLIENT_SECRET
         ? { clientId: e.FATSECRET_CLIENT_ID, clientSecret: e.FATSECRET_CLIENT_SECRET }

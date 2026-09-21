@@ -142,6 +142,8 @@ export function makeTestApp(
     verifyToken: makeVerifier({ 'good-token': { uid: 'user-1' }, 'other-token': { uid: 'user-2' } }),
     fetchImpl: over.fetchImpl,
     now: over.now,
+    ...(over.repo ? { repo: over.repo } : {}),
+    ...(over.checkDatabase ? { checkDatabase: over.checkDatabase } : {}),
     ...(over.verifyToken ? { verifyToken: over.verifyToken } : {}),
     provider,
   });

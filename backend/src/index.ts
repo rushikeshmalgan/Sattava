@@ -4,10 +4,13 @@ import dotenv from 'dotenv';
 import { createApp } from './app';
 import { ConfigError, loadConfig } from './config';
 import { createGeminiRestProvider } from './ai/geminiRest';
+import { createDataRepository } from './data/repository';
+import { connectDatabase, secretsFromUri } from './db/mongo';
 import { createFirebaseTokenVerifier } from './firebaseAdmin';
 import { configureServerTimeouts, createShutdown } from './lifecycle';
 import { createLogger } from './logger';
 import { fetchPublicIp } from './net/publicIp';
+import { scrub } from './observability';
 
 // backend/.env wins; the repo-root .env is a fallback for FatSecret dev creds only.
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -17,7 +20,7 @@ const logger = createLogger({ level: process.env.LOG_LEVEL ?? 'info' });
 
 const errorMessage = (err: unknown): string => (err instanceof Error ? err.message : String(err));
 
-function main(): void {
+async function main(): Promise<void> {
   let config;
   try {
     config = loadConfig();
@@ -30,11 +33,35 @@ function main(): void {
     throw err;
   }
 
+  if (!config.mongo) {
+    logger.fatal(
+      { event: 'config.invalid' },
+      'Invalid server configuration:\n  - MONGODB_URI: required (users and daily logs are stored in MongoDB)',
+    );
+    process.exit(1);
+  }
+
+  // Fail fast if the database cannot be reached, so a wrong connection string shows up at deploy time
+  // instead of as errors on the first request. The connection string is a secret and is scrubbed.
+  let database;
+  try {
+    database = await connectDatabase(config.mongo);
+  } catch (err) {
+    logger.fatal({
+      event: 'database.connect_failed',
+      message: scrub(errorMessage(err), secretsFromUri(config.mongo.uri)),
+      hint: 'Check MONGODB_URI, the database user, and that this server may connect (Atlas: Network Access).',
+    });
+    process.exit(1);
+  }
+
   const app = createApp({
     config,
     logger,
     verifyToken: createFirebaseTokenVerifier(config.firebaseProjectId),
     provider: createGeminiRestProvider({ apiKey: config.geminiApiKey }),
+    repo: createDataRepository(database.db),
+    checkDatabase: database.ping,
   });
 
   const server = app.listen(config.port, '0.0.0.0', async () => {
@@ -48,6 +75,7 @@ function main(): void {
       thinkingLevel: config.thinkingLevel,
       trustProxyHops: config.trustProxyHops,
       foodsProxyConfigured: config.fatSecret !== null,
+      databaseName: config.mongo?.dbName,
     });
 
     if (config.nodeEnv !== 'production') {
@@ -74,8 +102,8 @@ function main(): void {
     process.exit(1);
   });
 
-  // Render sends SIGTERM on every deploy: finish in-flight requests, then exit.
-  const shutdown = createShutdown(server, { logger });
+  // Render sends SIGTERM on every deploy: finish in-flight requests, close the database, then exit.
+  const shutdown = createShutdown(server, { logger, afterDrain: () => database.close() });
   for (const signal of ['SIGTERM', 'SIGINT'] as const) {
     process.on(signal, () => void shutdown(signal));
   }
@@ -91,4 +119,7 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-main();
+main().catch((err) => {
+  logger.fatal({ event: 'process.startup_failed', message: errorMessage(err) });
+  process.exit(1);
+});

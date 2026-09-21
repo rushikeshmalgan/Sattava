@@ -9,6 +9,8 @@ export type ErrorCode =
   | 'AI_INVALID_OUTPUT'
   | 'AI_UNAVAILABLE'
   | 'NOT_FOUND'
+  | 'DAY_LIMIT_EXCEEDED'
+  | 'DATABASE_UNAVAILABLE'
   | 'INTERNAL_ERROR';
 
 /** Client-facing messages. Deliberately generic: provider details never reach the client. */
@@ -23,6 +25,8 @@ export const SAFE_MESSAGES: Record<ErrorCode, string> = {
   AI_INVALID_OUTPUT: 'Food analysis could not produce a usable result.',
   AI_UNAVAILABLE: 'Food analysis is temporarily unavailable.',
   NOT_FOUND: 'Resource not found.',
+  DAY_LIMIT_EXCEEDED: 'This day already has the maximum amount logged.',
+  DATABASE_UNAVAILABLE: 'The database is temporarily unavailable.',
   INTERNAL_ERROR: 'Something went wrong.',
 };
 
