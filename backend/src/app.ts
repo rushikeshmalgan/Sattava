@@ -43,6 +43,10 @@ const COACH_BODY_LIMIT = '16kb';
 // Data writes are a single small entry or profile patch.
 const DATA_BODY_LIMIT = '32kb';
 
+// Where the Expo web dev server runs. Allowed by default in development only, so trying the app in a browser works
+// without configuration; production and tests allow no browser origin unless CORS_ORIGINS names it.
+const DEV_WEB_ORIGINS = ['http://localhost:8081', 'http://localhost:19006'];
+
 const VISION_CACHE_ENTRIES = 200;
 const VISION_CACHE_TTL_MS = 24 * 60 * MINUTE;
 
@@ -64,8 +68,9 @@ export function createApp(deps: AppDeps): Express {
 
   app.use(requestId(logger));
 
-  // Native apps do not use CORS. An allowlist exists only for Expo web dev.
-  app.use(cors({ origin: config.corsOrigins.length > 0 ? config.corsOrigins : false }));
+  // Native apps do not use CORS. An allowlist exists for Expo web: CORS_ORIGINS, or in development the dev server.
+  const corsOrigin = config.corsOrigins.length > 0 ? config.corsOrigins : config.nodeEnv === 'development' ? DEV_WEB_ORIGINS : false;
+  app.use(cors({ origin: corsOrigin }));
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });

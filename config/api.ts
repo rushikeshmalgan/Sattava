@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
 const DEV_PORT = 3000;
 
@@ -7,7 +8,8 @@ const DEV_PORT = 3000;
  *
  * 1. EXPO_PUBLIC_PROXY_BASE_URL (production / deployed backend)
  * 2. In development, the LAN IP of the machine running Metro plus the dev port
- * 3. Otherwise fail with an actionable message
+ * 3. In a browser (Expo web) on the same machine, localhost plus the dev port
+ * 4. Otherwise fail with an actionable message
  *
  * Nothing secret lives here: this is only a URL.
  */
@@ -26,6 +28,9 @@ export const getApiBaseUrl = (): string => {
       return `http://${lanIp}:${DEV_PORT}`;
     }
   }
+
+  // Expo web in development runs in a browser on the same machine as the backend.
+  if (Platform.OS === 'web' && __DEV__) return `http://localhost:${DEV_PORT}`;
 
   throw new Error(
     'Cannot determine the API URL. Set EXPO_PUBLIC_PROXY_BASE_URL in .env, or (development) run the backend ' +
