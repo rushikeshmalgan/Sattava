@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
@@ -15,6 +16,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/Colors';
+import { describeDataError } from '../../services/dataErrors';
 import { addActivityLog } from '../../services/userService';
 import { MAX_GRAMS_PER_ENTRY, MAX_KCAL_PER_ENTRY, parseNumberField } from '../../utils/nutritionInput';
 
@@ -81,8 +83,7 @@ const ManualFoodLogScreen = () => {
 
             router.replace('/(tabs)/home');
         } catch (error) {
-            console.error('Failed to log food:', error);
-            alert('Failed to save log. Please try again.');
+            Alert.alert('Not saved', describeDataError(error, 'save that entry'));
         } finally {
             setIsLogging(false);
         }

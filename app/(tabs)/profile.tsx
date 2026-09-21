@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router';
 import { Colors } from '../../constants/Colors';
 import { updateUserProfile } from '../../services/userService';
 import { useTheme } from '../../context/ThemeContext';
+import { describeDataError } from '../../services/dataErrors';
 import { loadDemoData } from '../../services/logService';
 import AchievementSection from '../../components/AchievementSection';
 
@@ -161,17 +162,32 @@ export default function Profile() {
         setShowNameModal(true);
     };
 
-    const handleLoadDemo = async () => {
+    const handleLoadDemo = () => {
         if (!user?.uid) return;
-        setIsDemoLoading(true);
-        try {
-            await loadDemoData();
-            Alert.alert('Demo Mode Activated 🚀', '7 days of perfect nutrition data has been loaded. Your profile is now presentation-ready!');
-        } catch (error) {
-            Alert.alert('Error', 'Failed to load demo data.');
-        } finally {
-            setIsDemoLoading(false);
-        }
+
+        // This replaces the last seven days, so it has to be asked for, not tripped over.
+        Alert.alert(
+            'Load sample data?',
+            'This replaces everything you have logged in the last 7 days with sample days. It cannot be undone.',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Replace 7 days',
+                    style: 'destructive',
+                    onPress: async () => {
+                        setIsDemoLoading(true);
+                        try {
+                            await loadDemoData();
+                            Alert.alert('Sample data loaded', 'The last 7 days now hold sample nutrition data.');
+                        } catch (error) {
+                            Alert.alert('Not loaded', describeDataError(error, 'load the sample data'));
+                        } finally {
+                            setIsDemoLoading(false);
+                        }
+                    },
+                },
+            ],
+        );
     };
 
     const handleSignOut = () => {

@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../constants/Colors';
+import { describeDataError } from '../services/dataErrors';
 import { addFoodLog } from '../services/logService';
 import { searchAllFoods, UnifiedFoodResult } from '../services/foodSearchService';
 import { getHealthyAlternative } from '../constants/HealthyAlternatives';
@@ -140,8 +141,8 @@ const FoodSearchScreen = () => {
                 
                 // No notifications needed
                 router.replace('/(tabs)/home');
-            } catch {
-                Alert.alert('Error', 'Failed to log food. Please try again.');
+            } catch (error) {
+                Alert.alert('Not saved', describeDataError(error, 'log that food'));
             } finally {
                 setAddingId(null);
             }

@@ -1,80 +1,76 @@
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "expo-router";
 import { fetchCurrentUser } from "../services/dataApi";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { describeDataError } from "../services/dataErrors";
+import { useCallback, useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../constants/Colors";
 
+/**
+ * Decides where a signed-in user starts: the home screen, or onboarding when there is no profile yet.
+ *
+ * The profile comes from the backend, so the check can fail. A failure is shown as a failure: sending a user
+ * who already has a profile into onboarding would ask them to fill it in a second time.
+ */
 export default function Index() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [isChecking, setIsChecking] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
-    if (loading) {
-      console.log("[INDEX] Waiting for Firebase auth...");
-      return;
-    }
-
-    console.log("[INDEX] Firebase state:", { loading, userId: user?.uid });
+    if (loading) return;
 
     if (!user) {
-      console.log("[INDEX] User is not authenticated → navigating to /(auth)/sign-in");
       router.replace("/(auth)/sign-in");
       return;
     }
 
-    console.log("[INDEX] Authenticated user:", user.uid);
-    console.log("[INDEX] Checking the profile for user:", user.uid);
+    let cancelled = false;
 
-    const checkOnboardingStatus = async () => {
+    (async () => {
       try {
-        // The profile decides whether onboarding still has to be done.
+        setError(null);
+        const profile = await fetchCurrentUser();
+        if (cancelled) return;
 
-        const userDoc = await fetchCurrentUser();
+        const hasOnboardingData = !!(
+          profile?.onboardingCompleted === true ||
+          profile?.isSetupCompleted === true ||
+          profile?.physicalProfile ||
+          profile?.generatedPlan
+        );
 
-        if (userDoc) {
-          const data = userDoc;
-
-          const hasOnboardingData = !!(
-            data.onboardingCompleted === true ||
-            data.isSetupCompleted === true ||
-            data.physicalProfile ||
-            data.generatedPlan
-          );
-
-          if (hasOnboardingData) {
-            console.log("[INDEX] Onboarding complete → navigating to /(tabs)/home");
-            router.replace("/(tabs)/home");
-          } else {
-            console.log("[INDEX] Onboarding not complete → navigating to /onboarding");
-            router.replace("/onboarding");
-          }
-        } else {
-          console.log("[INDEX] No user doc found → navigating to /onboarding");
-          router.replace("/onboarding");
-        }
-      } catch (error) {
-        console.error("[INDEX] Profile check failed:", error);
-        console.log("[INDEX] Profile check failed — redirecting to /onboarding as fallback");
-        router.replace("/onboarding");
-      } finally {
-        setIsChecking(false);
+        router.replace(hasOnboardingData ? "/(tabs)/home" : "/onboarding");
+      } catch (err) {
+        if (!cancelled) setError(describeDataError(err, "load your profile"));
       }
+    })();
+
+    return () => {
+      cancelled = true;
     };
+  }, [loading, user?.uid, router, attempt]);
 
-    checkOnboardingStatus();
-  }, [loading, user?.uid, router]);
+  const retry = useCallback(() => setAttempt((n) => n + 1), []);
 
-  if (isChecking || loading) {
+  if (error) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color={Colors.PRIMARY} />
+        <Text style={styles.title}>Cannot reach Sattava</Text>
+        <Text style={styles.message}>{error}</Text>
+        <TouchableOpacity style={styles.button} onPress={retry} accessibilityRole="button">
+          <Text style={styles.buttonText}>Try again</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  return null;
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator size="large" color={Colors.PRIMARY} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -82,6 +78,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 32,
     backgroundColor: Colors.BACKGROUND,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: Colors.TEXT_MAIN,
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  message: {
+    fontSize: 14,
+    lineHeight: 21,
+    color: Colors.TEXT_MUTED,
+    textAlign: "center",
+    marginBottom: 24,
+  },
+  button: {
+    paddingHorizontal: 28,
+    paddingVertical: 12,
+    borderRadius: 24,
+    backgroundColor: Colors.PRIMARY,
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
 });

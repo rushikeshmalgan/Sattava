@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     Image,
     StyleSheet,
     Text,
@@ -13,6 +14,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/Colors';
+import { describeDataError } from '../../services/dataErrors';
 import { addActivityLog } from '../../services/userService';
 
 const WaterIntakeScreen = () => {
@@ -65,8 +67,7 @@ const WaterIntakeScreen = () => {
 
             router.replace('/(tabs)/home');
         } catch (error) {
-            console.error('Failed to log water:', error);
-            alert('Failed to save. Please try again.');
+            Alert.alert('Not saved', describeDataError(error, 'save that water'));
         } finally {
             setIsSaving(false);
         }

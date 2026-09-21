@@ -1,6 +1,7 @@
 import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { subscribeToDailyLog, subscribeToUser } from '../../services/liveData';
+import { describeDataError } from '../../services/dataErrors';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
 import {
@@ -477,10 +478,10 @@ export default function Home() {
                     const dateStr = selectedDate.toISOString().split('T')[0];
                     try {
                       await deleteLogEntry(dateStr, activity.id);
-                    } catch {
+                    } catch (error) {
                       // The row has already slid away; rebuild the list so a failed delete puts it back.
                       setActivityListVersion((v) => v + 1);
-                      Alert.alert('Error', 'Could not remove that entry. Please try again.');
+                      Alert.alert('Not removed', describeDataError(error, 'remove that entry'));
                     }
                   }}
                 />
