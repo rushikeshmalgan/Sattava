@@ -3,6 +3,7 @@ import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     Image,
     KeyboardAvoidingView,
     Platform,
@@ -44,7 +45,7 @@ export default function SignIn() {
             await signIn(emailAddress, password);
             router.replace('/');
         } catch (err: any) {
-            alert(err.message || 'Sign in failed');
+            Alert.alert('Sign in failed', err.message || 'Please try again.');
         } finally {
             setLoading(false);
         }
@@ -52,7 +53,7 @@ export default function SignIn() {
 
     const onForgotPasswordPress = async () => {
         if (!emailAddress.trim()) {
-            alert('Please enter your email first to reset password.');
+            Alert.alert('Email needed', 'Enter your email address first, then tap Forgot Password.');
             return;
         }
 
@@ -62,10 +63,10 @@ export default function SignIn() {
             const { auth: authInstance } = await import('../../firebaseConfig');
             if (!authInstance) throw new Error('Firebase Auth not initialized');
             await sendPasswordResetEmail(authInstance, emailAddress.trim());
-            alert('Password reset email sent. Please follow the instructions in your email.');
+            Alert.alert('Reset email sent', 'Follow the instructions in your inbox to choose a new password.');
         } catch (err: any) {
             console.error('[AUTH] Password reset error:', err);
-            alert(err?.message || 'Failed to send password reset email');
+            Alert.alert('Could not send the email', err?.message || 'Please try again.');
         } finally {
             setIsSendingReset(false);
         }
@@ -76,22 +77,22 @@ export default function SignIn() {
             await signInWithGoogle();
             router.replace('/');
         } catch (err: any) {
-            alert(err.message || 'Google sign-in failed. Please try again.');
+            Alert.alert('Google sign-in failed', err.message || 'Please try again.');
         }
     };
 
     const onSendOtp = async () => {
         if (!phoneNumber.trim()) {
-            alert('Please enter your phone number.');
+            Alert.alert('Phone number needed', 'Enter your phone number to get a verification code.');
             return;
         }
         setLoading(true);
         try {
             const result = await signInWithPhone(phoneNumber);
             setConfirmationResult(result);
-            alert('OTP sent to ' + phoneNumber);
+            Alert.alert('Code sent', 'We sent a verification code to ' + phoneNumber + '.');
         } catch (err: any) {
-            alert(err.message || 'Failed to send OTP');
+            Alert.alert('Could not send the code', err.message || 'Please try again.');
         } finally {
             setLoading(false);
         }
@@ -99,7 +100,7 @@ export default function SignIn() {
 
     const onVerifyOtp = async () => {
         if (!confirmationResult || !verificationCode.trim()) {
-            alert('Please enter the verification code.');
+            Alert.alert('Code needed', 'Enter the verification code we sent you.');
             return;
         }
         setLoading(true);
@@ -107,7 +108,7 @@ export default function SignIn() {
             await verifyPhoneCode(confirmationResult, verificationCode);
             router.replace('/');
         } catch (err: any) {
-            alert(err.message || 'Invalid verification code');
+            Alert.alert('That code did not work', err.message || 'Check it and try again.');
         } finally {
             setLoading(false);
         }

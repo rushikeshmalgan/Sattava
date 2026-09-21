@@ -37,29 +37,29 @@ const ManualFoodLogScreen = () => {
         if (!user?.uid) return;
 
         if (!name.trim()) {
-            alert("Please enter a name for the food");
+            Alert.alert('Name needed', 'Give this food a name so you can recognise it later.');
             return;
         }
 
         // Plain non-negative numbers within what the API accepts per entry. The macros are optional.
         const caloriesField = parseNumberField(calories, 'calories', MAX_KCAL_PER_ENTRY, { required: true });
         if ('error' in caloriesField) {
-            alert(caloriesField.error);
+            Alert.alert('Check the calories', caloriesField.error);
             return;
         }
         const proteinField = parseNumberField(protein, 'protein', MAX_GRAMS_PER_ENTRY);
         if ('error' in proteinField) {
-            alert(proteinField.error);
+            Alert.alert('Check the protein', proteinField.error);
             return;
         }
         const carbsField = parseNumberField(carbs, 'carbs', MAX_GRAMS_PER_ENTRY);
         if ('error' in carbsField) {
-            alert(carbsField.error);
+            Alert.alert('Check the carbs', carbsField.error);
             return;
         }
         const fatField = parseNumberField(fat, 'fat', MAX_GRAMS_PER_ENTRY);
         if ('error' in fatField) {
-            alert(fatField.error);
+            Alert.alert('Check the fat', fatField.error);
             return;
         }
 

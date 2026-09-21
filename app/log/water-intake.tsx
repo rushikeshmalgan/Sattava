@@ -44,7 +44,7 @@ const WaterIntakeScreen = () => {
     const handleLogWater = async () => {
         if (!user?.uid) return;
         if (waterAmount <= 0) {
-            alert("Please add some water first!");
+            Alert.alert('Nothing to save', 'Add some water first.');
             return;
         }
 

@@ -3,6 +3,7 @@ import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     Image,
     KeyboardAvoidingView,
     Platform,
@@ -37,7 +38,7 @@ export default function SignUp() {
             await signUp(emailAddress, password);
             setPendingVerification(true);
         } catch (err: any) {
-            alert(err.message || 'Sign up failed');
+            Alert.alert('Sign up failed', err.message || 'Please try again.');
         } finally {
             setLoading(false);
         }
@@ -50,12 +51,12 @@ export default function SignUp() {
             const { auth } = await import('../../firebaseConfig');
             if (auth?.currentUser) {
                 await sendEmailVerification(auth.currentUser);
-                alert('Verification email sent. Please check your inbox.');
+                Alert.alert('Verification email sent', 'Check your inbox to confirm your address.');
             }
             router.replace('/');
         } catch (err: any) {
             console.error('[AUTH] Verification error:', err);
-            alert(err?.message || 'Verification failed');
+            Alert.alert('Verification failed', err?.message || 'Please try again.');
         } finally {
             setLoading(false);
         }
@@ -66,7 +67,7 @@ export default function SignUp() {
             await signInWithGoogle();
             router.replace('/');
         } catch (err: any) {
-            alert(err.message || 'Google sign-in failed. Please try again.');
+            Alert.alert('Google sign-in failed', err.message || 'Please try again.');
         }
     };
 

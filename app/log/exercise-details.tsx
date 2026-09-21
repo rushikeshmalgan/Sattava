@@ -2,9 +2,11 @@ import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { fetchCurrentUser } from '../../services/dataApi';
+import { describeDataError } from '../../services/dataErrors';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
@@ -63,7 +65,7 @@ const ExerciseDetailsScreen = () => {
 
         const finalDuration = Number(manualDuration || duration);
         if (isNaN(finalDuration) || finalDuration <= 0) {
-            alert("Please enter a valid duration");
+            Alert.alert('Check the duration', 'Enter how many minutes you exercised.');
             return;
         }
 
@@ -98,7 +100,7 @@ const ExerciseDetailsScreen = () => {
             });
         } catch (error) {
             console.error('Failed to calculate workout:', error);
-            alert('Something went wrong. Please try again.');
+            Alert.alert('Not saved', describeDataError(error, 'save that workout'));
         } finally {
             setIsSaving(false);
         }

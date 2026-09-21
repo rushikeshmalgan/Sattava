@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors } from "../constants/Colors";
 
@@ -26,7 +26,7 @@ const AddLogModal = ({ isVisible, onClose, userId }: AddLogModalProps) => {
 
   const handleOptionPress = async (id: string) => {
     if (!userId) {
-      alert("Please sign in to log data");
+      Alert.alert('Sign in needed', 'Sign in to log anything.');
       onClose();
       return;
     }

@@ -14,6 +14,15 @@ module.exports = defineConfig([
     files: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}', 'services/**/*.{ts,tsx}', 'utils/**/*.{ts,tsx}', 'context/**/*.{ts,tsx}', 'config/**/*.{ts,tsx}', 'firebaseConfig.ts'],
     rules: {
       'no-console': ['error', { allow: ['warn', 'error'] }],
+      // alert/confirm/prompt are browser APIs. On the web build they open a modal that blocks the whole
+      // page until dismissed, and on native React Native's polyfill gives a dialog with no title.
+      // Alert.alert from react-native works on both.
+      'no-restricted-globals': [
+        'error',
+        { name: 'alert', message: 'Use Alert.alert from react-native: alert() blocks the page on web.' },
+        { name: 'confirm', message: 'Use Alert.alert with buttons from react-native.' },
+        { name: 'prompt', message: 'Use a TextInput in a Modal; prompt() blocks the page on web.' },
+      ],
     },
   },
   {

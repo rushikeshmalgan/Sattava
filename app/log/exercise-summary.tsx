@@ -1,9 +1,11 @@
 import { useAuth } from '../../context/AuthContext';
+import { describeDataError } from '../../services/dataErrors';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -47,7 +49,7 @@ const ExerciseSummaryScreen = () => {
             router.replace('/(tabs)/home');
         } catch (error) {
             console.error('Failed to log exercise:', error);
-            alert('Failed to save workout. Please try again.');
+            Alert.alert('Not saved', describeDataError(error, 'save that workout'));
         } finally {
             setIsSaving(false);
         }

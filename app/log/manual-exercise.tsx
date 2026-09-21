@@ -1,9 +1,11 @@
 import { useAuth } from '../../context/AuthContext';
+import { describeDataError } from '../../services/dataErrors';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     KeyboardAvoidingView,
     Platform,
     StyleSheet,
@@ -29,7 +31,7 @@ const ManualCaloriesScreen = () => {
 
         const caloriesField = parseNumberField(calories, 'calories', MAX_KCAL_PER_ENTRY, { required: true });
         if ('error' in caloriesField) {
-            alert(caloriesField.error);
+            Alert.alert('Check the calories', caloriesField.error);
             return;
         }
 
@@ -50,7 +52,7 @@ const ManualCaloriesScreen = () => {
             router.replace('/(tabs)/home');
         } catch (error) {
             console.error('Failed to log exercise:', error);
-            alert('Failed to save log. Please try again.');
+            Alert.alert('Not saved', describeDataError(error, 'save that workout'));
         } finally {
             setIsLogging(false);
         }
