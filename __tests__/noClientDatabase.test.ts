@@ -61,7 +61,9 @@ describe('mobile app has no direct database access', () => {
   it('the env template and the EAS config expose no database setting to the client', () => {
     const example = fs.readFileSync(path.join(ROOT, '.env.example'), 'utf8');
     const eas = fs.readFileSync(path.join(ROOT, 'eas.json'), 'utf8');
-    expect(example).not.toMatch(/MONGO/i);
+    // The template may say in a comment that the database is configured on the server; it may not set anything.
+    expect(example).not.toMatch(/^\s*#?\s*[A-Z_]*MONGO[A-Z_]*\s*=/im);
+    expect(example).not.toMatch(/mongodb(\+srv)?:\/\//i);
     expect(eas).not.toMatch(/MONGO/i);
   });
 

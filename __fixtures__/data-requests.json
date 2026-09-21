@@ -1,0 +1,91 @@
+{
+  "_comment": "The bodies the app sends to the data API. The app's tests check that its services build exactly these, and the backend's tests check that they pass the server's strict schemas, so a renamed or dropped field on either side fails a test instead of shipping. Entries built by logService also carry a device time, which the app test adds.",
+  "syncUser": { "email": "asha@example.com", "name": "Asha", "photo": "", "provider": "google.com" },
+  "onboardingProfile": {
+    "physicalProfile": {
+      "gender": "Female",
+      "goal": "Lose Weight",
+      "activityLevel": "3-4 Days / Week",
+      "birthdate": { "day": "14", "month": "3", "year": "1999" },
+      "heightFeet": "5",
+      "heightInches": "4",
+      "weightKg": "62"
+    }
+  },
+  "planGenerated": {
+    "onboardingCompleted": true,
+    "isSetupCompleted": true,
+    "generatedPlan": {
+      "dailyCalories": 1800,
+      "macros": { "carbs": "250g", "protein": "60g", "fats": "70g" },
+      "waterIntake": "2.5L",
+      "planSummary": "A balanced Indian diet plan.",
+      "fitnessTips": ["Morning yoga for 15 minutes", "Evening walk for 30 minutes"]
+    },
+    "physicalProfile": {
+      "gender": "Female",
+      "goal": "Lose Weight",
+      "activityLevel": "3-4 Days / Week",
+      "birthdate": { "day": "14", "month": "3", "year": "1999" },
+      "heightFeet": "5",
+      "heightInches": "4",
+      "weightKg": "62"
+    },
+    "imageUrl": ""
+  },
+  "targets": {
+    "generatedPlan": {
+      "dailyCalories": 2200,
+      "macros": { "protein": "80g", "fats": "60g", "carbs": "250g" },
+      "waterIntake": "3L"
+    }
+  },
+  "coachChoice": { "userProfile": { "coachType": "Friendly" } },
+  "goalChange": { "userProfile": { "goal": "Gain Weight" }, "generatedPlanStale": true },
+  "foodEntry": {
+    "type": "food",
+    "itemId": "csv-12",
+    "name": "Dal",
+    "calories": 300,
+    "carbs": 40,
+    "protein": 15,
+    "fat": 8,
+    "fiber": 6,
+    "servingSize": "1 bowl"
+  },
+  "exerciseEntry": {
+    "type": "cardio",
+    "itemId": "run",
+    "name": "Running",
+    "calories": 250,
+    "duration": 30,
+    "intensity": "Medium"
+  },
+  "waterActivity": {
+    "itemId": "w1",
+    "name": "Paani (Water)",
+    "time": "09:00 AM",
+    "type": "water",
+    "amountMl": 1000,
+    "amount": "1L"
+  },
+  "foodActivity": {
+    "itemId": "f1",
+    "name": "Homemade Poha",
+    "time": "08:30 AM",
+    "type": "food",
+    "calories": 350,
+    "carbs": 60,
+    "protein": 8,
+    "fat": 9
+  },
+  "exerciseActivity": {
+    "itemId": "y1",
+    "name": "Surya Namaskar (5 rounds)",
+    "time": "07:00 AM",
+    "type": "exercise",
+    "calories": 90,
+    "duration": 10,
+    "intensity": "Medium"
+  }
+}
