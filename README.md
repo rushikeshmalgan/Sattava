@@ -252,7 +252,7 @@ In the spirit of not overselling this repo:
 
 > **Rate limits and the server cache live in the memory of a single instance.** They reset on restart and would not be shared across instances; scaling out would need shared state (for example Redis), which is deliberately not introduced yet.
 
-> **Photo scans need the backend, and there is no accuracy evaluation yet.** Hosting cold-start behaviour and real-world latency have not been measured in production, and there is no labelled photo set to quantify recognition accuracy. The validation guards against implausible output, not against plausible-but-wrong estimates.
+> **Photo scans need the backend, and there is no accuracy evaluation yet.** Hosting cold-start behaviour and real-world latency have not been measured in production. Gemini response times were seen to vary a lot in local testing, from about 2 s to the 12 s per-attempt cap within one evening, so a scan can fall back to a later model or, in a bad spell, fail cleanly after at most 30 s. There is no labelled photo set to quantify recognition accuracy. The validation guards against implausible output, not against plausible-but-wrong estimates.
 
 > **Nothing here has been validated on a physical device, in an EAS native build, or against production.** Verified so far: unit and integration tests with fake providers, the Firestore rules against the local emulator, a real Gemini call from the backend, and a JavaScript bundle export. Not yet verified: a photo scan and Firestore logging on a real phone, an EAS/native build, the Render deployment (cold start, `TRUST_PROXY_HOPS`, real SIGTERM handling), the rules deployed to the production Firebase project, and a production Gemini call authenticated with a real Firebase ID token.
 
